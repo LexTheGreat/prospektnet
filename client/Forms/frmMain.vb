@@ -1,17 +1,15 @@
-﻿Imports Microsoft.DirectX
-Imports Microsoft.DirectX.Direct3D
-
+﻿
 Public Class frmMain
 
     Private Sub frmMain_Disposed(sender As Object, e As EventArgs) Handles Me.Disposed
         inMenu = False
         inGame = False
-        DestroyDirectDraw()
+        DestroySFML()
         End
     End Sub
 
     Private Sub frmMain_KeyDown(sender As Object, e As KeyEventArgs) Handles Me.KeyDown
-        Select e.KeyCode
+        Select Case e.KeyCode
             Case Keys.Escape
                 If inMenu Then
                     If curMenu <> MenuEnum.Main Then

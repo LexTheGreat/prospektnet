@@ -1,93 +1,39 @@
-﻿Imports Microsoft.DirectX
-Imports Microsoft.DirectX.Direct3D
-Imports System.Drawing
+﻿Imports SFML.Graphics
 Public Class TextWriter
-    Private fontGraphics As Graphics
-    Private xFont As Direct3D.Font
-    Private wFont As System.Drawing.Font
-    Private MyText As String
-    Private theColor As System.Drawing.Color
-    'Private spr As Sprite
-    Private pos As Point
+    Private xFont As Font
+    Private xText As Text
+    Private fontName As String
     Private IsVisible As Boolean
 
-    Public Sub New(ByRef gDevice As Direct3D.Device, ByVal Font As System.Drawing.Font, Optional ByVal text As String = "")
-        xFont = New Direct3D.Font(gDevice, Font)
-        wFont = Font
-        fontGraphics = frmMain.CreateGraphics
-        'spr = New Sprite(gDevice)
-        If text <> "" Then xFont.PreloadText(text)
-        pos = New Point(10, 10)
-        theColor = Drawing.Color.Black
+    Public Sub New(ByVal Filename As String)
+        xFont = New SFML.Graphics.Font(Filename)
         IsVisible = True
     End Sub
 
     Public Sub Dispose()
         xFont.Dispose()
         xFont = Nothing
-        pos = Nothing
+        xText.Dispose()
+        xText = Nothing
     End Sub
 
-    Public Property Color() As Drawing.Color
-        Get
-            Return theColor
-        End Get
-        Set(ByVal value As Drawing.Color)
-            theColor = value
-        End Set
-    End Property
-
-    Public Property Text() As String
-        Get
-            Return MyText
-        End Get
-        Set(ByVal value As String)
-            MyText = value
-            If Not xFont.Disposed Then xFont.PreloadText(value)
-        End Set
-    End Property
-
-    Public Function Draw() As Integer
+    Public Sub Draw(ByVal DrawText As String, ByVal X As Integer, ByVal Y As Integer, ByVal textColor As Color, Optional ByVal Size As Integer = 12)
         If IsVisible Then
-            Return xFont.DrawText(Nothing, MyText, pos, theColor)
+            xText = New Text(DrawText, xFont, Size)
+            xText.Color = New Color(textColor)
+            xText.Position = New SFML.Window.Vector2f(X, Y)
+            xText.Draw(SfmlWindow, RenderStates.Default)
+        End If
+    End Sub
+
+    Public Function GetWidth(ByVal DrawText As String, Optional ByVal Size As Integer = 12) As Integer
+        Dim tempText As Text
+        If IsVisible Then
+            tempText = New Text(DrawText, xFont, Size)
+            Return tempText.GetLocalBounds.Width
         End If
         Return 1
     End Function
-
-    Public Function Draw(ByVal DrawText As String, ByVal X As Integer, ByVal Y As Integer, ByVal textColor As Drawing.Color) As Integer
-        If IsVisible Then
-            Return xFont.DrawText(Nothing, DrawText, New Point(X, Y), textColor)
-        End If
-        Return 1
-    End Function
-
-    Public Function GetWidth() As Integer
-        Dim fontsize As New SizeF
-        If IsVisible Then
-            fontsize = fontGraphics.MeasureString(MyText, wFont)
-            Return fontsize.Width
-        End If
-        Return 1
-    End Function
-
-    Public Function GetWidth(ByVal DrawText As String) As Integer
-        Dim fontsize As New SizeF
-        If IsVisible Then
-            fontsize = fontGraphics.MeasureString(DrawText, wFont)
-            Return fontsize.Width
-        End If
-        Return 1
-    End Function
-
-
-    Public Property Position() As Point
-        Get
-            Return pos
-        End Get
-        Set(ByVal value As Point)
-            pos = value
-        End Set
-    End Property
 
     Public Property Visible() As Boolean
         Get

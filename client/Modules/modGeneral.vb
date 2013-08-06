@@ -1,13 +1,15 @@
 ﻿Module modGeneral
     Public Sub Main()
-        screenWidth = 800
-        screenHeight = 600
+        screenWidth = 1024
+        screenHeight = 768
         maxX = (screenWidth / 32) - 1
         maxY = (screenHeight / 32) - 1
         frmMain.Width = screenWidth + (SystemInformation.FrameBorderSize.Width * 2)
         frmMain.Height = screenHeight + SystemInformation.CaptionHeight + (SystemInformation.FrameBorderSize.Height * 2)
         frmMain.Show()
-        InitDirectDraw()
+        InitSFML()
+        Verdana = New TextWriter("verdana.ttf")
+        Silkscreen = New TextWriter("silkscreen.ttf")
         inMenu = True
         playMusic("tranquility.ogg")
         ' fader
@@ -20,12 +22,8 @@
 
     Public Sub showGame()
         inMenu = False
-        Verdana8.Dispose()
-        Verdana20.Dispose()
         Player = New clsPlayer(sUser, 1, maxX * 0.5, maxY * 0.5)
         inGame = True
-        Verdana8 = New TextWriter(DirectDevice, New Drawing.Font("Verdana", 8))
-        Verdana20 = New TextWriter(DirectDevice, New Drawing.Font("Verdana", 20))
         stopMusic()
         playMusic("touchthesky.ogg")
         gameLoop()
@@ -38,8 +36,12 @@
         Return True
     End Function
 
-    Public Function fileExist(ByVal filepath) As Boolean
-        fileExist = System.IO.File.Exists(filepath)
+    Public Function fileExist(ByVal filepath As String, Optional ByVal Raw As Boolean = False) As Boolean
+        If Raw = True Then
+            fileExist = System.IO.File.Exists(filepath)
+        Else
+            fileExist = System.IO.File.Exists(Application.StartupPath & "/" & filepath)
+        End If
     End Function
 
     Public Function GetTickCount()

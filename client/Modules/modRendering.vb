@@ -1,5 +1,5 @@
-﻿Imports Microsoft.DirectX
-Imports Microsoft.DirectX.Direct3D
+﻿Imports SFML.Graphics
+
 Module modRendering
     Public Sub renderMenu()
         On Error GoTo errorhandler
@@ -7,22 +7,21 @@ Module modRendering
         If frmMain.WindowState = FormWindowState.Minimized Then Exit Sub
 
         ' Start rendering
-        DirectDevice.Clear(ClearFlags.Target, Drawing.Color.White, 1.0#, 0)
-        Call DirectDevice.BeginScene()
+        SfmlWindow.Clear(New SFML.Graphics.Color(0, 0, 0))
 
         If faderState < 2 Then
             If Not faderAlpha = 255 Then renderTexture(texGui(2), (screenWidth * 0.5) - (Texture(texGui(2)).Width * 0.5), (screenHeight * 0.5) - (Texture(texGui(2)).Height * 0.5), 0, 0, Texture(texGui(2)).Width, Texture(texGui(2)).Height, Texture(texGui(2)).Width, Texture(texGui(2)).Height)
             DrawFader()
-            Call Verdana8.Draw("Press space to skip intro...", 2, 2, Color.DarkBlue)
+            Call verdana.Draw("Press space to skip intro...", 2, 2, SFML.Graphics.Color.Blue)
         Else
             ' Render background
             Call DrawBackGround()
 
-            Call renderTexture(texGui(1), 0, screenHeight - 20, 0, 0, screenWidth, 20, 32, 32, Color.FromArgb(200, 0, 0, 0).ToArgb)
+            Call renderTexture(texGui(1), 0, screenHeight - 20, 0, 0, screenWidth, 20, 32, 32, 200, 0, 0, 0)
 
-            Call Verdana8.Draw(Application.ProductName & " v" & Application.ProductVersion, 5, screenHeight - 18, Color.White)
-            Call Verdana8.Draw("eatenbrain.com", screenWidth - 5 - 100, screenHeight - 18, Color.White)
-            Call Verdana8.Draw("FPS: " & gameFPS, 5, 5, Color.White)
+            Call Verdana.Draw(Application.ProductName & " v" & Application.ProductVersion, 5, screenHeight - 18, Color.White)
+            Call Verdana.Draw("eatenbrain.com", screenWidth - 5 - Verdana.GetWidth("eatenbrain.com"), screenHeight - 18, Color.White)
+            Call Verdana.Draw("FPS: " & gameFPS, 5, 5, Color.White)
 
             Select Case curMenu
                 Case MenuEnum.Main : DrawMenu()
@@ -32,13 +31,7 @@ Module modRendering
         End If
 
         ' End the rendering
-        Call DirectDevice.EndScene()
-        If DeviceLostException.IsExceptionIgnored Or DeviceNotResetException.IsExceptionIgnored Then
-            DeviceLost()
-            Exit Sub
-        Else
-            Call DirectDevice.Present()
-        End If
+        SfmlWindow.Display()
         Exit Sub
 errorhandler:
         Err.Clear()
@@ -52,25 +45,17 @@ errorhandler:
         If frmMain.WindowState = FormWindowState.Minimized Then Exit Sub
 
         ' Start rendering
-        DirectDevice.Clear(ClearFlags.Target, Drawing.Color.White, 1.0#, 0)
-        Call DirectDevice.BeginScene()
+        SfmlWindow.Clear(New Color(0, 0, 0))
 
         ' Render background
         Call DrawBackGround()
-        Call Verdana8.Draw("FPS: " & gameFPS, 5, 5, Color.White)
+        Call verdana.Draw("FPS: " & gameFPS, 5, 5, Color.White)
 
         DrawPlayer()
         DrawPlayerName()
 
         ' End the rendering
-        Call DirectDevice.EndScene()
-        If DeviceLostException.IsExceptionIgnored Or DeviceNotResetException.IsExceptionIgnored Then
-            DeviceLost()
-            Exit Sub
-        Else
-            Call DirectDevice.Present()
-        End If
-        Exit Sub
+        SfmlWindow.Display()
 errorhandler:
         Err.Clear()
 
@@ -81,7 +66,7 @@ errorhandler:
         Dim textX As Integer, textY As Integer, Text As String, textSize As Long
 
         Text = Trim$(Player.Name)
-        textSize = Verdana8.GetWidth(Trim$(Player.Name))
+        textSize = verdana.GetWidth(Trim$(Player.Name))
 
         textX = Player.X * picX + Player.XOffset + (picX * 0.5) - (textSize * 0.5)
         textY = Player.Y * picY + Player.YOffset - picY
@@ -92,7 +77,7 @@ errorhandler:
             textY = Player.Y * picY + Player.YOffset - (Texture(texSprite(Player.Sprite)).Height / 4) + 12
         End If
 
-        Call Verdana8.Draw(Text, textX, textY, Color.White)
+        Call verdana.Draw(Text, textX, textY, Color.White)
     End Sub
 
     Public Sub DrawPlayer()
@@ -140,7 +125,7 @@ errorhandler:
     End Sub
 
     Private Sub DrawFader()
-        Call renderTexture(texGui(1), 0, 0, 0, 0, screenWidth, screenHeight, 32, 32, Color.FromArgb(faderAlpha, 0, 0, 0).ToArgb)
+        Call renderTexture(texGui(1), 0, 0, 0, 0, screenWidth, screenHeight, 32, 32, faderAlpha, 0, 0, 0)
     End Sub
 
     Private Sub DrawMenu()
@@ -150,14 +135,14 @@ errorhandler:
     End Sub
 
     Private Sub DrawCredits()
-        Call Verdana20.Draw("Myself (lol)", (screenWidth * 0.5) - (Verdana20.GetWidth("Myself (lol)") * 0.5), (screenHeight * 0.5) - 18, Color.White)
-        Call Verdana20.Draw("Aaron Krogh", (screenWidth * 0.5) - (Verdana20.GetWidth("Aaron Krogh") * 0.5), (screenHeight * 0.5) + 18, Color.White)
+        Call Silkscreen.Draw("Myself (lol)", (screenWidth * 0.5) - (Silkscreen.GetWidth("Myself (lol)", 20) * 0.5), (screenHeight * 0.5) - 18, Color.White, 20)
+        Call Silkscreen.Draw("Aaron Krogh", (screenWidth * 0.5) - (Silkscreen.GetWidth("Aaron Krogh", 20) * 0.5), (screenHeight * 0.5) + 18, Color.White, 20)
     End Sub
 
     Private Sub DrawLogin()
-        Call Verdana20.Draw("USERNAME:", (screenWidth * 0.5) - 150, (screenHeight * 0.5) - 28, Color.White)
-        Call renderTexture(texGui(1), (screenWidth * 0.5) - 145, (screenHeight * 0.5) + 5, 0, 0, 290, 20, 32, 32, Color.FromArgb(200, 0, 0, 0).ToArgb)
-        Call Verdana8.Draw(sUser & chatShowLine, (screenWidth * 0.5) - 140, (screenHeight * 0.5) + 8, Color.White)
+        Call Silkscreen.Draw("USERNAME:", (screenWidth * 0.5) - 150, (screenHeight * 0.5) - 28, Color.White, 20)
+        Call renderTexture(texGui(1), (screenWidth * 0.5) - 145, (screenHeight * 0.5) + 5, 0, 0, 290, 20, 32, 32, 200, 0, 0, 0)
+        Call verdana.Draw(sUser & chatShowLine, (screenWidth * 0.5) - 140, (screenHeight * 0.5) + 8, Color.White)
     End Sub
     Private Sub renderButton(ByVal X As Integer, ByVal Y As Integer, ByVal W As Integer, ByVal H As Integer, ByVal Norm As Integer, ByVal Hov As Integer, ByVal ButtonIndex As Integer)
 

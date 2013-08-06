@@ -5,13 +5,13 @@
     Public Const gfxExt As String = ".png"
 
     ' File paths
-    Public Const pathContent As String = "\content\"
-    Public Const pathSprites As String = pathContent & "graphics\sprites\"
-    Public Const pathTilesets As String = pathContent & "graphics\tilesets\"
-    Public Const pathGui As String = pathContent & "graphics\gui\"
-    Public Const pathButtons As String = pathGui & "buttons\"
-    Public Const pathMusic As String = pathContent & "music\"
-    Public Const pathSound As String = pathContent & "sounds\"
+    Public Const pathContent As String = "content/"
+    Public Const pathSprites As String = pathContent & "graphics/sprites/"
+    Public Const pathTilesets As String = pathContent & "graphics/tilesets/"
+    Public Const pathGui As String = pathContent & "graphics/gui/"
+    Public Const pathButtons As String = pathGui & "buttons/"
+    Public Const pathMusic As String = pathContent & "music/"
+    Public Const pathSound As String = pathContent & "sounds/"
 
     ' Tile engine
     Public Const picX As Byte = 32
@@ -44,8 +44,8 @@
     Public sUser As String
     Public chatShowLine As String
 
-    Public Verdana8 As TextWriter
-    Public Verdana20 As TextWriter
+    Public Verdana As TextWriter
+    Public Silkscreen As TextWriter
 
     Public Player As clsPlayer
 

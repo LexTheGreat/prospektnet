@@ -1,46 +1,61 @@
 ﻿Option Explicit On
-Imports Microsoft.DirectX.AudioVideoPlayback
+Imports SFML.Audio
 
 Module modSound
     'Music + Sound Players
-    Public soundPlayer As Audio
-    Public musicPlayer As Audio
+    Public soundPlayer As SFML.Audio.Sound
+    Public musicPlayer As SFML.Audio.Music
+    Public soundPlayerBuffer As SFML.Audio.SoundBuffer
 
     ' Hardcoded sound effects
     Public Const buttonClick As String = "button.ogg"
 
     Sub playMusic(ByVal filename As String)
 
-        If Not FileExist(Application.StartupPath & pathMusic & filename) Then Exit Sub
+        If Not fileExist(pathMusic & filename) Then Exit Sub
 
         If MusicPlayer Is Nothing Then
-            MusicPlayer = New Audio(Application.StartupPath & pathMusic & filename, True)
+            musicPlayer = New Music(pathMusic & filename)
+            musicPlayer.Play()
         Else
-            MusicPlayer.Dispose()
-            MusicPlayer = Nothing
-            MusicPlayer = New Audio(Application.StartupPath & pathMusic & filename, True)
+            musicPlayer.Stop()
+            musicPlayer.Dispose()
+            musicPlayer = Nothing
+            musicPlayer = New Music(pathMusic & filename)
+            musicPlayer.Play()
         End If
     End Sub
     Sub stopMusic()
-        If MusicPlayer Is Nothing Then Exit Sub
+        If musicPlayer Is Nothing Then Exit Sub
+        musicPlayer.Stop()
         MusicPlayer.Dispose()
         MusicPlayer = Nothing
     End Sub
     Sub playSound(ByVal filename As String)
 
-        If Not FileExist(Application.StartupPath & pathSound & filename) Then Exit Sub
+        If Not fileExist(pathSound & filename) Then Exit Sub
 
-        If SoundPlayer Is Nothing Then
-            SoundPlayer = New Audio(Application.StartupPath & pathSound & filename, True)
+        If soundPlayer Is Nothing Then
+            soundPlayerBuffer = New SoundBuffer(pathSound & filename)
+            soundPlayer = New Sound(soundPlayerBuffer)
+            soundPlayer.Play()
         Else
-            SoundPlayer.Dispose()
-            SoundPlayer = Nothing
-            SoundPlayer = New Audio(Application.StartupPath & pathSound & filename, True)
+            soundPlayer.Stop()
+            soundPlayer.Dispose()
+            soundPlayerBuffer.Dispose()
+            soundPlayerBuffer = Nothing
+            soundPlayer = Nothing
+            soundPlayerBuffer = New SoundBuffer(pathSound & filename)
+            soundPlayer = New Sound(soundPlayerBuffer)
+            soundPlayer.Play()
         End If
     End Sub
     Sub stopSound()
         If SoundPlayer Is Nothing Then Exit Sub
-        SoundPlayer.Dispose()
-        SoundPlayer = Nothing
+        soundPlayer.Stop()
+        soundPlayer.Dispose()
+        soundPlayerBuffer.Dispose()
+        soundPlayerBuffer = Nothing
+        soundPlayer = Nothing
     End Sub
 End Module
