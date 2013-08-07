@@ -95,6 +95,7 @@
     <Compile Include="Modules\modConstGlobals.vb" />
     <Compile Include="Modules\modEnumerations.vb" />
     <Compile Include="Modules\modNetworking.vb" />
+    <Compile Include="Modules\modXMLReader.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>

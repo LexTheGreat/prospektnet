@@ -1,0 +1,14 @@
+﻿<configuration>
+	<resolution>
+		<width>800</width>
+		<height>600</height>
+	</resolution>
+	<music>
+		<menu>tranquility.ogg</menu>
+		<game>touchthesky.ogg</game>
+	</music>
+	<network>
+		<ip>localhost</ip>
+		<port>8080</port>
+	</network>
+</configuration>

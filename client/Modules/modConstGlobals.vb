@@ -28,8 +28,6 @@
     Public dirRight As Boolean
 
     ' Screen dimensions
-    Public screenWidth As Integer
-    Public screenHeight As Integer
     Public maxX As Integer
     Public maxY As Integer
 
@@ -58,4 +56,14 @@
     Public faderAlpha As Byte
     Public faderState As Byte
     Public faderSpeed As Byte
+
+    Public ClientConfig As ConfigStruct
+    Public Structure ConfigStruct
+        Dim ScreenWidth As Integer
+        Dim ScreenHeight As Integer
+        Dim MenuMusic As String
+        Dim GameMusic As String
+        Dim IP As String
+        Dim Port As Integer
+    End Structure
 End Module

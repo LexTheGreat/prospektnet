@@ -169,17 +169,17 @@ Module modSFML
         SfmlWindow.Clear(New SFML.Graphics.Color(255, 255, 255))
 
         If faderState < 2 Then
-            If Not faderAlpha = 255 Then renderTexture(texGui(2), (screenWidth * 0.5) - (Texture(texGui(2)).Width * 0.5), (screenHeight * 0.5) - (Texture(texGui(2)).Height * 0.5), 0, 0, Texture(texGui(2)).Width, Texture(texGui(2)).Height, Texture(texGui(2)).Width, Texture(texGui(2)).Height)
+            If Not faderAlpha = 255 Then renderTexture(texGui(2), (ClientConfig.screenWidth * 0.5) - (Texture(texGui(2)).Width * 0.5), (ClientConfig.screenHeight * 0.5) - (Texture(texGui(2)).Height * 0.5), 0, 0, Texture(texGui(2)).Width, Texture(texGui(2)).Height, Texture(texGui(2)).Width, Texture(texGui(2)).Height)
             DrawFader()
             Call verdana.Draw("Press space to skip intro...", 2, 2, SFML.Graphics.Color.Blue)
         Else
             ' Render background
             Call DrawBackGround()
 
-            Call renderTexture(texGui(1), 0, screenHeight - 20, 0, 0, screenWidth, 20, 32, 32, 200, 0, 0, 0)
+            Call renderTexture(texGui(1), 0, ClientConfig.screenHeight - 20, 0, 0, ClientConfig.screenWidth, 20, 32, 32, 200, 0, 0, 0)
 
-            Call Verdana.Draw(Application.ProductName & " v" & Application.ProductVersion, 5, screenHeight - 18, Color.White)
-            Call Verdana.Draw("eatenbrain.com", screenWidth - 5 - Verdana.GetWidth("eatenbrain.com"), screenHeight - 18, Color.White)
+            Call Verdana.Draw(Application.ProductName & " v" & Application.ProductVersion, 5, ClientConfig.screenHeight - 18, Color.White)
+            Call Verdana.Draw("eatenbrain.com", ClientConfig.screenWidth - 5 - Verdana.GetWidth("eatenbrain.com"), ClientConfig.screenHeight - 18, Color.White)
             Call Verdana.Draw("FPS: " & gameFPS, 5, 5, Color.White)
 
             Select Case curMenu
@@ -291,24 +291,24 @@ errorhandler:
     End Sub
 
     Private Sub DrawFader()
-        Call renderTexture(texGui(1), 0, 0, 0, 0, screenWidth, screenHeight, 32, 32, faderAlpha, 0, 0, 0)
+        Call renderTexture(texGui(1), 0, 0, 0, 0, ClientConfig.screenWidth, ClientConfig.screenHeight, 32, 32, faderAlpha, 0, 0, 0)
     End Sub
 
     Private Sub DrawMenu()
         ' Buttons
-        Call renderButton((screenWidth * 0.5) - (94 * 0.5), (screenHeight * 0.5) - (22 * 0.5) - 15, 94, 22, 1, 2, 1)
-        Call renderButton((screenWidth * 0.5) - (147 * 0.5), (screenHeight * 0.5) - (22 * 0.5) + 15, 147, 22, 3, 4, 2)
+        Call renderButton((ClientConfig.screenWidth * 0.5) - (94 * 0.5), (ClientConfig.screenHeight * 0.5) - (22 * 0.5) - 15, 94, 22, 1, 2, 1)
+        Call renderButton((ClientConfig.screenWidth * 0.5) - (147 * 0.5), (ClientConfig.screenHeight * 0.5) - (22 * 0.5) + 15, 147, 22, 3, 4, 2)
     End Sub
 
     Private Sub DrawCredits()
-        Call Silkscreen.Draw("Myself (lol)", (screenWidth * 0.5) - (Silkscreen.GetWidth("Myself (lol)", 20) * 0.5), (screenHeight * 0.5) - 18, Color.White, 20)
-        Call Silkscreen.Draw("Aaron Krogh", (screenWidth * 0.5) - (Silkscreen.GetWidth("Aaron Krogh", 20) * 0.5), (screenHeight * 0.5) + 18, Color.White, 20)
+        Call Silkscreen.Draw("Myself (lol)", (ClientConfig.screenWidth * 0.5) - (Silkscreen.GetWidth("Myself (lol)", 20) * 0.5), (ClientConfig.screenHeight * 0.5) - 18, Color.White, 20)
+        Call Silkscreen.Draw("Aaron Krogh", (ClientConfig.screenWidth * 0.5) - (Silkscreen.GetWidth("Aaron Krogh", 20) * 0.5), (ClientConfig.screenHeight * 0.5) + 18, Color.White, 20)
     End Sub
 
     Private Sub DrawLogin()
-        Call Silkscreen.Draw("USERNAME:", (screenWidth * 0.5) - 150, (screenHeight * 0.5) - 28, Color.White, 20)
-        Call renderTexture(texGui(1), (screenWidth * 0.5) - 145, (screenHeight * 0.5) + 5, 0, 0, 290, 20, 32, 32, 200, 0, 0, 0)
-        Call verdana.Draw(sUser & chatShowLine, (screenWidth * 0.5) - 140, (screenHeight * 0.5) + 8, Color.White)
+        Call Silkscreen.Draw("USERNAME:", (ClientConfig.screenWidth * 0.5) - 150, (ClientConfig.screenHeight * 0.5) - 28, Color.White, 20)
+        Call renderTexture(texGui(1), (ClientConfig.screenWidth * 0.5) - 145, (ClientConfig.screenHeight * 0.5) + 5, 0, 0, 290, 20, 32, 32, 200, 0, 0, 0)
+        Call verdana.Draw(sUser & chatShowLine, (ClientConfig.screenWidth * 0.5) - 140, (ClientConfig.screenHeight * 0.5) + 8, Color.White)
     End Sub
     Private Sub renderButton(ByVal X As Integer, ByVal Y As Integer, ByVal W As Integer, ByVal H As Integer, ByVal Norm As Integer, ByVal Hov As Integer, ByVal ButtonIndex As Integer)
 

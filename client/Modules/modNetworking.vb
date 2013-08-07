@@ -44,8 +44,8 @@ Module modNetworking
         PlayerSocket = New Winsock
 
         ' connect
-        PlayerSocket.RemoteHost = "localhost"
-        PlayerSocket.RemotePort = 8080
+        PlayerSocket.RemoteHost = ClientConfig.IP
+        PlayerSocket.RemotePort = ClientConfig.Port
         PlayerSocket.Connect()
     End Sub
 

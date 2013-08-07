@@ -1,0 +1,5 @@
+﻿<configuration>
+	<network>
+		<port>8080</port>
+	</network>
+</configuration>

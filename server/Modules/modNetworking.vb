@@ -125,6 +125,24 @@ Module modNetworking
             SendClearPlayer(index)
         End If
     End Sub
+
+    Public Function GetPublicIP() As String
+        Dim direction As String = ""
+        Dim request As System.Net.WebRequest = System.Net.WebRequest.Create("http://checkip.dyndns.org/")
+        Using response As System.Net.WebResponse = request.GetResponse()
+            Using stream As New System.IO.StreamReader(response.GetResponseStream())
+                direction = stream.ReadToEnd()
+            End Using
+        End Using
+
+        'Search for the ip in the html
+        Dim first As Integer = direction.IndexOf("Address: ") + 9
+        Dim last As Integer = direction.LastIndexOf("</body>")
+        direction = direction.Substring(first, last - first)
+
+        Return direction
+    End Function
+
 #End Region
     Private Sub HandleDataPackets(ByVal PacketNum As Long, ByVal index As Long, ByRef Data() As Byte)
         If PacketNum = 0 Then Exit Sub

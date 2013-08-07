@@ -5,16 +5,18 @@ Public Class clsMain
         Dim i As Integer, time1 As Integer, time2 As Integer
         time1 = System.Environment.TickCount
         PlayerHighIndex = 1
-        Console.Title = "Prospekt Server"
+        Console.Title = "Loading..."
+        Console.WriteLine("Loading options...")
+        loadoptions()
         Console.WriteLine("Loading networking...")
         sckListen = New Winsock
         sckListen.BufferSize = 8192
         sckListen.LegacySupport = False
-        sckListen.LocalPort = 8080
+        sckListen.LocalPort = ServerConfig.Port
         sckListen.MaxPendingConnections = 1
         sckListen.Protocol = Winsock_Orcas.WinsockProtocol.Tcp
         sckListen.RemoteHost = "localhost"
-        sckListen.RemotePort = 8080
+        sckListen.RemotePort = ServerConfig.Port
         Console.WriteLine("Initializing player array...")
         For i = 1 To 100
             Clients(i) = New clsSocket
@@ -22,6 +24,7 @@ Public Class clsMain
         Next
         Console.WriteLine("Starting listener...")
         sckListen.Listen()
+        Console.Title = "Prospekt Server <IP " & GetPublicIP() & " Port " & sckListen.LocalPort & ">"
         time2 = System.Environment.TickCount
         Console.WriteLine("Initialization complete. Server loaded in " & time2 - time1 & "ms.")
         Console.ReadLine()

@@ -1,11 +1,10 @@
 ﻿Module modGeneral
     Public Sub Main()
-        screenWidth = 800
-        screenHeight = 600
-        maxX = (screenWidth / 32) - 1
-        maxY = (screenHeight / 32) - 1
-        frmMain.Width = screenWidth + (16)
-        frmMain.Height = screenHeight + SystemInformation.CaptionHeight + (16)
+        loadOptions()
+        maxX = (ClientConfig.screenWidth / 32) - 1
+        maxY = (ClientConfig.screenHeight / 32) - 1
+        frmMain.Width = ClientConfig.screenWidth + (16)
+        frmMain.Height = ClientConfig.screenHeight + SystemInformation.CaptionHeight + (16)
         frmMain.Show()
         TcpInit()
         InitSFML()
@@ -17,7 +16,7 @@
     Public Sub showMenu()
         inGame = False
         stopMusic()
-        playMusic("tranquility.ogg")
+        playMusic(ClientConfig.MenuMusic)
         ' fader
         faderAlpha = 255
         faderState = 0
@@ -30,7 +29,7 @@
     Public Sub showGame()
         inMenu = False
         stopMusic()
-        playMusic("touchthesky.ogg")
+        playMusic(ClientConfig.GameMusic)
         inGame = True
         gameLoop()
     End Sub
