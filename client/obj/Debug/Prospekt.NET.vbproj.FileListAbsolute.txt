@@ -1,0 +1,15 @@
+E:\Game making\Game Creators\Prospekt.NET\obj\Debug\Prospekt.NET.vbprojResolveAssemblyReference.cache
+E:\Game making\Game Creators\Prospekt.NET\obj\Debug\Prospekt.NET.frmMain.resources
+E:\Game making\Game Creators\Prospekt.NET\obj\Debug\Prospekt.NET.Resources.resources
+E:\Game making\Game Creators\Prospekt.NET\obj\Debug\Prospekt.NET.vbproj.GenerateResource.Cache
+E:\Game making\Game Creators\Prospekt.NET - kópia\bin\Debug\Prospekt.NET.exe.config
+E:\Game making\Game Creators\Prospekt.NET - kópia\bin\Debug\Prospekt.NET.exe
+E:\Game making\Game Creators\Prospekt.NET - kópia\bin\Debug\Prospekt.NET.pdb
+E:\Game making\Game Creators\Prospekt.NET - kópia\bin\Debug\Prospekt.NET.xml
+E:\Game making\Game Creators\Prospekt.NET - kópia\obj\Debug\Prospekt.NET.vbprojResolveAssemblyReference.cache
+E:\Game making\Game Creators\Prospekt.NET - kópia\obj\Debug\Prospekt.NET.frmMain.resources
+E:\Game making\Game Creators\Prospekt.NET - kópia\obj\Debug\Prospekt.NET.Resources.resources
+E:\Game making\Game Creators\Prospekt.NET - kópia\obj\Debug\Prospekt.NET.vbproj.GenerateResource.Cache
+E:\Game making\Game Creators\Prospekt.NET - kópia\obj\Debug\Prospekt.NET.exe
+E:\Game making\Game Creators\Prospekt.NET - kópia\obj\Debug\Prospekt.NET.xml
+E:\Game making\Game Creators\Prospekt.NET - kópia\obj\Debug\Prospekt.NET.pdb

@@ -1,9 +1,12 @@
 ﻿
 Public Class frmMain
-
     Private Sub frmMain_Disposed(sender As Object, e As EventArgs) Handles Me.Disposed
         inMenu = False
         inGame = False
+        Verdana = Nothing
+        Silkscreen = Nothing
+        Player = Nothing
+        DestroyTCP()
         DestroySFML()
         End
     End Sub
@@ -24,15 +27,19 @@ Public Class frmMain
                 If inMenu And curMenu = MenuEnum.Login And Len(sUser) > 0 Then sUser = Mid(sUser, 1, Len(sUser) - 1)
             Case Keys.Space
                 If inMenu Then
-                    If faderState < 3 Then
-                        faderState = 3
+                    If faderState < 2 Then
+                        faderState = 2
                         faderAlpha = 0
                     End If
                 End If
             Case Keys.Return
                 If inMenu Then
                     If curMenu = MenuEnum.Login Then
-                        showGame()
+                        If ConnectToServer() Then
+                            SendLogin(sUser)
+                        Else
+                            MsgBox("Server is offline")
+                        End If
                     End If
                 End If
         End Select
@@ -59,5 +66,10 @@ Public Class frmMain
     Private Sub frmMain_MouseMove(sender As Object, e As MouseEventArgs) Handles Me.MouseMove
         mouseX = e.X
         mouseY = e.Y
+    End Sub
+
+    Private Sub frmMain_MouseUp(sender As Object, e As MouseEventArgs) Handles Me.MouseUp
+        mouseLeftDown = 0
+        mouseRightDown = 0
     End Sub
 End Class

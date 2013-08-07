@@ -1,6 +1,7 @@
 ﻿Imports SFML.Graphics
 
 Module modSFML
+#Region "General"
     ' DirectX8 window
     Public SfmlWindow As RenderWindow
 
@@ -129,8 +130,8 @@ Module modSFML
         Dim i As Long
 
         ' Reload the textures
-        If NumTextures > 0 Then
-            For i = 1 To NumTextures
+        If numTextures > 0 Then
+            For i = 1 To numTextures
                 If Not Texture(i).Tex Is Nothing Then
                     Texture(i).Tex.Dispose()
                     Texture(i).Tex = Nothing
@@ -157,5 +158,190 @@ Module modSFML
         Texture(TextureNum).Tex.Position = New SFML.Window.Vector2f(destX, destY)
         Texture(TextureNum).Tex.Draw(SfmlWindow, SFML.Graphics.RenderStates.Default)
 
+    End Sub
+#End Region
+    Public Sub renderMenu()
+        On Error GoTo errorhandler
+        ' don't render
+        If frmMain.WindowState = FormWindowState.Minimized Then Exit Sub
+
+        ' Start rendering
+        SfmlWindow.Clear(New SFML.Graphics.Color(255, 255, 255))
+
+        If faderState < 2 Then
+            If Not faderAlpha = 255 Then renderTexture(texGui(2), (screenWidth * 0.5) - (Texture(texGui(2)).Width * 0.5), (screenHeight * 0.5) - (Texture(texGui(2)).Height * 0.5), 0, 0, Texture(texGui(2)).Width, Texture(texGui(2)).Height, Texture(texGui(2)).Width, Texture(texGui(2)).Height)
+            DrawFader()
+            Call verdana.Draw("Press space to skip intro...", 2, 2, SFML.Graphics.Color.Blue)
+        Else
+            ' Render background
+            Call DrawBackGround()
+
+            Call renderTexture(texGui(1), 0, screenHeight - 20, 0, 0, screenWidth, 20, 32, 32, 200, 0, 0, 0)
+
+            Call Verdana.Draw(Application.ProductName & " v" & Application.ProductVersion, 5, screenHeight - 18, Color.White)
+            Call Verdana.Draw("eatenbrain.com", screenWidth - 5 - Verdana.GetWidth("eatenbrain.com"), screenHeight - 18, Color.White)
+            Call Verdana.Draw("FPS: " & gameFPS, 5, 5, Color.White)
+
+            Select Case curMenu
+                Case MenuEnum.Main : DrawMenu()
+                Case MenuEnum.Login : DrawLogin()
+                Case MenuEnum.Credits : DrawCredits()
+            End Select
+
+            DrawFader()
+        End If
+
+        ' End the rendering
+        SfmlWindow.Display()
+        Exit Sub
+errorhandler:
+        Err.Clear()
+
+        Exit Sub
+    End Sub
+
+    Public Sub renderGame()
+        Dim i As Integer
+        On Error GoTo errorhandler
+        ' don't render
+        If frmMain.WindowState = FormWindowState.Minimized Then Exit Sub
+
+        ' Start rendering
+        SfmlWindow.Clear(New Color(255, 255, 255))
+
+        ' Render background
+        Call DrawBackGround()
+        Call Verdana.Draw("FPS: " & gameFPS, 5, 5, Color.White)
+
+        For i = 1 To PlayerHighindex
+            If Not IsNothing(Player(i)) Then
+                DrawPlayer(i)
+                DrawPlayerName(i)
+            End If
+        Next
+
+        ' End the rendering
+        SfmlWindow.Display()
+errorhandler:
+        Err.Clear()
+
+        Exit Sub
+    End Sub
+
+    Public Sub DrawPlayerName(ByVal Index As Integer)
+        Dim textX As Integer, textY As Integer, Text As String, textSize As Long
+
+        Text = Trim$(Player(Index).Name)
+        textSize = Verdana.GetWidth(Trim$(Player(Index).Name))
+
+        textX = Player(Index).X * picX + Player(Index).XOffset + (picX * 0.5) - (textSize * 0.5)
+        textY = Player(Index).Y * picY + Player(Index).YOffset - picY
+
+        textY = Player(Index).Y * picY + Player(Index).YOffset - picY
+
+        If Player(Index).Sprite >= 1 Then
+            textY = Player(Index).Y * picY + Player(Index).YOffset - (Texture(texSprite(Player(Index).Sprite)).Height / 4) + 12
+        End If
+
+        Call Verdana.Draw(Text, textX, textY, Color.White)
+    End Sub
+
+    Public Sub DrawPlayer(ByVal Index As Integer)
+        Dim Anim As Byte
+        Dim X As Integer
+        Dim Y As Integer
+        Dim Sprite As Integer, spritetop As Integer
+        Dim rec As GeomRec
+
+        ' pre-load sprite for calculations
+        Sprite = Player(Index).Sprite
+        'SetTexture Tex_Char(Sprite)
+
+        If Sprite < 1 Then Exit Sub
+
+        ' Reset frame
+        Anim = 1
+
+        ' walk normally
+        Select Case Player(Index).Dir
+            Case DirEnum.Up
+                If (Player(Index).YOffset > 8) Then Anim = Player(Index).PlayerStep
+                spritetop = 0
+            Case DirEnum.Down
+                If (Player(Index).YOffset < -8) Then Anim = Player(Index).PlayerStep
+                spritetop = 2
+            Case DirEnum.Left
+                If (Player(Index).XOffset > 8) Then Anim = Player(Index).PlayerStep
+                spritetop = 3
+            Case DirEnum.Right
+                If (Player(Index).XOffset < -8) Then Anim = Player(Index).PlayerStep
+                spritetop = 1
+        End Select
+
+        rec.Top = spritetop * (Texture(texSprite(Sprite)).Height / 4)
+        rec.Height = Texture(texSprite(Sprite)).Height / 4
+        rec.Left = Anim * (Texture(texSprite(Sprite)).Width / 3)
+        rec.Width = Texture(texSprite(Sprite)).Width / 3
+
+        ' Calculate the X and Y
+        X = Player(Index).X * picX + Player(Index).XOffset - ((Texture(texSprite(Sprite)).Width / 3 - 32) / 2)
+        Y = Player(Index).Y * picY + Player(Index).YOffset - ((Texture(texSprite(Sprite)).Height / 4) - 32) - 4
+
+        renderTexture(texSprite(Sprite), X, Y, rec.Left, rec.Top, rec.Width, rec.Height, rec.Width, rec.Height)
+    End Sub
+
+    Private Sub DrawFader()
+        Call renderTexture(texGui(1), 0, 0, 0, 0, screenWidth, screenHeight, 32, 32, faderAlpha, 0, 0, 0)
+    End Sub
+
+    Private Sub DrawMenu()
+        ' Buttons
+        Call renderButton((screenWidth * 0.5) - (94 * 0.5), (screenHeight * 0.5) - (22 * 0.5) - 15, 94, 22, 1, 2, 1)
+        Call renderButton((screenWidth * 0.5) - (147 * 0.5), (screenHeight * 0.5) - (22 * 0.5) + 15, 147, 22, 3, 4, 2)
+    End Sub
+
+    Private Sub DrawCredits()
+        Call Silkscreen.Draw("Myself (lol)", (screenWidth * 0.5) - (Silkscreen.GetWidth("Myself (lol)", 20) * 0.5), (screenHeight * 0.5) - 18, Color.White, 20)
+        Call Silkscreen.Draw("Aaron Krogh", (screenWidth * 0.5) - (Silkscreen.GetWidth("Aaron Krogh", 20) * 0.5), (screenHeight * 0.5) + 18, Color.White, 20)
+    End Sub
+
+    Private Sub DrawLogin()
+        Call Silkscreen.Draw("USERNAME:", (screenWidth * 0.5) - 150, (screenHeight * 0.5) - 28, Color.White, 20)
+        Call renderTexture(texGui(1), (screenWidth * 0.5) - 145, (screenHeight * 0.5) + 5, 0, 0, 290, 20, 32, 32, 200, 0, 0, 0)
+        Call verdana.Draw(sUser & chatShowLine, (screenWidth * 0.5) - 140, (screenHeight * 0.5) + 8, Color.White)
+    End Sub
+    Private Sub renderButton(ByVal X As Integer, ByVal Y As Integer, ByVal W As Integer, ByVal H As Integer, ByVal Norm As Integer, ByVal Hov As Integer, ByVal ButtonIndex As Integer)
+
+        ' Change the button state
+        If mouseX > X And mouseX < X + W And mouseY > Y And mouseY < Y + H Then
+            ' Hover state
+            Call renderTexture(texButton(Hov), X, Y, 0, 0, W, H, W, H)
+
+            ' When the button is clicked
+            If mouseLeftDown > 0 Then
+
+                ' Button sound
+                playSound("button.ogg")
+
+                ' Handle what the button does
+                Select Case ButtonIndex
+                    Case 0 ' Nothing
+                    Case 1 : curMenu = MenuEnum.Login
+                    Case 2 : curMenu = MenuEnum.Credits
+                    Case Else : MsgBox("Button not assigned. Report this immediately!")
+                End Select
+            End If
+        Else
+            ' Normal state
+            Call renderTexture(texButton(Norm), X, Y, 0, 0, W, H, W, H)
+        End If
+    End Sub
+    Public Sub DrawBackGround()
+        Dim X As Long, Y As Long
+        For X = 0 To maxX
+            For Y = 0 To maxY
+                Call renderTexture(texTileset(1), X * picX, Y * picY, 0, 8 * picY, picX, picY, picX, picY)
+            Next Y
+        Next X
     End Sub
 End Module

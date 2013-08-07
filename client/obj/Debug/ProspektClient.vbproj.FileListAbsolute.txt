@@ -1,0 +1,11 @@
+E:\Game making\Game Creators\Prospekt.NET\client\obj\Debug\Prospekt.NET.frmMain.resources
+E:\Game making\Game Creators\Prospekt.NET\client\obj\Debug\Prospekt.NET.Resources.resources
+E:\Game making\Game Creators\Prospekt.NET\client\obj\Debug\ProspektClient.vbproj.GenerateResource.Cache
+E:\Game making\Game Creators\Prospekt.NET\client\obj\Debug\Prospekt.NET.exe
+E:\Game making\Game Creators\Prospekt.NET\client\obj\Debug\Prospekt.NET.xml
+E:\Game making\Game Creators\Prospekt.NET\client\obj\Debug\Prospekt.NET.pdb
+E:\Game making\Game Creators\Prospekt.NET\client\bin\Prospekt.NET.exe.config
+E:\Game making\Game Creators\Prospekt.NET\client\bin\Prospekt.NET.exe
+E:\Game making\Game Creators\Prospekt.NET\client\bin\Prospekt.NET.pdb
+E:\Game making\Game Creators\Prospekt.NET\client\bin\Prospekt.NET.xml
+E:\Game making\Game Creators\Prospekt.NET\client\obj\Debug\ProspektClient.vbprojResolveAssemblyReference.cache

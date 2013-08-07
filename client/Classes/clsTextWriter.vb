@@ -1,4 +1,5 @@
 ﻿Imports SFML.Graphics
+Imports SFML.Window
 Public Class TextWriter
     Private xFont As Font
     Private xText As Text
@@ -6,7 +7,7 @@ Public Class TextWriter
     Private IsVisible As Boolean
 
     Public Sub New(ByVal Filename As String)
-        xFont = New SFML.Graphics.Font(Filename)
+        xFont = New Font(Filename)
         IsVisible = True
     End Sub
 
@@ -21,7 +22,7 @@ Public Class TextWriter
         If IsVisible Then
             xText = New Text(DrawText, xFont, Size)
             xText.Color = New Color(textColor)
-            xText.Position = New SFML.Window.Vector2f(X, Y)
+            xText.Position = New Vector2f(X, Y)
             xText.Draw(SfmlWindow, RenderStates.Default)
         End If
     End Sub

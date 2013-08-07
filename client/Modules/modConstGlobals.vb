@@ -44,15 +44,18 @@
     Public sUser As String
     Public chatShowLine As String
 
+    ' Fonts
     Public Verdana As TextWriter
     Public Silkscreen As TextWriter
 
-    Public Player As clsPlayer
+    ' Players
+    Public MyIndex As Integer
+    Public Player(100) As clsPlayer
+    Public PlayerHighindex As Integer
 
     ' fader
     Public canFade As Boolean
     Public faderAlpha As Byte
     Public faderState As Byte
     Public faderSpeed As Byte
-
 End Module
