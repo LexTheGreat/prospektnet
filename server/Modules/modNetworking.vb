@@ -128,7 +128,9 @@ Module modNetworking
 
     Public Function GetPublicIP() As String
         Dim direction As String = ""
-        Dim request As System.Net.WebRequest = System.Net.WebRequest.Create("http://checkip.dyndns.org/")
+        Dim request As System.Net.WebRequest
+        On Error GoTo errorhandler
+        request = System.Net.WebRequest.Create("http://checkip.dyndns.org/")
         Using response As System.Net.WebResponse = request.GetResponse()
             Using stream As New System.IO.StreamReader(response.GetResponseStream())
                 direction = stream.ReadToEnd()
@@ -141,6 +143,9 @@ Module modNetworking
         direction = direction.Substring(first, last - first)
 
         Return direction
+        Exit Function
+errorhandler:
+        Return "localhost"
     End Function
 
 #End Region

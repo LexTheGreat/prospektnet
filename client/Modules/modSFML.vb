@@ -154,7 +154,8 @@ Module modSFML
         If TextureWidth <= 0 Or TextureHeight <= 0 Then Exit Sub
 
         Texture(TextureNum).Tex.Color = New SFML.Graphics.Color(R, G, B, A)
-        Texture(TextureNum).Tex.TextureRect = New IntRect(srcX, srcY, destWidth, destHeight)
+        Texture(TextureNum).Tex.Scale = New SFML.Window.Vector2f(destWidth / srcWidth, destHeight / srcHeight)
+        Texture(TextureNum).Tex.TextureRect = New IntRect(srcX, srcY, srcWidth, srcHeight)
         Texture(TextureNum).Tex.Position = New SFML.Window.Vector2f(destX, destY)
         Texture(TextureNum).Tex.Draw(SfmlWindow, SFML.Graphics.RenderStates.Default)
 
