@@ -96,7 +96,7 @@
         Dim Tick As Integer
         Dim TickFPS As Integer
         Dim FPS As Integer
-        Dim tmr25 As Integer, walkTimer As Integer
+        Dim tmr25 As Integer, walkTimer As Integer, tmr500 As Integer
         Dim I As Long
 
         Do While inGame = True
@@ -114,9 +114,19 @@
             ' Process input before rendering, otherwise input will be behind by 1 frame
             If walkTimer < Tick Then
                 For I = 1 To PlayerHighindex
-                    If Not IsNothing(Player(I)) Then ProcessMovement(I)
+                    If Not IsNothing(Player(I)) Then Player(I).ProcessMovement()
                 Next I
                 walkTimer = Tick + 30 ' edit this value to change WalkTimer
+            End If
+
+            If tmr500 < Tick Then
+                ' animate textbox
+                If chatShowLine = "|" Then
+                    chatShowLine = vbNullString
+                Else
+                    chatShowLine = "|"
+                End If
+                tmr500 = System.Environment.TickCount() + 500
             End If
 
             renderGame()
@@ -133,54 +143,6 @@
         Loop
     End Sub
 
-    Sub ProcessMovement(ByVal Index As Integer)
-        Dim MovementSpeed As Long
-
-        If Player(Index).Moving = True Then
-            MovementSpeed = 2
-        Else
-            Exit Sub
-        End If
-
-        Select Case Player(Index).Dir
-            Case DirEnum.Up
-                Player(Index).YOffset = Player(Index).YOffset - MovementSpeed
-                If Player(Index).YOffset < 0 Then Player(Index).YOffset = 0
-            Case DirEnum.Down
-                Player(Index).YOffset = Player(Index).YOffset + MovementSpeed
-                If Player(Index).YOffset > 0 Then Player(Index).YOffset = 0
-            Case DirEnum.Left
-                Player(Index).XOffset = Player(Index).XOffset - MovementSpeed
-                If Player(Index).XOffset < 0 Then Player(Index).XOffset = 0
-            Case DirEnum.Right
-                Player(Index).XOffset = Player(Index).XOffset + MovementSpeed
-                If Player(Index).XOffset > 0 Then Player(Index).XOffset = 0
-        End Select
-
-        ' Check if completed walking over to the next tile
-        If Player(Index).Moving = True Then
-            If Player(Index).Dir = DirEnum.Right Or Player(Index).Dir = DirEnum.Down Then
-                If (Player(Index).XOffset >= 0) And (Player(Index).YOffset >= 0) Then
-                    Player(Index).Moving = False
-                    If Player(Index).PlayerStep = 0 Then
-                        Player(Index).PlayerStep = 2
-                    Else
-                        Player(Index).PlayerStep = 0
-                    End If
-                End If
-            Else
-                If (Player(Index).XOffset <= 0) And (Player(Index).YOffset <= 0) Then
-                    Player(Index).Moving = False
-                    If Player(Index).PlayerStep = 0 Then
-                        Player(Index).PlayerStep = 2
-                    Else
-                        Player(Index).PlayerStep = 0
-                    End If
-                End If
-            End If
-        End If
-    End Sub
-
     Function IsTryingToMove() As Boolean
         'If DirUp Or DirDown Or DirLeft Or DirRight Then
         If dirUp Or dirDown Or dirLeft Or dirRight Then
@@ -190,25 +152,27 @@
 
     Function CanMove() As Boolean
         CanMove = True
-
         ' Make sure they aren't trying to move when they are already moving
         If Player(MyIndex).Moving = True Then
-            CanMove = False
-            Exit Function
+            Return False
+        End If
+
+        If inChat Then
+            Return False
         End If
 
         If dirUp Then
             Player(MyIndex).Dir = DirEnum.Up
-            If Player(MyIndex).Y = 0 Then CanMove = False
+            If Player(MyIndex).Y = 0 Then Return False
         ElseIf dirDown Then
             Player(MyIndex).Dir = DirEnum.Down
-            If Player(MyIndex).Y = maxY Then CanMove = False
+            If Player(MyIndex).Y = maxY Then Return False
         ElseIf dirLeft Then
             Player(MyIndex).Dir = DirEnum.Left
-            If Player(MyIndex).X = 0 Then CanMove = False
+            If Player(MyIndex).X = 0 Then Return False
         ElseIf dirRight Then
             Player(MyIndex).Dir = DirEnum.Right
-            If Player(MyIndex).X = maxX Then CanMove = False
+            If Player(MyIndex).X = maxX Then Return False
         End If
 
     End Function

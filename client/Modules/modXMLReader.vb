@@ -14,8 +14,14 @@ Module modXMLReader
             ClientConfig.ScreenHeight = m_node.Item("height").InnerText
         Next
 
-        m_nodelist = m_xmld.SelectNodes("configuration/music")
+        m_nodelist = m_xmld.SelectNodes("configuration/audio")
         For Each m_node In m_nodelist
+            If m_node.Item("music").InnerText = "on" Then
+                ClientConfig.Music = True
+            End If
+            If m_node.Item("sound").InnerText = "on" Then
+                ClientConfig.Sound = True
+            End If
             ClientConfig.MenuMusic = m_node.Item("menu").InnerText
             ClientConfig.GameMusic = m_node.Item("game").InnerText
         Next

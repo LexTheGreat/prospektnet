@@ -3,10 +3,12 @@
 		<width>800</width>
 		<height>600</height>
 	</resolution>
-	<music>
+	<audio>
+		<music>on</music>
+		<sound>on</sound>
 		<menu>tranquility.ogg</menu>
 		<game>touchthesky.ogg</game>
-	</music>
+	</audio>
 	<network>
 		<ip>localhost</ip>
 		<port>8080</port>

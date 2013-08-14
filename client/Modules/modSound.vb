@@ -11,10 +11,11 @@ Module modSound
     Public Const buttonClick As String = "button.ogg"
 
     Sub playMusic(ByVal filename As String)
+        If ClientConfig.Music = False Then Exit Sub
 
         If Not fileExist(pathMusic & filename) Then Exit Sub
 
-        If MusicPlayer Is Nothing Then
+        If musicPlayer Is Nothing Then
             musicPlayer = New Music(pathMusic & filename)
             musicPlayer.Play()
         Else
@@ -26,13 +27,14 @@ Module modSound
         End If
     End Sub
     Sub stopMusic()
+        If ClientConfig.Music = False Then Exit Sub
         If musicPlayer Is Nothing Then Exit Sub
         musicPlayer.Stop()
-        MusicPlayer.Dispose()
-        MusicPlayer = Nothing
+        musicPlayer.Dispose()
+        musicPlayer = Nothing
     End Sub
     Sub playSound(ByVal filename As String)
-
+        If ClientConfig.Sound = False Then Exit Sub
         If Not fileExist(pathSound & filename) Then Exit Sub
 
         If soundPlayer Is Nothing Then
@@ -51,7 +53,8 @@ Module modSound
         End If
     End Sub
     Sub stopSound()
-        If SoundPlayer Is Nothing Then Exit Sub
+        If ClientConfig.Sound = False Then Exit Sub
+        If soundPlayer Is Nothing Then Exit Sub
         soundPlayer.Stop()
         soundPlayer.Dispose()
         soundPlayerBuffer.Dispose()

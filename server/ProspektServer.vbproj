@@ -66,6 +66,14 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Data.SQLite, Version=1.0.66.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\System.Data.SQLite.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Data.SQLite.Linq, Version=2.0.38.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\System.Data.SQLite.Linq.dll</HintPath>
+    </Reference>
     <Reference Include="System.Deployment" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
@@ -92,8 +100,9 @@
     <Compile Include="Classes\clsMain.vb" />
     <Compile Include="Classes\clsPlayer.vb" />
     <Compile Include="Classes\clsSocket.vb" />
-    <Compile Include="Modules\modConstGlobals.vb" />
-    <Compile Include="Modules\modEnumerations.vb" />
+    <Compile Include="Classes\clsSQLite.vb" />
+    <Compile Include="Modules\modGlobals.vb" />
+    <Compile Include="Modules\modGeneral.vb" />
     <Compile Include="Modules\modNetworking.vb" />
     <Compile Include="Modules\modXMLReader.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />

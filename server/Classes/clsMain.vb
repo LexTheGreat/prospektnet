@@ -27,7 +27,8 @@ Public Class clsMain
         Console.Title = "Prospekt Server <IP " & GetPublicIP() & " Port " & sckListen.LocalPort & ">"
         time2 = System.Environment.TickCount
         Console.WriteLine("Initialization complete. Server loaded in " & time2 - time1 & "ms.")
-        Console.ReadLine()
+        inServer = True
+        ServerLoop()
     End Sub
 
     Shared Sub sckListen_ConnectionRequest(ByVal sender As Object, ByVal e As Winsock_Orcas.WinsockConnectionRequestEventArgs) Handles sckListen.ConnectionRequest

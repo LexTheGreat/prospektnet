@@ -1,4 +1,5 @@
 ﻿Imports SFML.Graphics
+Imports SFML.Window
 
 Module modSFML
 #Region "General"
@@ -153,11 +154,11 @@ Module modSFML
         ' exit out if we need to
         If TextureWidth <= 0 Or TextureHeight <= 0 Then Exit Sub
 
-        Texture(TextureNum).Tex.Color = New SFML.Graphics.Color(R, G, B, A)
-        Texture(TextureNum).Tex.Scale = New SFML.Window.Vector2f(destWidth / srcWidth, destHeight / srcHeight)
+        Texture(TextureNum).Tex.Color = New Color(R, G, B, A)
+        Texture(TextureNum).Tex.Scale = New Vector2f(destWidth / srcWidth, destHeight / srcHeight)
         Texture(TextureNum).Tex.TextureRect = New IntRect(srcX, srcY, srcWidth, srcHeight)
-        Texture(TextureNum).Tex.Position = New SFML.Window.Vector2f(destX, destY)
-        Texture(TextureNum).Tex.Draw(SfmlWindow, SFML.Graphics.RenderStates.Default)
+        Texture(TextureNum).Tex.Position = New Vector2f(destX, destY)
+        Texture(TextureNum).Tex.Draw(SfmlWindow, RenderStates.Default)
 
     End Sub
 #End Region
@@ -167,17 +168,19 @@ Module modSFML
         If frmMain.WindowState = FormWindowState.Minimized Then Exit Sub
 
         ' Start rendering
-        SfmlWindow.Clear(New SFML.Graphics.Color(255, 255, 255))
+        SfmlWindow.Clear(New Color(255, 255, 255))
 
         If faderState < 2 Then
             If Not faderAlpha = 255 Then renderTexture(texGui(2), (ClientConfig.screenWidth * 0.5) - (Texture(texGui(2)).Width * 0.5), (ClientConfig.screenHeight * 0.5) - (Texture(texGui(2)).Height * 0.5), 0, 0, Texture(texGui(2)).Width, Texture(texGui(2)).Height, Texture(texGui(2)).Width, Texture(texGui(2)).Height)
             DrawFader()
-            Call verdana.Draw("Press space to skip intro...", 2, 2, SFML.Graphics.Color.Blue)
+            Call Verdana.Draw("Press 'SPACE' to skip intro", 2, 2, New Color(100, 100, 100, 255))
         Else
             ' Render background
             Call DrawBackGround()
 
-            Call renderTexture(texGui(1), 0, ClientConfig.screenHeight - 20, 0, 0, ClientConfig.screenWidth, 20, 32, 32, 200, 0, 0, 0)
+            Call renderTexture(texGui(1), 0, ClientConfig.ScreenHeight - 20, 0, 0, ClientConfig.ScreenWidth, 20, 32, 32, 200, 0, 0, 0)
+            Call renderTexture(texGui(1), (ClientConfig.ScreenWidth * 0.5) - 200, (ClientConfig.ScreenHeight * 0.5) - 100, 0, 0, 400, 200, 32, 32, 120, 0, 0, 0)
+            Call renderTexture(texGui(3), (ClientConfig.ScreenWidth * 0.5) - (Texture(texGui(3)).Width * 0.5), 0, 0, 0, Texture(texGui(3)).Width, Texture(texGui(3)).Height, Texture(texGui(3)).Width, Texture(texGui(3)).Height)
 
             Call Verdana.Draw(Application.ProductName & " v" & Application.ProductVersion, 5, ClientConfig.screenHeight - 18, Color.White)
             Call Verdana.Draw("eatenbrain.com", ClientConfig.screenWidth - 5 - Verdana.GetWidth("eatenbrain.com"), ClientConfig.screenHeight - 18, Color.White)
@@ -210,8 +213,8 @@ errorhandler:
         ' Start rendering
         SfmlWindow.Clear(New Color(255, 255, 255))
 
-        ' Render background
-        Call DrawBackGround()
+        ' Render map tiles
+        Call DrawMapTiles()
         Call Verdana.Draw("FPS: " & gameFPS, 5, 5, Color.White)
 
         For i = 1 To PlayerHighindex
@@ -221,6 +224,8 @@ errorhandler:
             End If
         Next
 
+        DrawChat()
+
         ' End the rendering
         SfmlWindow.Display()
 errorhandler:
@@ -229,7 +234,7 @@ errorhandler:
         Exit Sub
     End Sub
 
-    Public Sub DrawPlayerName(ByVal Index As Integer)
+    Private Sub DrawPlayerName(ByVal Index As Integer)
         Dim textX As Integer, textY As Integer, Text As String, textSize As Long
 
         Text = Trim$(Player(Index).Name)
@@ -247,7 +252,7 @@ errorhandler:
         Call Verdana.Draw(Text, textX, textY, Color.White)
     End Sub
 
-    Public Sub DrawPlayer(ByVal Index As Integer)
+    Private Sub DrawPlayer(ByVal Index As Integer)
         Dim Anim As Byte
         Dim X As Integer
         Dim Y As Integer
@@ -297,19 +302,33 @@ errorhandler:
 
     Private Sub DrawMenu()
         ' Buttons
-        Call renderButton((ClientConfig.screenWidth * 0.5) - (94 * 0.5), (ClientConfig.screenHeight * 0.5) - (22 * 0.5) - 15, 94, 22, 1, 2, 1)
-        Call renderButton((ClientConfig.screenWidth * 0.5) - (147 * 0.5), (ClientConfig.screenHeight * 0.5) - (22 * 0.5) + 15, 147, 22, 3, 4, 2)
+        Call renderButton((ClientConfig.ScreenWidth * 0.5) - (128 * 0.5), (ClientConfig.ScreenHeight * 0.5) - (32 * 0.5) - 15, 128, 32, 1, 2, 1)
+        Call renderButton((ClientConfig.ScreenWidth * 0.5) - (128 * 0.5), (ClientConfig.ScreenHeight * 0.5) - (32 * 0.5) + 15, 128, 32, 3, 4, 2)
     End Sub
 
     Private Sub DrawCredits()
-        Call Silkscreen.Draw("Myself (lol)", (ClientConfig.screenWidth * 0.5) - (Silkscreen.GetWidth("Myself (lol)", 20) * 0.5), (ClientConfig.screenHeight * 0.5) - 18, Color.White, 20)
-        Call Silkscreen.Draw("Aaron Krogh", (ClientConfig.screenWidth * 0.5) - (Silkscreen.GetWidth("Aaron Krogh", 20) * 0.5), (ClientConfig.screenHeight * 0.5) + 18, Color.White, 20)
+        Call Verdana.Draw("Eatenbrain", (ClientConfig.ScreenWidth * 0.5) - (Verdana.GetWidth("Eatenbrain") * 0.5), (ClientConfig.ScreenHeight * 0.5) - 42, Color.White)
+        Call Verdana.Draw("Thomas 'Deathbeam' Slusny", (ClientConfig.ScreenWidth * 0.5) - (Verdana.GetWidth("Thomas 'Deathbeam' Slusny") * 0.5), (ClientConfig.ScreenHeight * 0.5) - 28, Color.White)
+        Call Verdana.Draw("Aaron Krogh", (ClientConfig.ScreenWidth * 0.5) - (Verdana.GetWidth("Aaron Krogh") * 0.5), (ClientConfig.ScreenHeight * 0.5) - 14, Color.White)
+        Call Verdana.Draw("Enterbrain", (ClientConfig.ScreenWidth * 0.5) - (Verdana.GetWidth("Enterbrain") * 0.5), (ClientConfig.ScreenHeight * 0.5), Color.White)
+        Call Verdana.Draw("First Seed Material", (ClientConfig.ScreenWidth * 0.5) - (Verdana.GetWidth("First Seed Material") * 0.5), (ClientConfig.ScreenHeight * 0.5) + 14, Color.White)
     End Sub
 
     Private Sub DrawLogin()
-        Call Silkscreen.Draw("USERNAME:", (ClientConfig.screenWidth * 0.5) - 150, (ClientConfig.screenHeight * 0.5) - 28, Color.White, 20)
-        Call renderTexture(texGui(1), (ClientConfig.screenWidth * 0.5) - 145, (ClientConfig.screenHeight * 0.5) + 5, 0, 0, 290, 20, 32, 32, 200, 0, 0, 0)
-        Call verdana.Draw(sUser & chatShowLine, (ClientConfig.screenWidth * 0.5) - 140, (ClientConfig.screenHeight * 0.5) + 8, Color.White)
+        Call Verdana.Draw("USERNAME:", (ClientConfig.ScreenWidth * 0.5) - 55 - Verdana.GetWidth("USERNAME:"), (ClientConfig.ScreenHeight * 0.5) - 27, Color.White)
+        Call renderTexture(texGui(1), (ClientConfig.ScreenWidth * 0.5) - 50, (ClientConfig.ScreenHeight * 0.5) - 30, 0, 0, 175, 20, 32, 32, 200, 0, 0, 0)
+        If curTextbox = 0 Then
+            Call Verdana.Draw(sUser & chatShowLine, (ClientConfig.ScreenWidth * 0.5) - 47, (ClientConfig.ScreenHeight * 0.5) - 27, Color.White)
+        Else
+            Call Verdana.Draw(sUser, (ClientConfig.ScreenWidth * 0.5) - 47, (ClientConfig.ScreenHeight * 0.5) - 27, Color.White)
+        End If
+        Call Verdana.Draw("PASSWORD:", (ClientConfig.ScreenWidth * 0.5) - 55 - Verdana.GetWidth("PASSWORD:"), (ClientConfig.ScreenHeight * 0.5) + 3, Color.White)
+        Call renderTexture(texGui(1), (ClientConfig.ScreenWidth * 0.5) - 50, (ClientConfig.ScreenHeight * 0.5), 0, 0, 175, 20, 32, 32, 200, 0, 0, 0)
+        If curTextbox = 1 Then
+            Call Verdana.Draw(sPass & chatShowLine, (ClientConfig.ScreenWidth * 0.5) - 47, (ClientConfig.ScreenHeight * 0.5) + 3, Color.White)
+        Else
+            Call Verdana.Draw(sPass, (ClientConfig.ScreenWidth * 0.5) - 47, (ClientConfig.ScreenHeight * 0.5) + 3, Color.White)
+        End If
     End Sub
     Private Sub renderButton(ByVal X As Integer, ByVal Y As Integer, ByVal W As Integer, ByVal H As Integer, ByVal Norm As Integer, ByVal Hov As Integer, ByVal ButtonIndex As Integer)
 
@@ -337,12 +356,35 @@ errorhandler:
             Call renderTexture(texButton(Norm), X, Y, 0, 0, W, H, W, H)
         End If
     End Sub
-    Public Sub DrawBackGround()
+    Private Sub DrawBackGround()
+        Dim X As Long, Y As Long
+        For X = 0 To maxX
+            For Y = 0 To maxY
+                Call renderTexture(texTileset(4), X * picX, Y * picY, 0, 8 * picY, picX, picY, picX, picY)
+            Next Y
+        Next X
+    End Sub
+
+    Private Sub DrawMapTiles()
         Dim X As Long, Y As Long
         For X = 0 To maxX
             For Y = 0 To maxY
                 Call renderTexture(texTileset(1), X * picX, Y * picY, 0, 8 * picY, picX, picY, picX, picY)
             Next Y
         Next X
+    End Sub
+
+    Private Sub DrawChat()
+        Dim i As Long
+        Call renderTexture(texGui(1), 5, ClientConfig.ScreenHeight - 255, 0, 0, 300, 250, 32, 32, 120, 0, 0, 0)
+        Call renderTexture(texGui(1), 5, ClientConfig.ScreenHeight - 25, 0, 0, 300, 20, 32, 32, 200, 0, 0, 0)
+        If inChat Then
+            Verdana.Draw(sChat & chatShowLine, 8, ClientConfig.ScreenHeight - 22, Color.White)
+        Else
+            Verdana.Draw("Press 'ENTER' to start chatting", 8, ClientConfig.ScreenHeight - 22, Color.White)
+        End If
+        For i = 1 To maxChatLines
+            Verdana.Draw(chatbuffer(i), 8, ClientConfig.ScreenHeight - 252 + (15 * (i - 1)), Color.White)
+        Next
     End Sub
 End Module

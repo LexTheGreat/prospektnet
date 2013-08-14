@@ -8,8 +8,7 @@
         frmMain.Show()
         TcpInit()
         InitSFML()
-        Verdana = New TextWriter("content/fonts/verdana.ttf")
-        Silkscreen = New TextWriter("content/fonts/silkscreen.ttf")
+        Verdana = New TextWriter("content/fonts/Verdana.ttf")
         showMenu()
     End Sub
 

@@ -120,9 +120,8 @@
     <Compile Include="Modules\modNetworking.vb" />
     <Compile Include="Modules\modSFML.vb" />
     <Compile Include="Modules\modSound.vb" />
-    <Compile Include="Modules\modConstGlobals.vb" />
+    <Compile Include="Modules\modGlobals.vb" />
     <Compile Include="Modules\modGeneral.vb" />
-    <Compile Include="Modules\modEnumerations.vb" />
     <Compile Include="Modules\modGameLogic.vb" />
     <Compile Include="Modules\modXMLReader.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
@@ -187,9 +186,6 @@
       <ProductName>Windows Installer 4.5</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
-  </ItemGroup>
-  <ItemGroup>
-    <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

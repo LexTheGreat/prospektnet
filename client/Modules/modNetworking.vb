@@ -103,13 +103,15 @@ Module modNetworking
         If PacketNum = ServerPackets.SPlayer Then HandlePlayer(Data)
         If PacketNum = ServerPackets.SClearPlayer Then HandleClearPlayer(Data)
         If PacketNum = ServerPackets.SPosition Then HandlePosition(Data)
+        If PacketNum = ServerPackets.SMessage Then HandleMessage(Data)
     End Sub
-    Public Sub SendLogin(ByVal Name As String)
+    Public Sub SendLogin(ByVal Name As String, ByVal Password As String)
         Dim Buffer As clsBuffer
 
         Buffer = New clsBuffer
         Buffer.WriteLong(ClientPackets.CLogin)
         Buffer.WriteString(Name)
+        Buffer.WriteString(Password)
         SendData(Buffer.ToArray())
         Buffer = Nothing
     End Sub
@@ -123,6 +125,15 @@ Module modNetworking
         Buffer.WriteLong(Player(MyIndex).X)
         Buffer.WriteLong(Player(MyIndex).Y)
         Buffer.WriteLong(Player(MyIndex).Dir)
+        SendData(Buffer.ToArray())
+        Buffer = Nothing
+    End Sub
+    Public Sub SendMessage(ByVal Message As String)
+        Dim Buffer As clsBuffer
+
+        Buffer = New clsBuffer
+        Buffer.WriteLong(ClientPackets.CMessage)
+        Buffer.WriteString(Message)
         SendData(Buffer.ToArray())
         Buffer = Nothing
     End Sub
@@ -181,5 +192,26 @@ Module modNetworking
                 Player(tempIndex).XOffset = picX * -1
         End Select
         Buffer = Nothing
+    End Sub
+
+    Sub HandleMessage(ByRef Data() As Byte)
+        Dim Buffer As clsBuffer, Message As String, I As Integer
+        Buffer = New clsBuffer
+        Buffer.WriteBytes(Data)
+        Message = Buffer.ReadString
+        Buffer = Nothing
+        For I = 1 To maxChatLines
+            If Len(Trim(chatbuffer(I))) = 0 Then
+                chatbuffer(I) = Message
+                Exit Sub
+            End If
+        Next
+        For I = 1 To maxChatLines
+            If I < maxChatLines Then
+                chatbuffer(I) = chatbuffer(I + 1)
+            Else
+                chatbuffer(I) = Message
+            End If
+        Next
     End Sub
 End Module
