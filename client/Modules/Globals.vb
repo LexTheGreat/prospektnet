@@ -1,4 +1,4 @@
-﻿Module modGlobals
+﻿Module Globals
     Public Declare Function GetAsyncKeyState Lib "user32" (ByVal vkey As Integer) As Short
 
     ' Graphics extension
@@ -12,6 +12,9 @@
     Public Const pathButtons As String = pathGui & "buttons/"
     Public Const pathMusic As String = pathContent & "music/"
     Public Const pathSound As String = pathContent & "sounds/"
+
+    ' Hardcoded sound effects
+    Public Const buttonClick As String = "button.ogg"
 
     ' Tile engine
     Public Const picX As Byte = 32
@@ -49,7 +52,7 @@
 
     ' Players
     Public MyIndex As Integer
-    Public Player(100) As clsPlayer
+    Public Player(100) As Players
     Public PlayerHighindex As Integer
 
     ' fader
@@ -63,6 +66,30 @@
     Public chatbuffer(maxChatLines) As String
     Public sChat As String
     Public inChat As Boolean
+
+    ' Textures
+    Public texTileset() As Integer
+    Public texSprite() As Integer
+    Public texButton() As Integer
+    Public texGui() As Integer
+
+    ' Texture counts
+    Public countTileset As Integer
+    Public countSprite As Integer
+    Public countButton As Integer
+    Public countGui As Integer
+
+    ' Number of graphic files
+    Public numTextures As Integer
+
+    ' Global texture
+    Public Texture() As TextureRec
+    Public Structure TextureRec
+        Dim Tex As SFML.Graphics.Sprite
+        Dim Width As Integer
+        Dim Height As Integer
+        Dim FilePath As String
+    End Structure
 
     Public ClientConfig As ConfigStruct
     Public Structure ConfigStruct

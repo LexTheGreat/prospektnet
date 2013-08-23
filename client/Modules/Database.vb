@@ -1,7 +1,15 @@
 ﻿Imports System.Xml
 Imports System.IO
-Module modXMLReader
-    Sub loadoptions()
+Module Database
+    Public Function fileExist(ByVal filepath As String, Optional ByVal Raw As Boolean = False) As Boolean
+        If Raw = True Then
+            fileExist = System.IO.File.Exists(filepath)
+        Else
+            fileExist = System.IO.File.Exists(Application.StartupPath & "/" & filepath)
+        End If
+    End Function
+
+    Public Sub LoadOptions()
         Dim m_xmld As XmlDocument
         Dim m_nodelist As XmlNodeList
         Dim m_node As XmlNode

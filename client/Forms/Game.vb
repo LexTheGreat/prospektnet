@@ -1,17 +1,17 @@
 ﻿
-Public Class frmMain
+Public Class Game
     Private Sub frmMain_Disposed(sender As Object, e As EventArgs) Handles Me.Disposed
         inMenu = False
         inGame = False
         Verdana = Nothing
-        DestroyTCP()
-        DestroySFML()
+        Networking.Dispose()
+        Renderer.Dispose()
         End
     End Sub
 
     Private Sub frmMain_KeyDown(sender As Object, e As KeyEventArgs) Handles Me.KeyDown
         If inGame Then
-            Select e.KeyCode
+            Select Case e.KeyCode
                 Case Keys.Return
                     If inChat Then
                         If Len(Trim(sChat)) > 0 Then SendMessage(sChat)
@@ -29,7 +29,7 @@ Public Class frmMain
                 Case Keys.Escape
                     If curMenu <> MenuEnum.Main Then
                         ' Button sound
-                        playSound("button.ogg")
+                        AudioPlayer.playSound("button.ogg")
                         curMenu = MenuEnum.Main
                     Else
                         Me.Close()
@@ -55,7 +55,7 @@ Public Class frmMain
                     End If
                 Case Keys.Return
                     If curMenu = MenuEnum.Login Then
-                        If ConnectToServer() Then
+                        If Networking.ConnectToServer() Then
                             If Len(Trim(sUser)) > 0 And Len(Trim(sPass)) > 0 Then
                                 SendLogin(sUser, sPass)
                             Else

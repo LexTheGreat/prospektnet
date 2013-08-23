@@ -23,7 +23,7 @@ Public Class TextWriter
             xText = New Text(DrawText, xFont, Size)
             xText.Color = New Color(textColor)
             xText.Position = New Vector2f(X, Y)
-            xText.Draw(SfmlWindow, RenderStates.Default)
+            xText.Draw(Renderer.Window, RenderStates.Default)
         End If
     End Sub
 

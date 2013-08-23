@@ -1,0 +1,1 @@
+ServerMessage("On load scripting is working")

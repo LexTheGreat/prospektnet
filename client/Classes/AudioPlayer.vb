@@ -1,16 +1,11 @@
-﻿Option Explicit On
-Imports SFML.Audio
-
-Module modSound
+﻿Imports SFML.Audio
+Public Class AudioPlayer
     'Music + Sound Players
-    Public soundPlayer As SFML.Audio.Sound
-    Public musicPlayer As SFML.Audio.Music
-    Public soundPlayerBuffer As SFML.Audio.SoundBuffer
+    Public Shared soundPlayer As Sound
+    Public Shared musicPlayer As Music
+    Public Shared soundPlayerBuffer As SoundBuffer
 
-    ' Hardcoded sound effects
-    Public Const buttonClick As String = "button.ogg"
-
-    Sub playMusic(ByVal filename As String)
+    Public Shared Sub playMusic(ByVal filename As String)
         If ClientConfig.Music = False Then Exit Sub
 
         If Not fileExist(pathMusic & filename) Then Exit Sub
@@ -26,14 +21,14 @@ Module modSound
             musicPlayer.Play()
         End If
     End Sub
-    Sub stopMusic()
+    Public Shared Sub stopMusic()
         If ClientConfig.Music = False Then Exit Sub
         If musicPlayer Is Nothing Then Exit Sub
         musicPlayer.Stop()
         musicPlayer.Dispose()
         musicPlayer = Nothing
     End Sub
-    Sub playSound(ByVal filename As String)
+    Public Shared Sub playSound(ByVal filename As String)
         If ClientConfig.Sound = False Then Exit Sub
         If Not fileExist(pathSound & filename) Then Exit Sub
 
@@ -52,7 +47,7 @@ Module modSound
             soundPlayer.Play()
         End If
     End Sub
-    Sub stopSound()
+    Public Shared Sub stopSound()
         If ClientConfig.Sound = False Then Exit Sub
         If soundPlayer Is Nothing Then Exit Sub
         soundPlayer.Stop()
@@ -61,4 +56,4 @@ Module modSound
         soundPlayerBuffer = Nothing
         soundPlayer = Nothing
     End Sub
-End Module
+End Class

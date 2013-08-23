@@ -1,6 +1,6 @@
 ﻿Imports System.Text
 
-Public Class clsBuffer
+Public Class ByteBuffer
     ' Our byte array to hold all data
     Public Buff As List(Of Byte)
 

@@ -1,12 +1,15 @@
-﻿Module modGlobals
+﻿Module Globals
     ' Loop control
     Public inServer As Boolean
 
+    Public LuaScript As LuaHandler
+
     ' File paths
     Public Const pathContent As String = "content/"
+    Public Const pathScripts As String = pathContent & "scripts/"
 
     ' Players
-    Public Player(100) As clsPlayer
+    Public Player(100) As Players
     Public PlayerHighIndex As Integer
 
     ' Configuration

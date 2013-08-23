@@ -1,4 +1,4 @@
-﻿Public Class clsPlayer
+﻿Public Class Players
     ' general
     Public Name As String
     Public Password As String

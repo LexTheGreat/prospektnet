@@ -1,5 +1,5 @@
 ﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
-Partial Class frmMain
+Partial Class Game
     Inherits System.Windows.Forms.Form
 
     'Form overrides dispose to clean up the component list.
@@ -24,7 +24,7 @@ Partial Class frmMain
     Private Sub InitializeComponent()
         Me.SuspendLayout()
         '
-        'frmMain
+        'Main
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
@@ -32,7 +32,7 @@ Partial Class frmMain
         Me.ClientSize = New System.Drawing.Size(624, 442)
         Me.MaximizeBox = False
         Me.MinimumSize = New System.Drawing.Size(640, 480)
-        Me.Name = "frmMain"
+        Me.Name = "Main"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
         Me.Text = "Prospekt.NET"
         Me.ResumeLayout(False)

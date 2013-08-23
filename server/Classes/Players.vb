@@ -1,4 +1,4 @@
-﻿Public Class clsPlayer
+﻿Public Class Players
     ' general
     Public Name As String
     Public Password As String
@@ -22,6 +22,7 @@
         data.Add("X", X)
         data.Add("Y", Y)
         data.Add("Dir", Dir)
+        data.Add("Sprite", Sprite)
         db.Update("Accounts", data, "Login= '" & Name & "'")
     End Sub
 
@@ -46,7 +47,7 @@
         Dim query As String
         Dim r As DataRow
         db = New SQLiteDatabase("content/accounts.s3db")
-        query = "select Login, Password, X, Y, Dir from Accounts"
+        query = "select Login, Password, X, Y, Dir, Sprite from Accounts"
         data = db.GetDataTable(query)
         For Each r In data.Rows
             If Trim(r("Login").ToString) = Trim(PName) Then
@@ -55,6 +56,7 @@
                 X = Val(r("X").ToString)
                 Y = Val(r("Y").ToString)
                 Dir = Val(r("Dir").ToString)
+                Sprite = Val(r("Sprite").ToString)
             End If
         Next
     End Sub
