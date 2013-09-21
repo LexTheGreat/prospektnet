@@ -32,12 +32,9 @@ Module Database
         For Each r In data.Rows
             If Trim(r("Login").ToString) = Trim(Name) Then
                 Return True
-                Exit Function
-            Else
-                Return False
-                Exit Function
             End If
         Next
+        Return False
     End Function
 End Module
 

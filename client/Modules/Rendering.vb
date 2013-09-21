@@ -113,14 +113,12 @@ errorhandler:
     End Sub
 
     Private Sub DrawPlayerName(ByVal Index As Integer)
-        Dim textX As Integer, textY As Integer, Text As String, textSize As Long
+        Dim textX As Integer, textY As Integer, Text As String, textSize As Integer
 
         Text = Trim$(Player(Index).Name)
         textSize = Verdana.GetWidth(Trim$(Player(Index).Name))
 
         textX = Player(Index).X * picX + Player(Index).XOffset + (picX * 0.5) - (textSize * 0.5)
-        textY = Player(Index).Y * picY + Player(Index).YOffset - picY
-
         textY = Player(Index).Y * picY + Player(Index).YOffset - picY
 
         If Player(Index).Sprite >= 1 Then
