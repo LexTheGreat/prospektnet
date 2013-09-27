@@ -119,15 +119,14 @@ Public Class Networking
     Public Shared Sub CloseSocket(ByVal index As Long)
         If index > 0 Then
             Console.WriteLine("Connection from " & GetPlayerIP(index) & " has been terminated.")
+            SendMessage(Player(index).Name & " has left game.")
+            Console.WriteLine(Player(index).Name & " has left game.")
+            Player(index).isPlaying = False
+            Player(index).Save()
+            Player(index) = Nothing
+            UpdateHighIndex()
+            SendClearPlayer(index)
             Clients(index).Socket.Close()
-            If IsPlaying(index) Then
-                SendMessage(Player(index).Name & " has left game.")
-                Console.WriteLine(Player(index).Name & " has left game.")
-                Player(index).Save()
-                Player(index) = Nothing
-                UpdateHighIndex()
-                SendClearPlayer(index)
-            End If
         End If
     End Sub
 

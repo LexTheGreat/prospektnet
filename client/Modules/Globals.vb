@@ -91,17 +91,7 @@
         Dim FilePath As String
     End Structure
 
-    Public ClientConfig As ConfigStruct
-    Public Structure ConfigStruct
-        Dim ScreenWidth As Integer
-        Dim ScreenHeight As Integer
-        Dim MenuMusic As String
-        Dim GameMusic As String
-        Dim Music As Boolean
-        Dim Sound As Boolean
-        Dim IP As String
-        Dim Port As Integer
-    End Structure
+    Public ClientConfig As Configuration
 
     ' Packets sent by server to client
     Public Enum ServerPackets

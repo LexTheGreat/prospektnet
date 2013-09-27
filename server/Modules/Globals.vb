@@ -13,10 +13,7 @@
     Public PlayerHighIndex As Integer
 
     ' Configuration
-    Public ServerConfig As ConfigStruct
-    Public Structure ConfigStruct
-        Dim Port As Integer
-    End Structure
+    Public ServerConfig As Configuration
 
     ' Packets sent by server to client
     Public Enum ServerPackets

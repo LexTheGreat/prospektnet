@@ -28,6 +28,7 @@
             Console.WriteLine("Account " & Name & " has been created.")
         Else
             Player(index).Load(Name)
+            Console.WriteLine("Account " & Name & " has been loaded.")
         End If
         Player(index).isPlaying = True
         SendPlayers()

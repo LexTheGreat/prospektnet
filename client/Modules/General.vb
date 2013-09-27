@@ -1,8 +1,9 @@
 ﻿Module General
     Public Sub Main()
-        loadOptions()
-        maxX = (ClientConfig.screenWidth / 32) - 1
-        maxY = (ClientConfig.screenHeight / 32) - 1
+        ClientConfig = New Configuration
+        ClientConfig.LoadOptions()
+        maxX = (ClientConfig.ScreenWidth / 32) - 1
+        maxY = (ClientConfig.ScreenHeight / 32) - 1
         Game.Width = ClientConfig.ScreenWidth + (16)
         Game.Height = ClientConfig.ScreenHeight + SystemInformation.CaptionHeight + (16)
         Game.Show()

@@ -7,7 +7,8 @@ Public Class Server
         PlayerHighIndex = 1
         Console.Title = "Loading..."
         Console.WriteLine("Loading options...")
-        loadoptions()
+        ServerConfig = New Configuration
+        ServerConfig.LoadOptions()
         Console.WriteLine("Loading networking...")
         sckListen = New Winsock
         sckListen.BufferSize = 8192

@@ -6,6 +6,8 @@ Public Class Game
         Verdana = Nothing
         Networking.Dispose()
         Renderer.Dispose()
+        ClientConfig.SaveOptions()
+        ClientConfig = Nothing
         End
     End Sub
 

@@ -132,6 +132,7 @@
   <ItemGroup>
     <Compile Include="Classes\AudioPlayer.vb" />
     <Compile Include="Classes\ByteBuffer.vb" />
+    <Compile Include="Classes\Configuration.vb" />
     <Compile Include="Classes\Networking.vb" />
     <Compile Include="Classes\Players.vb" />
     <Compile Include="Classes\Renderer.vb" />
