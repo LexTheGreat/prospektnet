@@ -69,7 +69,7 @@ Public Class Players
             ' Add player to accounts array
             ReDim Preserve Account(0 To AccountCount + 1)
             Account(AccountCount) = New Accounts
-            Account(AccountCount).Login = Account(AccountData.GetAccountPlayerIndex(PName)).Login
+            Account(AccountCount).Email = Account(AccountData.GetAccountPlayerIndex(PName)).Email
             Account(AccountCount).Password = Account(AccountData.GetAccountPlayerIndex(PName)).Password
             Account(AccountCount).Player = newPlayer
             AccountCount = AccountCount + 1

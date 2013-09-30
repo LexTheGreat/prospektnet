@@ -15,54 +15,54 @@
 
     Private Sub HandleRegister(ByVal index As Long, ByVal data() As Byte)
         Dim Buffer As ByteBuffer
-        Dim Login As String, Password As String
+        Dim Email As String, Password As String
 
         Buffer = New ByteBuffer
         Buffer.WriteBytes(data)
-        Login = Buffer.ReadString
+        Email = Buffer.ReadString
         Password = Buffer.ReadString
         Buffer = Nothing
-        If Not AccountData.AccountExists(Login) Then
+        If Not AccountData.AccountExists(Email) Then
             Dim newAccount = New Accounts
-            newAccount.Login = Login
+            newAccount.Email = Email
             newAccount.Password = Password
             newAccount.Player = New Players
             If newAccount.Create() = False Then
-                Console.WriteLine("Account " & Login & " Failed To Register! [Error: username already taken]")
-                SendAlert(index, "Account " & Login & " Failed To Register!" & vbNewLine & "[Error: username already taken]")
+                Console.WriteLine("Account " & Email & " Failed To Register! [Error: email already taken]")
+                SendAlert(index, "Account " & Email & " Failed To Register!" & vbNewLine & "[Error: email already taken]")
                 Exit Sub
             End If
             SendRegisterOk(index)
-            Console.WriteLine("Account " & Login & " has been registered.")
+            Console.WriteLine("Account " & Email & " has been registered.")
         Else
-            Console.WriteLine("Account " & Login & " Failed To Register! [Error: username already taken]")
-            SendAlert(index, "Account " & Login & " Failed To Register!" & vbNewLine & "[Error: username already taken]")
+            Console.WriteLine("Account " & Email & " Failed To Register! [Error: email already taken]")
+            SendAlert(index, "Account " & Email & " Failed To Register!" & vbNewLine & "[Error: email already taken]")
         End If
     End Sub
 
     Private Sub HandleNewCharacter(ByVal index As Long, ByVal data() As Byte)
         Dim Buffer As ByteBuffer
-        Dim Login As String, Name As String
+        Dim Email As String, Name As String
 
         Buffer = New ByteBuffer
         Buffer.WriteBytes(data)
-        Login = Buffer.ReadString
+        Email = Buffer.ReadString
         Name = Buffer.ReadString
         Buffer = Nothing
         If Not AccountData.CharacterExists(Name) Then
             Dim newAccount As New Accounts
-            newAccount = AccountData.GetAccount(Login)
+            newAccount = AccountData.GetAccount(Email)
             newAccount.Player.Name = Name
-            If newAccount.Login = vbNullString Or newAccount.NewCharacter() = False Then
-                Console.WriteLine("Character " & Login & " Failed To Create! [Error: Account does not exist]")
-                SendAlert(index, "Character " & Login & " Failed To Create!" & vbNewLine & "[Error: Account does not exist]")
+            If newAccount.Email = vbNullString Or newAccount.NewCharacter() = False Then
+                Console.WriteLine("Character " & Name & " Failed To Create! [Error: Account does not exist]")
+                SendAlert(index, "Character " & Name & " Failed To Create!" & vbNewLine & "[Error: Account does not exist]")
                 Exit Sub
             End If
             SendAlert(index, "Your character has been created. You may now login!")
-            Console.WriteLine("Character " & Login & " has been created.")
+            Console.WriteLine("Character " & Name & " has been created.")
         Else
-            Console.WriteLine("Character " & Login & " Failed To Create! [Error: Name already taken]")
-            SendAlert(index, "Character " & Login & " Failed To Create!" & vbNewLine & "[Error: Name already taken]")
+            Console.WriteLine("Character " & Name & " Failed To Create! [Error: Name already taken]")
+            SendAlert(index, "Character " & Name & " Failed To Create!" & vbNewLine & "[Error: Name already taken]")
         End If
 
     End Sub

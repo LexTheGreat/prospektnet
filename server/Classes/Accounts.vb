@@ -1,34 +1,34 @@
 ﻿Public Class Accounts
-    Private mLogin As String
+    Private mEmail As String
     Private mPassword As String
     Private mPlayer As Players
 
     Public Sub New()
-        Me.mLogin = vbNullString
+        Me.mEmail = vbNullString
         Me.mPassword = vbNullString
         Me.mPlayer = New Players
     End Sub
 
     Public Function Create() As Boolean
-        If Me.Login = vbNullString Then Return False
+        If Me.Email = vbNullString Then Return False
         AccountData.CreateAccount(Me)
         Return True
     End Function
 
     Public Function NewCharacter() As Boolean
-        If Me.Login = vbNullString Or Me.Player.Name = vbNullString Then Return False
+        If Me.Email = vbNullString Or Me.Player.Name = vbNullString Then Return False
         AccountData.CreateCharacter(Me)
         Return True
     End Function
 
     ' Saved variables
-    Public Property Login() As String
+    Public Property Email() As String
         Get
-            Return Me.mLogin
+            Return Me.mEmail
         End Get
         Set(value As String)
             If Not IsNothing(Me) Then
-                Me.mLogin = value
+                Me.mEmail = value
             End If
         End Set
     End Property

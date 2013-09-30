@@ -11,7 +11,7 @@ Module AccountData
             Account(AccountCount) = New Accounts
             Account(AccountCount) = newAccount
             'Serialize object to a file.
-            Dim Writer As New StreamWriter(pathAccounts & newAccount.Login & ".xml")
+            Dim Writer As New StreamWriter(pathAccounts & newAccount.Email & ".xml")
             Dim ser As New XmlSerializer(newAccount.GetType)
             ser.Serialize(Writer, newAccount)
             Writer.Close()
@@ -28,11 +28,11 @@ Module AccountData
         Dim Ser As XmlSerializer
         Try
             'Serialize object to a file.
-            Writer = New StreamWriter(pathAccounts & curAccount.Login & ".xml")
+            Writer = New StreamWriter(pathAccounts & curAccount.Email & ".xml")
             Ser = New XmlSerializer(curAccount.GetType)
             Ser.Serialize(Writer, curAccount)
             Writer.Close()
-            Account(GetAccountIndex(curAccount.Login)) = curAccount
+            Account(GetAccountIndex(curAccount.Email)) = curAccount
             Exit Sub
         Catch ex As Exception
             Console.WriteLine("Error: " & ex.ToString & " (In: AccountData.CreateCharacter)")
@@ -77,7 +77,7 @@ Module AccountData
                 Try
                     acc = Account(GetAccountPlayerIndex(Player(index).Name))
                     'Serialize object to a file.
-                    Writer = New StreamWriter(pathAccounts & acc.Login & ".xml")
+                    Writer = New StreamWriter(pathAccounts & acc.Email & ".xml")
                     Ser = New XmlSerializer(acc.GetType)
                     Ser.Serialize(Writer, acc)
                     Writer.Close()
@@ -98,7 +98,7 @@ Module AccountData
             acc = Account(GetAccountPlayerIndex(player.Name))
             acc.Player = player
             'Serialize object to a file.
-            Writer = New StreamWriter(pathAccounts & acc.Login & ".xml")
+            Writer = New StreamWriter(pathAccounts & acc.Email & ".xml")
             Ser = New XmlSerializer(acc.GetType)
             Ser.Serialize(Writer, acc)
             Writer.Close()
@@ -110,10 +110,10 @@ Module AccountData
         End Try
     End Sub
 
-    Public Function VerifyAccount(ByVal Login As String, ByVal Password As String) As Boolean
+    Public Function VerifyAccount(ByVal Email As String, ByVal Password As String) As Boolean
         Try
             For Each curAccount In Account
-                If curAccount.Login = Login And curAccount.Password = Password Then Return True
+                If curAccount.Email = Email And curAccount.Password = Password Then Return True
             Next
         Catch ex As Exception
             Return False
@@ -121,16 +121,16 @@ Module AccountData
         Return False
     End Function
 
-    Public Function GetAccountIndex(ByVal Login As String) As Integer
+    Public Function GetAccountIndex(ByVal Email As String) As Integer
         For index As Integer = 0 To Account.Length
-            If Account(index).Login = Login Then Return index
+            If Account(index).Email = Email Then Return index
         Next
         Return 0
     End Function
 
-    Public Function GetAccount(ByVal Login As String) As Accounts
+    Public Function GetAccount(ByVal Email As String) As Accounts
         For Each curAccount In Account
-            If curAccount.Login = Login Then Return curAccount
+            If curAccount.Email = Email Then Return curAccount
         Next
         Return New Accounts
     End Function
@@ -150,10 +150,10 @@ Module AccountData
         Return player
     End Function
 
-    Public Function AccountExists(ByVal Login As String) As Boolean
+    Public Function AccountExists(ByVal Email As String) As Boolean
         Try
             For Each curAccount In Account
-                If curAccount.Login = Login Then Return True
+                If curAccount.Email = Email Then Return True
             Next
         Catch ex As Exception
             Return False

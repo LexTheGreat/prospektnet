@@ -28,12 +28,12 @@ Public Class Server
             Networking.Clients(i) = New ClientSocket
             Networking.Clients(i).Socket = New Winsock
         Next
+        LuaScript.ExecuteScript("OnStartup")
         Console.WriteLine("Starting listener...")
         sckListen.Listen()
         Console.Title = "Prospekt Server <IP " & Networking.GetPublicIP() & " Port " & sckListen.LocalPort & ">"
         time2 = System.Environment.TickCount
         Console.WriteLine("Initialization complete. Server loaded in " & time2 - time1 & "ms.")
-        LuaScript.ExecuteScript("OnStartup")
         inServer = True
         ServerLoop()
     End Sub

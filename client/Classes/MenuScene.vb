@@ -84,20 +84,22 @@ errorhandler:
             Case Keys.Return
                 If curMenu = MenuEnum.Login Then
                     If Networking.ConnectToServer() Then
-                        If Len(Trim(sUser)) > 0 And Len(Trim(sPass)) > 0 Then
+                        If Len(Trim(sUser)) > 0 And Len(Trim(sPass)) > 0 And EmailAddressChecker(Trim(sUser)) = True Then
                             SendLogin(sUser, sPass)
                         Else
-                            MsgBox("Username and password fields can not be empty")
+                            MsgBox(Trim(sUser))
+                            MsgBox("Username and password fields can not be empty or you entered wrong email.")
                         End If
                     Else
                         MsgBox("Server is offline")
                     End If
                 ElseIf curMenu = MenuEnum.Register Then
                     If Networking.ConnectToServer() Then
-                        If Len(Trim(sUser)) > 0 And Len(Trim(sPass)) > 0 Then
+                        If Len(Trim(sUser)) > 0 And Len(Trim(sPass)) > 0 And EmailAddressChecker(Trim(sUser)) = True Then
                             SendRegister(sUser, sPass)
                         Else
-                            MsgBox("Username and password fields can not be empty")
+                            MsgBox(Trim(sUser))
+                            MsgBox("Username and password fields can not be empty or you entered wrong email.")
                         End If
                     Else
                         MsgBox("Server is offline")
@@ -145,7 +147,7 @@ errorhandler:
         ' Back Button
         Render.RenderButton((ClientConfig.ScreenWidth * 0.5) - 185, (ClientConfig.ScreenHeight * 0.5) - 85, 15, 15, 7, 7, AddressOf ButtonPress, 0)
 
-        Verdana.Draw("USERNAME:", (ClientConfig.ScreenWidth * 0.5) - 55 - Verdana.GetWidth("USERNAME:"), (ClientConfig.ScreenHeight * 0.5) - 27, Color.White)
+        Verdana.Draw("EMAIL:", (ClientConfig.ScreenWidth * 0.5) - 55 - Verdana.GetWidth("USERNAME:"), (ClientConfig.ScreenHeight * 0.5) - 27, Color.White)
         Render.RenderTexture(texGui(1), (ClientConfig.ScreenWidth * 0.5) - 50, (ClientConfig.ScreenHeight * 0.5) - 30, 0, 0, 175, 20, 32, 32, 200, 0, 0, 0)
         If curTextbox = 0 Then
             Verdana.Draw(sUser & chatShowLine, (ClientConfig.ScreenWidth * 0.5) - 47, (ClientConfig.ScreenHeight * 0.5) - 27, Color.White)
