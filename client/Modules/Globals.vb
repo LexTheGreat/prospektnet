@@ -58,6 +58,10 @@
     Public Player(100) As Players
     Public PlayerHighindex As Integer
 
+    ' NPCs
+    Public NPC As NPCs()
+    Public NPCCount As Integer
+
     ' fader
     Public canFade As Boolean
     Public faderAlpha As Byte
@@ -123,6 +127,7 @@
         SAccess
         SVisible
         SMessage
+        SNPC
         ' Make sure SMSG_COUNT is below everything else
         SMSG_COUNT
     End Enum

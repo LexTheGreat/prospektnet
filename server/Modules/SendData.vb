@@ -110,4 +110,19 @@
         End If
         Buffer = Nothing
     End Sub
+
+    Public Sub SendNPC(ByVal Index As Integer)
+        Dim Buffer As ByteBuffer
+        Buffer = New ByteBuffer
+        Buffer.WriteLong(ServerPackets.SNPC)
+        Buffer.WriteLong(Index)
+        Buffer.WriteLong(NPCCount)
+        Buffer.WriteLong(NPC(Index).X)
+        Buffer.WriteLong(NPC(Index).Y)
+        Buffer.WriteLong(NPC(Index).Dir)
+        Buffer.WriteString(NPC(Index).Name)
+        Buffer.WriteLong(NPC(Index).Sprite)
+        Networking.SendDataToAll(Buffer.ToArray())
+        Buffer = Nothing
+    End Sub
 End Module

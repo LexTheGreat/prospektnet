@@ -22,6 +22,13 @@ Public Class GameScene
             End If
         Next
 
+        For i = 1 To NPCCount
+            If Not IsNothing(NPC(i)) Then
+                DrawNPC(i)
+                DrawNPCName(i)
+            End If
+        Next
+
         DrawChat()
         If GMTools.Visible Then GMTools.Draw()
 
@@ -194,6 +201,62 @@ errorhandler:
         Y = Player(Index).Y * picY + Player(Index).YOffset - ((Texture(texSprite(Sprite)).Height / 4) - 32) - 4
 
         Render.RenderTexture(texSprite(Sprite), X, Y, rec.Left, rec.Top, rec.Width, rec.Height, rec.Width, rec.Height)
+    End Sub
+
+    Public Shared Sub DrawNPC(ByVal Index As Integer)
+        Dim Anim As Byte
+        Dim X As Integer
+        Dim Y As Integer
+        Dim Sprite As Integer, spritetop As Integer
+        Dim rec As GeomRec
+
+        ' pre-load sprite for calculations
+        Sprite = NPC(Index).Sprite
+        'SetTexture Tex_Char(Sprite)
+
+        If Sprite < 1 Then Exit Sub
+
+        ' Reset frame
+        Anim = 1
+
+        ' walk normally
+        Select Case NPC(Index).Dir
+            Case DirEnum.Up
+                spritetop = 0
+            Case DirEnum.Down
+                spritetop = 2
+            Case DirEnum.Left
+                spritetop = 3
+            Case DirEnum.Right
+                spritetop = 1
+        End Select
+
+        rec.Top = spritetop * (Texture(texSprite(Sprite)).Height / 4)
+        rec.Height = Texture(texSprite(Sprite)).Height / 4
+        rec.Left = Anim * (Texture(texSprite(Sprite)).Width / 3)
+        rec.Width = Texture(texSprite(Sprite)).Width / 3
+
+        ' Calculate the X and Y
+        X = NPC(Index).X * picX - ((Texture(texSprite(Sprite)).Width / 3 - 32) / 2)
+        Y = NPC(Index).Y * picY - ((Texture(texSprite(Sprite)).Height / 4) - 32) - 4
+
+        Render.RenderTexture(texSprite(Sprite), X, Y, rec.Left, rec.Top, rec.Width, rec.Height, rec.Width, rec.Height)
+    End Sub
+
+    Public Shared Sub DrawNPCName(ByVal Index As Integer)
+        Dim textX As Integer, textY As Integer, Text As String, textSize As Integer
+
+        Text = Trim$(NPC(Index).Name)
+        textSize = Verdana.GetWidth(Text)
+
+        textX = NPC(Index).X * picX + (picX * 0.5) - (textSize * 0.6) + (Verdana.GetWidth(Text) * 0.5)
+        textY = NPC(Index).Y * picY - picY
+
+        If NPC(Index).Sprite >= 1 Then
+            textY = NPC(Index).Y * picY - (Texture(texSprite(NPC(Index).Sprite)).Height / 4) + 12
+        End If
+
+        Verdana.Draw(Text, textX, textY, Color.White)
     End Sub
 
     Public Shared Sub DrawMapTiles()

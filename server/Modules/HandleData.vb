@@ -95,6 +95,7 @@
             Player(index).Load(AccountData.GetAccount(Name).Player.Name)
             Player(index).SetIsPlaying(True)
             SendPlayers()
+            SendNPCs()
             SendLoginOk(index)
 
             Select Case Player(index).AccessMode

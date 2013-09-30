@@ -11,6 +11,7 @@
         If PacketNum = ServerPackets.SMessage Then HandleMessage(Data)
         If PacketNum = ServerPackets.SAccess Then HandleAccess(Data)
         If PacketNum = ServerPackets.SVisible Then HandleVisible(Data)
+        If PacketNum = ServerPackets.SNPC Then HandleNPC(Data)
     End Sub
 
     Private Sub HandleAlert(ByRef Data() As Byte)
@@ -151,6 +152,23 @@
         Buffer.WriteBytes(Data)
         tempIndex = Buffer.ReadLong
         Player(tempIndex).Visible = Buffer.ReadBool
+        Buffer = Nothing
+    End Sub
+    Private Sub HandleNPC(ByRef Data() As Byte)
+        Dim tempIndex As Integer, tempCount As Integer
+        Dim Buffer As ByteBuffer
+        Buffer = New ByteBuffer
+        Buffer.WriteBytes(Data)
+        tempIndex = Buffer.ReadLong
+        tempCount = Buffer.ReadLong
+        NPCCount = tempCount
+        ReDim Preserve NPC(0 To NPCCount)
+        NPC(tempIndex) = New NPCs
+        NPC(tempIndex).X = Buffer.ReadLong
+        NPC(tempIndex).Y = Buffer.ReadLong
+        NPC(tempIndex).Dir = Buffer.ReadLong
+        NPC(tempIndex).Name = Buffer.ReadString
+        NPC(tempIndex).Sprite = Buffer.ReadLong
         Buffer = Nothing
     End Sub
 End Module

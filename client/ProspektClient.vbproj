@@ -136,6 +136,7 @@
     <Compile Include="Classes\GMTools.vb" />
     <Compile Include="Classes\MenuScene.vb" />
     <Compile Include="Classes\Networking.vb" />
+    <Compile Include="Classes\NPCs.vb" />
     <Compile Include="Classes\Players.vb" />
     <Compile Include="Classes\Render.vb" />
     <Compile Include="Classes\TextWriter.vb" />

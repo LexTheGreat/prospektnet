@@ -132,6 +132,7 @@
     <Compile Include="Classes\Configuration.vb" />
     <Compile Include="Classes\LuaHandler.vb" />
     <Compile Include="Classes\Networking.vb" />
+    <Compile Include="Classes\NPCs.vb" />
     <Compile Include="Classes\Server.vb" />
     <Compile Include="Classes\Players.vb" />
     <Compile Include="Classes\ClientSocket.vb" />
@@ -142,6 +143,7 @@
     <Compile Include="Modules\Guilds.vb" />
     <Compile Include="Modules\HandleData.vb" />
     <Compile Include="Modules\AccountData.vb" />
+    <Compile Include="Modules\NPCData.vb" />
     <Compile Include="Modules\Parties.vb" />
     <Compile Include="Modules\SendData.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
