@@ -18,7 +18,7 @@ Module NPCData
             NPCCount = NPCCount + 1
             Return True
         Catch ex As Exception
-            Console.WriteLine("Error: " & ex.ToString & " (In: NPCData.Create)")
+            Console.WriteLine("Error: " & ex.ToString & " (In: NPCData.CreateNPC)")
             Return False
         End Try
     End Function
@@ -45,7 +45,7 @@ Module NPCData
                 Next fileName
             End If
         Catch ex As Exception
-            Console.WriteLine("Error: " & ex.ToString & " (In: NPCData.LoadAccounts")
+            Console.WriteLine("Error: " & ex.ToString & " (In: NPCData.LoadNPCs")
         End Try
     End Sub
 
@@ -65,8 +65,9 @@ Module NPCData
             Exit Sub
         End Try
     End Sub
+
     Public Sub SendNPCs()
-        For i = 1 To NPCCount
+        For i = 0 To NPCCount
             If Not IsNothing(NPC(i)) Then
                 SendNPC(i)
             End If
@@ -78,5 +79,14 @@ Module NPCData
             If NPC(index).Name = Name Then Return index
         Next
         Return 0
+    End Function
+
+    Public Function NpcOnTile(ByVal X As Integer, ByVal Y As Integer) As Boolean
+        For i = 0 To NPCCount
+            If Not IsNothing(NPC(i)) Then
+                If (NPC(i).X = X And NPC(i).Y = Y) Then Return True
+            End If
+        Next
+        Return False
     End Function
 End Module

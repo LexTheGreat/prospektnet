@@ -97,14 +97,6 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
-    <Reference Include="System.Data.SQLite, Version=1.0.66.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=x86">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\System.Data.SQLite.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Data.SQLite.Linq, Version=2.0.38.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\System.Data.SQLite.Linq.dll</HintPath>
-    </Reference>
     <Reference Include="System.Deployment" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
@@ -136,7 +128,6 @@
     <Compile Include="Classes\Server.vb" />
     <Compile Include="Classes\Players.vb" />
     <Compile Include="Classes\ClientSocket.vb" />
-    <Compile Include="Classes\SQLite.vb" />
     <Compile Include="Modules\Files.vb" />
     <Compile Include="Modules\Globals.vb" />
     <Compile Include="Modules\General.vb" />

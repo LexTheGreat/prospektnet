@@ -181,5 +181,12 @@ Module AccountData
         Return False
     End Function
 
-
+    Public Function PlayerOnTile(ByVal X As Integer, ByVal Y As Integer) As Boolean
+        For i = 1 To PlayerHighIndex
+            If Not IsNothing(Player(i)) Then
+                If (Player(i).X = X And Player(i).Y = Y) Then Return True
+            End If
+        Next
+        Return False
+    End Function
 End Module

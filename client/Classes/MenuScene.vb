@@ -180,7 +180,7 @@ errorhandler:
         Verdana.Draw("Aaron Krogh", (ClientConfig.ScreenWidth * 0.5) - (Verdana.GetWidth("Aaron Krogh") * 0.5), (ClientConfig.ScreenHeight * 0.5) - 14, Color.White)
         Verdana.Draw("Enterbrain", (ClientConfig.ScreenWidth * 0.5) - (Verdana.GetWidth("Enterbrain") * 0.5), (ClientConfig.ScreenHeight * 0.5), Color.White)
         Verdana.Draw("First Seed Material", (ClientConfig.ScreenWidth * 0.5) - (Verdana.GetWidth("First Seed Material") * 0.5), (ClientConfig.ScreenHeight * 0.5) + 14, Color.White)
-        Verdana.Draw("Ertzel", (ClientConfig.ScreenWidth * 0.5) - (Verdana.GetWidth("Ertzel") * 0.5), (ClientConfig.ScreenHeight * 0.5) + 28, Color.White)
+        Verdana.Draw("James 'Ertzel' Wilson", (ClientConfig.ScreenWidth * 0.5) - (Verdana.GetWidth("James 'Ertzel' Wilson") * 0.5), (ClientConfig.ScreenHeight * 0.5) + 28, Color.White)
     End Sub
 
     Public Shared Sub DrawBackGround()

@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Accounts xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <Email>admin@indiearmory.com</Email>
-  <Password>thomas</Password>
+  <Password>admin</Password>
   <Player>
     <Name>Admin</Name>
     <Sprite>1</Sprite>
-    <X>13</X>
+    <X>14</X>
     <Y>13</Y>
     <Dir>1</Dir>
     <GuildID>-1</GuildID>

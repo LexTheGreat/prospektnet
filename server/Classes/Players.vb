@@ -239,6 +239,4 @@ Public Class Players
         End If
         Return -1
     End Function
-
-
 End Class

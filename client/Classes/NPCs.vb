@@ -9,7 +9,7 @@
     ' non-saved values
     Private mXOffset As Integer, mYOffset As Integer
     Private mMoving As Boolean = True
-    Private mPlayerStep As Byte
+    Private mNpcStep As Byte
     Private mSpawned As Boolean = False
 
     Public Sub New()
@@ -75,5 +75,108 @@
             End If
         End Set
     End Property
+
+    Public Property XOffset() As Integer
+        Get
+            Return Me.mXOffset
+        End Get
+        Set(value As Integer)
+            If Not IsNothing(Me) Then
+                Me.mXOffset = value
+            End If
+        End Set
+    End Property
+
+    Public Property YOffset() As Integer
+        Get
+            Return Me.mYOffset
+        End Get
+        Set(value As Integer)
+            If Not IsNothing(Me) Then
+                Me.mYOffset = value
+            End If
+        End Set
+    End Property
+
+    Public Property Moving() As Boolean
+        Get
+            Return Me.mMoving
+        End Get
+        Set(value As Boolean)
+            If Not IsNothing(Me) Then
+                Me.mMoving = value
+            End If
+        End Set
+    End Property
+
+    Public Property NpcStep() As Byte
+        Get
+            Return Me.mNpcStep
+        End Get
+        Set(value As Byte)
+            If Not IsNothing(Me) Then
+                Me.mNpcStep = value
+            End If
+        End Set
+    End Property
+
+    Public Property Spawned() As Boolean
+        Get
+            Return Me.mSpawned
+        End Get
+        Set(value As Boolean)
+            If Not IsNothing(Me) Then
+                Me.mSpawned = value
+            End If
+        End Set
+    End Property
+
+    Sub ProcessMovement()
+        Dim MovementSpeed As Long
+
+        If mMoving = True Then
+            MovementSpeed = 2
+        Else
+            Exit Sub
+        End If
+
+        Select Case Dir
+            Case DirEnum.Up
+                mYOffset = mYOffset - MovementSpeed
+                If mYOffset < 0 Then mYOffset = 0
+            Case DirEnum.Down
+                mYOffset = mYOffset + MovementSpeed
+                If mYOffset > 0 Then mYOffset = 0
+            Case DirEnum.Left
+                mXOffset = mXOffset - MovementSpeed
+                If mXOffset < 0 Then mXOffset = 0
+            Case DirEnum.Right
+                mXOffset = mXOffset + MovementSpeed
+                If mXOffset > 0 Then mXOffset = 0
+        End Select
+
+        ' Check if completed walking over to the next tile
+        If mMoving = True Then
+            If Dir = DirEnum.Right Or Dir = DirEnum.Down Then
+                If (mXOffset >= 0) And (mYOffset >= 0) Then
+                    mMoving = False
+                    If mNpcStep = 0 Then
+                        mNpcStep = 2
+                    Else
+                        mNpcStep = 0
+                    End If
+                End If
+            Else
+                If (mXOffset <= 0) And (mYOffset <= 0) Then
+                    mMoving = False
+                    If mNpcStep = 0 Then
+                        mNpcStep = 2
+                    Else
+                        mNpcStep = 0
+                    End If
+                End If
+            End If
+        End If
+    End Sub
 End Class
 

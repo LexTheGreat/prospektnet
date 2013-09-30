@@ -131,13 +131,22 @@
 
     Private Sub HandlePosition(ByVal index As Long, ByVal data() As Byte)
         Dim Buffer As ByteBuffer
+        Dim Moving As Boolean, X As Integer, Y As Integer, Dir As Integer
 
         Buffer = New ByteBuffer
         Buffer.WriteBytes(data)
-        Player(index).SetMoving(Buffer.ReadLong)
-        Player(index).SetPosition(New Integer() {Buffer.ReadLong, Buffer.ReadLong})
-        Player(index).SetDir(Buffer.ReadLong)
+        Moving = Buffer.ReadLong
+        X = Buffer.ReadLong
+        Y = Buffer.ReadLong
+        Dir = Buffer.ReadLong
         Buffer = Nothing
+        If Not PlayerOnTile(X, Y) And Not NpcOnTile(X, Y) Then
+            Player(index).SetMoving(Moving)
+            Player(index).SetPosition(New Integer() {X, Y})
+            Player(index).SetDir(Dir)
+        Else
+            Player(index).SetMoving(False)
+        End If
         SendPosition(index)
     End Sub
 

@@ -9,7 +9,7 @@
     ' non-saved values
     Private mXOffset As Integer, mYOffset As Integer
     Private mMoving As Boolean = True
-    Private mPlayerStep As Byte
+    Private mNpcStep As Byte
     Private mSpawned As Boolean = False
 
     Public Sub New()
