@@ -35,6 +35,7 @@
         SVisible
         SMessage
         SNPC
+        SNPCPosition
         ' Make sure SMSG_COUNT is below everything else
         SMSG_COUNT
     End Enum
@@ -46,7 +47,6 @@
         CLogin
         CMessage
         CPosition
-        CSetPosition
         CSetAccess
         CSetVisible
         CWarpTo
@@ -63,6 +63,16 @@
         LEAD_GM
         DEV
         ADMIN
+        ' Make sure COUNT is below everything else
+        COUNT
+    End Enum
+
+    ' Directions
+    Public Enum DirEnum
+        Up = 0
+        Down
+        Left
+        Right
         ' Make sure COUNT is below everything else
         COUNT
     End Enum

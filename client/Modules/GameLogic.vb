@@ -135,6 +135,7 @@
         If s = 0 Then Return False
         Return True
     End Function
+
     Public Function EmailAddressChecker(ByVal emailAddress As String) As Boolean
         Dim regExPattern As String = "^([0-9a-zA-Z]([-\.\w]*[0-9a-zA-Z])*@([0-9a-zA-Z][-\w]*[0-9a-zA-Z]\.)+[a-zA-Z]{2,9})$"
         Dim emailAddressMatch As System.Text.RegularExpressions.Match = System.Text.RegularExpressions.Regex.Match(emailAddress, regExPattern)

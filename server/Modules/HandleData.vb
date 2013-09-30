@@ -6,7 +6,6 @@
         If PacketNum = ClientPackets.CLogin Then HandleLogin(index, Data)
         If PacketNum = ClientPackets.CMessage Then HandleMessage(index, Data)
         If PacketNum = ClientPackets.CPosition Then HandlePosition(index, Data)
-        If PacketNum = ClientPackets.CSetPosition Then HandleSetPosition(index, Data)
         If PacketNum = ClientPackets.CSetAccess Then HandleSetAdmin(index, Data)
         If PacketNum = ClientPackets.CSetVisible Then HandleSetVisible(index, Data)
         If PacketNum = ClientPackets.CWarpTo Then HandleWarpTo(index, Data)
@@ -140,33 +139,14 @@
         Y = Buffer.ReadLong
         Dir = Buffer.ReadLong
         Buffer = Nothing
-        If Not PlayerOnTile(X, Y) And Not NpcOnTile(X, Y) Then
+        If Not PlayerOnTile(X, Y) And Not NpcOnTile(X, Y) Then ' Send new position to others
             Player(index).SetMoving(Moving)
             Player(index).SetPosition(New Integer() {X, Y})
             Player(index).SetDir(Dir)
-        Else
-            Player(index).SetMoving(False)
+            SendPosition(index)
+        Else ' Resend old position to self
+            SendPosition(index, True)
         End If
-        SendPosition(index)
-    End Sub
-
-    Private Sub HandleSetPosition(ByVal index As Long, ByVal data() As Byte)
-        Dim Buffer As ByteBuffer
-        Dim i As Integer
-
-        Buffer = New ByteBuffer
-        Buffer.WriteBytes(data)
-        i = Buffer.ReadLong
-        If Networking.IsPlaying(i) Then
-            Player(i).SetPosition(New Integer() {Buffer.ReadLong, Buffer.ReadLong})
-            SendPosition(i)
-        Else
-            Buffer = New ByteBuffer
-            Buffer.WriteLong(ServerPackets.SMessage)
-            Buffer.WriteString("[System] " & "Player " & Player(i).Name & " not found!")
-            Networking.SendDataTo(index, Buffer.ToArray())
-        End If
-        Buffer = Nothing
     End Sub
 
     Private Sub HandleSetAdmin(ByVal index As Long, ByVal data() As Byte)
@@ -192,7 +172,7 @@
                 Buffer = New ByteBuffer
                 Buffer.WriteLong(ServerPackets.SMessage)
                 Buffer.WriteString("[System] " & "Hacking Attempt - Player: " & Player(index).Name & " - In HandleSetAdmin (Error: invalid access level)")
-                Networking.SendDataTo(index, Buffer.ToArray())
+                Networking.SendDataToAdmins(Buffer.ToArray())
             End If
         End If
         Buffer = Nothing
@@ -209,6 +189,7 @@
             If Player(index).AccessMode > ACCESS.NONE Then
                 If Networking.IsPlaying(i) Then
                     Player(i).Visible = Buffer.ReadBool
+                    SendPosition(i)
                     SendVisible(i)
                 Else
                     Buffer = New ByteBuffer
@@ -221,7 +202,7 @@
                 Buffer = New ByteBuffer
                 Buffer.WriteLong(ServerPackets.SMessage)
                 Buffer.WriteString("[System] " & "Hacking Attempt - Player: " & Player(index).Name & " - In HandleSetVisible (Error: invalid access level)")
-                Networking.SendDataTo(index, Buffer.ToArray())
+                Networking.SendDataToAdmins(Buffer.ToArray())
             End If
         End If
         Buffer = Nothing
@@ -255,7 +236,7 @@
                 Buffer = New ByteBuffer
                 Buffer.WriteLong(ServerPackets.SMessage)
                 Buffer.WriteString("[System] " & "Hacking Attempt - Player: " & Player(index).Name & " - In HandleWarpTo (Error: invalid access level)")
-                Networking.SendDataTo(index, Buffer.ToArray())
+                Networking.SendDataToAdmins(Buffer.ToArray())
             End If
         End If
         Buffer = Nothing
@@ -289,7 +270,7 @@
                 Buffer = New ByteBuffer
                 Buffer.WriteLong(ServerPackets.SMessage)
                 Buffer.WriteString("[System] " & "Hacking Attempt - Player: " & Player(index).Name & " - In HandleWarpToMe (Error: invalid access level)")
-                Networking.SendDataTo(index, Buffer.ToArray())
+                Networking.SendDataToAdmins(Buffer.ToArray())
             End If
         End If
         Buffer = Nothing

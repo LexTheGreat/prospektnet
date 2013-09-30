@@ -20,6 +20,14 @@
         Me.mDir = 1
     End Sub
 
+    Public Sub Load(NewName As String, NewSprite As Integer, NewX As Integer, NewY As Integer, NewDir As Byte)
+        Me.Name = NewName
+        Me.Sprite = NewSprite
+        Me.X = NewX
+        Me.Y = NewY
+        Me.Dir = NewDir
+    End Sub
+
     ' Saved variables
     Public Property Name() As String
         Get

@@ -2,7 +2,7 @@
 <NPCs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <Name>NPC #6</Name>
   <Sprite>2</Sprite>
-  <X>2</X>
-  <Y>9</Y>
+  <X>22</X>
+  <Y>4</Y>
   <Dir>0</Dir>
 </NPCs>

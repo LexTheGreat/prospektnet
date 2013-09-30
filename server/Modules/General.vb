@@ -2,6 +2,7 @@
     Sub ServerLoop()
         Dim Tick As Integer
         Dim tmrPlayerSave As Integer
+        Dim tmrNpcMove As Integer
         Do While inServer
             Tick = System.Environment.TickCount()
             'Saves players every 5 minutes
@@ -10,17 +11,22 @@
                 AccountData.SaveOnlineAccounts()
                 tmrPlayerSave = System.Environment.TickCount + 300000
             End If
+            'Generate Npc movement every second
+            'If tmrNpcMove < Tick Then
+            '    Dim i As Integer
+            '    For i = 0 To NPCCount ' Loop through Npc's
+            '        If Not IsNothing(NPC(i)) Then ' Make sure Npc exists
+            '            NPC(i).GenerateMovement()
+            '        End If
+            '    Next i
+            '    tmrNpcMove = System.Environment.TickCount + 1000
+            'End If
         Loop
     End Sub
 
     Public Function RandomNumber(ByVal MaxNumber As Integer, _
     Optional ByVal MinNumber As Integer = 0) As Integer
-
-        'initialize random number generator
-        Dim r As New Random(System.DateTime.Now.Millisecond)
-
-        'if passed incorrect arguments, swap them
-        'can also throw exception or return 0
+        Dim r As New Random()
 
         If MinNumber > MaxNumber Then
             Dim t As Integer = MinNumber
@@ -29,6 +35,5 @@
         End If
 
         Return r.Next(MinNumber, MaxNumber)
-
     End Function
 End Module

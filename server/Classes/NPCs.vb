@@ -7,6 +7,7 @@
     Private mY As Integer
     Private mDir As Byte
     ' non-saved values
+    Private mIndex As Integer
     Private mXOffset As Integer, mYOffset As Integer
     Private mMoving As Boolean = True
     Private mNpcStep As Byte
@@ -88,4 +89,26 @@
             End If
         End Set
     End Property
+
+    Public Sub SetIndex(ByVal index As Integer)
+        Me.mIndex = index
+    End Sub
+
+    Public Sub GenerateMovement()
+        Dim newX As Integer, newY As Integer
+        If RandomNumber(50) <= 30 Then ' Move Npc
+            If RandomNumber(1) = 1 Then ' See if moving vertical or horizontal
+                If Me.mX - 1 < 0 Then newX = RandomNumber(1) Else newX = RandomNumber(Me.mX + 1, Me.mX - 1)
+                If newX > Me.mX Then Me.mDir = DirEnum.Right Else Me.mDir = DirEnum.Left
+                If newX < 0 Then newX = 1 And Me.mDir = DirEnum.Right
+                Me.mX = newX
+            Else
+                If Me.mY - 1 < 0 Then newY = RandomNumber(1) Else newY = RandomNumber(Me.mY + 1, Me.mY - 1)
+                If newY > Me.mY Then Me.mDir = DirEnum.Down Else Me.mDir = DirEnum.Up
+                If newY < 0 Then newY = 1 And Me.mDir = DirEnum.Down
+                Me.mY = newY
+            End If
+            SendNPCPosition(Me.mIndex)
+        End If
+    End Sub
 End Class

@@ -68,7 +68,7 @@ errorhandler:
             Case Keys.Back
                 If curMenu = MenuEnum.Login Or curMenu = MenuEnum.Register Then
                     If curTextbox = 0 Then
-                        If Len(sUser) > 0 Then sUser = Mid(sUser, 1, Len(sUser) - 1)
+                        If Len(sEmail) > 0 Then sEmail = Mid(sEmail, 1, Len(sEmail) - 1)
                     Else
                         If Len(sPass) > 0 Then sPass = Mid(sPass, 1, Len(sPass) - 1)
                         If Len(sHidden) > 0 Then sHidden = Mid(sHidden, 1, Len(sHidden) - 1)
@@ -84,10 +84,10 @@ errorhandler:
             Case Keys.Return
                 If curMenu = MenuEnum.Login Then
                     If Networking.ConnectToServer() Then
-                        If Len(Trim(sUser)) > 0 And Len(Trim(sPass)) > 0 And EmailAddressChecker(Trim(sUser)) = True Then
-                            SendLogin(sUser, sPass)
+                        If Len(Trim(sEmail)) > 0 And Len(Trim(sPass)) > 0 And EmailAddressChecker(Trim(sEmail)) = True Then
+                            SendLogin(sEmail, sPass)
                         Else
-                            MsgBox(Trim(sUser))
+                            MsgBox(Trim(sEmail))
                             MsgBox("Username and password fields can not be empty or you entered wrong email.")
                         End If
                     Else
@@ -95,10 +95,10 @@ errorhandler:
                     End If
                 ElseIf curMenu = MenuEnum.Register Then
                     If Networking.ConnectToServer() Then
-                        If Len(Trim(sUser)) > 0 And Len(Trim(sPass)) > 0 And EmailAddressChecker(Trim(sUser)) = True Then
-                            SendRegister(sUser, sPass)
+                        If Len(Trim(sEmail)) > 0 And Len(Trim(sPass)) > 0 And EmailAddressChecker(Trim(sEmail)) = True Then
+                            SendRegister(sEmail, sPass)
                         Else
-                            MsgBox(Trim(sUser))
+                            MsgBox(Trim(sEmail))
                             MsgBox("Username and password fields can not be empty or you entered wrong email.")
                         End If
                     Else
@@ -106,8 +106,8 @@ errorhandler:
                     End If
                 ElseIf curMenu = MenuEnum.Creation Then
                     If Networking.ConnectToServer() Then
-                        If Len(Trim(sUser)) > 0 And Len(Trim(sCharacter)) > 0 Then
-                            SendNewCharacter(sUser, sCharacter)
+                        If Len(Trim(sEmail)) > 0 And Len(Trim(sCharacter)) > 0 Then
+                            SendNewCharacter(sEmail, sCharacter)
                         Else
                             MsgBox("Name field can not be empty")
                         End If
@@ -125,7 +125,7 @@ errorhandler:
         If Not GetKeyState(Keys.Back) And Not GetKeyState(Keys.Return) And Not GetKeyState(Keys.Tab) And Not GetKeyState(Keys.Escape) Then
             If curMenu = MenuEnum.Login Or curMenu = MenuEnum.Register Then
                 If curTextbox = 0 Then
-                    sUser = sUser & Key.ToString
+                    sEmail = sEmail & Key.ToString
                 Else
                     sPass = sPass & Key.ToString
                     sHidden = sHidden & "*"
@@ -150,9 +150,9 @@ errorhandler:
         Verdana.Draw("EMAIL:", (ClientConfig.ScreenWidth * 0.5) - 55 - Verdana.GetWidth("USERNAME:"), (ClientConfig.ScreenHeight * 0.5) - 27, Color.White)
         Render.RenderTexture(texGui(1), (ClientConfig.ScreenWidth * 0.5) - 50, (ClientConfig.ScreenHeight * 0.5) - 30, 0, 0, 175, 20, 32, 32, 200, 0, 0, 0)
         If curTextbox = 0 Then
-            Verdana.Draw(sUser & chatShowLine, (ClientConfig.ScreenWidth * 0.5) - 47, (ClientConfig.ScreenHeight * 0.5) - 27, Color.White)
+            Verdana.Draw(sEmail & chatShowLine, (ClientConfig.ScreenWidth * 0.5) - 47, (ClientConfig.ScreenHeight * 0.5) - 27, Color.White)
         Else
-            Verdana.Draw(sUser, (ClientConfig.ScreenWidth * 0.5) - 47, (ClientConfig.ScreenHeight * 0.5) - 27, Color.White)
+            Verdana.Draw(sEmail, (ClientConfig.ScreenWidth * 0.5) - 47, (ClientConfig.ScreenHeight * 0.5) - 27, Color.White)
         End If
         Verdana.Draw("PASSWORD:", (ClientConfig.ScreenWidth * 0.5) - 55 - Verdana.GetWidth("PASSWORD:"), (ClientConfig.ScreenHeight * 0.5) + 3, Color.White)
         Render.RenderTexture(texGui(1), (ClientConfig.ScreenWidth * 0.5) - 50, (ClientConfig.ScreenHeight * 0.5), 0, 0, 175, 20, 32, 32, 200, 0, 0, 0)
@@ -164,9 +164,6 @@ errorhandler:
     End Sub
 
     Public Shared Sub DrawCreation()
-        ' Back Button
-        Render.RenderButton((ClientConfig.ScreenWidth * 0.5) - 185, (ClientConfig.ScreenHeight * 0.5) - 85, 15, 15, 7, 7, AddressOf ButtonPress, 0)
-
         Verdana.Draw("Player Name:", (ClientConfig.ScreenWidth * 0.5) - 55 - Verdana.GetWidth("Player Name:"), (ClientConfig.ScreenHeight * 0.5) - 27, Color.White)
         Render.RenderTexture(texGui(1), (ClientConfig.ScreenWidth * 0.5) - 50, (ClientConfig.ScreenHeight * 0.5) - 30, 0, 0, 175, 20, 32, 32, 200, 0, 0, 0)
         Verdana.Draw(sCharacter & chatShowLine, (ClientConfig.ScreenWidth * 0.5) - 47, (ClientConfig.ScreenHeight * 0.5) - 27, Color.White)
@@ -201,7 +198,7 @@ errorhandler:
             Case 0
                 curMenu = MenuEnum.Main
                 curTextbox = 0
-                sUser = vbNullString
+                sEmail = vbNullString
                 sPass = vbNullString
                 sHidden = vbNullString
             Case 1 : curMenu = MenuEnum.Login

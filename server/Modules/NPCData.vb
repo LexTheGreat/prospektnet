@@ -37,6 +37,7 @@ Module NPCData
                     Reader = New StreamReader(fileName)
                     Ser = New XmlSerializer(loadNPC.GetType)
                     loadNPC = Ser.Deserialize(Reader)
+                    loadNPC.SetIndex(i)
                     Reader.Close()
                     NPCCount = i + 1
                     ReDim Preserve NPC(0 To NPCCount)
@@ -67,6 +68,7 @@ Module NPCData
     End Sub
 
     Public Sub SendNPCs()
+        Dim i As Integer
         For i = 0 To NPCCount
             If Not IsNothing(NPC(i)) Then
                 SendNPC(i)

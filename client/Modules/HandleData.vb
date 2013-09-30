@@ -12,6 +12,7 @@
         If PacketNum = ServerPackets.SAccess Then HandleAccess(Data)
         If PacketNum = ServerPackets.SVisible Then HandleVisible(Data)
         If PacketNum = ServerPackets.SNPC Then HandleNPC(Data)
+        If PacketNum = ServerPackets.SNPCPosition Then HandleNPCPosition(Data)
     End Sub
 
     Private Sub HandleAlert(ByRef Data() As Byte)
@@ -23,7 +24,7 @@
         faderState = 2
         faderAlpha = 0
         If curMenu = MenuEnum.Login Or curMenu = MenuEnum.Register Or curMenu = MenuEnum.Creation Then
-            sUser = vbNullString
+            sEmail = vbNullString
             sPass = vbNullString
             sHidden = vbNullString
             sCharacter = vbNullString
@@ -154,21 +155,33 @@
         Player(tempIndex).Visible = Buffer.ReadBool
         Buffer = Nothing
     End Sub
+
     Private Sub HandleNPC(ByRef Data() As Byte)
-        Dim tempIndex As Integer, tempCount As Integer
+        Dim tempIndex As Integer
         Dim Buffer As ByteBuffer
         Buffer = New ByteBuffer
         Buffer.WriteBytes(Data)
         tempIndex = Buffer.ReadLong
-        tempCount = Buffer.ReadLong
-        NPCCount = tempCount
+        NPCCount = Buffer.ReadLong
         ReDim Preserve NPC(0 To NPCCount)
-        NPC(tempIndex) = New NPCs
-        NPC(tempIndex).X = Buffer.ReadLong
-        NPC(tempIndex).Y = Buffer.ReadLong
-        NPC(tempIndex).Dir = Buffer.ReadLong
-        NPC(tempIndex).Name = Buffer.ReadString
-        NPC(tempIndex).Sprite = Buffer.ReadLong
+        If IsNothing(NPC(tempIndex)) Then NPC(tempIndex) = New NPCs
+        NPC(tempIndex).Load(Buffer.ReadString, Buffer.ReadLong, Buffer.ReadLong, Buffer.ReadLong, Buffer.ReadLong)
+        Buffer = Nothing
+    End Sub
+
+    Private Sub HandleNPCPosition(ByRef Data() As Byte)
+        Dim tempIndex As Integer
+        Dim Buffer As ByteBuffer
+        Buffer = New ByteBuffer
+        Buffer.WriteBytes(Data)
+        tempIndex = Buffer.ReadLong
+        If IsNothing(NPC(tempIndex)) Then Exit Sub
+        If Not IsNothing(NPC(tempIndex)) Then
+            NPC(tempIndex).X = Buffer.ReadLong
+            NPC(tempIndex).Y = Buffer.ReadLong
+            NPC(tempIndex).Dir = Buffer.ReadLong
+            NPC(tempIndex).ProcessMovement()
+        End If
         Buffer = Nothing
     End Sub
 End Module

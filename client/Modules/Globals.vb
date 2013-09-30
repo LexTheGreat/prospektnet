@@ -44,7 +44,7 @@
     ' Main menu
     Public curMenu As Byte
     Public curTextbox As Byte
-    Public sUser As String
+    Public sEmail As String
     Public sPass As String
     Public sCharacter As String
     Public sHidden As String
@@ -128,6 +128,7 @@
         SVisible
         SMessage
         SNPC
+        SNPCPosition
         ' Make sure SMSG_COUNT is below everything else
         SMSG_COUNT
     End Enum
@@ -139,7 +140,6 @@
         CLogin
         CMessage
         CPosition
-        CSetPosition
         CSetAccess
         CSetVisible
         CWarpTo
