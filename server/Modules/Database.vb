@@ -1,4 +1,6 @@
-﻿Module Database
+﻿Imports System.Xml
+Imports System.IO
+Module Database
     Public Function fileExist(ByVal filepath As String, Optional ByVal Raw As Boolean = False) As Boolean
         If Raw = True Then
             fileExist = System.IO.File.Exists(filepath)
@@ -6,6 +8,20 @@
             fileExist = System.IO.File.Exists(filepath)
         End If
     End Function
+
+    Public Sub LoadOptions()
+        Dim m_xmld As XmlDocument
+        Dim m_nodelist As XmlNodeList
+        Dim m_node As XmlNode
+        m_xmld = New XmlDocument
+        m_xmld.Load(pathContent & "config.xml")
+
+        m_nodelist = m_xmld.SelectNodes("configuration/network")
+        For Each m_node In m_nodelist
+            ServerConfig.Port = m_node.Item("port").InnerText
+        Next
+    End Sub
+
     Public Function AccountExists(ByVal Name As String) As Boolean
         Dim db As SQLiteDatabase
         Dim data As DataTable

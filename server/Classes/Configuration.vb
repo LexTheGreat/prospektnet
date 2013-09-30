@@ -3,19 +3,21 @@ Imports System.Xml.Serialization
 Public Class Configuration
     Public Port As Integer
 
-    Public Sub LoadOptions()
-        'Serialize object to a text file.
-        Dim objStreamReader As New StreamReader(pathContent & "config.xml")
-        Dim x As New XmlSerializer(ServerConfig.GetType)
-        ServerConfig = x.Deserialize(objStreamReader)
-        objStreamReader.Close()
+    Public Sub New()
+        Me.Port = 8080
     End Sub
 
-    Public Sub SaveOptions()
-        'Serialize object to a text file.
-        Dim objStreamWriter As New StreamWriter(pathContent & "config.xml")
-        Dim x As New XmlSerializer(ServerConfig.GetType)
-        x.Serialize(objStreamWriter, ServerConfig)
-        objStreamWriter.Close()
+    Public Sub Load()
+        Dim objConfig As Object, newConfig As New Configuration
+
+        ' Get object from file
+        objConfig = Files.Read(pathContent & "config.xml", Me)
+        ' Convert object to newConfig
+        newConfig = CType(objConfig, Configuration)
+        Me.Port = newConfig.Port
+    End Sub
+
+    Public Sub Save()
+        Files.Write(pathContent & "config.xml", Me)
     End Sub
 End Class

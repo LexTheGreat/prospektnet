@@ -10,7 +10,7 @@ Features
 * SFML (OpenGL) rendering
 * SFML sound and music framework
 * SFML font engine
-* SQLite database for accounts
+* XML database for accounts
 * Winsock Orcas (temporary) networking library
 * Basic tile engine
 * Basic client-server connection with multiple players
@@ -24,8 +24,8 @@ Features
 Credits
 -------
 
-Creator and solo developer:
-Thomas.
+Developers:
+Thomas and Ertzel.
 
 Music:
 Aaron Krogh.

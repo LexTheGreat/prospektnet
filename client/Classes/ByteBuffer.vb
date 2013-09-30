@@ -76,6 +76,20 @@ Public Class ByteBuffer
         Return ret
     End Function
 
+    Public Function ReadBool(Optional ByVal peek As Boolean = True) As Boolean
+        Dim ret As Long = BitConverter.ToBoolean(Buff.ToArray, ReadHead)
+
+        ' Check to see if this passes the byte count
+        If Buff.Count <= ReadHead Then Return 0
+
+        If peek And Buff.Count > ReadHead Then
+            ReadHead += 8
+        End If
+
+        ' Return function value
+        Return ret
+    End Function
+
     Public Sub WriteBytes(ByVal Input() As Byte)
         Buff.AddRange(Input)
     End Sub
@@ -91,6 +105,10 @@ Public Class ByteBuffer
     Public Sub WriteString(ByVal Input As String)
         Buff.AddRange(BitConverter.GetBytes(Input.Length))
         Buff.AddRange(Encoding.ASCII.GetBytes(Input))
+    End Sub
+
+    Public Sub WriteBool(ByVal Input As Boolean)
+        Buff.AddRange(BitConverter.GetBytes(Input))
     End Sub
 
     Public Function ToArray() As Byte()

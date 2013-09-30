@@ -127,6 +127,7 @@
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Classes\Accounts.vb" />
     <Compile Include="Classes\ByteBuffer.vb" />
     <Compile Include="Classes\Configuration.vb" />
     <Compile Include="Classes\LuaHandler.vb" />
@@ -135,10 +136,13 @@
     <Compile Include="Classes\Players.vb" />
     <Compile Include="Classes\ClientSocket.vb" />
     <Compile Include="Classes\SQLite.vb" />
+    <Compile Include="Modules\Files.vb" />
     <Compile Include="Modules\Globals.vb" />
     <Compile Include="Modules\General.vb" />
+    <Compile Include="Modules\Guilds.vb" />
     <Compile Include="Modules\HandleData.vb" />
-    <Compile Include="Modules\Database.vb" />
+    <Compile Include="Modules\AccountData.vb" />
+    <Compile Include="Modules\Parties.vb" />
     <Compile Include="Modules\SendData.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">

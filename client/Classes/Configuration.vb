@@ -10,19 +10,36 @@ Public Class Configuration
     Public IP As String
     Public Port As Integer
 
-    Public Sub LoadOptions()
-        'Serialize object to a text file.
-        Dim objStreamReader As New StreamReader(pathContent & "config.xml")
-        Dim x As New XmlSerializer(ClientConfig.GetType)
-        ClientConfig = x.Deserialize(objStreamReader)
-        objStreamReader.Close()
+    Public Sub New()
+        Me.ScreenWidth = 800
+        Me.ScreenHeight = 600
+        Me.MenuMusic = "tranquility.ogg"
+        Me.GameMusic = "touchthesky.ogg"
+        Me.Music = True
+        Me.Sound = True
+        Me.IP = "localhost"
+        Me.Port = 8080
     End Sub
 
-    Public Sub SaveOptions()
-        'Serialize object to a text file.
-        Dim objStreamWriter As New StreamWriter(pathContent & "config.xml")
-        Dim x As New XmlSerializer(ClientConfig.GetType)
-        x.Serialize(objStreamWriter, ClientConfig)
-        objStreamWriter.Close()
+    Public Sub Load()
+        Dim objConfig As Object, newConfig As New Configuration
+
+        ' Get object from file
+        objConfig = Files.Read(pathContent & "config.xml", Me)
+        If objConfig = Nothing Then objConfig = New Configuration()
+        ' Convert object to newConfig
+        newConfig = CType(objConfig, Configuration)
+        Me.ScreenWidth = newConfig.ScreenWidth
+        Me.ScreenHeight = newConfig.ScreenHeight
+        Me.MenuMusic = newConfig.MenuMusic
+        Me.GameMusic = newConfig.GameMusic
+        Me.Music = newConfig.Music
+        Me.Sound = newConfig.Sound
+        Me.IP = newConfig.IP
+        Me.Port = newConfig.Port
+    End Sub
+
+    Public Sub Save()
+        Files.Write(pathContent & "config.xml", Me)
     End Sub
 End Class

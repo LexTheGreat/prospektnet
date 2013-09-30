@@ -6,9 +6,8 @@
             Tick = System.Environment.TickCount()
             'Saves players every 5 minutes
             If tmrPlayerSave < Tick Then
-                For I = 1 To PlayerHighIndex
-                    If Networking.IsPlaying(I) Then Player(I).Save()
-                Next
+                Console.WriteLine("Saving Players...")
+                AccountData.SaveOnlineAccounts()
                 tmrPlayerSave = System.Environment.TickCount + 300000
             End If
         Loop

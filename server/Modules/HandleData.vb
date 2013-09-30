@@ -1,10 +1,72 @@
 ﻿Module HandleData
     Public Sub HandleDataPackets(ByVal PacketNum As Long, ByVal index As Long, ByRef Data() As Byte)
         If PacketNum = 0 Then Exit Sub
+        If PacketNum = ClientPackets.CRegister Then HandleRegister(index, Data)
+        If PacketNum = ClientPackets.CNewCharacter Then HandleNewCharacter(index, Data)
         If PacketNum = ClientPackets.CLogin Then HandleLogin(index, Data)
-        If PacketNum = ClientPackets.CPosition Then HandlePosition(index, Data)
         If PacketNum = ClientPackets.CMessage Then HandleMessage(index, Data)
+        If PacketNum = ClientPackets.CPosition Then HandlePosition(index, Data)
+        If PacketNum = ClientPackets.CSetPosition Then HandleSetPosition(index, Data)
+        If PacketNum = ClientPackets.CSetAccess Then HandleSetAdmin(index, Data)
+        If PacketNum = ClientPackets.CSetVisible Then HandleSetVisible(index, Data)
+        If PacketNum = ClientPackets.CWarpTo Then HandleWarpTo(index, Data)
+        If PacketNum = ClientPackets.CWarpToMe Then HandleWarpToMe(index, Data)
     End Sub
+
+    Private Sub HandleRegister(ByVal index As Long, ByVal data() As Byte)
+        Dim Buffer As ByteBuffer
+        Dim Login As String, Password As String
+
+        Buffer = New ByteBuffer
+        Buffer.WriteBytes(data)
+        Login = Buffer.ReadString
+        Password = Buffer.ReadString
+        Buffer = Nothing
+        If Not AccountData.AccountExists(Login) Then
+            Dim newAccount = New Accounts
+            newAccount.Login = Login
+            newAccount.Password = Password
+            newAccount.Player = New Players
+            If newAccount.Create() = False Then
+                Console.WriteLine("Account " & Login & " Failed To Register! [Error: username already taken]")
+                SendAlert(index, "Account " & Login & " Failed To Register!" & vbNewLine & "[Error: username already taken]")
+                Exit Sub
+            End If
+            SendRegisterOk(index)
+            Console.WriteLine("Account " & Login & " has been registered.")
+        Else
+            Console.WriteLine("Account " & Login & " Failed To Register! [Error: username already taken]")
+            SendAlert(index, "Account " & Login & " Failed To Register!" & vbNewLine & "[Error: username already taken]")
+        End If
+    End Sub
+
+    Private Sub HandleNewCharacter(ByVal index As Long, ByVal data() As Byte)
+        Dim Buffer As ByteBuffer
+        Dim Login As String, Name As String
+
+        Buffer = New ByteBuffer
+        Buffer.WriteBytes(data)
+        Login = Buffer.ReadString
+        Name = Buffer.ReadString
+        Buffer = Nothing
+        If Not AccountData.CharacterExists(Name) Then
+            Dim newAccount As New Accounts
+            newAccount = AccountData.GetAccount(Login)
+            newAccount.Player.Name = Name
+            If newAccount.Login = vbNullString Or newAccount.NewCharacter() = False Then
+                Console.WriteLine("Character " & Login & " Failed To Create! [Error: Account does not exist]")
+                SendAlert(index, "Character " & Login & " Failed To Create!" & vbNewLine & "[Error: Account does not exist]")
+                Exit Sub
+            End If
+            SendAlert(index, "Your character has been created. You may now login!")
+            Console.WriteLine("Character " & Login & " has been created.")
+        Else
+            Console.WriteLine("Character " & Login & " Failed To Create! [Error: Name already taken]")
+            SendAlert(index, "Character " & Login & " Failed To Create!" & vbNewLine & "[Error: Name already taken]")
+        End If
+
+    End Sub
+
     Private Sub HandleLogin(ByVal index As Long, ByVal data() As Byte)
         Dim Buffer As ByteBuffer
         Dim Name As String, Password As String
@@ -14,27 +76,56 @@
         Name = Buffer.ReadString
         Password = Buffer.ReadString
         Buffer = Nothing
-        Networking.UpdateHighIndex()
-        Player(index) = New Players
-        If Not AccountExists(Name) Then
-            Player(index).Create(Name, Password)
-            Player(index).Name = Name
-            Player(index).Password = Password
-            Player(index).X = 1
-            Player(index).Y = 5
-            Player(index).Dir = 1
-            Player(index).Sprite = 1
-            Player(index).Save()
-            Console.WriteLine("Account " & Name & " has been created.")
+        Player(index) = New Players()
+        If Not AccountData.AccountExists(Name) Then
+            Console.WriteLine("Account " & Name & " Failed To Load! [Error: account does not exist]")
+            SendAlert(index, "Account " & Name & " Failed To Load!" & vbNewLine & "[Error: account does not exist]")
+            Exit Sub
         Else
-            Player(index).Load(Name)
-            Console.WriteLine("Account " & Name & " has been loaded.")
+            If Not AccountData.VerifyAccount(Name, Password) Then
+                Console.WriteLine("Account " & Name & " Failed To Load! [Error: username or password are incorrect]")
+                SendAlert(index, "Account " & Name & " Failed To Load!" & vbNewLine & "[Error: username or password are incorrect]")
+                Exit Sub
+            End If
+            If Not AccountData.HasCharacter(GetAccountIndex(Name)) Then
+                SendRegisterOk(index)
+                Exit Sub
+            End If
+            Networking.UpdateHighIndex()
+            Player(index).Load(AccountData.GetAccount(Name).Player.Name)
+            Player(index).SetIsPlaying(True)
+            SendPlayers()
+            SendLoginOk(index)
+
+            Select Case Player(index).AccessMode
+                Case ACCESS.NONE : SendMessage(Trim$(Player(index).Name) & " has logged in.")
+                Case ACCESS.GMIT : SendMessage(Trim$("(GMIT) " & Player(index).Name) & " has logged in.")
+                Case ACCESS.GM : SendMessage(Trim$("(GM) " & Player(index).Name) & " has logged in.")
+                Case ACCESS.LEAD_GM : SendMessage(Trim$("(Lead GM) " & Player(index).Name) & " has logged in.")
+                Case ACCESS.DEV : SendMessage(Trim$("(DEV) " & Player(index).Name) & " has logged in.")
+                Case ACCESS.ADMIN : SendMessage(Trim$("(Admin) " & Player(index).Name) & " has logged in.")
+            End Select
+            Console.WriteLine(Name & " has logged in.")
         End If
-        Player(index).isPlaying = True
-        SendPlayers()
-        SendLoginOk(index)
-        SendMessage(Name & " has logged in.")
-        Console.WriteLine(Name & " has logged in.")
+    End Sub
+
+    Private Sub HandleMessage(ByVal index As Long, ByVal data() As Byte)
+        Dim Buffer As ByteBuffer, ChatMode As String, Message As String
+
+        Buffer = New ByteBuffer
+        Buffer.WriteBytes(data)
+        ChatMode = Buffer.ReadString
+        Message = Buffer.ReadString
+        Buffer = Nothing
+
+        Select Case Player(index).AccessMode
+            Case ACCESS.NONE : SendMessage(ChatMode & Trim$(Player(index).Name) & ": " & Message)
+            Case ACCESS.GMIT : SendMessage(ChatMode & Trim$("(GMIT) " & Player(index).Name) & ": " & Message)
+            Case ACCESS.GM : SendMessage(ChatMode & Trim$("(GM) " & Player(index).Name) & ": " & Message)
+            Case ACCESS.LEAD_GM : SendMessage(ChatMode & Trim$("(Lead GM) " & Player(index).Name) & ": " & Message)
+            Case ACCESS.DEV : SendMessage(ChatMode & Trim$("(DEV) " & Player(index).Name) & ": " & Message)
+            Case ACCESS.ADMIN : SendMessage(ChatMode & Trim$("(Admin) " & Player(index).Name) & ": " & Message)
+        End Select
     End Sub
 
     Private Sub HandlePosition(ByVal index As Long, ByVal data() As Byte)
@@ -42,22 +133,156 @@
 
         Buffer = New ByteBuffer
         Buffer.WriteBytes(data)
-        Player(index).Moving = Buffer.ReadLong
-        Player(index).X = Buffer.ReadLong
-        Player(index).Y = Buffer.ReadLong
-        Player(index).Dir = Buffer.ReadLong
+        Player(index).SetMoving(Buffer.ReadLong)
+        Player(index).SetPosition(New Integer() {Buffer.ReadLong, Buffer.ReadLong})
+        Player(index).SetDir(Buffer.ReadLong)
         Buffer = Nothing
         SendPosition(index)
     End Sub
 
-    Private Sub HandleMessage(ByVal index As Long, ByVal data() As Byte)
-        Dim Buffer As ByteBuffer, Message As String
+    Private Sub HandleSetPosition(ByVal index As Long, ByVal data() As Byte)
+        Dim Buffer As ByteBuffer
+        Dim i As Integer
 
         Buffer = New ByteBuffer
         Buffer.WriteBytes(data)
-        Message = Buffer.ReadString
+        i = Buffer.ReadLong
+        If Networking.IsPlaying(i) Then
+            Player(i).SetPosition(New Integer() {Buffer.ReadLong, Buffer.ReadLong})
+            SendPosition(i)
+        Else
+            Buffer = New ByteBuffer
+            Buffer.WriteLong(ServerPackets.SMessage)
+            Buffer.WriteString("[System] " & "Player " & Player(i).Name & " not found!")
+            Networking.SendDataTo(index, Buffer.ToArray())
+        End If
         Buffer = Nothing
-        SendMessage(Trim(Player(index).Name) & ": " & Message)
+    End Sub
+
+    Private Sub HandleSetAdmin(ByVal index As Long, ByVal data() As Byte)
+        Dim Buffer As ByteBuffer
+        Dim i As Integer
+
+        Buffer = New ByteBuffer
+        Buffer.WriteBytes(data)
+        i = Buffer.ReadLong
+        If Networking.IsPlaying(index) Then
+            If Player(index).AccessMode > ACCESS.NONE Then
+                If Networking.IsPlaying(i) Then
+                    Player(i).AccessMode = Buffer.ReadLong
+                    SendAccess(i)
+                Else
+                    Buffer = New ByteBuffer
+                    Buffer.WriteLong(ServerPackets.SMessage)
+                    Buffer.WriteString("[System] " & "Player " & Player(i).Name & " not found!")
+                    Networking.SendDataTo(index, Buffer.ToArray())
+                End If
+            Else
+                Console.WriteLine("Hacking Attempt - Player: " & Player(index).Name & " - In HandleSetAdmin (Error: invalid access level)")
+                Buffer = New ByteBuffer
+                Buffer.WriteLong(ServerPackets.SMessage)
+                Buffer.WriteString("[System] " & "Hacking Attempt - Player: " & Player(index).Name & " - In HandleSetAdmin (Error: invalid access level)")
+                Networking.SendDataTo(index, Buffer.ToArray())
+            End If
+        End If
+        Buffer = Nothing
+    End Sub
+
+    Private Sub HandleSetVisible(ByVal index As Long, ByVal data() As Byte)
+        Dim Buffer As ByteBuffer
+        Dim i As Integer
+
+        Buffer = New ByteBuffer
+        Buffer.WriteBytes(data)
+        i = Buffer.ReadLong
+        If Networking.IsPlaying(index) Then
+            If Player(index).AccessMode > ACCESS.NONE Then
+                If Networking.IsPlaying(i) Then
+                    Player(i).Visible = Buffer.ReadBool
+                    SendVisible(i)
+                Else
+                    Buffer = New ByteBuffer
+                    Buffer.WriteLong(ServerPackets.SMessage)
+                    Buffer.WriteString("[System] " & "Player " & Player(i).Name & " not found!")
+                    Networking.SendDataTo(index, Buffer.ToArray())
+                End If
+            Else
+                Console.WriteLine("Hacking Attempt - Player: " & Player(index).Name & " - In HandleSetVisible (Error: invalid access level)")
+                Buffer = New ByteBuffer
+                Buffer.WriteLong(ServerPackets.SMessage)
+                Buffer.WriteString("[System] " & "Hacking Attempt - Player: " & Player(index).Name & " - In HandleSetVisible (Error: invalid access level)")
+                Networking.SendDataTo(index, Buffer.ToArray())
+            End If
+        End If
+        Buffer = Nothing
+    End Sub
+
+    Private Sub HandleWarpTo(ByVal index As Long, ByVal data() As Byte)
+        Dim Buffer As ByteBuffer
+        Dim i As Integer
+
+        Buffer = New ByteBuffer
+        Buffer.WriteBytes(data)
+        i = Buffer.ReadLong
+        If Networking.IsPlaying(index) Then
+            If Player(index).AccessMode > ACCESS.NONE Then
+                If Networking.IsPlaying(i) Then
+                    Player(index).SetDir(Player(i).Dir)
+                    Player(index).SetPosition(New Integer() {Player(i).X, Player(i).Y})
+                    SendPosition(index, True)
+                    Buffer = New ByteBuffer
+                    Buffer.WriteLong(ServerPackets.SMessage)
+                    Buffer.WriteString("[System] You have been summoned to " & Player(i).Name & "!")
+                    Networking.SendDataTo(index, Buffer.ToArray())
+                Else
+                    Buffer = New ByteBuffer
+                    Buffer.WriteLong(ServerPackets.SMessage)
+                    Buffer.WriteString("[System] " & "Player " & Player(i).Name & " not found!")
+                    Networking.SendDataTo(index, Buffer.ToArray())
+                End If
+            Else
+                Console.WriteLine("Hacking Attempt - Player: " & Player(index).Name & " - In HandleWarpTo (Error: invalid access level)")
+                Buffer = New ByteBuffer
+                Buffer.WriteLong(ServerPackets.SMessage)
+                Buffer.WriteString("[System] " & "Hacking Attempt - Player: " & Player(index).Name & " - In HandleWarpTo (Error: invalid access level)")
+                Networking.SendDataTo(index, Buffer.ToArray())
+            End If
+        End If
+        Buffer = Nothing
+    End Sub
+
+    Private Sub HandleWarpToMe(ByVal index As Long, ByVal data() As Byte)
+        Dim Buffer As ByteBuffer
+        Dim i As Integer
+
+        Buffer = New ByteBuffer
+        Buffer.WriteBytes(data)
+        i = Buffer.ReadLong
+        If Networking.IsPlaying(index) Then
+            If Player(index).AccessMode > ACCESS.NONE Then
+                If Networking.IsPlaying(i) Then
+                    Player(i).SetDir(Player(index).Dir())
+                    Player(i).SetPosition(New Integer() {Player(index).X, Player(index).Y})
+                    SendPosition(i, True)
+                    Buffer = New ByteBuffer
+                    Buffer.WriteLong(ServerPackets.SMessage)
+                    Buffer.WriteString("[System] " & Player(i).Name & " has been summoned!")
+                    Networking.SendDataTo(index, Buffer.ToArray())
+                Else
+                    Buffer = New ByteBuffer
+                    Buffer.WriteLong(ServerPackets.SMessage)
+                    Buffer.WriteString("[System] " & "Player " & Player(i).Name & " not found!")
+                    Networking.SendDataTo(index, Buffer.ToArray())
+                End If
+            Else
+                Console.WriteLine("Hacking Attempt - Player: " & Player(index).Name & " - In HandleWarpToMe (Error: invalid access level)")
+                Buffer = New ByteBuffer
+                Buffer.WriteLong(ServerPackets.SMessage)
+                Buffer.WriteString("[System] " & "Hacking Attempt - Player: " & Player(index).Name & " - In HandleWarpToMe (Error: invalid access level)")
+                Networking.SendDataTo(index, Buffer.ToArray())
+            End If
+        End If
+        Buffer = Nothing
     End Sub
 
 End Module

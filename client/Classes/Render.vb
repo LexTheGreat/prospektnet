@@ -1,13 +1,14 @@
 ﻿Imports SFML.Graphics
 Imports SFML.Window
 
-Public Class Renderer
+Public Class Render
     ' Rendering window
     Public Shared Window As RenderWindow
+    Delegate Function Pressed(ByVal index As Integer) As Boolean
 
     Public Shared Sub Initialize()
         ' Initialize rendering window
-        Window = New RenderWindow(Game.Handle)
+        Window = New RenderWindow(GameWindow.Handle)
         Window.SetFramerateLimit(32)
 
         'Cache and load textures
@@ -73,24 +74,48 @@ Public Class Renderer
         End If
     End Sub
 
-    Public Shared Sub DrawTexture(ByVal textureNum As Long, ByVal destX As Long, ByVal destY As Long, ByVal srcX As Long, ByVal srcY As Long, ByVal destWidth As Long, ByVal destHeight As Long, ByVal srcWidth As Long, ByVal srcHeight As Long, Optional ByVal A As Byte = 255, Optional ByVal R As Byte = 255, Optional ByVal G As Byte = 255, Optional ByVal B As Byte = 255)
+    Public Shared Sub DrawFader()
+        RenderTexture(texGui(1), 0, 0, 0, 0, ClientConfig.ScreenWidth, ClientConfig.ScreenHeight, 32, 32, faderAlpha, 0, 0, 0)
+    End Sub
+
+    Public Shared Sub RenderTexture(ByVal textureNum As Long, ByVal destX As Long, ByVal destY As Long, ByVal srcX As Long, ByVal srcY As Long, ByVal destWidth As Long, ByVal destHeight As Long, ByVal srcWidth As Long, ByVal srcHeight As Long, Optional ByVal A As Byte = 255, Optional ByVal R As Byte = 255, Optional ByVal G As Byte = 255, Optional ByVal B As Byte = 255)
         Dim textureWidth As Integer, textureHeight As Integer
 
         ' Prevent subscript out range
-        If TextureNum <= 0 Or TextureNum > numTextures Then Exit Sub
+        If textureNum <= 0 Or textureNum > numTextures Then Exit Sub
 
         ' texture sizes
-        TextureWidth = Texture(TextureNum).Width
-        TextureHeight = Texture(TextureNum).Height
+        textureWidth = Texture(textureNum).Width
+        textureHeight = Texture(textureNum).Height
 
         ' exit out if we need to
-        If TextureWidth <= 0 Or TextureHeight <= 0 Then Exit Sub
+        If textureWidth <= 0 Or textureHeight <= 0 Then Exit Sub
 
-        Texture(TextureNum).Tex.Color = New Color(R, G, B, A)
+        Texture(textureNum).Tex.Color = New Color(R, G, B, A)
         If destWidth <> srcWidth Or destHeight <> srcHeight Then Texture(textureNum).Tex.Scale = New Vector2f(destWidth / srcWidth, destHeight / srcHeight)
         Texture(textureNum).Tex.TextureRect = New IntRect(srcX, srcY, srcWidth, srcHeight)
         Texture(textureNum).Tex.Position = New Vector2f(destX, destY)
         Texture(textureNum).Tex.Draw(Window, RenderStates.Default)
 
+    End Sub
+
+    Public Shared Sub RenderButton(ByVal X As Integer, ByVal Y As Integer, ByVal W As Integer, ByVal H As Integer, ByVal Norm As Integer, ByVal Hov As Integer, ByVal btn As Pressed, ByVal Index As Integer)
+        ' Change the button state
+        If mouseX > X And mouseX < X + W And mouseY > Y And mouseY < Y + H Then
+            ' Hover state
+            Render.RenderTexture(texButton(Hov), X, Y, 0, 0, W, H, W, H)
+
+            ' When the button is clicked
+            If mouseLeftDown > 0 Then
+                ' Run button if it works
+                If (btn.Invoke(Index)) Then
+                    ' Button sound
+                    AudioPlayer.playSound("button.ogg")
+                End If
+            End If
+        Else
+            ' Normal state
+            Render.RenderTexture(texButton(Norm), X, Y, 0, 0, W, H, W, H)
+        End If
     End Sub
 End Class

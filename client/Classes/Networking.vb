@@ -2,10 +2,10 @@
 Public Class Networking
     Public Shared WithEvents PlayerSocket As Winsock
     Public Shared Sub DataArrival(ByVal sender As Object, ByVal e As Winsock_Orcas.WinsockDataArrivalEventArgs) Handles PlayerSocket.DataArrival
-        If IsConnected() Then Call IncomingData(PlayerSocket.Get)
+        If IsConnected() Then IncomingData(PlayerSocket.Get)
     End Sub
     Public Shared Sub Disconnected(ByVal sender As Object, ByVal e As System.EventArgs) Handles PlayerSocket.Disconnected
-        If inGame Then Game.Close()
+        If inGame Then GameWindow.Close()
     End Sub
     Public Shared Sub HandleData(ByRef Data() As Byte)
         Dim Buffer As ByteBuffer

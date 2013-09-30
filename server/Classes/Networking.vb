@@ -22,13 +22,14 @@ Public Class Networking
         ' Checks if the player is online
         If IsConnected(index) Then
             If Not IsNothing(Player(index)) Then
-                If Player(index).isPlaying Then
+                If Player(index).GetIsPlaying Then
                     Return True
                 End If
             End If
         End If
         Return False
     End Function
+
     Public Shared Function GetPlayerIP(ByVal index As Long) As String
         Return Clients(index).IP
     End Function
@@ -79,6 +80,37 @@ Public Class Networking
             End If
         Next
     End Sub
+
+    Public Shared Sub SendDataToAdmins(ByRef Data() As Byte)
+        Dim i As Long
+
+        For i = 1 To PlayerHighIndex
+            If IsPlaying(i) And Not Player(i).AccessMode = ACCESS.NONE Then
+                Call SendDataTo(i, Data)
+            End If
+        Next
+    End Sub
+
+    Public Shared Sub SendDataToParty(ByVal id As Long, ByRef Data() As Byte)
+        Dim i As Long
+
+        For i = 1 To PlayerHighIndex
+            If IsPlaying(i) And Player(i).GetParty = id > 0 Then
+                Call SendDataTo(i, Data)
+            End If
+        Next
+    End Sub
+
+    Public Shared Sub SendDataToGuild(ByVal id As Long, ByRef Data() As Byte)
+        Dim i As Long
+
+        For i = 1 To PlayerHighIndex
+            If IsPlaying(i) And Player(i).GuildID = id > 0 Then
+                Call SendDataTo(i, Data)
+            End If
+        Next
+    End Sub
+
     Public Shared Sub HandleData(ByVal index As Long, ByRef Data() As Byte)
         Dim Buffer As ByteBuffer
         ' Start the command
@@ -119,13 +151,22 @@ Public Class Networking
     Public Shared Sub CloseSocket(ByVal index As Long)
         If index > 0 Then
             Console.WriteLine("Connection from " & GetPlayerIP(index) & " has been terminated.")
-            SendMessage(Player(index).Name & " has left game.")
-            Console.WriteLine(Player(index).Name & " has left game.")
-            Player(index).isPlaying = False
-            Player(index).Save()
-            Player(index) = Nothing
-            UpdateHighIndex()
-            SendClearPlayer(index)
+            If Not IsNothing(Player(index)) Then
+                Select Case Player(index).AccessMode
+                    Case ACCESS.NONE : SendMessage(Trim$(Player(index).Name) & " has left the game.")
+                    Case ACCESS.GMIT : SendMessage(Trim$("(GMIT) " & Player(index).Name) & " has left the game.")
+                    Case ACCESS.GM : SendMessage(Trim$("(GM) " & Player(index).Name) & " has left the game.")
+                    Case ACCESS.LEAD_GM : SendMessage(Trim$("(Lead GM) " & Player(index).Name) & " has left the game.")
+                    Case ACCESS.DEV : SendMessage(Trim$("(DEV) " & Player(index).Name) & " has left the game.")
+                    Case ACCESS.ADMIN : SendMessage(Trim$("(Admin) " & Player(index).Name) & " has left the game.")
+                End Select
+                Console.WriteLine(Player(index).Name & " has left the game.")
+                Player(index).SetIsPlaying(False)
+                Player(index).Save()
+                Player(index) = Nothing
+                UpdateHighIndex()
+                SendClearPlayer(index)
+            End If
             Clients(index).Socket.Close()
         End If
     End Sub

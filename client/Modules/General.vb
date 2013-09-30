@@ -1,14 +1,15 @@
 ﻿Module General
     Public Sub Main()
         ClientConfig = New Configuration
-        ClientConfig.LoadOptions()
+        ClientConfig.Load()
+        ClientConfig.Load()
         maxX = (ClientConfig.ScreenWidth / 32) - 1
         maxY = (ClientConfig.ScreenHeight / 32) - 1
-        Game.Width = ClientConfig.ScreenWidth + (16)
-        Game.Height = ClientConfig.ScreenHeight + SystemInformation.CaptionHeight + (16)
-        Game.Show()
+        GameWindow.Width = ClientConfig.ScreenWidth + (16)
+        GameWindow.Height = ClientConfig.ScreenHeight + SystemInformation.CaptionHeight + (16)
+        GameWindow.Show()
         Networking.Initialize()
-        Renderer.Initialize()
+        Render.Initialize()
         Verdana = New TextWriter("content/fonts/Verdana.ttf")
         showMenu()
     End Sub
@@ -91,7 +92,8 @@
                 tmr15 = System.Environment.TickCount() + 15
             End If
 
-            renderMenu()
+
+            MenuScene.Draw()
 
             ' Calculate fps
             If TickFPS < Tick Then
@@ -119,7 +121,7 @@
             FrameTime = Tick
 
             If tmr25 < Tick Then
-                If Game.Focused Then CheckInputKeys() ' Check which keys were pressed
+                If GameWindow.Focused Then CheckInputKeys() ' Check which keys were pressed
 
                 CheckMovement() ' Check if player is trying to move
                 tmr25 = Tick + 25
@@ -143,7 +145,7 @@
                 tmr500 = System.Environment.TickCount() + 500
             End If
 
-            renderGame()
+            GameScene.Draw()
 
             ' Calculate fps
             If TickFPS < Tick Then

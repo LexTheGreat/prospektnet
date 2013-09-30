@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Accounts xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Login>thomas</Login>
+  <Password>thomas</Password>
+  <Player>
+    <Name>Thomas</Name>
+    <Sprite>1</Sprite>
+    <X>12</X>
+    <Y>7</Y>
+    <Dir>0</Dir>
+    <GuildID>-1</GuildID>
+    <AccessMode>0</AccessMode>
+    <Visible>true</Visible>
+  </Player>
+</Accounts>

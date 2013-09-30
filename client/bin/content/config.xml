@@ -1,0 +1,10 @@
+﻿<Configuration>
+	<ScreenWidth>800</ScreenWidth>
+	<ScreenHeight>600</ScreenHeight>
+	<MenuMusic>tranquility.ogg</MenuMusic>
+	<GameMusic>touchthesky.ogg</GameMusic>
+	<Music>on</Music>
+	<Sound>on</Sound>
+	<IP>localhost</IP>
+	<Port>8080</Port>
+</Configuration>

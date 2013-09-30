@@ -60,8 +60,8 @@
 
     Public Sub CheckInputKeys()
 
-        ' move up
-        If GetKeyState(Keys.W) < 0 Then
+        'Move Up
+        If GetKeyState(Keys.W) < 0 Or GetKeyState(Keys.Up) < 0 Then
             dirUp = True
             dirDown = False
             dirLeft = False
@@ -71,19 +71,8 @@
             dirUp = False
         End If
 
-        'Move Right
-        If GetKeyState(Keys.D) < 0 Then
-            dirUp = False
-            dirDown = False
-            dirLeft = False
-            dirRight = True
-            Exit Sub
-        Else
-            dirRight = False
-        End If
-
-        'Move down
-        If GetKeyState(Keys.S) < 0 Then
+        'Move Down
+        If GetKeyState(Keys.S) < 0 Or GetKeyState(Keys.Down) < 0 Then
             dirUp = False
             dirDown = True
             dirLeft = False
@@ -94,7 +83,7 @@
         End If
 
         'Move left
-        If GetKeyState(Keys.A) < 0 Then
+        If GetKeyState(Keys.A) < 0 Or GetKeyState(Keys.Left) < 0 Then
             dirUp = False
             dirDown = False
             dirLeft = True
@@ -103,12 +92,24 @@
         Else
             dirLeft = False
         End If
+
+        'Move Right
+        If GetKeyState(Keys.D) < 0 Or GetKeyState(Keys.Right) < 0 Then
+            dirUp = False
+            dirDown = False
+            dirLeft = False
+            dirRight = True
+            Exit Sub
+        Else
+            dirRight = False
+        End If
     End Sub
 
     Public Sub showMenu()
         inGame = False
         AudioPlayer.stopMusic()
-        AudioPlayer.playMusic(ClientConfig.MenuMusic)
+
+        'AudioPlayer.playMusic(ClientConfig.MenuMusic)
         ' fader
         faderAlpha = 255
         faderState = 0
@@ -121,8 +122,10 @@
     Public Sub showGame()
         inMenu = False
         AudioPlayer.stopMusic()
-        AudioPlayer.playMusic(ClientConfig.GameMusic)
+        'AudioPlayer.playMusic(ClientConfig.GameMusic)
         inGame = True
+        chatMode = ChatModes.SAY
+        GMTools.Init()
         gameLoop()
     End Sub
 

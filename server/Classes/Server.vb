@@ -8,7 +8,9 @@ Public Class Server
         Console.Title = "Loading..."
         Console.WriteLine("Loading options...")
         ServerConfig = New Configuration
-        ServerConfig.LoadOptions()
+        ServerConfig.Load()
+        Console.WriteLine("Loading accounts...")
+        AccountData.LoadAccounts()
         Console.WriteLine("Loading networking...")
         sckListen = New Winsock
         sckListen.BufferSize = 8192

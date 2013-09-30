@@ -10,7 +10,7 @@ Imports System.Runtime.InteropServices
 
 <Assembly: AssemblyTitle("Prospekt.NET")> 
 <Assembly: AssemblyDescription("Open source 2D game engine")> 
-<Assembly: AssemblyCompany("Eatenbrain Games")> 
+<Assembly: AssemblyCompany("IndieArmory Games")> 
 <Assembly: AssemblyProduct("Prospekt.NET")> 
 <Assembly: AssemblyCopyright("Copyright ©  2013")> 
 <Assembly: AssemblyTrademark("")> 
