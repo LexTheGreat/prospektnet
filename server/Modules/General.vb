@@ -12,15 +12,15 @@
                 tmrPlayerSave = System.Environment.TickCount + 300000
             End If
             'Generate Npc movement every second
-            'If tmrNpcMove < Tick Then
-            '    Dim i As Integer
-            '    For i = 0 To NPCCount ' Loop through Npc's
-            '        If Not IsNothing(NPC(i)) Then ' Make sure Npc exists
-            '            NPC(i).GenerateMovement()
-            '        End If
-            '    Next i
-            '    tmrNpcMove = System.Environment.TickCount + 1000
-            'End If
+            If tmrNpcMove < Tick Then
+                Dim i As Integer
+                For i = 0 To NPCCount ' Loop through Npc's
+                    If Not IsNothing(NPC(i)) Then ' Make sure Npc exists
+                        NPC(i).GenerateMovement()
+                    End If
+                Next i
+                tmrNpcMove = System.Environment.TickCount + 1000
+            End If
         Loop
     End Sub
 

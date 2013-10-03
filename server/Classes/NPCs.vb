@@ -34,6 +34,13 @@
         Return True
     End Function
 
+    Public Function GetMoving() As Boolean
+        If Not IsNothing(Me) Then
+            Return Me.mMoving
+        End If
+        Return False
+    End Function
+
     ' Saved variables
     Public Property Name() As String
         Get
@@ -95,20 +102,30 @@
     End Sub
 
     Public Sub GenerateMovement()
-        Dim newX As Integer, newY As Integer
-        If RandomNumber(50) <= 30 Then ' Move Npc
-            If RandomNumber(1) = 1 Then ' See if moving vertical or horizontal
-                If Me.mX - 1 < 0 Then newX = RandomNumber(1) Else newX = RandomNumber(Me.mX + 1, Me.mX - 1)
-                If newX > Me.mX Then Me.mDir = DirEnum.Right Else Me.mDir = DirEnum.Left
-                If newX < 0 Then newX = 1 And Me.mDir = DirEnum.Right
-                Me.mX = newX
+        Dim i As Integer
+        i = Int(Rnd() * 2)
+
+        If i = 1 Then
+            i = Int(Rnd() * 4)
+            If CanNPCMove(Me.mIndex, i) Then
+                Select Case i
+                    Case DirEnum.Up
+                        Me.mY = Me.mY - 1
+                    Case DirEnum.Down
+                        Me.mY = Me.mY + 1
+                    Case DirEnum.Left
+                        Me.mX = Me.mX - 1
+                    Case DirEnum.Right
+                        Me.mX = Me.mX + 1
+                End Select
+                Me.mDir = i
+                Me.mMoving = True
+                SendNPCPosition(Me.mIndex)
             Else
-                If Me.mY - 1 < 0 Then newY = RandomNumber(1) Else newY = RandomNumber(Me.mY + 1, Me.mY - 1)
-                If newY > Me.mY Then Me.mDir = DirEnum.Down Else Me.mDir = DirEnum.Up
-                If newY < 0 Then newY = 1 And Me.mDir = DirEnum.Down
-                Me.mY = newY
+                Me.mMoving = False
             End If
-            SendNPCPosition(Me.mIndex)
+        Else
+            Me.mMoving = False
         End If
     End Sub
 End Class

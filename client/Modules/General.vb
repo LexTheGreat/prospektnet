@@ -132,6 +132,9 @@
                 For I = 1 To PlayerHighindex
                     If Not IsNothing(Player(I)) Then Player(I).ProcessMovement()
                 Next I
+                For I = 0 To NPCCount
+                    If Not IsNothing(NPC(I)) Then NPC(I).ProcessMovement()
+                Next I
                 walkTimer = Tick + 30 ' edit this value to change WalkTimer
             End If
 

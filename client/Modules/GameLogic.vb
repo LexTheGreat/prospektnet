@@ -8,6 +8,7 @@
     End Function
 
     Function CanMove() As Boolean
+        Dim tempX As Integer, tempY As Integer
         CanMove = True
         ' Make sure they aren't trying to move when they are already moving
         If Player(MyIndex).Moving = True Then
@@ -21,17 +22,45 @@
         If dirUp Then
             Player(MyIndex).Dir = DirEnum.Up
             If Player(MyIndex).Y = 0 Then Return False
+            tempY = Player(MyIndex).Y - 1
+            tempX = Player(MyIndex).X
         ElseIf dirDown Then
             Player(MyIndex).Dir = DirEnum.Down
             If Player(MyIndex).Y = maxY Then Return False
+            tempY = Player(MyIndex).Y + 1
+            tempX = Player(MyIndex).X
         ElseIf dirLeft Then
             Player(MyIndex).Dir = DirEnum.Left
             If Player(MyIndex).X = 0 Then Return False
+            tempY = Player(MyIndex).Y
+            tempX = Player(MyIndex).X - 1
         ElseIf dirRight Then
             Player(MyIndex).Dir = DirEnum.Right
             If Player(MyIndex).X = maxX Then Return False
+            tempY = Player(MyIndex).Y
+            tempX = Player(MyIndex).X + 1
         End If
 
+        If PlayerOnTile(tempX, tempY) Then Return False
+        If NpcOnTile(tempX, tempY) Then Return False
+    End Function
+
+    Public Function PlayerOnTile(ByVal X As Integer, ByVal Y As Integer) As Boolean
+        For i = 1 To PlayerHighIndex
+            If Not IsNothing(Player(i)) Then
+                If (Player(i).X = X And Player(i).Y = Y) Then Return True
+            End If
+        Next
+        Return False
+    End Function
+
+    Public Function NpcOnTile(ByVal X As Integer, ByVal Y As Integer) As Boolean
+        For i = 0 To NPCCount
+            If Not IsNothing(NPC(i)) Then
+                If (NPC(i).X = X And NPC(i).Y = Y) Then Return True
+            End If
+        Next
+        Return False
     End Function
 
     Sub CheckMovement()

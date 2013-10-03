@@ -18,16 +18,29 @@ Public Class GameScene
         For i = 0 To NPCCount
             If Not IsNothing(NPC(i)) Then
                 DrawNPC(i)
-                DrawNPCName(i)
             End If
         Next
 
         For i = 0 To PlayerHighindex
             If Not IsNothing(Player(i)) Then
                 DrawPlayer(i)
+            End If
+        Next
+
+
+        For i = 0 To NPCCount
+            If Not IsNothing(NPC(i)) Then
+                DrawNPCName(i)
+            End If
+        Next
+
+        For i = 0 To PlayerHighindex
+            If Not IsNothing(Player(i)) Then
                 DrawPlayerName(i)
             End If
         Next
+
+        
 
         DrawChat()
         If GMTools.Visible Then GMTools.Draw()

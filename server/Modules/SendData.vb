@@ -129,8 +129,9 @@
     Public Sub SendNPCPosition(ByVal Index As Integer)
         Dim Buffer As ByteBuffer
         Buffer = New ByteBuffer
-        Buffer.WriteLong(ServerPackets.SNPC)
+        Buffer.WriteLong(ServerPackets.SNPCPosition)
         Buffer.WriteLong(Index)
+        Buffer.WriteLong(NPC(Index).GetMoving)
         Buffer.WriteLong(NPC(Index).X)
         Buffer.WriteLong(NPC(Index).Y)
         Buffer.WriteLong(NPC(Index).Dir)

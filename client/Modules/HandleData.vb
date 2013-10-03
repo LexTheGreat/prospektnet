@@ -177,11 +177,21 @@
         tempIndex = Buffer.ReadLong
         If IsNothing(NPC(tempIndex)) Then Exit Sub
         If Not IsNothing(NPC(tempIndex)) Then
+            NPC(tempIndex).Moving = Buffer.ReadLong
             NPC(tempIndex).X = Buffer.ReadLong
             NPC(tempIndex).Y = Buffer.ReadLong
             NPC(tempIndex).Dir = Buffer.ReadLong
-            NPC(tempIndex).ProcessMovement()
         End If
+        Select Case NPC(tempIndex).Dir
+            Case DirEnum.Up
+                NPC(tempIndex).YOffset = picY
+            Case DirEnum.Down
+                NPC(tempIndex).YOffset = picY * -1
+            Case DirEnum.Left
+                NPC(tempIndex).XOffset = picX
+            Case DirEnum.Right
+                NPC(tempIndex).XOffset = picX * -1
+        End Select
         Buffer = Nothing
     End Sub
 End Module
