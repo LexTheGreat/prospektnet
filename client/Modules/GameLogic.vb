@@ -138,7 +138,7 @@
         inGame = False
         AudioPlayer.stopMusic()
 
-        'AudioPlayer.playMusic(ClientConfig.MenuMusic)
+        AudioPlayer.playMusic(ClientConfig.MenuMusic)
         ' fader
         faderAlpha = 255
         faderState = 0
@@ -151,7 +151,7 @@
     Public Sub showGame()
         inMenu = False
         AudioPlayer.stopMusic()
-        'AudioPlayer.playMusic(ClientConfig.GameMusic)
+        AudioPlayer.playMusic(ClientConfig.GameMusic)
         inGame = True
         chatMode = ChatModes.SAY
         GMTools.Init()

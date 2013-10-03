@@ -16,14 +16,13 @@ Public Class MenuScene
             Verdana.Draw("Press 'SPACE' to skip intro", 2, 2, New Color(100, 100, 100, 255))
         Else
             ' Render background
-            Render.RenderTexture(texGui(4), 0, 0, 0, 0, ClientConfig.ScreenWidth, ClientConfig.ScreenHeight, 1024, 768)
+            Render.RenderTexture(texGui(3), 0, 0, 0, 0, ClientConfig.ScreenWidth, ClientConfig.ScreenHeight, Texture(texGui(3)).Width, Texture(texGui(3)).Height)
 
             Render.RenderTexture(texGui(1), 0, ClientConfig.ScreenHeight - 20, 0, 0, ClientConfig.ScreenWidth, 20, 32, 32, 200, 0, 0, 0)
             Render.RenderTexture(texGui(1), (ClientConfig.ScreenWidth * 0.5) - 200, (ClientConfig.ScreenHeight * 0.5) - 100, 0, 0, 400, 200, 32, 32, 120, 0, 0, 0)
-            Render.RenderTexture(texGui(3), (ClientConfig.ScreenWidth * 0.5) - (Texture(texGui(3)).Width * 0.5), 0, 0, 0, Texture(texGui(3)).Width, Texture(texGui(3)).Height, Texture(texGui(3)).Width, Texture(texGui(3)).Height)
 
             Verdana.Draw(Application.ProductName & " v" & Application.ProductVersion, 5, ClientConfig.ScreenHeight - 18, Color.White)
-            Verdana.Draw("indiearmory.com", ClientConfig.ScreenWidth - 5 - Verdana.GetWidth("indiearmory.com"), ClientConfig.ScreenHeight - 18, Color.White)
+            Verdana.Draw("indiearmory.com", ClientConfig.ScreenWidth - 5 - Verdana.GetWidth("indiearmory.com"), ClientConfig.ScreenHeight - 18, Color.Cyan, AddressOf ButtonPress, 4)
             Verdana.Draw("FPS: " & gameFPS, 5, 5, Color.White)
 
             Select Case curMenu
@@ -195,6 +194,7 @@ errorhandler:
             Case 1 : curMenu = MenuEnum.Login
             Case 2 : curMenu = MenuEnum.Register
             Case 3 : curMenu = MenuEnum.Credits
+            Case 4 : Process.Start("http://indiearmory.com/")
             Case Else
                 MsgBox("Button not assigned. Report this immediately!")
                 Return False

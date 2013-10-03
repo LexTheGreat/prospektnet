@@ -2,12 +2,8 @@
 Imports System.Xml.Serialization
 
 Module Files
-    Public Function fileExist(ByVal filepath As String, Optional ByVal Raw As Boolean = False) As Boolean
-        If Raw = True Then
-            fileExist = System.IO.File.Exists(filepath)
-        Else
-            fileExist = System.IO.File.Exists(filepath)
-        End If
+    Public Function fileExist(ByVal filepath As String) As Boolean
+        fileExist = File.Exists(filepath)
     End Function
 
     Public Function Write(ByVal Path As String, ByVal obj As Object) As Boolean

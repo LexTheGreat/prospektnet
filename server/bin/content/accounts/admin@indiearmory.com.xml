@@ -5,9 +5,9 @@
   <Player>
     <Name>Admin</Name>
     <Sprite>1</Sprite>
-    <X>13</X>
+    <X>15</X>
     <Y>14</Y>
-    <Dir>2</Dir>
+    <Dir>3</Dir>
     <GuildID>-1</GuildID>
     <AccessMode>5</AccessMode>
     <Visible>true</Visible>
