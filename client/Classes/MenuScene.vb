@@ -2,7 +2,7 @@
 Imports SFML.Window
 
 Public Class MenuScene
-    Public Shared Sub Draw()
+    Public Sub Draw()
         On Error GoTo errorhandler
         ' don't render
         If GameWindow.WindowState = FormWindowState.Minimized Then Exit Sub
@@ -16,7 +16,7 @@ Public Class MenuScene
             Verdana.Draw("Press 'SPACE' to skip intro", 2, 2, New Color(100, 100, 100, 255))
         Else
             ' Render background
-            DrawBackGround()
+            Render.RenderTexture(texGui(4), 0, 0, 0, 0, ClientConfig.ScreenWidth, ClientConfig.ScreenHeight, 1024, 768)
 
             Render.RenderTexture(texGui(1), 0, ClientConfig.ScreenHeight - 20, 0, 0, ClientConfig.ScreenWidth, 20, 32, 32, 200, 0, 0, 0)
             Render.RenderTexture(texGui(1), (ClientConfig.ScreenWidth * 0.5) - 200, (ClientConfig.ScreenHeight * 0.5) - 100, 0, 0, 400, 200, 32, 32, 120, 0, 0, 0)
@@ -46,7 +46,7 @@ errorhandler:
         Exit Sub
     End Sub
 
-    Public Shared Function KeyDown(ByVal Key As Keys) As Boolean
+    Public Function KeyDown(ByVal Key As Keys) As Boolean
         ' Logging in
         If loginSent Then Return False
 
@@ -118,7 +118,7 @@ errorhandler:
         End Select
     End Function
 
-    Public Shared Function KeyPress(ByVal Key As Char) As Boolean
+    Public Function KeyPress(ByVal Key As Char) As Boolean
         ' Logging in
         If loginSent Then Return False
 
@@ -136,14 +136,14 @@ errorhandler:
         End If
     End Function
 
-    Public Shared Sub DrawMenu()
+    Public Sub DrawMenu()
         ' Buttons
         Render.RenderButton((ClientConfig.ScreenWidth * 0.5) - (128 * 0.5), (ClientConfig.ScreenHeight * 0.5) - (32 * 0.5) - 30, 128, 32, 1, 2, AddressOf ButtonPress, 1)
         Render.RenderButton((ClientConfig.ScreenWidth * 0.5) - (128 * 0.5), (ClientConfig.ScreenHeight * 0.5) - (32 * 0.5), 128, 32, 10, 11, AddressOf ButtonPress, 2)
         Render.RenderButton((ClientConfig.ScreenWidth * 0.5) - (128 * 0.5), (ClientConfig.ScreenHeight * 0.5) - (32 * 0.5) + 30, 128, 32, 3, 4, AddressOf ButtonPress, 3)
     End Sub
 
-    Public Shared Sub DrawLogin()
+    Public Sub DrawLogin()
         ' Back Button
         Render.RenderButton((ClientConfig.ScreenWidth * 0.5) - 185, (ClientConfig.ScreenHeight * 0.5) - 85, 15, 15, 7, 7, AddressOf ButtonPress, 0)
 
@@ -163,13 +163,13 @@ errorhandler:
         End If
     End Sub
 
-    Public Shared Sub DrawCreation()
+    Public Sub DrawCreation()
         Verdana.Draw("Player Name:", (ClientConfig.ScreenWidth * 0.5) - 55 - Verdana.GetWidth("Player Name:"), (ClientConfig.ScreenHeight * 0.5) - 27, Color.White)
         Render.RenderTexture(texGui(1), (ClientConfig.ScreenWidth * 0.5) - 50, (ClientConfig.ScreenHeight * 0.5) - 30, 0, 0, 175, 20, 32, 32, 200, 0, 0, 0)
         Verdana.Draw(sCharacter & chatShowLine, (ClientConfig.ScreenWidth * 0.5) - 47, (ClientConfig.ScreenHeight * 0.5) - 27, Color.White)
     End Sub
 
-    Public Shared Sub DrawCredits()
+    Public Sub DrawCredits()
         ' Back Button
         Render.RenderButton((ClientConfig.ScreenWidth * 0.5) - 185, (ClientConfig.ScreenHeight * 0.5) - 85, 15, 15, 7, 7, AddressOf ButtonPress, 0)
         Verdana.Draw("IndieArmory", (ClientConfig.ScreenWidth * 0.5) - (Verdana.GetWidth("IndieArmory") * 0.5), (ClientConfig.ScreenHeight * 0.5) - 42, Color.White)
@@ -180,16 +180,7 @@ errorhandler:
         Verdana.Draw("James 'Ertzel' Wilson", (ClientConfig.ScreenWidth * 0.5) - (Verdana.GetWidth("James 'Ertzel' Wilson") * 0.5), (ClientConfig.ScreenHeight * 0.5) + 28, Color.White)
     End Sub
 
-    Public Shared Sub DrawBackGround()
-        Dim X As Long, Y As Long
-        For X = 0 To maxX
-            For Y = 0 To maxY
-                Render.RenderTexture(texTileset(4), X * picX, Y * picY, 0, 8 * picY, picX, picY, picX, picY)
-            Next Y
-        Next X
-    End Sub
-
-    Public Shared Function ButtonPress(ByVal index As Integer) As Boolean
+    Public Function ButtonPress(ByVal index As Integer) As Boolean
         ' Logging in
         If loginSent Then Return False
 

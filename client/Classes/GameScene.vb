@@ -2,7 +2,7 @@
 Imports SFML.Window
 
 Public Class GameScene
-    Public Shared Sub Draw()
+    Public Sub Draw()
         Dim i As Integer
         On Error GoTo errorhandler
         ' don't render
@@ -40,7 +40,7 @@ Public Class GameScene
             End If
         Next
 
-        
+
 
         DrawChat()
         If GMTools.Visible Then GMTools.Draw()
@@ -53,7 +53,7 @@ errorhandler:
         Exit Sub
     End Sub
 
-    Public Shared Function KeyDown(ByVal Key As Keys) As Boolean
+    Public Function KeyDown(ByVal Key As Keys) As Boolean
         Select Case Key
             Case Keys.Return
                 If inChat Then
@@ -95,20 +95,20 @@ errorhandler:
         End Select
     End Function
 
-    Public Shared Function KeyPress(ByVal Key As Char) As Boolean
+    Public Function KeyPress(ByVal Key As Char) As Boolean
         If inChat And Not GetKeyState(Keys.Back) And Not GetKeyState(Keys.Return) And Not GetKeyState(Keys.Tab) And Not GetKeyState(Keys.Escape) Then
             sChat = sChat & Key.ToString
             UpdateVisibleChat()
         End If
     End Function
 
-    Private Shared Sub UpdateVisibleChat()
+    Private Sub UpdateVisibleChat()
         Dim mode As String = "[" & [Enum].GetName(GetType(ChatModes), chatMode) & "] "
         Dim max As Integer = maxChatChars - mode.Length
         If (sChat.Length > max) Then vChat = sChat.Substring(sChat.Length - max) Else vChat = sChat
     End Sub
 
-    Public Shared Sub DrawPlayerName(ByVal Index As Integer)
+    Public Sub DrawPlayerName(ByVal Index As Integer)
         Dim textX As Integer, textY As Integer, Text As String, Access As String, textSize As Integer
 
         If Not (Index = MyIndex) Then
@@ -130,7 +130,7 @@ errorhandler:
         Verdana.Draw(Text, textX, textY, Color.White)
     End Sub
 
-    Private Shared Function DrawPlayerAccess(ByVal Index As Integer) As String
+    Private Function DrawPlayerAccess(ByVal Index As Integer) As String
         Dim textX As Integer, textY As Integer, Text As String = vbNullString, textSize As Integer, TextColor As Color = Color.White
 
         Select Case Player(Index).GetAccess()
@@ -168,7 +168,7 @@ errorhandler:
         DrawPlayerAccess = Text
     End Function
 
-    Public Shared Sub DrawPlayer(ByVal Index As Integer)
+    Public Sub DrawPlayer(ByVal Index As Integer)
         Dim Anim As Byte
         Dim X As Integer
         Dim Y As Integer
@@ -216,7 +216,7 @@ errorhandler:
         Render.RenderTexture(texSprite(Sprite), X, Y, rec.Left, rec.Top, rec.Width, rec.Height, rec.Width, rec.Height)
     End Sub
 
-    Public Shared Sub DrawNPCName(ByVal Index As Integer)
+    Public Sub DrawNPCName(ByVal Index As Integer)
         Dim textX As Integer, textY As Integer, Text As String, textSize As Integer
 
 
@@ -233,7 +233,7 @@ errorhandler:
         Verdana.Draw(Text, textX, textY, Color.White)
     End Sub
 
-    Public Shared Sub DrawNPC(ByVal Index As Integer)
+    Public Sub DrawNPC(ByVal Index As Integer)
         Dim Anim As Byte
         Dim X As Integer
         Dim Y As Integer
@@ -277,7 +277,7 @@ errorhandler:
         Render.RenderTexture(texSprite(Sprite), X, Y, rec.Left, rec.Top, rec.Width, rec.Height, rec.Width, rec.Height)
     End Sub
 
-    Public Shared Sub DrawMapTiles()
+    Public Sub DrawMapTiles()
         Dim X As Long, Y As Long
         For X = 0 To maxX
             For Y = 0 To maxY
@@ -286,7 +286,7 @@ errorhandler:
         Next X
     End Sub
 
-    Public Shared Sub DrawChat()
+    Public Sub DrawChat()
         Dim i As Long
         Render.RenderTexture(texGui(1), 5, ClientConfig.ScreenHeight - 255, 0, 0, 300, 250, 32, 32, 120, 0, 0, 0)
         Render.RenderTexture(texGui(1), 5, ClientConfig.ScreenHeight - 25, 0, 0, 300, 20, 32, 32, 200, 0, 0, 0)

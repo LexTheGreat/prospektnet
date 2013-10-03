@@ -21,7 +21,7 @@
         Dim FPS As Integer
 
         Dim tmr500 As Integer, faderTimer As Integer, tmr15 As Integer
-
+        MenuMain = New MenuScene
         Do While inMenu = True
             Tick = System.Environment.TickCount() ' Set the inital tick
             ElapsedTime = Tick - FrameTime ' Set the time difference for time-based movement
@@ -93,7 +93,7 @@
             End If
 
 
-            MenuScene.Draw()
+            MenuMain.Draw()
 
             ' Calculate fps
             If TickFPS < Tick Then
@@ -105,6 +105,7 @@
             End If
             Application.DoEvents()
         Loop
+        MenuMain = Nothing
     End Sub
 
     Public Sub gameLoop()
@@ -114,7 +115,7 @@
         Dim FPS As Integer
         Dim tmr25 As Integer, walkTimer As Integer, tmr500 As Integer
         Dim I As Long
-
+        GameMain = New GameScene
         Do While inGame = True
             Tick = System.Environment.TickCount() ' Set the inital tick
             elapsedTime = Tick - FrameTime ' Set the time difference for time-based movement
@@ -148,7 +149,7 @@
                 tmr500 = System.Environment.TickCount() + 500
             End If
 
-            GameScene.Draw()
+            GameMain.Draw()
 
             ' Calculate fps
             If TickFPS < Tick Then
@@ -160,6 +161,7 @@
             End If
             Application.DoEvents()
         Loop
+        GameMain = Nothing
     End Sub
 
 End Module

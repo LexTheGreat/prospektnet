@@ -4,6 +4,10 @@
     ' Graphics extension
     Public Const gfxExt As String = ".png"
 
+    ' Scenes
+    Public MenuMain As MenuScene
+    Public GameMain As GameScene
+
     ' File paths
     Public Const pathContent As String = "content/"
     Public Const pathSprites As String = pathContent & "graphics/sprites/"

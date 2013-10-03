@@ -10,19 +10,19 @@
 
     Private Sub frmMain_KeyDown(sender As Object, e As KeyEventArgs) Handles Me.KeyDown
         If inGame Then
-            GameScene.KeyDown(e.KeyCode)
+            GameMain.KeyDown(e.KeyCode)
         End If
         If inMenu Then
-            MenuScene.KeyDown(e.KeyCode)
+            MenuMain.KeyDown(e.KeyCode)
         End If
     End Sub
 
     Private Sub frmMain_KeyPress(sender As Object, e As KeyPressEventArgs) Handles Me.KeyPress
         If inMenu And curMenu = MenuEnum.Login Or curMenu = MenuEnum.Register Or curMenu = MenuEnum.Creation Then
-            MenuScene.KeyPress(e.KeyChar)
+            MenuMain.KeyPress(e.KeyChar)
         End If
         If inGame And inChat Then
-            GameScene.KeyPress(e.KeyChar)
+            GameMain.KeyPress(e.KeyChar)
         End If
     End Sub
 
