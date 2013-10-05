@@ -3,8 +3,8 @@ Imports System.IO
 Imports System.Collections
 Imports System.Xml.Serialization
 
-Module NPCData
-    Public Function CreateNPC(ByVal newNPC As NPCs) As Boolean
+Class NPCData
+    Public Shared Function CreateNPC(ByVal newNPC As NPCs) As Boolean
         Try
             ' Add player to accounts array
             ReDim Preserve NPC(0 To NPCCount + 1)
@@ -23,7 +23,7 @@ Module NPCData
         End Try
     End Function
 
-    Public Sub LoadNPCs()
+    Public Shared Sub LoadNPCs()
         Dim Reader As StreamReader
         Dim Ser As XmlSerializer
         Try
@@ -50,7 +50,7 @@ Module NPCData
         End Try
     End Sub
 
-    Public Sub SaveNPC(ByVal snpc As NPCs)
+    Public Shared Sub SaveNPC(ByVal snpc As NPCs)
         Dim Writer As StreamWriter
         Dim Ser As XmlSerializer
         Try
@@ -67,61 +67,10 @@ Module NPCData
         End Try
     End Sub
 
-    Public Sub SendNPCs()
-        Dim i As Integer
-        For i = 0 To NPCCount
-            If Not IsNothing(NPC(i)) Then
-                SendNPC(i)
-            End If
-        Next
-    End Sub
-
-    Public Function GetNPCIndex(ByVal Name As String) As Integer
+    Public Shared Function GetNPCIndex(ByVal Name As String) As Integer
         For index As Integer = 0 To NPC.Length
             If NPC(index).Name = Name Then Return index
         Next
         Return 0
     End Function
-
-    Public Function NpcOnTile(ByVal X As Integer, ByVal Y As Integer) As Boolean
-        For i = 0 To NPCCount
-            If Not IsNothing(NPC(i)) Then
-                If (NPC(i).X = X And NPC(i).Y = Y) Then Return True
-            End If
-        Next
-        Return False
-    End Function
-
-    Public Function CanNPCMove(ByVal Index As Integer, ByVal Dir As DirEnum) As Boolean
-        Dim tempX As Integer, tempY As Integer
-        ' Make sure they aren't trying to move when they are already moving
-        If NPC(Index).GetMoving = True Then
-            Return False
-        End If
-
-        Select Case Dir
-            Case DirEnum.Up
-                NPC(Index).Dir = DirEnum.Up
-                If NPC(Index).Y = 0 Then Return False
-                tempY = NPC(Index).Y - 1
-                tempX = NPC(Index).X
-            Case DirEnum.Down
-                NPC(Index).Dir = DirEnum.Down
-                tempY = NPC(Index).Y + 1
-                tempX = NPC(Index).X
-            Case DirEnum.Left
-                NPC(Index).Dir = DirEnum.Left
-                If NPC(Index).X = 0 Then Return False
-                tempY = NPC(Index).Y
-                tempX = NPC(Index).X - 1
-            Case DirEnum.Right
-                NPC(Index).Dir = DirEnum.Right
-                tempY = NPC(Index).Y
-                tempX = NPC(Index).X + 1
-        End Select
-
-        If PlayerOnTile(tempX, tempY) Then Return False
-        If NpcOnTile(tempX, tempY) Then Return False
-        Return True
-    End Function
-End Module
+End Class

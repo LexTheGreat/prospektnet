@@ -38,7 +38,7 @@ Public Class Players
             Dim newPlayer As New Players()
             newPlayer.Name = PName
             ' Update accounts array
-            Account(AccountData.GetAccountPlayerIndex(PName)).Player = newPlayer
+            Account(PlayerData.GetPlayerIndex(PName)).Player = newPlayer
             'Serialize object to a file.
             Dim Writer As New StreamWriter(pathAccounts & PName & ".xml")
             Dim ser As New XmlSerializer(newPlayer.GetType)
@@ -54,7 +54,7 @@ Public Class Players
     Public Function Load(ByVal PName As String) As Boolean
         Try
             Dim newPlayer As New Players()
-            newPlayer = AccountData.GetAccountPlayer(PName)
+            newPlayer = PlayerData.GetPlayer(PName)
             'Check if account is valid
             If newPlayer.Name = vbNullString Then Return False
             ' Load player
@@ -69,8 +69,8 @@ Public Class Players
             ' Add player to accounts array
             ReDim Preserve Account(0 To AccountCount + 1)
             Account(AccountCount) = New Accounts
-            Account(AccountCount).Email = Account(AccountData.GetAccountPlayerIndex(PName)).Email
-            Account(AccountCount).Password = Account(AccountData.GetAccountPlayerIndex(PName)).Password
+            Account(AccountCount).Email = Account(PlayerData.GetPlayerIndex(PName)).Email
+            Account(AccountCount).Password = Account(PlayerData.GetPlayerIndex(PName)).Password
             Account(AccountCount).Player = newPlayer
             AccountCount = AccountCount + 1
             Return True
@@ -82,7 +82,7 @@ Public Class Players
 
     Public Function Save() As Boolean
         If Me.Name = vbNullString Then Return False
-        AccountData.SavePlayer(Me)
+        PlayerData.SavePlayer(Me)
         Return True
     End Function
 

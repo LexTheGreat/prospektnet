@@ -1,54 +1,11 @@
 ﻿Imports Winsock_Orcas
 Public Class Networking
     Public Shared Clients(100) As ClientSocket
-    Public Shared Sub UpdateHighIndex()
-        Dim i As Long
-        PlayerHighIndex = 0
-        For i = 100 To 1 Step -1
-            If IsConnected(i) Then
-                PlayerHighIndex = i
-                Exit Sub
-            End If
-        Next i
-    End Sub
-    Public Shared Function IsConnected(ByVal index As Long) As Boolean
-        If Clients(index).Socket.State = WinsockStates.Connected Then
-            Return True
-        End If
-        Return False
-    End Function
-
-    Public Shared Function IsPlaying(ByVal index As Long) As Boolean
-        ' Checks if the player is online
-        If IsConnected(index) Then
-            If Not IsNothing(Player(index)) Then
-                If Player(index).GetIsPlaying Then
-                    Return True
-                End If
-            End If
-        End If
-        Return False
-    End Function
-
-    Public Shared Function GetPlayerIP(ByVal index As Long) As String
-        Return Clients(index).IP
-    End Function
-
-    Public Shared Function FindOpenPlayerSlot() As Long
-        Dim i As Long
-        For i = 1 To PlayerHighIndex
-            If Not IsConnected(i) Then
-                Return i
-                Exit Function
-            End If
-        Next i
-        Return 0
-    End Function
 
     Public Shared Sub SendDataTo(ByVal index As Long, ByRef Data() As Byte)
         Dim Buffer As ByteBuffer
         Dim TempData() As Byte
-        If IsConnected(index) Then
+        If PlayerLogic.IsConnected(index) Then
             Buffer = New ByteBuffer
             TempData = Data
 
@@ -64,7 +21,7 @@ Public Class Networking
         Dim i As Long
 
         For i = 1 To PlayerHighIndex
-            If IsPlaying(i) Then
+            If PlayerLogic.IsPlaying(i) Then
                 Call SendDataTo(i, Data)
             End If
         Next
@@ -73,7 +30,7 @@ Public Class Networking
     Public Shared Sub SendDataToAllBut(ByVal index As Long, ByRef Data() As Byte)
         Dim i As Long
         For i = 1 To PlayerHighIndex
-            If IsPlaying(i) Then
+            If PlayerLogic.IsPlaying(i) Then
                 If i <> index Then
                     Call SendDataTo(i, Data)
                 End If
@@ -85,7 +42,7 @@ Public Class Networking
         Dim i As Long
 
         For i = 1 To PlayerHighIndex
-            If IsPlaying(i) And Not Player(i).AccessMode = ACCESS.NONE Then
+            If PlayerLogic.IsPlaying(i) And Not Player(i).AccessMode = ACCESS.NONE Then
                 Call SendDataTo(i, Data)
             End If
         Next
@@ -95,7 +52,7 @@ Public Class Networking
         Dim i As Long
 
         For i = 1 To PlayerHighIndex
-            If IsPlaying(i) And Player(i).GetParty = id > 0 Then
+            If PlayerLogic.IsPlaying(i) And Player(i).GetParty = id > 0 Then
                 Call SendDataTo(i, Data)
             End If
         Next
@@ -105,24 +62,24 @@ Public Class Networking
         Dim i As Long
 
         For i = 1 To PlayerHighIndex
-            If IsPlaying(i) And Player(i).GuildID = id > 0 Then
+            If PlayerLogic.IsPlaying(i) And Player(i).GuildID = id > 0 Then
                 Call SendDataTo(i, Data)
             End If
         Next
     End Sub
 
-    Public Shared Sub HandleData(ByVal index As Long, ByRef Data() As Byte)
+    Public Shared Sub Handle(ByVal index As Long, ByRef Data() As Byte)
         Dim Buffer As ByteBuffer
         ' Start the command
         Buffer = New ByteBuffer
         Buffer.WriteBytes(Data)
-        HandleDataPackets(Buffer.ReadLong, index, Buffer.ReadBytes(Buffer.Length))
+        HandleData.HandleDataPackets(Buffer.ReadLong, index, Buffer.ReadBytes(Buffer.Length))
         Buffer = Nothing
     End Sub
 
     Public Shared Sub SocketConnected(ByVal index As Long)
         If index = 0 Then Exit Sub
-        Console.WriteLine("Received connection from " & GetPlayerIP(index) & ".")
+        Console.WriteLine("Received connection from " & PlayerLogic.GetPlayerIP(index) & ".")
     End Sub
 
     Public Shared Sub IncomingData(ByVal index As Long, ByVal Data() As Byte)
@@ -137,7 +94,7 @@ Public Class Networking
         Do While pLength > 0 And pLength <= Buffer.Length - 8
             If pLength <= Buffer.Length - 8 Then
                 Buffer.ReadLong()
-                HandleData(index, Buffer.ReadBytes(pLength))
+                Networking.Handle(index, Buffer.ReadBytes(pLength))
             End If
 
             pLength = 0
@@ -150,22 +107,22 @@ Public Class Networking
 
     Public Shared Sub CloseSocket(ByVal index As Long)
         If index > 0 Then
-            Console.WriteLine("Connection from " & GetPlayerIP(index) & " has been terminated.")
+            Console.WriteLine("Connection from " & PlayerLogic.GetPlayerIP(index) & " has been terminated.")
             If Not IsNothing(Player(index)) Then
                 Select Case Player(index).AccessMode
-                    Case ACCESS.NONE : SendMessage(Trim$(Player(index).Name) & " has left the game.")
-                    Case ACCESS.GMIT : SendMessage(Trim$("(GMIT) " & Player(index).Name) & " has left the game.")
-                    Case ACCESS.GM : SendMessage(Trim$("(GM) " & Player(index).Name) & " has left the game.")
-                    Case ACCESS.LEAD_GM : SendMessage(Trim$("(Lead GM) " & Player(index).Name) & " has left the game.")
-                    Case ACCESS.DEV : SendMessage(Trim$("(DEV) " & Player(index).Name) & " has left the game.")
-                    Case ACCESS.ADMIN : SendMessage(Trim$("(Admin) " & Player(index).Name) & " has left the game.")
+                    Case ACCESS.NONE : SendData.Message(Trim$(Player(index).Name) & " has left the game.")
+                    Case ACCESS.GMIT : SendData.Message(Trim$("(GMIT) " & Player(index).Name) & " has left the game.")
+                    Case ACCESS.GM : SendData.Message(Trim$("(GM) " & Player(index).Name) & " has left the game.")
+                    Case ACCESS.LEAD_GM : SendData.Message(Trim$("(Lead GM) " & Player(index).Name) & " has left the game.")
+                    Case ACCESS.DEV : SendData.Message(Trim$("(DEV) " & Player(index).Name) & " has left the game.")
+                    Case ACCESS.ADMIN : SendData.Message(Trim$("(Admin) " & Player(index).Name) & " has left the game.")
                 End Select
                 Console.WriteLine(Player(index).Name & " has left the game.")
                 Player(index).SetIsPlaying(False)
                 Player(index).Save()
                 Player(index) = Nothing
-                UpdateHighIndex()
-                SendClearPlayer(index)
+                PlayerLogic.UpdateHighIndex()
+                SendData.ClearPlayer(index)
             End If
             Clients(index).Socket.Close()
         End If

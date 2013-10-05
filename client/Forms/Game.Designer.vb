@@ -29,7 +29,7 @@ Partial Class GameWindow
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
-        Me.ClientSize = New System.Drawing.Size(624, 442)
+        Me.ClientSize = New System.Drawing.Size(784, 562)
         Me.MaximizeBox = False
         Me.MinimumSize = New System.Drawing.Size(640, 480)
         Me.Name = "GameWindow"

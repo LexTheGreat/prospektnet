@@ -4,7 +4,7 @@
     Public WithEvents Socket As Winsock_Orcas.Winsock
 
     Private Sub DataArrival(ByVal sender As Object, ByVal e As Winsock_Orcas.WinsockDataArrivalEventArgs) Handles Socket.DataArrival
-        If Networking.IsConnected(index) Then
+        If PlayerLogic.IsConnected(index) Then
             Call Networking.IncomingData(index, Socket.Get)
         End If
     End Sub

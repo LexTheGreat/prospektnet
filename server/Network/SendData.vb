@@ -1,5 +1,5 @@
-﻿Module SendData
-    Public Sub SendAlert(ByVal index As Long, ByVal Message As String)
+﻿Class SendData
+    Public Shared Sub Alert(ByVal index As Long, ByVal Message As String)
         Dim Buffer As ByteBuffer
         Buffer = New ByteBuffer
         Buffer.WriteLong(ServerPackets.SAlert)
@@ -8,7 +8,7 @@
         Buffer = Nothing
     End Sub
 
-    Public Sub SendRegisterOk(ByVal index As Long)
+    Public Shared Sub RegisterOk(ByVal index As Long)
         Dim Buffer As ByteBuffer
         Buffer = New ByteBuffer
         Buffer.WriteLong(ServerPackets.SRegisterOk)
@@ -16,7 +16,7 @@
         Buffer = Nothing
     End Sub
 
-    Public Sub SendLoginOk(ByVal index As Long)
+    Public Shared Sub LoginOk(ByVal index As Long)
         Dim Buffer As ByteBuffer
         Buffer = New ByteBuffer
         Buffer.WriteLong(ServerPackets.SLoginOk)
@@ -25,14 +25,14 @@
         Buffer = Nothing
     End Sub
 
-    Public Sub SendPlayers()
+    Public Shared Sub Players()
         Dim i As Integer
         For i = 1 To PlayerHighIndex
-            SendPlayer(i)
+            SendData.PlayerData(i)
         Next
     End Sub
 
-    Public Sub SendPlayer(ByVal index As Long)
+    Public Shared Sub PlayerData(ByVal index As Long)
         Dim Buffer As ByteBuffer
         Buffer = New ByteBuffer
         Buffer.WriteLong(ServerPackets.SPlayer)
@@ -51,7 +51,7 @@
         Buffer = Nothing
     End Sub
 
-    Public Sub SendClearPlayer(ByVal index As Long)
+    Public Shared Sub ClearPlayer(ByVal index As Long)
         Dim Buffer As ByteBuffer
         Buffer = New ByteBuffer
         Buffer.WriteLong(ServerPackets.SClearPlayer)
@@ -61,7 +61,7 @@
         Buffer = Nothing
     End Sub
 
-    Public Sub SendPosition(ByVal index As Long, Optional ByVal UpdateOwn As Boolean = False)
+    Public Shared Sub Position(ByVal index As Long, Optional ByVal UpdateOwn As Boolean = False)
         Dim Buffer As ByteBuffer
         Buffer = New ByteBuffer
         Buffer.WriteLong(ServerPackets.SPosition)
@@ -78,7 +78,7 @@
         Buffer = Nothing
     End Sub
 
-    Public Sub SendAccess(ByVal index As Long)
+    Public Shared Sub Access(ByVal index As Long)
         Dim Buffer As ByteBuffer
         Buffer = New ByteBuffer
         Buffer.WriteLong(ServerPackets.SAccess)
@@ -87,7 +87,7 @@
         Buffer = Nothing
     End Sub
 
-    Public Sub SendVisible(ByVal index As Long)
+    Public Shared Sub Visible(ByVal index As Long)
         Dim Buffer As ByteBuffer
         Buffer = New ByteBuffer
         Buffer.WriteLong(ServerPackets.SVisible)
@@ -97,7 +97,7 @@
         Buffer = Nothing
     End Sub
 
-    Public Sub SendMessage(ByVal Message As String, Optional ByVal ChatMode As String = vbNullString)
+    Public Shared Sub Message(ByVal Message As String, Optional ByVal ChatMode As String = vbNullString)
         Dim Buffer As ByteBuffer
         Buffer = New ByteBuffer
         Buffer.WriteLong(ServerPackets.SMessage)
@@ -111,7 +111,34 @@
         Buffer = Nothing
     End Sub
 
-    Public Sub SendNPC(ByVal Index As Integer)
+    Public Shared Sub MessageTo(ByVal Index As Integer, ByVal Message As String)
+        Dim Buffer As ByteBuffer
+        Buffer = New ByteBuffer
+        Buffer.WriteLong(ServerPackets.SMessage)
+        Buffer.WriteString(Message)
+        Networking.SendDataTo(Index, Buffer.ToArray())
+        Buffer = Nothing
+    End Sub
+
+    Public Shared Sub MessageToAdmins(ByVal Message As String)
+        Dim Buffer As ByteBuffer
+        Buffer = New ByteBuffer
+        Buffer.WriteLong(ServerPackets.SMessage)
+        Buffer.WriteString(Message)
+        Networking.SendDataToAdmins(Buffer.ToArray())
+        Buffer = Nothing
+    End Sub
+
+    Public Shared Sub NPCs()
+        Dim i As Integer
+        For i = 0 To NPCCount
+            If Not IsNothing(NPC(i)) Then
+                SendData.NPCData(i)
+            End If
+        Next
+    End Sub
+
+    Public Shared Sub NPCData(ByVal Index As Integer)
         Dim Buffer As ByteBuffer
         Buffer = New ByteBuffer
         Buffer.WriteLong(ServerPackets.SNPC)
@@ -126,7 +153,7 @@
         Buffer = Nothing
     End Sub
 
-    Public Sub SendNPCPosition(ByVal Index As Integer)
+    Public Shared Sub NPCPosition(ByVal Index As Integer)
         Dim Buffer As ByteBuffer
         Buffer = New ByteBuffer
         Buffer.WriteLong(ServerPackets.SNPCPosition)
@@ -138,4 +165,4 @@
         Networking.SendDataToAll(Buffer.ToArray())
         Buffer = Nothing
     End Sub
-End Module
+End Class

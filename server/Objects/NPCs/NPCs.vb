@@ -107,7 +107,7 @@
 
         If i = 1 Then
             i = Int(Rnd() * 4)
-            If CanNPCMove(Me.mIndex, i) Then
+            If NPCLogic.CanNPCMove(Me.mIndex, i) Then
                 Select Case i
                     Case DirEnum.Up
                         Me.mY = Me.mY - 1
@@ -120,7 +120,7 @@
                 End Select
                 Me.mDir = i
                 Me.mMoving = True
-                SendNPCPosition(Me.mIndex)
+                SendData.NPCPosition(Me.mIndex)
             Else
                 Me.mMoving = False
             End If

@@ -119,24 +119,13 @@
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Classes\Accounts.vb" />
-    <Compile Include="Classes\ByteBuffer.vb" />
-    <Compile Include="Classes\Configuration.vb" />
-    <Compile Include="Classes\LuaHandler.vb" />
-    <Compile Include="Classes\Networking.vb" />
-    <Compile Include="Classes\NPCs.vb" />
-    <Compile Include="Classes\Server.vb" />
-    <Compile Include="Classes\Players.vb" />
-    <Compile Include="Classes\ClientSocket.vb" />
-    <Compile Include="Modules\Files.vb" />
-    <Compile Include="Modules\Globals.vb" />
-    <Compile Include="Modules\General.vb" />
-    <Compile Include="Modules\Guilds.vb" />
-    <Compile Include="Modules\HandleData.vb" />
-    <Compile Include="Modules\AccountData.vb" />
-    <Compile Include="Modules\NPCData.vb" />
-    <Compile Include="Modules\Parties.vb" />
-    <Compile Include="Modules\SendData.vb" />
+    <Compile Include="Database\Files.vb" />
+    <Compile Include="Features\Guilds.vb" />
+    <Compile Include="Features\Parties.vb" />
+    <Compile Include="Database\Configuration.vb" />
+    <Compile Include="General\Enumerations.vb" />
+    <Compile Include="General\Globals.vb" />
+    <Compile Include="General\Server.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>
@@ -152,6 +141,20 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Compile Include="Network\ByteBuffer.vb" />
+    <Compile Include="Network\ClientSocket.vb" />
+    <Compile Include="Network\HandleData.vb" />
+    <Compile Include="Network\Networking.vb" />
+    <Compile Include="Network\SendData.vb" />
+    <Compile Include="Objects\Accounts\AccountData.vb" />
+    <Compile Include="Objects\Accounts\Accounts.vb" />
+    <Compile Include="Objects\NPCs\NPCData.vb" />
+    <Compile Include="Objects\NPCs\NPCLogic.vb" />
+    <Compile Include="Objects\NPCs\NPCs.vb" />
+    <Compile Include="Objects\Players\PlayerData.vb" />
+    <Compile Include="Objects\Players\PlayerLogic.vb" />
+    <Compile Include="Objects\Players\Players.vb" />
+    <Compile Include="Scripting\LuaHandler.vb" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="My Project\Resources.resx">

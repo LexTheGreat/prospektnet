@@ -1,6 +1,21 @@
 ﻿Imports Winsock_Orcas
 Public Class Server
     Shared WithEvents sckListen As Winsock
+
+    Shared Sub sckListen_ConnectionRequest(ByVal sender As Object, ByVal e As WinsockConnectionRequestEventArgs) Handles sckListen.ConnectionRequest
+        Dim i As Long
+        PlayerHighIndex = PlayerHighIndex + 1
+        i = PlayerLogic.FindOpenPlayerSlot()
+
+        If i <> 0 Then
+            ' we can connect them
+            Networking.Clients(i).Socket.Accept(e.Client)
+            Networking.Clients(i).index = i
+            Networking.Clients(i).IP = e.ClientIP
+            Call Networking.SocketConnected(i)
+        End If
+    End Sub
+
     Shared Sub Main()
         Dim i As Integer, time1 As Integer, time2 As Integer
         time1 = System.Environment.TickCount
@@ -40,17 +55,28 @@ Public Class Server
         ServerLoop()
     End Sub
 
-    Shared Sub sckListen_ConnectionRequest(ByVal sender As Object, ByVal e As WinsockConnectionRequestEventArgs) Handles sckListen.ConnectionRequest
-        Dim i As Long
-        PlayerHighIndex = PlayerHighIndex + 1
-        i = Networking.FindOpenPlayerSlot()
-
-        If i <> 0 Then
-            ' we can connect them
-            Networking.Clients(i).Socket.Accept(e.Client)
-            Networking.Clients(i).index = i
-            Networking.Clients(i).IP = e.ClientIP
-            Call Networking.SocketConnected(i)
-        End If
+    Shared Sub ServerLoop()
+        Dim Tick As Integer
+        Dim tmrPlayerSave As Integer
+        Dim tmrNpcMove As Integer
+        Do While inServer
+            Tick = System.Environment.TickCount()
+            'Saves players every 5 minutes
+            If tmrPlayerSave < Tick Then
+                Console.WriteLine("Saving Players...")
+                PlayerData.SaveOnlinePlayers()
+                tmrPlayerSave = System.Environment.TickCount + 300000
+            End If
+            'Generate Npc movement every second
+            If tmrNpcMove < Tick Then
+                Dim i As Integer
+                For i = 0 To NPCCount ' Loop through Npc's
+                    If Not IsNothing(NPC(i)) Then ' Make sure Npc exists
+                        NPC(i).GenerateMovement()
+                    End If
+                Next i
+                tmrNpcMove = System.Environment.TickCount + 1000
+            End If
+        Loop
     End Sub
 End Class
