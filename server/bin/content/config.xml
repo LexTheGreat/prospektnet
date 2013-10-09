@@ -1,3 +1,4 @@
 ﻿<Configuration>
 	<Port>8080</Port>
+	<MaxPlayers>100</MaxPlayers>
 </Configuration>

@@ -14,7 +14,7 @@
     ' Players
     Public Account As Accounts()
     Public AccountCount As Long = 0
-    Public Player(100) As Players
+    Public Player() As Players
     Public PlayerHighIndex As Integer
 
     ' NPCs

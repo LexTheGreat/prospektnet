@@ -1,6 +1,17 @@
 ﻿Imports Winsock_Orcas
 Public Class Networking
-    Public Shared Clients(100) As ClientSocket
+    Public Shared Clients() As ClientSocket
+
+    Public Shared Sub Initialize()
+        Server.sckListen = New Winsock
+        Server.sckListen.BufferSize = 8192
+        Server.sckListen.LegacySupport = False
+        Server.sckListen.LocalPort = ServerConfig.Port
+        Server.sckListen.MaxPendingConnections = 1
+        Server.sckListen.Protocol = WinsockProtocol.Tcp
+        Server.sckListen.RemoteHost = "localhost"
+        Server.sckListen.RemotePort = ServerConfig.Port
+    End Sub
 
     Public Shared Sub SendDataTo(ByVal index As Long, ByRef Data() As Byte)
         Dim Buffer As ByteBuffer

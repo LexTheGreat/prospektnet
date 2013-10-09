@@ -1,6 +1,7 @@
 ﻿Imports SFML.Graphics
 Imports SFML.Window
 Public Class TextWriter
+    Implements IDisposable
     Private xFont As Font
     Private xText As Text
     Private fontName As String
@@ -10,13 +11,6 @@ Public Class TextWriter
     Public Sub New(ByVal Filename As String)
         xFont = New Font(Filename)
         IsVisible = True
-    End Sub
-
-    Public Sub Dispose()
-        xFont.Dispose()
-        xFont = Nothing
-        xText.Dispose()
-        xText = Nothing
     End Sub
 
     Public Sub Draw(ByVal DrawText As String, ByVal X As Integer, ByVal Y As Integer, ByVal textColor As Color, Optional ByVal Size As Integer = 12)
@@ -61,4 +55,11 @@ Public Class TextWriter
             IsVisible = value
         End Set
     End Property
+
+    Public Sub Dispose() Implements IDisposable.Dispose
+        xFont.Dispose()
+        xFont = Nothing
+        xText.Dispose()
+        xText = Nothing
+    End Sub
 End Class

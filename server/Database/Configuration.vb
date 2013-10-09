@@ -2,9 +2,11 @@
 Imports System.Xml.Serialization
 Public Class Configuration
     Public Port As Integer
+    Public MaxPlayers As Integer
 
     Public Sub New()
         Me.Port = 8080
+        Me.MaxPlayers = 100
     End Sub
 
     Public Sub Load()
@@ -16,6 +18,7 @@ Public Class Configuration
         ' Convert object to newConfig
         newConfig = CType(objConfig, Configuration)
         Me.Port = newConfig.Port
+        Me.MaxPlayers = newConfig.MaxPlayers
     End Sub
 
     Public Sub Save()

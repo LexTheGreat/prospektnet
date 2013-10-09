@@ -10,22 +10,26 @@ Features
 * SFML (OpenGL) rendering
 * SFML sound and music framework
 * SFML font engine
+* Winsock Orcas networking library
 * XML database for accounts
-* Winsock Orcas (temporary) networking library
+* Basic NPC logic, rendering and collisions
 * Basic tile engine
 * Basic client-server connection with multiple players
 * Very basic chatting
 * Basic menu
 * Real resolutions, changing actual size and not strectching game (hardcoded for now).
 * XML-based configuration files
-* Fully open-source programmed in Visual Basic .NET
+* Fully open-source, programmed in Visual Basic .NET
 * LUA Scripting
 
 Credits
 -------
 
-Developers:
-Thomas and Ertzel.
+Creator and solo eveloper:
+Thomas.
+
+Misc. programming:
+Ertzel.
 
 Music:
 Aaron Krogh.
