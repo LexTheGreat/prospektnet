@@ -1,21 +1,21 @@
-﻿Module HandleData
-    Public Sub HandleDataPackets(ByVal PacketNum As Long, ByRef Data() As Byte)
+﻿Class HandleData
+    Public Shared Sub HandleDataPackets(ByVal PacketNum As Long, ByRef Data() As Byte)
         ' Checks which is the command to run
         If PacketNum = 0 Then Exit Sub
-        If PacketNum = ServerPackets.SAlert Then HandleAlert(Data)
-        If PacketNum = ServerPackets.SLoginOk Then HandleLoginOk(Data)
-        If PacketNum = ServerPackets.SRegisterOk Then HandleRegisterOk(Data)
-        If PacketNum = ServerPackets.SPlayer Then HandlePlayer(Data)
-        If PacketNum = ServerPackets.SClearPlayer Then HandleClearPlayer(Data)
-        If PacketNum = ServerPackets.SPosition Then HandlePosition(Data)
-        If PacketNum = ServerPackets.SMessage Then HandleMessage(Data)
-        If PacketNum = ServerPackets.SAccess Then HandleAccess(Data)
-        If PacketNum = ServerPackets.SVisible Then HandleVisible(Data)
-        If PacketNum = ServerPackets.SNPC Then HandleNPC(Data)
-        If PacketNum = ServerPackets.SNPCPosition Then HandleNPCPosition(Data)
+        If PacketNum = ServerPackets.SAlert Then HandleData.Alert(Data)
+        If PacketNum = ServerPackets.SLoginOk Then HandleData.LoginOk(Data)
+        If PacketNum = ServerPackets.SRegisterOk Then HandleData.RegisterOk(Data)
+        If PacketNum = ServerPackets.SPlayer Then HandleData.PlayerData(Data)
+        If PacketNum = ServerPackets.SClearPlayer Then HandleData.ClearPlayer(Data)
+        If PacketNum = ServerPackets.SPosition Then HandleData.Position(Data)
+        If PacketNum = ServerPackets.SMessage Then HandleData.Message(Data)
+        If PacketNum = ServerPackets.SAccess Then HandleData.Access(Data)
+        If PacketNum = ServerPackets.SVisible Then HandleData.Visible(Data)
+        If PacketNum = ServerPackets.SNPC Then HandleData.NPCData(Data)
+        If PacketNum = ServerPackets.SNPCPosition Then HandleData.NPCPosition(Data)
     End Sub
 
-    Private Sub HandleAlert(ByRef Data() As Byte)
+    Public Shared Sub Alert(ByRef Data() As Byte)
         Dim Buffer As ByteBuffer
         Buffer = New ByteBuffer
         Buffer.WriteBytes(Data)
@@ -34,7 +34,7 @@
         End If
     End Sub
 
-    Private Sub HandleRegisterOk(ByRef Data() As Byte)
+    Public Shared Sub RegisterOk(ByRef Data() As Byte)
         Dim Buffer As ByteBuffer
         Buffer = New ByteBuffer
         Buffer.WriteBytes(Data)
@@ -43,7 +43,7 @@
         curMenu = MenuEnum.Creation
     End Sub
 
-    Private Sub HandleLoginOk(ByRef Data() As Byte)
+    Public Shared Sub LoginOk(ByRef Data() As Byte)
         Dim Buffer As ByteBuffer
         Buffer = New ByteBuffer
         Buffer.WriteBytes(Data)
@@ -53,7 +53,7 @@
         faderAlpha = 0
     End Sub
 
-    Private Sub HandlePlayer(ByRef Data() As Byte)
+    Public Shared Sub PlayerData(ByRef Data() As Byte)
         Dim tempIndex As Integer
         Dim Buffer As ByteBuffer
         Buffer = New ByteBuffer
@@ -65,7 +65,7 @@
         Buffer = Nothing
     End Sub
 
-    Private Sub HandleClearPlayer(ByRef Data() As Byte)
+    Public Shared Sub ClearPlayer(ByRef Data() As Byte)
         Dim tempIndex As Integer
         Dim Buffer As ByteBuffer
         Buffer = New ByteBuffer
@@ -76,7 +76,7 @@
         Buffer = Nothing
     End Sub
 
-    Private Sub HandlePosition(ByRef Data() As Byte)
+    Public Shared Sub Position(ByRef Data() As Byte)
         Dim tempIndex As Integer
         Dim Buffer As ByteBuffer
         Buffer = New ByteBuffer
@@ -99,7 +99,7 @@
         Buffer = Nothing
     End Sub
 
-    Private Sub HandleMessage(ByRef Data() As Byte)
+    Public Shared Sub Message(ByRef Data() As Byte)
         Dim Buffer As ByteBuffer, Message As String, Messages As String(), I As Integer
         ReDim Preserve Messages(0 To maxChatLines)
         Buffer = New ByteBuffer
@@ -138,7 +138,7 @@
         Next X
     End Sub
 
-    Private Sub HandleAccess(ByRef Data() As Byte)
+    Public Shared Sub Access(ByRef Data() As Byte)
         Dim Buffer As ByteBuffer
         Buffer = New ByteBuffer
         Buffer.WriteBytes(Data)
@@ -146,7 +146,7 @@
         Buffer = Nothing
     End Sub
 
-    Private Sub HandleVisible(ByRef Data() As Byte)
+    Public Shared Sub Visible(ByRef Data() As Byte)
         Dim tempIndex As Integer
         Dim Buffer As ByteBuffer
         Buffer = New ByteBuffer
@@ -156,7 +156,7 @@
         Buffer = Nothing
     End Sub
 
-    Private Sub HandleNPC(ByRef Data() As Byte)
+    Public Shared Sub NPCData(ByRef Data() As Byte)
         Dim tempIndex As Integer
         Dim Buffer As ByteBuffer
         Buffer = New ByteBuffer
@@ -169,7 +169,7 @@
         Buffer = Nothing
     End Sub
 
-    Private Sub HandleNPCPosition(ByRef Data() As Byte)
+    Public Shared Sub NPCPosition(ByRef Data() As Byte)
         Dim tempIndex As Integer
         Dim Buffer As ByteBuffer
         Buffer = New ByteBuffer
@@ -194,4 +194,4 @@
         End Select
         Buffer = Nothing
     End Sub
-End Module
+End Class

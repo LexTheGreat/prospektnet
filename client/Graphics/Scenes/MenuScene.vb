@@ -84,7 +84,7 @@ errorhandler:
                 If curMenu = MenuEnum.Login Then
                     If Networking.ConnectToServer() Then
                         If Len(Trim(sEmail)) > 0 And Len(Trim(sPass)) > 0 And EmailAddressChecker(Trim(sEmail)) = True Then
-                            SendLogin(sEmail, sPass)
+                            SendData.Login(sEmail, sPass)
                         Else
                             MsgBox(Trim(sEmail))
                             MsgBox("Username and password fields can not be empty or you entered wrong email.")
@@ -95,7 +95,7 @@ errorhandler:
                 ElseIf curMenu = MenuEnum.Register Then
                     If Networking.ConnectToServer() Then
                         If Len(Trim(sEmail)) > 0 And Len(Trim(sPass)) > 0 And EmailAddressChecker(Trim(sEmail)) = True Then
-                            SendRegister(sEmail, sPass)
+                            SendData.Register(sEmail, sPass)
                         Else
                             MsgBox(Trim(sEmail))
                             MsgBox("Username and password fields can not be empty or you entered wrong email.")
@@ -106,7 +106,7 @@ errorhandler:
                 ElseIf curMenu = MenuEnum.Creation Then
                     If Networking.ConnectToServer() Then
                         If Len(Trim(sEmail)) > 0 And Len(Trim(sCharacter)) > 0 Then
-                            SendNewCharacter(sEmail, sCharacter)
+                            SendData.NewCharacter(sEmail, sCharacter)
                         Else
                             MsgBox("Name field can not be empty")
                         End If
@@ -121,7 +121,7 @@ errorhandler:
         ' Logging in
         If loginSent Then Return False
 
-        If Not GetKeyState(Keys.Back) And Not GetKeyState(Keys.Return) And Not GetKeyState(Keys.Tab) And Not GetKeyState(Keys.Escape) Then
+        If Not KeyboardInput.GetKeyState(Keys.Back) And Not KeyboardInput.GetKeyState(Keys.Return) And Not KeyboardInput.GetKeyState(Keys.Tab) And Not KeyboardInput.GetKeyState(Keys.Escape) Then
             If curMenu = MenuEnum.Login Or curMenu = MenuEnum.Register Then
                 If curTextbox = 0 Then
                     sEmail = sEmail & Key.ToString

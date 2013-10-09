@@ -9,21 +9,11 @@
     End Sub
 
     Private Sub frmMain_KeyDown(sender As Object, e As KeyEventArgs) Handles Me.KeyDown
-        If inGame Then
-            GameMain.KeyDown(e.KeyCode)
-        End If
-        If inMenu Then
-            MenuMain.KeyDown(e.KeyCode)
-        End If
+        KeyboardInput.KeyDown(e)
     End Sub
 
     Private Sub frmMain_KeyPress(sender As Object, e As KeyPressEventArgs) Handles Me.KeyPress
-        If inMenu And curMenu = MenuEnum.Login Or curMenu = MenuEnum.Register Or curMenu = MenuEnum.Creation Then
-            MenuMain.KeyPress(e.KeyChar)
-        End If
-        If inGame And inChat Then
-            GameMain.KeyPress(e.KeyChar)
-        End If
+        KeyboardInput.KeyPress(e)
     End Sub
 
     Private Sub frmMain_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
@@ -32,17 +22,14 @@
     End Sub
 
     Private Sub frmMain_MouseDown(sender As Object, e As MouseEventArgs) Handles Me.MouseDown
-        mouseLeftDown = Windows.Forms.MouseButtons.Left
-        mouseRightDown = Windows.Forms.MouseButtons.Right
+        MouseInput.MouseDown(e)
     End Sub
 
     Private Sub frmMain_MouseMove(sender As Object, e As MouseEventArgs) Handles Me.MouseMove
-        mouseX = e.X
-        mouseY = e.Y
+        MouseInput.MouseMove(e)
     End Sub
 
     Private Sub frmMain_MouseUp(sender As Object, e As MouseEventArgs) Handles Me.MouseUp
-        mouseLeftDown = 0
-        mouseRightDown = 0
+        MouseInput.MouseUp(e)
     End Sub
 End Class

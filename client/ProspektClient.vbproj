@@ -130,31 +130,27 @@
     <Import Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Classes\AudioPlayer.vb" />
-    <Compile Include="Classes\ByteBuffer.vb" />
-    <Compile Include="Classes\GameScene.vb" />
-    <Compile Include="Classes\GMTools.vb" />
-    <Compile Include="Classes\MenuScene.vb" />
-    <Compile Include="Classes\Networking.vb" />
-    <Compile Include="Classes\NPCs.vb" />
-    <Compile Include="Classes\Players.vb" />
-    <Compile Include="Classes\Render.vb" />
-    <Compile Include="Classes\TextWriter.vb" />
-    <Compile Include="Forms\Game.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\Game.Designer.vb">
+    <Compile Include="Audio\AudioPlayer.vb" />
+    <Compile Include="Database\Configuration.vb" />
+    <Compile Include="Database\Files.vb" />
+    <Compile Include="General\Enumerations.vb" />
+    <Compile Include="General\Game.Designer.vb">
       <DependentUpon>Game.vb</DependentUpon>
+    </Compile>
+    <Compile Include="General\Game.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Classes\Configuration.vb" />
-    <Compile Include="Modules\Files.vb" />
-    <Compile Include="Modules\HandleData.vb" />
-    <Compile Include="Modules\Globals.vb" />
-    <Compile Include="Modules\General.vb" />
-    <Compile Include="Modules\GameLogic.vb" />
-    <Compile Include="Modules\Textures.vb" />
-    <Compile Include="Modules\SendData.vb" />
+    <Compile Include="General\GameLogic.vb" />
+    <Compile Include="General\General.vb" />
+    <Compile Include="General\Globals.vb" />
+    <Compile Include="Graphics\Render.vb" />
+    <Compile Include="Graphics\Scenes\GameScene.vb" />
+    <Compile Include="Graphics\Scenes\GMTools.vb" />
+    <Compile Include="Graphics\Scenes\MenuScene.vb" />
+    <Compile Include="Graphics\Textures.vb" />
+    <Compile Include="Graphics\TextWriter.vb" />
+    <Compile Include="Input\KeyboardInput.vb" />
+    <Compile Include="Input\MouseInput.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>
@@ -170,11 +166,18 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Compile Include="Network\ByteBuffer.vb" />
+    <Compile Include="Network\HandleData.vb" />
+    <Compile Include="Network\Networking.vb" />
+    <Compile Include="Network\SendData.vb" />
+    <Compile Include="Objects\NPCs\NPCLogic.vb" />
+    <Compile Include="Objects\NPCs\NPCs.vb" />
+    <Compile Include="Objects\Players\PlayerLogic.vb" />
+    <Compile Include="Objects\Players\Players.vb" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Forms\Game.resx">
+    <EmbeddedResource Include="General\Game.resx">
       <DependentUpon>Game.vb</DependentUpon>
-      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="My Project\Resources.resx">
       <Generator>VbMyResourcesResXFileCodeGenerator</Generator>

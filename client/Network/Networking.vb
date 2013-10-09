@@ -7,12 +7,12 @@ Public Class Networking
     Public Shared Sub Disconnected(ByVal sender As Object, ByVal e As System.EventArgs) Handles PlayerSocket.Disconnected
         If inGame Then GameWindow.Close()
     End Sub
-    Public Shared Sub HandleData(ByRef Data() As Byte)
+    Public Shared Sub Handle(ByRef Data() As Byte)
         Dim Buffer As ByteBuffer
         ' Start the command
         Buffer = New ByteBuffer
-        buffer.WriteBytes(Data)
-        HandleDataPackets(Buffer.ReadLong, Buffer.ReadBytes(Buffer.Length))
+        Buffer.WriteBytes(Data)
+        HandleData.HandleDataPackets(Buffer.ReadLong, Buffer.ReadBytes(Buffer.Length))
         Buffer = Nothing
     End Sub
     Public Shared Sub IncomingData(ByVal Data() As Byte)
@@ -27,7 +27,7 @@ Public Class Networking
         Do While pLength > 0 And pLength <= Buffer.Length - 8
             If pLength <= Buffer.Length - 8 Then
                 Buffer.ReadLong()
-                HandleData(Buffer.ReadBytes(pLength))
+                Handle(Buffer.ReadBytes(pLength))
             End If
 
             pLength = 0

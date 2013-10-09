@@ -1,12 +1,12 @@
 ﻿Imports System.IO
 Imports System.Xml.Serialization
 
-Module Files
-    Public Function fileExist(ByVal filepath As String) As Boolean
-        fileExist = File.Exists(filepath)
+Class Files
+    Public Shared Function Exists(ByVal filepath As String) As Boolean
+        Return File.Exists(filepath)
     End Function
 
-    Public Function Write(ByVal Path As String, ByVal obj As Object) As Boolean
+    Public Shared Function Write(ByVal Path As String, ByVal obj As Object) As Boolean
         Try
             'Serialize object to a file.
             Dim Writer As New StreamWriter(Path)
@@ -20,7 +20,7 @@ Module Files
         End Try
     End Function
 
-    Public Function Read(ByVal Path As String, ByVal obj As Object) As Object
+    Public Shared Function Read(ByVal Path As String, ByVal obj As Object) As Object
         Try
             'Deserialize file to object.
             Dim Reader As New StreamReader(Path)
@@ -33,5 +33,5 @@ Module Files
             Return Nothing
         End Try
     End Function
-End Module
+End Class
 

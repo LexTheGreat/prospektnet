@@ -8,7 +8,7 @@ Public Class AudioPlayer
     Public Shared Sub playMusic(ByVal filename As String)
         If ClientConfig.Music = False Then Exit Sub
 
-        If Not fileExist(pathMusic & filename) Then Exit Sub
+        If Not Files.Exists(pathMusic & filename) Then Exit Sub
 
         If musicPlayer Is Nothing Then
             musicPlayer = New Music(pathMusic & filename)
@@ -30,7 +30,7 @@ Public Class AudioPlayer
     End Sub
     Public Shared Sub playSound(ByVal filename As String)
         If ClientConfig.Sound = False Then Exit Sub
-        If Not fileExist(pathSound & filename) Then Exit Sub
+        If Not Files.Exists(pathSound & filename) Then Exit Sub
 
         If soundPlayer Is Nothing Then
             soundPlayerBuffer = New SoundBuffer(pathSound & filename)

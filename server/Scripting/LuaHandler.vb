@@ -9,7 +9,7 @@ Public Class LuaHandler
         LuaObject = Nothing
     End Sub
     Public Sub ExecuteScript(ByVal Script As String)
-        If fileExist(pathScripts & Script & ".txt") Then LuaObject.DoFile(pathScripts & Script & ".txt")
+        If Files.Exists(pathScripts & Script & ".txt") Then LuaObject.DoFile(pathScripts & Script & ".txt")
     End Sub
     Public Sub ServerMessage(ByVal Message As String)
         Console.WriteLine(Message)

@@ -1,5 +1,5 @@
-﻿Module SendData
-    Public Sub SendRegister(ByVal Name As String, ByVal Password As String)
+﻿Class SendData
+    Public Shared Sub Register(ByVal Name As String, ByVal Password As String)
         Dim Buffer As ByteBuffer
         Buffer = New ByteBuffer
         Buffer.WriteLong(ClientPackets.CRegister)
@@ -10,7 +10,7 @@
         loginSent = True
     End Sub
 
-    Public Sub SendNewCharacter(ByVal Login As String, ByVal Name As String)
+    Public Shared Sub NewCharacter(ByVal Login As String, ByVal Name As String)
         Dim Buffer As ByteBuffer
         Buffer = New ByteBuffer
         Buffer.WriteLong(ClientPackets.CNewCharacter)
@@ -21,7 +21,7 @@
         loginSent = True
     End Sub
 
-    Public Sub SendLogin(ByVal Login As String, ByVal Password As String)
+    Public Shared Sub Login(ByVal Login As String, ByVal Password As String)
         Dim Buffer As ByteBuffer
         Buffer = New ByteBuffer
         Buffer.WriteLong(ClientPackets.CLogin)
@@ -32,7 +32,7 @@
         loginSent = True
     End Sub
 
-    Public Sub SendPosition()
+    Public Shared Sub Position()
         Dim Buffer As ByteBuffer
         Buffer = New ByteBuffer
         Buffer.WriteLong(ClientPackets.CPosition)
@@ -43,7 +43,7 @@
         Networking.SendData(Buffer.ToArray())
         Buffer = Nothing
     End Sub
-    Public Sub SendMessage(ByVal Message As String)
+    Public Shared Sub Message(ByVal Message As String)
         Dim Buffer As ByteBuffer
         Buffer = New ByteBuffer
         Buffer.WriteLong(ClientPackets.CMessage)
@@ -53,7 +53,7 @@
         Buffer = Nothing
     End Sub
 
-    Public Sub SendWarpTo(ByVal index As Long)
+    Public Shared Sub WarpTo(ByVal index As Long)
         Dim Buffer As ByteBuffer
         Buffer = New ByteBuffer
         Buffer.WriteLong(ClientPackets.CWarpTo)
@@ -62,7 +62,7 @@
         Buffer = Nothing
     End Sub
 
-    Public Sub SendWarpToMe(ByVal index As Long)
+    Public Shared Sub WarpToMe(ByVal index As Long)
         Dim Buffer As ByteBuffer
         Buffer = New ByteBuffer
         Buffer.WriteLong(ClientPackets.CWarpToMe)
@@ -70,4 +70,4 @@
         Networking.SendData(Buffer.ToArray())
         Buffer = Nothing
     End Sub
-End Module
+End Class

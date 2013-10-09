@@ -122,9 +122,9 @@
             FrameTime = Tick
 
             If tmr25 < Tick Then
-                If GameWindow.Focused Then CheckInputKeys() ' Check which keys were pressed
+                If GameWindow.Focused Then PlayerLogic.CheckInputKeys() ' Check which keys were pressed
 
-                CheckMovement() ' Check if player is trying to move
+                PlayerLogic.CheckMovement() ' Check if player is trying to move
                 tmr25 = Tick + 25
             End If
 

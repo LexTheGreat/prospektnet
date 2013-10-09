@@ -12,6 +12,7 @@ Public Class Configuration
 
         ' Get object from file
         objConfig = Files.Read(pathContent & "config.xml", Me)
+        If IsNothing(objConfig) Then objConfig = New Configuration()
         ' Convert object to newConfig
         newConfig = CType(objConfig, Configuration)
         Me.Port = newConfig.Port

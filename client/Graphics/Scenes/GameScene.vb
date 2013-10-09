@@ -57,7 +57,7 @@ errorhandler:
         Select Case Key
             Case Keys.Return
                 If inChat Then
-                    If Len(Trim(sChat)) > 0 Then SendMessage(sChat)
+                    If Len(Trim(sChat)) > 0 Then SendData.Message(sChat)
                     sChat = vbNullString
                     vChat = vbNullString
                     inChat = False
@@ -96,7 +96,7 @@ errorhandler:
     End Function
 
     Public Function KeyPress(ByVal Key As Char) As Boolean
-        If inChat And Not GetKeyState(Keys.Back) And Not GetKeyState(Keys.Return) And Not GetKeyState(Keys.Tab) And Not GetKeyState(Keys.Escape) Then
+        If inChat And Not KeyboardInput.GetKeyState(Keys.Back) And Not KeyboardInput.GetKeyState(Keys.Return) And Not KeyboardInput.GetKeyState(Keys.Tab) And Not KeyboardInput.GetKeyState(Keys.Escape) Then
             sChat = sChat & Key.ToString
             UpdateVisibleChat()
         End If
