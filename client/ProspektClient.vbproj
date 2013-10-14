@@ -8,7 +8,7 @@
     <ProjectGuid>{973C8CE1-8649-4B4B-A429-46BB3BF977C2}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <StartupObject>Sub Main</StartupObject>
-    <RootNamespace>Prospekt.NET</RootNamespace>
+    <RootNamespace>Prospekt</RootNamespace>
     <AssemblyName>Prospekt.NET</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <MyType>WindowsFormsWithCustomSubMain</MyType>
@@ -115,10 +115,10 @@
     <Compile Include="Database\Configuration.vb" />
     <Compile Include="Database\Files.vb" />
     <Compile Include="General\Enumerations.vb" />
-    <Compile Include="General\Game.Designer.vb">
-      <DependentUpon>Game.vb</DependentUpon>
+    <Compile Include="General\GameWindow.Designer.vb">
+      <DependentUpon>GameWindow.vb</DependentUpon>
     </Compile>
-    <Compile Include="General\Game.vb">
+    <Compile Include="General\GameWindow.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="General\GameLogic.vb" />
@@ -151,14 +151,19 @@
     <Compile Include="Network\HandleData.vb" />
     <Compile Include="Network\Networking.vb" />
     <Compile Include="Network\SendData.vb" />
+    <Compile Include="Objects\Maps\LayerData.vb" />
+    <Compile Include="Objects\Maps\MapLogic.vb" />
+    <Compile Include="Objects\Maps\MapStructure.vb" />
+    <Compile Include="Objects\Maps\OverlayColor.vb" />
+    <Compile Include="Objects\Maps\TileData.vb" />
     <Compile Include="Objects\NPCs\NPCLogic.vb" />
     <Compile Include="Objects\NPCs\NPCs.vb" />
     <Compile Include="Objects\Players\PlayerLogic.vb" />
     <Compile Include="Objects\Players\Players.vb" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="General\Game.resx">
-      <DependentUpon>Game.vb</DependentUpon>
+    <EmbeddedResource Include="General\GameWindow.resx">
+      <DependentUpon>GameWindow.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="My Project\Resources.resx">
       <Generator>VbMyResourcesResXFileCodeGenerator</Generator>

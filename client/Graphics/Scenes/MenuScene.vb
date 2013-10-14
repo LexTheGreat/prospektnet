@@ -21,6 +21,7 @@ Public Class MenuScene
             Render.RenderTexture(texGui(1), 0, ClientConfig.ScreenHeight - 20, 0, 0, ClientConfig.ScreenWidth, 20, 32, 32, 200, 0, 0, 0)
             Render.RenderTexture(texGui(1), (ClientConfig.ScreenWidth * 0.5) - 200, (ClientConfig.ScreenHeight * 0.5) - 100, 0, 0, 400, 200, 32, 32, 120, 0, 0, 0)
 
+
             Verdana.Draw(Application.ProductName & " v" & Application.ProductVersion, 5, ClientConfig.ScreenHeight - 18, Color.White)
             Verdana.Draw("indiearmory.com", ClientConfig.ScreenWidth - 5 - Verdana.GetWidth("indiearmory.com"), ClientConfig.ScreenHeight - 18, Color.Cyan, AddressOf ButtonPress, 4)
             Verdana.Draw("FPS: " & gameFPS, 5, 5, Color.White)
@@ -31,6 +32,7 @@ Public Class MenuScene
                 Case MenuEnum.Register : DrawLogin()
                 Case MenuEnum.Creation : DrawCreation()
                 Case MenuEnum.Credits : DrawCredits()
+                Case MenuEnum.StatusMessage : DrawStatusMessage()
             End Select
 
             Render.DrawFader()
@@ -84,33 +86,51 @@ errorhandler:
                 If curMenu = MenuEnum.Login Then
                     If Networking.ConnectToServer() Then
                         If Len(Trim(sEmail)) > 0 And Len(Trim(sPass)) > 0 And EmailAddressChecker(Trim(sEmail)) = True Then
+                            curMenu = MenuEnum.StatusMessage
+                            sMessage = "Sending login..."
                             SendData.Login(sEmail, sPass)
                         Else
+                            curMenu = MenuEnum.Login
+                            sMessage = vbNullString
                             MsgBox(Trim(sEmail))
                             MsgBox("Username and password fields can not be empty or you entered wrong email.")
                         End If
                     Else
+                        curMenu = MenuEnum.Main
+                        sMessage = vbNullString
                         MsgBox("Server is offline")
                     End If
                 ElseIf curMenu = MenuEnum.Register Then
                     If Networking.ConnectToServer() Then
                         If Len(Trim(sEmail)) > 0 And Len(Trim(sPass)) > 0 And EmailAddressChecker(Trim(sEmail)) = True Then
+                            curMenu = MenuEnum.StatusMessage
+                            sMessage = "Sending register..."
                             SendData.Register(sEmail, sPass)
                         Else
+                            curMenu = MenuEnum.Register
+                            sMessage = vbNullString
                             MsgBox(Trim(sEmail))
                             MsgBox("Username and password fields can not be empty or you entered wrong email.")
                         End If
                     Else
+                        curMenu = MenuEnum.Main
+                        sMessage = vbNullString
                         MsgBox("Server is offline")
                     End If
                 ElseIf curMenu = MenuEnum.Creation Then
                     If Networking.ConnectToServer() Then
                         If Len(Trim(sEmail)) > 0 And Len(Trim(sCharacter)) > 0 Then
+                            curMenu = MenuEnum.StatusMessage
+                            sMessage = "Sending new character..."
                             SendData.NewCharacter(sEmail, sCharacter)
                         Else
+                            curMenu = MenuEnum.Creation
+                            sMessage = vbNullString
                             MsgBox("Name field can not be empty")
                         End If
                     Else
+                        curMenu = MenuEnum.Main
+                        sMessage = vbNullString
                         MsgBox("Server is offline")
                     End If
                 End If
@@ -177,6 +197,11 @@ errorhandler:
         Verdana.Draw("Enterbrain", (ClientConfig.ScreenWidth * 0.5) - (Verdana.GetWidth("Enterbrain") * 0.5), (ClientConfig.ScreenHeight * 0.5), Color.White)
         Verdana.Draw("First Seed Material", (ClientConfig.ScreenWidth * 0.5) - (Verdana.GetWidth("First Seed Material") * 0.5), (ClientConfig.ScreenHeight * 0.5) + 14, Color.White)
         Verdana.Draw("James 'Ertzel' Wilson", (ClientConfig.ScreenWidth * 0.5) - (Verdana.GetWidth("James 'Ertzel' Wilson") * 0.5), (ClientConfig.ScreenHeight * 0.5) + 28, Color.White)
+    End Sub
+
+    Public Sub DrawStatusMessage()
+        Render.RenderTexture(texGui(1), (ClientConfig.ScreenWidth * 0.5) - 10 - (Verdana.GetWidth(sMessage) * 0.5), (ClientConfig.ScreenHeight * 0.5) - 20, 0, 0, Verdana.GetWidth(sMessage) + 20, 34, 32, 32, 200, 0, 0, 0)
+        Verdana.Draw(sMessage, (ClientConfig.ScreenWidth * 0.5) - (Verdana.GetWidth(sMessage) * 0.5), (ClientConfig.ScreenHeight * 0.5) - 14, Color.White)
     End Sub
 
     Public Function ButtonPress(ByVal index As Integer) As Boolean

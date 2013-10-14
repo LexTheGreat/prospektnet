@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<NPCs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Name>NPC #4</Name>
+  <Sprite>2</Sprite>
+  <X>10</X>
+  <Y>6</Y>
+  <Dir>1</Dir>
+</NPCs>

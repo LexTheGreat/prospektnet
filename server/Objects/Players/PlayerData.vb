@@ -30,16 +30,11 @@ Public Class PlayerData
 
     Public Shared Sub SavePlayer(ByVal player As Players)
         Dim acc As New Accounts
-        Dim Writer As StreamWriter
-        Dim Ser As XmlSerializer
         Try
             acc = Account(PlayerData.GetPlayerIndex(player.Name))
             acc.Player = player
             'Serialize object to a file.
-            Writer = New StreamWriter(pathAccounts & acc.Email & ".xml")
-            Ser = New XmlSerializer(acc.GetType)
-            Ser.Serialize(Writer, acc)
-            Writer.Close()
+            Files.Write(pathAccounts & acc.Email & ".xml", acc)
             Account(PlayerData.GetPlayerIndex(player.Name)) = acc
             Exit Sub
         Catch ex As Exception
@@ -82,4 +77,11 @@ Public Class PlayerData
         Next
         Return 0
     End Function
+
+    Public Shared Sub SendPlayers()
+        Dim i As Integer
+        For i = 1 To PlayerHighIndex
+            SendData.PlayerData(i)
+        Next
+    End Sub
 End Class

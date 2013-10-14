@@ -11,10 +11,7 @@ Class AccountData
             Account(AccountCount) = New Accounts
             Account(AccountCount) = newAccount
             'Serialize object to a file.
-            Dim Writer As New StreamWriter(pathAccounts & newAccount.Email & ".xml")
-            Dim ser As New XmlSerializer(newAccount.GetType)
-            ser.Serialize(Writer, newAccount)
-            Writer.Close()
+            Files.Write(pathAccounts & newAccount.Email & ".xml", newAccount)
             AccountCount = AccountCount + 1
             Return True
         Catch ex As Exception
@@ -24,14 +21,9 @@ Class AccountData
     End Function
 
     Public Shared Sub CreateCharacter(ByVal curAccount As Accounts)
-        Dim Writer As StreamWriter
-        Dim Ser As XmlSerializer
         Try
             'Serialize object to a file.
-            Writer = New StreamWriter(pathAccounts & curAccount.Email & ".xml")
-            Ser = New XmlSerializer(curAccount.GetType)
-            Ser.Serialize(Writer, curAccount)
-            Writer.Close()
+            Files.Write(pathAccounts & curAccount.Email & ".xml", curAccount)
             Account(GetAccountIndex(curAccount.Email)) = curAccount
             Exit Sub
         Catch ex As Exception
@@ -41,20 +33,20 @@ Class AccountData
     End Sub
 
     Public Shared Sub LoadAccounts()
-        Dim Reader As StreamReader
-        Dim Ser As XmlSerializer
+        Dim objAcc As Object, loadAcc As New Accounts
+        Dim fileEntries As String()
+        Dim fileName As String, i As Integer = 0
         Try
             ReDim Preserve Account(0 To 1)
             Account(0) = New Accounts
             If Directory.Exists(pathAccounts) Then
-                Dim fileEntries As String() = Directory.GetFiles(pathAccounts)
-                Dim fileName As String, i As Integer = 0, loadAcc As New Accounts
+                fileEntries = Directory.GetFiles(pathAccounts)
                 For Each fileName In fileEntries
-                    'Deserialize file to object.
-                    Reader = New StreamReader(fileName)
-                    Ser = New XmlSerializer(loadAcc.GetType)
-                    loadAcc = Ser.Deserialize(Reader)
-                    Reader.Close()
+                    ' Get object from file
+                    objAcc = Files.Read(fileName, loadAcc)
+                    If IsNothing(objAcc) Then objAcc = New Accounts
+                    ' Convert object to loadAcc
+                    loadAcc = CType(objAcc, Accounts)
                     AccountCount = i + 1
                     ReDim Preserve Account(0 To AccountCount)
                     Account(i) = loadAcc

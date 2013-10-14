@@ -1,0 +1,4 @@
+﻿<Configuration>
+	<IP>localhost</IP>
+	<Port>8080</Port>
+</Configuration>

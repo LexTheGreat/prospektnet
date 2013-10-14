@@ -10,12 +10,16 @@
     Public Const pathScripts As String = pathContent & "scripts/"
     Public Const pathAccounts As String = pathContent & "accounts/"
     Public Const pathNPCs As String = pathContent & "npcs/"
+    Public Const pathMaps As String = pathContent & "maps/"
 
     ' Players
     Public Account As Accounts()
     Public AccountCount As Long = 0
     Public Player() As Players
     Public PlayerHighIndex As Integer
+
+    ' Maps
+    Public Map As MapStructure()
 
     ' NPCs
     Public NPC As NPCs()

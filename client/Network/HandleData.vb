@@ -2,25 +2,26 @@
     Public Shared Sub HandleDataPackets(ByVal PacketNum As Long, ByRef Data() As Byte)
         ' Checks which is the command to run
         If PacketNum = 0 Then Exit Sub
-        If PacketNum = ServerPackets.SAlert Then HandleData.Alert(Data)
-        If PacketNum = ServerPackets.SLoginOk Then HandleData.LoginOk(Data)
-        If PacketNum = ServerPackets.SRegisterOk Then HandleData.RegisterOk(Data)
-        If PacketNum = ServerPackets.SPlayer Then HandleData.PlayerData(Data)
-        If PacketNum = ServerPackets.SClearPlayer Then HandleData.ClearPlayer(Data)
-        If PacketNum = ServerPackets.SPosition Then HandleData.Position(Data)
-        If PacketNum = ServerPackets.SMessage Then HandleData.Message(Data)
-        If PacketNum = ServerPackets.SAccess Then HandleData.Access(Data)
-        If PacketNum = ServerPackets.SVisible Then HandleData.Visible(Data)
-        If PacketNum = ServerPackets.SNPC Then HandleData.NPCData(Data)
-        If PacketNum = ServerPackets.SNPCPosition Then HandleData.NPCPosition(Data)
+        If PacketNum = ServerPackets.Alert Then HandleData.Alert(Data)
+        If PacketNum = ServerPackets.LoginOk Then HandleData.LoginOk(Data)
+        If PacketNum = ServerPackets.RegisterOk Then HandleData.RegisterOk(Data)
+        If PacketNum = ServerPackets.Player Then HandleData.PlayerData(Data)
+        If PacketNum = ServerPackets.ClearPlayer Then HandleData.ClearPlayer(Data)
+        If PacketNum = ServerPackets.Position Then HandleData.Position(Data)
+        If PacketNum = ServerPackets.Message Then HandleData.Message(Data)
+        If PacketNum = ServerPackets.Access Then HandleData.Access(Data)
+        If PacketNum = ServerPackets.Visible Then HandleData.Visible(Data)
+        If PacketNum = ServerPackets.NPC Then HandleData.NPCData(Data)
+        If PacketNum = ServerPackets.NPCPosition Then HandleData.NPCPosition(Data)
+        If PacketNum = ServerPackets.MapData Then HandleData.MapData(Data)
     End Sub
 
     Public Shared Sub Alert(ByRef Data() As Byte)
-        Dim Buffer As ByteBuffer
-        Buffer = New ByteBuffer
+        Dim Buffer as New ByteBuffer
+        
         Buffer.WriteBytes(Data)
         MessageBox.Show(Buffer.ReadString)
-        Buffer = Nothing
+        
         faderState = 2
         faderAlpha = 0
         If curMenu = MenuEnum.Login Or curMenu = MenuEnum.Register Or curMenu = MenuEnum.Creation Then
@@ -35,57 +36,57 @@
     End Sub
 
     Public Shared Sub RegisterOk(ByRef Data() As Byte)
-        Dim Buffer As ByteBuffer
-        Buffer = New ByteBuffer
+        Dim Buffer as New ByteBuffer
+        
         Buffer.WriteBytes(Data)
-        Buffer = Nothing
+        
         loginSent = False
         curMenu = MenuEnum.Creation
     End Sub
 
     Public Shared Sub LoginOk(ByRef Data() As Byte)
-        Dim Buffer As ByteBuffer
-        Buffer = New ByteBuffer
+        Dim Buffer as New ByteBuffer
+        
         Buffer.WriteBytes(Data)
-        MyIndex = Buffer.ReadLong
-        Buffer = Nothing
+        MyIndex = Buffer.ReadInteger
+        
         faderState = 3
         faderAlpha = 0
     End Sub
 
     Public Shared Sub PlayerData(ByRef Data() As Byte)
         Dim tempIndex As Integer
-        Dim Buffer As ByteBuffer
-        Buffer = New ByteBuffer
+        Dim Buffer as New ByteBuffer
+        
         Buffer.WriteBytes(Data)
-        tempIndex = Buffer.ReadLong
-        PlayerHighindex = Buffer.ReadLong
+        tempIndex = Buffer.ReadInteger
+        PlayerHighindex = Buffer.ReadInteger
         If IsNothing(Player(tempIndex)) Then Player(tempIndex) = New Players
-        Player(tempIndex).Load(Buffer.ReadString, Buffer.ReadLong, Buffer.ReadLong, Buffer.ReadLong, Buffer.ReadLong, Buffer.ReadLong, Buffer.ReadLong, Buffer.ReadLong, Buffer.ReadBool)
-        Buffer = Nothing
+        Player(tempIndex).Load(Buffer.ReadString, Buffer.ReadInteger, Buffer.ReadInteger, Buffer.ReadInteger, Buffer.ReadInteger, Buffer.ReadInteger, Buffer.ReadInteger, Buffer.ReadInteger, Buffer.ReadBool)
+        
     End Sub
 
     Public Shared Sub ClearPlayer(ByRef Data() As Byte)
         Dim tempIndex As Integer
-        Dim Buffer As ByteBuffer
-        Buffer = New ByteBuffer
+        Dim Buffer as New ByteBuffer
+        
         Buffer.WriteBytes(Data)
-        tempIndex = Buffer.ReadLong
-        PlayerHighindex = Buffer.ReadLong
+        tempIndex = Buffer.ReadInteger
+        PlayerHighindex = Buffer.ReadInteger
         Player(tempIndex) = Nothing
-        Buffer = Nothing
+        
     End Sub
 
     Public Shared Sub Position(ByRef Data() As Byte)
         Dim tempIndex As Integer
-        Dim Buffer As ByteBuffer
-        Buffer = New ByteBuffer
+        Dim Buffer as New ByteBuffer
+        
         Buffer.WriteBytes(Data)
-        tempIndex = Buffer.ReadLong
-        Player(tempIndex).Moving = Buffer.ReadLong
-        Player(tempIndex).X = Buffer.ReadLong
-        Player(tempIndex).Y = Buffer.ReadLong
-        Player(tempIndex).Dir = Buffer.ReadLong
+        tempIndex = Buffer.ReadInteger
+        Player(tempIndex).Moving = Buffer.ReadInteger
+        Player(tempIndex).X = Buffer.ReadInteger
+        Player(tempIndex).Y = Buffer.ReadInteger
+        Player(tempIndex).Dir = Buffer.ReadInteger
         Select Case Player(tempIndex).Dir
             Case DirEnum.Up
                 Player(tempIndex).YOffset = picY
@@ -96,16 +97,16 @@
             Case DirEnum.Right
                 Player(tempIndex).XOffset = picX * -1
         End Select
-        Buffer = Nothing
+        
     End Sub
 
     Public Shared Sub Message(ByRef Data() As Byte)
-        Dim Buffer As ByteBuffer, Message As String, Messages As String(), I As Integer
+        Dim Buffer as New ByteBuffer, Message As String, Messages As String(), I As Integer
         ReDim Preserve Messages(0 To maxChatLines)
-        Buffer = New ByteBuffer
+        
         Buffer.WriteBytes(Data)
         Message = Buffer.ReadString
-        Buffer = Nothing
+        
 
         ' Check if the message is larger then maxChatChars
         If (Message.Length > maxChatChars) Then
@@ -139,48 +140,48 @@
     End Sub
 
     Public Shared Sub Access(ByRef Data() As Byte)
-        Dim Buffer As ByteBuffer
-        Buffer = New ByteBuffer
+        Dim Buffer as New ByteBuffer
+        
         Buffer.WriteBytes(Data)
-        Player(MyIndex).SetAccess(Buffer.ReadLong)
-        Buffer = Nothing
+        Player(MyIndex).SetAccess(Buffer.ReadInteger)
+        
     End Sub
 
     Public Shared Sub Visible(ByRef Data() As Byte)
         Dim tempIndex As Integer
-        Dim Buffer As ByteBuffer
-        Buffer = New ByteBuffer
+        Dim Buffer as New ByteBuffer
+        
         Buffer.WriteBytes(Data)
-        tempIndex = Buffer.ReadLong
+        tempIndex = Buffer.ReadInteger
         Player(tempIndex).Visible = Buffer.ReadBool
-        Buffer = Nothing
+        
     End Sub
 
     Public Shared Sub NPCData(ByRef Data() As Byte)
         Dim tempIndex As Integer
-        Dim Buffer As ByteBuffer
-        Buffer = New ByteBuffer
+        Dim Buffer as New ByteBuffer
+        
         Buffer.WriteBytes(Data)
-        tempIndex = Buffer.ReadLong
-        NPCCount = Buffer.ReadLong
+        tempIndex = Buffer.ReadInteger
+        NPCCount = Buffer.ReadInteger
         ReDim Preserve NPC(0 To NPCCount)
         If IsNothing(NPC(tempIndex)) Then NPC(tempIndex) = New NPCs
-        NPC(tempIndex).Load(Buffer.ReadString, Buffer.ReadLong, Buffer.ReadLong, Buffer.ReadLong, Buffer.ReadLong)
-        Buffer = Nothing
+        NPC(tempIndex).Load(Buffer.ReadString, Buffer.ReadInteger, Buffer.ReadInteger, Buffer.ReadInteger, Buffer.ReadInteger)
+        
     End Sub
 
     Public Shared Sub NPCPosition(ByRef Data() As Byte)
         Dim tempIndex As Integer
-        Dim Buffer As ByteBuffer
-        Buffer = New ByteBuffer
+        Dim Buffer as New ByteBuffer
+        
         Buffer.WriteBytes(Data)
-        tempIndex = Buffer.ReadLong
+        tempIndex = Buffer.ReadInteger
         If IsNothing(NPC(tempIndex)) Then Exit Sub
         If Not IsNothing(NPC(tempIndex)) Then
-            NPC(tempIndex).Moving = Buffer.ReadLong
-            NPC(tempIndex).X = Buffer.ReadLong
-            NPC(tempIndex).Y = Buffer.ReadLong
-            NPC(tempIndex).Dir = Buffer.ReadLong
+            NPC(tempIndex).Moving = Buffer.ReadInteger
+            NPC(tempIndex).X = Buffer.ReadInteger
+            NPC(tempIndex).Y = Buffer.ReadInteger
+            NPC(tempIndex).Dir = Buffer.ReadInteger
         End If
         Select Case NPC(tempIndex).Dir
             Case DirEnum.Up
@@ -192,6 +193,33 @@
             Case DirEnum.Right
                 NPC(tempIndex).XOffset = picX * -1
         End Select
-        Buffer = Nothing
+        
+    End Sub
+
+    Public Shared Sub MapData(ByRef Data() As Byte)
+        Dim sTileData As TileData
+        Dim Buffer As New ByteBuffer
+        Buffer.WriteBytes(Data)
+        Map = New MapStructure
+        Map.Name = Buffer.ReadString
+        Map.MaxX = Buffer.ReadInteger
+        Map.MaxY = Buffer.ReadInteger
+        Map.Alpha = Buffer.ReadInteger
+        Map.Red = Buffer.ReadInteger
+        Map.Green = Buffer.ReadInteger
+        Map.Blue = Buffer.ReadInteger
+        For i As Integer = MapLayerEnum.Ground To MapLayerEnum.FringeMask
+            Map.ReSizeTileData(i, New Integer() {Map.MaxX, Map.MaxY})
+            Map.Layer(i) = New LayerData(Map.MaxX, Map.MaxY)
+            For x As Integer = 0 To Map.MaxX - 1
+                For y As Integer = 0 To Map.MaxY - 1
+                    sTileData = New TileData
+                    sTileData.Tileset = Buffer.ReadInteger
+                    sTileData.X = Buffer.ReadInteger
+                    sTileData.Y = Buffer.ReadInteger
+                    Map.Layer(i).SetTileData(x, y, sTileData)
+                Next y
+            Next x
+        Next i
     End Sub
 End Class

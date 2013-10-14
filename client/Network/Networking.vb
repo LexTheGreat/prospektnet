@@ -8,34 +8,34 @@ Public Class Networking
         If inGame Then GameWindow.Close()
     End Sub
     Public Shared Sub Handle(ByRef Data() As Byte)
-        Dim Buffer As ByteBuffer
+        Dim Buffer as New ByteBuffer
         ' Start the command
-        Buffer = New ByteBuffer
+        
         Buffer.WriteBytes(Data)
-        HandleData.HandleDataPackets(Buffer.ReadLong, Buffer.ReadBytes(Buffer.Length))
-        Buffer = Nothing
+        HandleData.HandleDataPackets(Buffer.ReadInteger, Buffer.ReadBytes(Buffer.Length))
+        
     End Sub
     Public Shared Sub IncomingData(ByVal Data() As Byte)
-        Dim Buffer As ByteBuffer
+        Dim Buffer As New ByteBuffer
         Dim pLength As Long
-        Buffer = New ByteBuffer
+
 
         Buffer.WriteBytes(Data)
 
-        If Buffer.Length >= 8 Then pLength = Buffer.ReadLong(False)
+        If Buffer.Length >= 4 Then pLength = Buffer.ReadInteger(False)
 
-        Do While pLength > 0 And pLength <= Buffer.Length - 8
-            If pLength <= Buffer.Length - 8 Then
-                Buffer.ReadLong()
+        Do While pLength > 0 And pLength <= Buffer.Length - 4
+            If pLength <= Buffer.Length - 4 Then
+                Buffer.ReadInteger()
                 Handle(Buffer.ReadBytes(pLength))
             End If
 
             pLength = 0
-            If Buffer.Length >= 8 Then pLength = Buffer.ReadLong(False)
+            If Buffer.Length >= 4 Then pLength = Buffer.ReadInteger(False)
         Loop
 
         ' Clear buffer
-        Buffer = Nothing
+
     End Sub
 
     Public Shared Sub Initialize()
@@ -83,15 +83,15 @@ Public Class Networking
     End Function
 
     Public Shared Sub SendData(ByRef Data() As Byte)
-        Dim Buffer As ByteBuffer
+        Dim Buffer as New ByteBuffer
 
         If IsConnected() Then
-            Buffer = New ByteBuffer
+            
 
-            Buffer.WriteLong((UBound(Data) - LBound(Data)) + 1)
+            Buffer.WriteInteger((UBound(Data) - LBound(Data)) + 1)
             Buffer.WriteBytes(Data)
             PlayerSocket.Send(Buffer.ToArray())
-            Buffer = Nothing
+            
         End If
     End Sub
 End Class

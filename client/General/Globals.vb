@@ -23,6 +23,9 @@
     ' Tile engine
     Public Const picX As Byte = 32
     Public Const picY As Byte = 32
+    Public Map As MapStructure
+    Public Camera As Rectangle
+    Public TileView As Rectangle
 
     ' Input
     Public mouseX As Integer
@@ -37,6 +40,8 @@
     ' Screen dimensions
     Public maxX As Integer
     Public maxY As Integer
+    Public screenX As Integer
+    Public screenY As Integer
 
     ' Loop control
     Public inMenu As Boolean
@@ -51,6 +56,7 @@
     Public sEmail As String
     Public sPass As String
     Public sCharacter As String
+    Public sMessage As String
     Public sHidden As String
     Public chatShowLine As String
 

@@ -2,9 +2,10 @@
     Public Sub Main()
         ClientConfig = New Configuration
         ClientConfig.Load()
-        ClientConfig.Load()
-        maxX = (ClientConfig.ScreenWidth / 32) - 1
-        maxY = (ClientConfig.ScreenHeight / 32) - 1
+        maxX = (ClientConfig.ScreenWidth / picX) - 1
+        maxY = (ClientConfig.ScreenHeight / picY) - 1
+        screenX = (maxX + 1) * picX
+        screenY = (maxY + 1) * picY
         GameWindow.Width = ClientConfig.ScreenWidth + (16)
         GameWindow.Height = ClientConfig.ScreenHeight + SystemInformation.CaptionHeight + (16)
         GameWindow.Show()

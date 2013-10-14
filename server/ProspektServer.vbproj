@@ -6,8 +6,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{614ABA3C-EB72-4432-94AD-410E98D5CD8C}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <StartupObject>ProspektServer.Server</StartupObject>
-    <RootNamespace>ProspektServer</RootNamespace>
+    <StartupObject>Prospekt.Server</StartupObject>
+    <RootNamespace>Prospekt</RootNamespace>
     <AssemblyName>ProspektServer</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <MyType>Console</MyType>
@@ -99,12 +99,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Database\Files.vb" />
-    <Compile Include="Features\Guilds.vb" />
-    <Compile Include="Features\Parties.vb" />
     <Compile Include="Database\Configuration.vb" />
     <Compile Include="General\Enumerations.vb" />
     <Compile Include="General\Globals.vb" />
     <Compile Include="General\Server.vb" />
+    <Compile Include="General\ServerLogic.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>
@@ -127,12 +126,18 @@
     <Compile Include="Network\SendData.vb" />
     <Compile Include="Objects\Accounts\AccountData.vb" />
     <Compile Include="Objects\Accounts\Accounts.vb" />
+    <Compile Include="Objects\Maps\LayerData.vb" />
+    <Compile Include="Objects\Maps\MapData.vb" />
+    <Compile Include="Objects\Maps\MapStructure.vb" />
+    <Compile Include="Objects\Maps\OverlayColor.vb" />
+    <Compile Include="Objects\Maps\TileData.vb" />
     <Compile Include="Objects\NPCs\NPCData.vb" />
     <Compile Include="Objects\NPCs\NPCLogic.vb" />
     <Compile Include="Objects\NPCs\NPCs.vb" />
     <Compile Include="Objects\Players\PlayerData.vb" />
     <Compile Include="Objects\Players\PlayerLogic.vb" />
     <Compile Include="Objects\Players\Players.vb" />
+    <Compile Include="Scripting\LuaCommands.vb" />
     <Compile Include="Scripting\LuaHandler.vb" />
   </ItemGroup>
   <ItemGroup>
@@ -175,6 +180,7 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

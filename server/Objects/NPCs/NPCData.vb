@@ -73,4 +73,13 @@ Class NPCData
         Next
         Return 0
     End Function
+
+    Public Shared Sub SendNPCs()
+        Dim i As Integer
+        For i = 0 To NPCCount
+            If Not IsNothing(NPC(i)) Then
+                SendData.NPCData(i)
+            End If
+        Next
+    End Sub
 End Class

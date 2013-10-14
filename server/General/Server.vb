@@ -28,11 +28,12 @@ Public Class Server
         AccountData.LoadAccounts()
         Console.WriteLine("Loading npcs...")
         NPCData.LoadNPCs()
+        Console.WriteLine("Loading maps...")
+        MapData.LoadMaps()
         Console.WriteLine("Loading networking...")
         Networking.Initialize()
         Console.WriteLine("Initializing script engine...")
         LuaScript = New LuaHandler
-        LuaScript.Initialize()
         Console.WriteLine("Initializing player array...")
         ReDim Player(100)
         ReDim Networking.Clients(100)

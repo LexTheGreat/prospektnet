@@ -9,8 +9,7 @@ Public Class Players
     Private mX As Integer
     Private mY As Integer
     Private mDir As Byte
-    ' Guild
-    Private mGuildID As Integer
+    Private mMapIndex As Integer
     ' Admin values
     Private mAccessMode As Byte
     Private mVisible As Boolean
@@ -19,7 +18,6 @@ Public Class Players
     Private mMoving As Boolean = True
     Private mPlayerStep As Byte
     Private mIsPlaying As Boolean = False
-    Private mPartyID As Integer = -1
 
     Public Sub New()
         Me.mName = vbNullString
@@ -27,9 +25,9 @@ Public Class Players
         Me.mY = 15
         Me.mX = 10
         Me.mDir = 1
-        Me.mGuildID = -1
         Me.mAccessMode = ACCESS.NONE
         Me.mVisible = True
+        Me.mMapIndex = 0
     End Sub
 
     ' sub routines and functions
@@ -63,7 +61,6 @@ Public Class Players
             Me.mY = newPlayer.Y
             Me.mX = newPlayer.X
             Me.mDir = newPlayer.Dir
-            Me.mGuildID = newPlayer.GuildID
             Me.mAccessMode = newPlayer.AccessMode
             Me.mVisible = newPlayer.Visible
             ' Add player to accounts array
@@ -109,6 +106,17 @@ Public Class Players
         End Set
     End Property
 
+    Public Property Map() As Integer
+        Get
+            Return Me.mMapIndex
+        End Get
+        Set(value As Integer)
+            If Not IsNothing(Me) Then
+                Me.mMapIndex = value
+            End If
+        End Set
+    End Property
+
     Public Property X() As Integer
         Get
             Return Me.mX
@@ -138,17 +146,6 @@ Public Class Players
         Set(value As Integer)
             If Not IsNothing(Me) Then
                 Me.mDir = value
-            End If
-        End Set
-    End Property
-
-    Public Property GuildID() As Integer
-        Get
-            Return Me.mGuildID
-        End Get
-        Set(value As Integer)
-            If Not IsNothing(Me) Then
-                Me.mGuildID = value
             End If
         End Set
     End Property
@@ -222,21 +219,4 @@ Public Class Players
             End If
         End If
     End Sub
-
-    Public Sub SetParty(value As Integer)
-        If Not IsNothing(Me) Then
-            If Me.mIsPlaying Then
-                Me.mPartyID = value
-            End If
-        End If
-    End Sub
-
-    Public Function GetParty() As Integer
-        If Not IsNothing(Me) Then
-            If Me.mIsPlaying Then
-                Return Me.mPartyID
-            End If
-        End If
-        Return -1
-    End Function
 End Class

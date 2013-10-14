@@ -14,17 +14,17 @@ Public Class Networking
     End Sub
 
     Public Shared Sub SendDataTo(ByVal index As Long, ByRef Data() As Byte)
-        Dim Buffer As ByteBuffer
+        Dim Buffer as New ByteBuffer
         Dim TempData() As Byte
         If PlayerLogic.IsConnected(index) Then
-            Buffer = New ByteBuffer
+            
             TempData = Data
 
-            Buffer.WriteLong(UBound(TempData) - LBound(TempData) + 1)
+            Buffer.WriteInteger(UBound(TempData) - LBound(TempData) + 1)
             Buffer.WriteBytes(TempData)
 
             Clients(index).Socket.Send(Buffer.ToArray)
-            Buffer = Nothing
+            
         End If
     End Sub
 
@@ -59,33 +59,13 @@ Public Class Networking
         Next
     End Sub
 
-    Public Shared Sub SendDataToParty(ByVal id As Long, ByRef Data() As Byte)
-        Dim i As Long
-
-        For i = 1 To PlayerHighIndex
-            If PlayerLogic.IsPlaying(i) And Player(i).GetParty = id > 0 Then
-                Call SendDataTo(i, Data)
-            End If
-        Next
-    End Sub
-
-    Public Shared Sub SendDataToGuild(ByVal id As Long, ByRef Data() As Byte)
-        Dim i As Long
-
-        For i = 1 To PlayerHighIndex
-            If PlayerLogic.IsPlaying(i) And Player(i).GuildID = id > 0 Then
-                Call SendDataTo(i, Data)
-            End If
-        Next
-    End Sub
-
     Public Shared Sub Handle(ByVal index As Long, ByRef Data() As Byte)
-        Dim Buffer As ByteBuffer
+        Dim Buffer as New ByteBuffer
         ' Start the command
-        Buffer = New ByteBuffer
+        
         Buffer.WriteBytes(Data)
-        HandleData.HandleDataPackets(Buffer.ReadLong, index, Buffer.ReadBytes(Buffer.Length))
-        Buffer = Nothing
+        HandleData.HandleDataPackets(Buffer.ReadInteger, index, Buffer.ReadBytes(Buffer.Length))
+        
     End Sub
 
     Public Shared Sub SocketConnected(ByVal index As Long)
@@ -95,25 +75,25 @@ Public Class Networking
 
     Public Shared Sub IncomingData(ByVal index As Long, ByVal Data() As Byte)
         Dim pLength As Long
-        Dim Buffer As ByteBuffer
-        Buffer = New ByteBuffer
+        Dim Buffer as New ByteBuffer
+        
 
         Buffer.WriteBytes(Data)
 
-        If Buffer.Length >= 8 Then pLength = Buffer.ReadLong(False)
+        If Buffer.Length >= 4 Then pLength = Buffer.ReadInteger(False)
 
-        Do While pLength > 0 And pLength <= Buffer.Length - 8
-            If pLength <= Buffer.Length - 8 Then
-                Buffer.ReadLong()
+        Do While pLength > 0 And pLength <= Buffer.Length - 4
+            If pLength <= Buffer.Length - 4 Then
+                Buffer.ReadInteger()
                 Networking.Handle(index, Buffer.ReadBytes(pLength))
             End If
 
             pLength = 0
-            If Buffer.Length >= 8 Then pLength = Buffer.ReadLong(False)
+            If Buffer.Length >= 4 Then pLength = Buffer.ReadInteger(False)
         Loop
 
         ' Clear buffer
-        Buffer = Nothing
+        
     End Sub
 
     Public Shared Sub CloseSocket(ByVal index As Long)

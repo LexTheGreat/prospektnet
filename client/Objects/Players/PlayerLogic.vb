@@ -25,7 +25,7 @@
             tempX = Player(MyIndex).X
         ElseIf dirDown Then
             Player(MyIndex).Dir = DirEnum.Down
-            If Player(MyIndex).Y = maxY Then Return False
+            If Player(MyIndex).Y = Map.MaxY Then Return False
             tempY = Player(MyIndex).Y + 1
             tempX = Player(MyIndex).X
         ElseIf dirLeft Then
@@ -35,7 +35,7 @@
             tempX = Player(MyIndex).X - 1
         ElseIf dirRight Then
             Player(MyIndex).Dir = DirEnum.Right
-            If Player(MyIndex).X = maxX Then Return False
+            If Player(MyIndex).X = Map.MaxX Then Return False
             tempY = Player(MyIndex).Y
             tempX = Player(MyIndex).X + 1
         End If

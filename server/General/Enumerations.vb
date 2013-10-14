@@ -1,34 +1,52 @@
 ﻿Module Enumerations
     ' Packets sent by server to client
     Public Enum ServerPackets
-        SAlert = 1
-        SRegisterOk
-        SLoginOk
-        SPlayer
-        SClearPlayer
-        SPosition
-        SAccess
-        SVisible
-        SMessage
-        SNPC
-        SNPCPosition
+        Alert = 1
+        RegisterOk
+        LoginOk
+        Player
+        ClearPlayer
+        Position
+        Access
+        Visible
+        Message
+        NPC
+        NPCPosition
+        MapData
         ' Make sure SMSG_COUNT is below everything else
-        SMSG_COUNT
+        COUNT
     End Enum
 
     ' Packets sent by client to server
     Public Enum ClientPackets
-        CRegister = 1
-        CNewCharacter
-        CLogin
-        CMessage
-        CPosition
-        CSetAccess
-        CSetVisible
-        CWarpTo
-        CWarpToMe
+        Register = 1
+        NewCharacter
+        Login
+        Message
+        Position
+        SetAccess
+        SetVisible
+        WarpTo
+        WarpToMe
         ' Make sure CMSG_COUNT is below everything else
-        CMSG_COUNT
+        COUNT
+    End Enum
+
+    'Packets sent by editor to server
+    Public Enum CEditorPackets
+        Login = ClientPackets.COUNT + 1
+        DataRequest
+        Data
+        ' Make sure MSG_COUNT is below everything else
+        COUNT
+    End Enum
+
+    'Packets sent by server to editor
+    Public Enum SEditorPackets
+        LoginOk = ServerPackets.COUNT + 1
+        Data
+        ' Make sure MSG_COUNT is below everything else
+        COUNT
     End Enum
 
     ' Admin Ranks
@@ -61,6 +79,16 @@
         Party
         Guild
         GM
+        ' Make sure COUNT is below everything else
+        COUNT
+    End Enum
+
+    ' Layers
+    Public Enum MapLayerEnum
+        Ground = 0
+        GroundMask
+        Fringe
+        FringeMask
         ' Make sure COUNT is below everything else
         COUNT
     End Enum

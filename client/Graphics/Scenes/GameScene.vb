@@ -8,12 +8,14 @@ Public Class GameScene
         ' don't render
         If GameWindow.WindowState = FormWindowState.Minimized Then Exit Sub
 
+        MapLogic.UpdateCamera()
+
         ' Start rendering
         Render.Window.Clear(New Color(255, 255, 255))
 
-        ' Render map tiles
-        DrawMapTiles()
-        Verdana.Draw("FPS: " & gameFPS, 5, 5, Color.White)
+        For i = MapLayerEnum.Ground To MapLayerEnum.GroundMask
+            DrawMapTile(i)
+        Next
 
         For i = 0 To NPCCount
             If Not IsNothing(NPC(i)) Then
@@ -40,9 +42,13 @@ Public Class GameScene
             End If
         Next
 
-
+        For i = MapLayerEnum.Fringe To MapLayerEnum.FringeMask
+            DrawMapTile(i)
+        Next
 
         DrawChat()
+        Verdana.Draw("FPS: " & gameFPS, 5, 5, Color.White)
+
         If GMTools.Visible Then GMTools.Draw()
 
         ' End the rendering
@@ -127,7 +133,7 @@ errorhandler:
             textY = Player(Index).Y * picY + Player(Index).YOffset - (Texture(texSprite(Player(Index).Sprite)).Height / 4) + 12
         End If
 
-        Verdana.Draw(Text, textX, textY, Color.White)
+        Verdana.Draw(Text, MapLogic.ConvertX(textX), MapLogic.ConvertY(textY), Color.White)
     End Sub
 
     Private Function DrawPlayerAccess(ByVal Index As Integer) As String
@@ -163,7 +169,7 @@ errorhandler:
             textY = Player(Index).Y * picY + Player(Index).YOffset - (Texture(texSprite(Player(Index).Sprite)).Height / 4) + 12
         End If
 
-        Verdana.Draw(Text, textX, textY, TextColor)
+        Verdana.Draw(Text, MapLogic.ConvertX(textX), MapLogic.ConvertY(textY), TextColor)
 
         DrawPlayerAccess = Text
     End Function
@@ -213,7 +219,7 @@ errorhandler:
         X = Player(Index).X * picX + Player(Index).XOffset - ((Texture(texSprite(Sprite)).Width / 3 - 32) / 2)
         Y = Player(Index).Y * picY + Player(Index).YOffset - ((Texture(texSprite(Sprite)).Height / 4) - 32) - 4
 
-        Render.RenderTexture(texSprite(Sprite), X, Y, rec.Left, rec.Top, rec.Width, rec.Height, rec.Width, rec.Height)
+        Render.RenderTexture(texSprite(Sprite), MapLogic.ConvertX(X), MapLogic.ConvertY(Y), rec.Left, rec.Top, rec.Width, rec.Height, rec.Width, rec.Height)
     End Sub
 
     Public Sub DrawNPCName(ByVal Index As Integer)
@@ -230,7 +236,7 @@ errorhandler:
             textY = NPC(Index).Y * picY + NPC(Index).YOffset - (Texture(texSprite(NPC(Index).Sprite)).Height / 4) + 12
         End If
 
-        Verdana.Draw(Text, textX, textY, Color.White)
+        Verdana.Draw(Text, MapLogic.ConvertX(textX), MapLogic.ConvertY(textY), Color.White)
     End Sub
 
     Public Sub DrawNPC(ByVal Index As Integer)
@@ -274,16 +280,7 @@ errorhandler:
         X = NPC(Index).X * picX + NPC(Index).XOffset - ((Texture(texSprite(Sprite)).Width / 3 - 32) / 2)
         Y = NPC(Index).Y * picY + NPC(Index).YOffset - ((Texture(texSprite(Sprite)).Height / 4) - 32) - 4
 
-        Render.RenderTexture(texSprite(Sprite), X, Y, rec.Left, rec.Top, rec.Width, rec.Height, rec.Width, rec.Height)
-    End Sub
-
-    Public Sub DrawMapTiles()
-        Dim X As Long, Y As Long
-        For X = 0 To maxX
-            For Y = 0 To maxY
-                Render.RenderTexture(texTileset(1), X * picX, Y * picY, 0, 8 * picY, picX, picY, picX, picY)
-            Next Y
-        Next X
+        Render.RenderTexture(texSprite(Sprite), MapLogic.ConvertX(X), MapLogic.ConvertY(Y), rec.Left, rec.Top, rec.Width, rec.Height, rec.Width, rec.Height)
     End Sub
 
     Public Sub DrawChat()
@@ -299,5 +296,23 @@ errorhandler:
         For i = 1 To maxChatLines
             Verdana.Draw(chatbuffer(i), 8, ClientConfig.ScreenHeight - 252 + (15 * (i - 1)), Color.White)
         Next
+    End Sub
+
+    Private Sub DrawMapTile(ByVal i As MapLayerEnum)
+        If IsNothing(Map) Then
+            Verdana.Draw("Mapdata missing", 10, 10, Color.Black)
+            Exit Sub
+        End If
+
+        Dim data As TileData
+        For X As Integer = TileView.Left To TileView.Right
+            For Y As Integer = TileView.Top To TileView.Bottom
+                If MapLogic.IsValidPoint(X, Y) Then
+                    data = Map.Layer(i).GetTileData(X, Y)
+                    If data.Tileset < 0 Then Continue For
+                    Call Render.RenderTexture(texTileset(data.Tileset), MapLogic.ConvertX(X * picX), MapLogic.ConvertY(Y * picY), data.X, data.Y, picX, picY, picX, picY)
+                End If
+            Next Y
+        Next X
     End Sub
 End Class
