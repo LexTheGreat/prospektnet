@@ -1,5 +1,5 @@
 ﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
-Partial Class frmPublishData
+Partial Class CommitData
     Inherits System.Windows.Forms.Form
 
     'Form overrides dispose to clean up the component list.
@@ -85,7 +85,7 @@ Partial Class frmPublishData
         Me.MaximizeBox = False
         Me.MinimizeBox = False
         Me.Name = "frmPublishData"
-        Me.Text = "Publish Data"
+        Me.Text = "Commit Data"
         Me.ResumeLayout(False)
         Me.PerformLayout()
 

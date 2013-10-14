@@ -4,23 +4,16 @@ Public Class Networking
     Public Shared Sub DataArrival(ByVal sender As Object, ByVal e As Winsock_Orcas.WinsockDataArrivalEventArgs) Handles PlayerSocket.DataArrival
         If IsConnected() Then IncomingData(PlayerSocket.Get)
     End Sub
-    Public Shared Sub Disconnected(ByVal sender As Object, ByVal e As System.EventArgs) Handles PlayerSocket.Disconnected
-    End Sub
     Public Shared Sub Handle(ByRef Data() As Byte)
         Dim Buffer as New ByteBuffer
-        ' Start the command
-        
         Buffer.WriteBytes(Data)
         HandleData.HandleDataPackets(Buffer.ReadInteger, Buffer.ReadBytes(Buffer.Length))
-        
     End Sub
     Public Shared Sub IncomingData(ByVal Data() As Byte)
         Dim Buffer As New ByteBuffer
         Dim pLength As Long
 
-
         Buffer.WriteBytes(Data)
-
         If Buffer.Length >= 4 Then pLength = Buffer.ReadInteger(False)
 
         Do While pLength > 0 And pLength <= Buffer.Length - 4
@@ -32,9 +25,6 @@ Public Class Networking
             pLength = 0
             If Buffer.Length >= 4 Then pLength = Buffer.ReadInteger(False)
         Loop
-
-        ' Clear buffer
-
     End Sub
 
     Public Shared Sub Initialize()
@@ -77,19 +67,15 @@ Public Class Networking
 
     Public Shared Function IsConnected() As Boolean
         If PlayerSocket.State = WinsockStates.Connected Then Return True
-        Return False
     End Function
 
     Public Shared Sub SendData(ByRef Data() As Byte)
         Dim Buffer as New ByteBuffer
 
         If IsConnected() Then
-            
-
             Buffer.WriteInteger((UBound(Data) - LBound(Data)) + 1)
             Buffer.WriteBytes(Data)
             PlayerSocket.Send(Buffer.ToArray())
-            
         End If
     End Sub
 End Class

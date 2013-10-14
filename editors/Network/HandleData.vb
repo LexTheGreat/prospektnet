@@ -1,9 +1,10 @@
 ﻿Public Class HandleData
     Public Shared Sub HandleDataPackets(ByVal PacketNum As Long, ByRef Data() As Byte)
         If PacketNum = 0 Then Exit Sub
-        If PacketNum = ServerPackets.Alert Then Alert(Data)
-        If PacketNum = SEditorPackets.LoginOk Then LoginOk(Data)
-        If PacketNum = SEditorPackets.Data Then EditorData(Data)
+        If PacketNum = ServerPackets.Alert Then HandleData.Alert(Data)
+        If PacketNum = SEditorPackets.LoginOk Then HandleData.LoginOk(Data)
+        If PacketNum = SEditorPackets.Data Then HandleData.EditorData(Data)
+        If PacketNum = SEditorPackets.DataSent Then HandleData.DataSent(Data)
     End Sub
 
     Public Shared Sub Alert(ByVal data() As Byte)
@@ -19,7 +20,6 @@
         Dim Buffer As New ByteBuffer
         Buffer.WriteBytes(Data)
         mode = Buffer.ReadInteger()
-        Buffer = Nothing
         If mode = 0 Then SendData.DataRequest() Else SendData.Data()
     End Sub
 
@@ -38,11 +38,12 @@
             Account(i).Map = Buffer.ReadInteger
             Account(i).X = Buffer.ReadInteger
             Account(i).Y = Buffer.ReadInteger
-            Account(i).PlayerDir = Buffer.ReadInteger
-            Account(i).AccessMode = Buffer.ReadInteger
+            Account(i).SetPlayerDir(Buffer.ReadInteger)
+            Account(i).SetPlayerAccess(Buffer.ReadInteger)
             Account(i).Visible = Buffer.ReadInteger
         Next
         AccountData.SaveAccounts()
+        AccountEditor.ReloadList()
 
         num = Buffer.ReadInteger
         ReDim Map(0 To num)
@@ -69,5 +70,20 @@
             Next
         Next
         MapData.SaveMaps()
+        MapEditor.ReloadList()
+    End Sub
+
+    Public Shared Sub DataSent(ByRef Data() As Byte)
+        Dim mode As Byte = 0
+        Dim Buffer As New ByteBuffer
+        Buffer.WriteBytes(Data)
+        mode = Buffer.ReadInteger()
+        If mode = 0 Then
+            CommitData.Hide()
+            MsgBox("Commit sucesfull")
+        Else
+            SyncData.Hide()
+            MsgBox("Editors synchronized")
+        End If
     End Sub
 End Class

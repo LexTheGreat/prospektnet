@@ -20,7 +20,7 @@
         Buffer.WriteInteger(CEditorPackets.Data)
 
         'Accounts data
-        Buffer.WriteInteger(Account.Length - 1)
+        Buffer.WriteInteger(Account.Length)
         For Each sPlayer In Account
             If IsNothing(sPlayer) Then Continue For
             Buffer.WriteString(sPlayer.Email)
@@ -30,13 +30,13 @@
             Buffer.WriteInteger(sPlayer.Map)
             Buffer.WriteInteger(sPlayer.X)
             Buffer.WriteInteger(sPlayer.Y)
-            Buffer.WriteInteger(sPlayer.PlayerDir)
-            Buffer.WriteInteger(sPlayer.AccessMode)
+            Buffer.WriteInteger(sPlayer.GetPlayerDir)
+            Buffer.WriteInteger(sPlayer.GetPlayerAccess)
             Buffer.WriteInteger(sPlayer.Visible)
         Next
 
         'Maps data
-        Buffer.WriteInteger(Map.Length - 1)
+        Buffer.WriteInteger(Map.Length)
         For Each sMap In Map
             If IsNothing(sMap) Then Continue For
             Buffer.WriteString(sMap.Name)

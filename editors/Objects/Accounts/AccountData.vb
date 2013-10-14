@@ -4,36 +4,29 @@ Imports System.Collections
 Imports System.Xml.Serialization
 
 Class AccountData
+
     Public Shared Sub LoadAccounts()
-        Try
-            If Directory.Exists(pathAccounts) Then
-                Dim fileEntries As String() = Directory.GetFiles(pathAccounts, "*.bin")
-                Dim i As Integer = 0
-                ReDim Account(0 To 0)
-                Account(0) = New Accounts
-                For Each fileName In fileEntries
-                    ReDim Preserve Account(0 To i)
-                    Account(i) = New Accounts
-                    Account(i).Email = fileName.Replace(pathAccounts, vbNullString).Replace(".bin", vbNullString)
-                    Account(i).Load()
-                    i = i + 1
-                Next fileName
-            End If
-        Catch ex As Exception
-            Console.WriteLine("Error: " & ex.ToString & " (In: Data.LoadAccounts")
-        End Try
+        If Directory.Exists(pathAccounts) Then
+            Dim fileEntries As String() = Directory.GetFiles(pathAccounts, "*.xml")
+            Dim i As Integer = 0
+            ReDim Account(0 To 0)
+            Account(0) = New Accounts
+            For Each fileName In fileEntries
+                ReDim Preserve Account(0 To i)
+                Account(i) = New Accounts
+                Account(i).Email = fileName.Replace(pathAccounts, vbNullString).Replace(".xml", vbNullString)
+                Account(i).Load()
+                i = i + 1
+            Next fileName
+        End If
     End Sub
 
     Public Shared Sub SaveAccounts()
-        Try
-            If Directory.Exists(pathAccounts) Then
-                For Each plyr In Account
-                    plyr.Save()
-                Next
-            End If
-        Catch ex As Exception
-            Console.WriteLine("Error: " & ex.ToString & " (In: Data.SaveAccounts")
-        End Try
+        If Directory.Exists(pathAccounts) Then
+            For Each plyr In Account
+                plyr.Save()
+            Next
+        End If
     End Sub
 
     Public Shared Sub NewAccount()

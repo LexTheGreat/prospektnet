@@ -45,6 +45,7 @@
     Public Enum SEditorPackets
         LoginOk = ServerPackets.COUNT + 1
         Data
+        DataSent
         ' Make sure MSG_COUNT is below everything else
         COUNT
     End Enum

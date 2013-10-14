@@ -50,6 +50,22 @@ Public Class Accounts
         Me.mDir = newAccount.mDir
     End Sub
 
+    Public Sub SetPlayerDir(ByVal value As Byte)
+        Me.mDir = value
+    End Sub
+
+    Public Function GetPlayerDir() As Byte
+        Return Me.mDir
+    End Function
+
+    Public Sub SetPlayerAccess(ByVal value As Byte)
+        Me.mAccessMode = value
+    End Sub
+
+    Public Function GetPlayerAccess() As Byte
+        Return Me.mAccessMode
+    End Function
+
     ' ProptyGrid Functions
     Public Class DirConverter
         Inherits StringConverter
@@ -196,11 +212,11 @@ Public Class Accounts
     <TypeConverter(GetType(AccessConverter)), _
        CategoryAttribute("Admin"), _
        DisplayName("Access")> _
-    Public Property AccessMode() As Integer
+    Public Property AccessMode() As String
         Get
             Return [Enum].GetName(GetType(ACCESS), Me.mAccessMode)
         End Get
-        Set(value As Integer)
+        Set(value As String)
             If Not IsNothing(Me) Then
                 Me.mAccessMode = DirectCast([Enum].Parse(GetType(ACCESS), value), ACCESS)
             End If

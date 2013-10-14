@@ -1,7 +1,6 @@
 ﻿Imports System.ComponentModel
 
 Module MapEditor
-    Private base As EditorWindow
     Private index As Integer = -1
     Private curTileSet As Integer
     Private curLayer As Byte
@@ -70,59 +69,59 @@ Module MapEditor
         End Function
     End Class
 
-    Public Sub Init(ByVal frm As EditorWindow)
-        base = frm
+    Public Sub Init()
         If Not IsNothing(Map) Then
             For Each mp In Map
                 If Not IsNothing(mp) Then
-                    base.lstMaps.Items.Add(mp.Name)
+                    EditorWindow.lstMaps.Items.Add(mp.Name)
                 End If
             Next
         End If
-        base.proptMapData.SelectedObject = vbNull
-        base.proptMapEditorData.SelectedObject = editorProperty
+        EditorWindow.proptMapData.SelectedObject = vbNull
+        EditorWindow.proptMapEditorData.SelectedObject = editorProperty
         curLayer = editorProperty.GetLayer
         If countTileset > 0 Then
             For I As Integer = 1 To countTileset
-                base.mapCmbTileSet.Items.Add(pathTilesets & I & ".png")
+                EditorWindow.mapCmbTileSet.Items.Add(pathTilesets & I & ".png")
             Next
         End If
-        base.mapCmbTileSet.SelectedIndex = 0
+        EditorWindow.mapCmbTileSet.SelectedIndex = 0
     End Sub
 
     Public Sub Load(ByVal i As Integer)
         Dim MapMax As Integer() = GetMapMax(), MapVisible As Integer() = GetMapVisible()
         index = i
-        base.tabMap.Text = Map(i).Name
-        base.proptMapData.SelectedObject = Map(i)
-        base.mapScrlH.Maximum = Map(i).MaxX
-        base.mapScrlV.Maximum = Map(i).MaxY
-        base.mapPreview.Invalidate()
+        If i < 0 Then Exit Sub
+        EditorWindow.tabMap.Text = Map(i).Name
+        EditorWindow.proptMapData.SelectedObject = Map(i)
+        EditorWindow.mapScrlH.Maximum = Map(i).MaxX
+        EditorWindow.mapScrlV.Maximum = Map(i).MaxY
+        EditorWindow.mapPreview.Invalidate()
 
         If MapMax(0) > MapVisible(0) Then
-            base.mapScrlH.Maximum = MapMax(0) - MapVisible(0)
+            EditorWindow.mapScrlH.Maximum = MapMax(0) - MapVisible(0)
         Else
-            base.mapScrlH.Maximum = 1
+            EditorWindow.mapScrlH.Maximum = 1
         End If
 
         If MapMax(1) > MapVisible(1) Then
-            base.mapScrlV.Maximum = MapMax(1) - MapVisible(1)
+            EditorWindow.mapScrlV.Maximum = MapMax(1) - MapVisible(1)
         Else
-            base.mapScrlV.Maximum = 1
+            EditorWindow.mapScrlV.Maximum = 1
         End If
     End Sub
 
     Public Sub ReloadList()
-        base.lstMaps.Items.Clear()
+        EditorWindow.lstMaps.Items.Clear()
         If Not IsNothing(Map) Then
             For Each mp In Map
                 If Not IsNothing(mp) Then
-                    base.lstMaps.Items.Add(mp.Name)
+                    EditorWindow.lstMaps.Items.Add(mp.Name)
                 End If
             Next
         End If
-        base.tabMap.Text = "Map"
-        base.proptMapData.SelectedObject = vbNull
+        EditorWindow.tabMap.Text = "Map"
+        EditorWindow.proptMapData.SelectedObject = vbNull
         Load(index)
     End Sub
 
@@ -132,10 +131,10 @@ Module MapEditor
 
     Public Sub Undo()
         MapData.LoadMaps()
-        base.tabMap.Text = "Map"
-        base.proptMapData.SelectedObject = vbNull
+        EditorWindow.tabMap.Text = "Map"
+        EditorWindow.proptMapData.SelectedObject = vbNull
         index = -1
-        base.mapPreview.Invalidate()
+        EditorWindow.mapPreview.Invalidate()
     End Sub
 
     Public Sub Verify()
@@ -153,41 +152,37 @@ Module MapEditor
         If Map(index).Blue < 0 Then Map(index).Blue = 0
 
         If MapMax(0) > MapVisible(0) Then
-            base.mapScrlH.Maximum = MapMax(0) - MapVisible(0)
+            EditorWindow.mapScrlH.Maximum = MapMax(0) - MapVisible(0)
         Else
-            base.mapScrlH.Maximum = 1
+            EditorWindow.mapScrlH.Maximum = 1
         End If
 
         If MapMax(1) > MapVisible(1) Then
-            base.mapScrlV.Maximum = MapMax(1) - MapVisible(1)
+            EditorWindow.mapScrlV.Maximum = MapMax(1) - MapVisible(1)
         Else
-            base.mapScrlV.Maximum = 1
+            EditorWindow.mapScrlV.Maximum = 1
         End If
 
         Map(index).ReSizeTileData(curLayer, New Integer() {Map(index).MaxX, Map(index).MaxY})
 
         ' Refresh data
-        base.proptMapData.Refresh()
+        EditorWindow.proptMapData.Refresh()
     End Sub
 
     Public Sub VerifyEditor()
         curLayer = editorProperty.GetLayer
 
         ' Refresh data
-        base.proptMapEditorData.Refresh()
+        EditorWindow.proptMapEditorData.Refresh()
     End Sub
 
     Public Sub SelectTileset()
-        Dim tilenum As String
         selectSrcRect = New Rectangle(0, 0, 0, 0)
-        tilenum = base.mapCmbTileSet.SelectedItem.ToString.Replace(pathTilesets, vbNullString)
-        tilenum = tilenum.Replace(".png", vbNullString)
-        tilenum = CLng(tilenum)
-        curTileSet = tilenum
+        curTileSet = CInt(EditorWindow.mapCmbTileSet.SelectedItem.ToString.Replace(pathTilesets, vbNullString).Replace(".png", vbNullString))
     End Sub
 
     Public Sub mapPreview_MouseMove(e As MouseEventArgs)
-        mapMouseRect = New Rectangle(SnapTo(e.X, picX, base.mapPreview.Width), SnapTo(e.Y, picY, base.mapPreview.Height), picX, picY)
+        mapMouseRect = New Rectangle(SnapTo(e.X, picX, EditorWindow.mapPreview.Width), SnapTo(e.Y, picY, EditorWindow.mapPreview.Height), picX, picY)
     End Sub
 
     Public Sub mapPreview_MouseLeave(e As EventArgs)
@@ -206,7 +201,7 @@ Module MapEditor
     End Sub
 
     Public Sub mapPicTileSet_MouseMove(e As MouseEventArgs)
-        selectMouseRect = New Rectangle(SnapTo(e.X, picX, base.mapPicTileSet.Width), SnapTo(e.Y, picY, base.mapPicTileSet.Height), picX, picY)
+        selectMouseRect = New Rectangle(SnapTo(e.X, picX, EditorWindow.mapPicTileSet.Width), SnapTo(e.Y, picY, EditorWindow.mapPicTileSet.Height), picX, picY)
     End Sub
 
     Public Sub mapPicTileSet_MouseLeave(e As EventArgs)
@@ -251,7 +246,7 @@ Module MapEditor
     Public Sub PlaceTile()
         If index < 0 Then Exit Sub
         If IsNothing(Map(index)) Or selectSrcRect.Height = 0 Then Exit Sub
-        Dim X As Integer = (mapMouseRect.X + (base.mapScrlH.Value * picX)) / picX, Y As Integer = (mapMouseRect.Y + (base.mapScrlV.Value * picY)) / picY
+        Dim X As Integer = (mapMouseRect.X + (EditorWindow.mapScrlH.Value * picX)) / picX, Y As Integer = (mapMouseRect.Y + (EditorWindow.mapScrlV.Value * picY)) / picY
         Dim newData As New TileData
         newData.Tileset = curTileSet
         newData.X = selectSrcRect.X
@@ -263,7 +258,7 @@ Module MapEditor
     Public Sub RemoveTile()
         If index < 0 Then Exit Sub
         If IsNothing(Map(index)) Then Exit Sub
-        Dim X As Integer = (mapMouseRect.X + (base.mapScrlH.Value * picX)) / picX, Y As Integer = (mapMouseRect.Y + (base.mapScrlV.Value * picY)) / picY
+        Dim X As Integer = (mapMouseRect.X + (EditorWindow.mapScrlH.Value * picX)) / picX, Y As Integer = (mapMouseRect.Y + (EditorWindow.mapScrlV.Value * picY)) / picY
         Dim newData As New TileData
         Map(index).SetTileData(curLayer, X, Y, newData)
     End Sub
@@ -288,57 +283,43 @@ Module MapEditor
     Public Sub DrawMapTiles()
         If index < 0 Then Exit Sub
         Dim MapVisible As Integer() = GetMapVisible()
-        Dim ScrlH As Integer = base.mapScrlH.Value, ScrlV As Integer = base.mapScrlV.Value
-        Try
-            For x As Integer = 0 + ScrlH To MapVisible(0) + ScrlH
-                For y As Integer = 0 + ScrlV To MapVisible(1) + ScrlV
-                    For lyr As Integer = 0 To 3
-                        If Map(index).GetTileData(lyr, x, y).Tileset < 0 Then Continue For
-                        Select Case lyr
-                            Case MapLayerEnum.Ground
-                                If Not editorProperty.l1 Then Continue For ' Dont Draw Ground Layer
-                            Case MapLayerEnum.GroundMask
-                                If Not editorProperty.l2 Then Continue For ' Dont Draw Ground Mask Layer
-                            Case MapLayerEnum.Fringe
-                                If Not editorProperty.l3 Then Continue For ' Dont Draw Fringe Layer
-                            Case MapLayerEnum.FringeMask
-                                If Not editorProperty.l4 Then Continue For ' Dont Draw Fringe Mask Layer
-                            Case Else
-                        End Select
-                        Render.RenderTexture(texTileset(Map(index).GetTileData(lyr, x, y).Tileset), (x - ScrlH) * picX, (y - ScrlV) * picY, Map(index).GetTileData(lyr, x, y).X, Map(index).GetTileData(lyr, x, y).Y, picX, picY, picX, picY)
-                    Next
+        Dim ScrlH As Integer = EditorWindow.mapScrlH.Value, ScrlV As Integer = EditorWindow.mapScrlV.Value
+
+        For x As Integer = 0 + ScrlH To MapVisible(0) + ScrlH
+            For y As Integer = 0 + ScrlV To MapVisible(1) + ScrlV
+                For lyr As Integer = 0 To 3
+                    If Map(index).GetTileData(lyr, x, y).Tileset < 0 Then Continue For
+                    Select Case lyr
+                        Case MapLayerEnum.Ground
+                            If Not editorProperty.l1 Then Continue For ' Dont Draw Ground Layer
+                        Case MapLayerEnum.GroundMask
+                            If Not editorProperty.l2 Then Continue For ' Dont Draw Ground Mask Layer
+                        Case MapLayerEnum.Fringe
+                            If Not editorProperty.l3 Then Continue For ' Dont Draw Fringe Layer
+                        Case MapLayerEnum.FringeMask
+                            If Not editorProperty.l4 Then Continue For ' Dont Draw Fringe Mask Layer
+                        Case Else
+                    End Select
+                    Render.RenderTexture(texTileset(Map(index).GetTileData(lyr, x, y).Tileset), (x - ScrlH) * picX, (y - ScrlV) * picY, Map(index).GetTileData(lyr, x, y).X, Map(index).GetTileData(lyr, x, y).Y, picX, picY, picX, picY)
                 Next
             Next
-        Catch ex As Exception
-            Console.WriteLine("Error: " & ex.ToString & " (In: MapEditor.DisplayMapTiles")
-        End Try
-    End Sub
-
-    Public Sub DisplayMapOverlay(e As PaintEventArgs)
-        If index < 0 Then Exit Sub
-        Dim DrawRect As New Rectangle(0, 0, base.mapPicTileSet.Width * 2, base.mapPicTileSet.Height)
-        Dim DrawBrush As New SolidBrush(Color.FromArgb(Map(index).Alpha, Map(index).Red, Map(index).Green, Map(index).Blue))
-        Try
-            e.Graphics.FillRectangle(DrawBrush, DrawRect)
-        Catch ex As Exception
-            Console.WriteLine("Error: " & ex.ToString & " (In: MapEditor.DisplayMapOverlay")
-        End Try
+        Next
     End Sub
 
     Public Function GetMapVisible() As Integer()
         If index < 0 Then Return New Integer() {15, 15}
         Dim maxX As Integer, maxY As Integer
 
-        If base.mapPreview.Width / picX > Map(index).GetTileData(0).GetUpperBound(0) Then
+        If EditorWindow.mapPreview.Width / picX > Map(index).GetTileData(0).GetUpperBound(0) Then
             maxX = Map(index).GetTileData(0).GetUpperBound(0) - 1
         Else
-            maxX = base.mapPreview.Width / picX
+            maxX = EditorWindow.mapPreview.Width / picX
         End If
 
-        If base.mapPreview.Height / picY > Map(index).GetTileData(0).GetUpperBound(1) Then
+        If EditorWindow.mapPreview.Height / picY > Map(index).GetTileData(0).GetUpperBound(1) Then
             maxY = Map(index).GetTileData(0).GetUpperBound(1) - 1
         Else
-            maxY = base.mapPreview.Height / picY
+            maxY = EditorWindow.mapPreview.Height / picY
         End If
 
         Return New Integer() {maxX - 1, maxY - 1}
@@ -348,14 +329,14 @@ Module MapEditor
         If index < 0 Then Return New Integer() {35, 35}
         Dim maxX As Integer, maxY As Integer
 
-        If Map(index).GetTileData(0).GetUpperBound(0) > base.mapPreview.Width / picX Then
-            maxX = SnapTo(Map(index).GetTileData(0).GetUpperBound(0), picX, base.mapPreview.Width)
+        If Map(index).GetTileData(0).GetUpperBound(0) > EditorWindow.mapPreview.Width / picX Then
+            maxX = SnapTo(Map(index).GetTileData(0).GetUpperBound(0), picX, EditorWindow.mapPreview.Width)
         Else
             maxX = Map(index).GetTileData(0).GetUpperBound(0) - 1
         End If
 
-        If Map(index).GetTileData(0).GetUpperBound(1) > base.mapPreview.Height / picY Then
-            maxY = SnapTo(Map(index).GetTileData(0).GetUpperBound(1), picY, base.mapPreview.Height)
+        If Map(index).GetTileData(0).GetUpperBound(1) > EditorWindow.mapPreview.Height / picY Then
+            maxY = SnapTo(Map(index).GetTileData(0).GetUpperBound(1), picY, EditorWindow.mapPreview.Height)
         Else
             maxY = Map(index).GetTileData(0).GetUpperBound(1) - 1
         End If

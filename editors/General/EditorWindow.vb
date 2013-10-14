@@ -1,9 +1,5 @@
 ﻿Public Class EditorWindow
 
-    Private Sub EditorWindow_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        
-    End Sub
-
     Private Sub EditorWindow_Disposed(sender As Object, e As EventArgs) Handles Me.Disposed
         inEditor = False
         Verdana.Dispose()
@@ -13,11 +9,11 @@
     End Sub
 
     Private Sub mnuMain_Publish_Click(sender As Object, e As EventArgs) Handles mnuMain_Publish.Click
-        frmPublishData.Show()
+        CommitData.Show()
     End Sub
 
     Private Sub mnuMain_Sync_Click(sender As Object, e As EventArgs) Handles mnuMain_Sync.Click
-        frmSyncData.Show()
+        SyncData.Show()
     End Sub
 
     ' Map Editor

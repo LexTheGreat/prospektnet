@@ -10,8 +10,8 @@
     Public Shared Function IsValidPoint(ByVal X As Long, ByVal Y As Long) As Boolean
         If X < 0 Then Return False
         If Y < 0 Then Return False
-        If X > Map.MaxX Then Return False
-        If Y > Map.MaxY Then Return False
+        If X > Map.MaxX - 1 Then Return False
+        If Y > Map.MaxY - 1 Then Return False
         Return True
     End Function
 

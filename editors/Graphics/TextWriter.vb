@@ -41,9 +41,13 @@ Public Class TextWriter
     End Property
 
     Public Sub Dispose() Implements IDisposable.Dispose
-        xFont.Dispose()
-        xFont = Nothing
-        xText.Dispose()
-        xText = Nothing
+        If Not IsNothing(xFont) Then
+            xFont.Dispose()
+            xFont = Nothing
+        End If
+        If Not IsNothing(xText) Then
+            xText.Dispose()
+            xText = Nothing
+        End If
     End Sub
 End Class

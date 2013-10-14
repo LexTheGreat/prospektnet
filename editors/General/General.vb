@@ -8,10 +8,10 @@ Module General
         Verdana = New TextWriter("content/fonts/Verdana.ttf")
         'Setup Map Editor
         MapData.LoadMaps()
-        MapEditor.Init(EditorWindow)
+        MapEditor.Init()
         ' Setup Account Editor
         AccountData.LoadAccounts()
-        AccountEditor.Init(EditorWindow)
+        AccountEditor.Init()
         EditorWindow.Visible = True
         inEditor = True
         EditorLoop()

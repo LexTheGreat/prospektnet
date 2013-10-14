@@ -173,9 +173,10 @@
             Buffer.WriteInteger(sPlayer.Player.Y)
             Buffer.WriteInteger(sPlayer.Player.Dir)
             Buffer.WriteInteger(sPlayer.Player.AccessMode)
+            Buffer.WriteInteger(sPlayer.Player.Visible)
         Next
 
-        Buffer.WriteInteger(Map.Length - 1)
+        Buffer.WriteInteger(Map.Length)
         For Each sMap In Map
             If IsNothing(sMap) Then Continue For
             Buffer.WriteString(sMap.Name)
@@ -185,10 +186,10 @@
             Buffer.WriteInteger(sMap.Red)
             Buffer.WriteInteger(sMap.Green)
             Buffer.WriteInteger(sMap.Blue)
-            For l As Integer = MapLayerEnum.Ground To MapLayerEnum.FringeMask
+            For i As Integer = MapLayerEnum.Ground To MapLayerEnum.FringeMask
                 For x As Integer = 0 To sMap.MaxX - 1
                     For y As Integer = 0 To sMap.MaxY - 1
-                        sTileData = sMap.Layer(l).GetTileData(x, y)
+                        sTileData = sMap.Layer(i).GetTileData(x, y)
                         Buffer.WriteInteger(sTileData.Tileset)
                         Buffer.WriteInteger(sTileData.X)
                         Buffer.WriteInteger(sTileData.Y)
@@ -197,5 +198,12 @@
             Next
         Next
         Networking.SendDataTo(Index, Buffer.ToArray())
+    End Sub
+
+    Public Shared Sub EditorDataSent(ByVal index As Long, ByVal Mode As Byte)
+        Dim Buffer As New ByteBuffer
+        Buffer.WriteInteger(SEditorPackets.DataSent)
+        Buffer.WriteInteger(Mode)
+        Networking.SendDataTo(index, Buffer.ToArray())
     End Sub
 End Class

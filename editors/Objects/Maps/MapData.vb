@@ -1,35 +1,27 @@
 ﻿Imports System.IO
 Public Class MapData
     Public Shared Sub LoadMaps()
-        Try
-            If Directory.Exists(pathMaps) Then
-                Dim fileEntries As String() = Directory.GetFiles(pathMaps, "*.bin")
-                Dim i As Integer = 0
-                ReDim Map(0 To 0)
-                Map(0) = New MapStructure
-                For Each fileName In fileEntries
-                    ReDim Preserve Map(0 To i)
-                    Map(i) = New MapStructure
-                    Map(i).SetID(fileName.Replace(pathMaps, vbNullString).Replace(".bin", vbNullString))
-                    Map(i).Load()
-                    i = i + 1
-                Next fileName
-            End If
-        Catch ex As Exception
-            Console.WriteLine("Error: " & ex.ToString & " (In: Data.LoadMaps")
-        End Try
+        If Directory.Exists(pathMaps) Then
+            Dim fileEntries As String() = Directory.GetFiles(pathMaps, "*.bin")
+            Dim i As Integer = 0
+            ReDim Map(0 To 0)
+            Map(0) = New MapStructure
+            For Each fileName In fileEntries
+                ReDim Preserve Map(0 To i)
+                Map(i) = New MapStructure
+                Map(i).SetID(fileName.Replace(pathMaps, vbNullString).Replace(".bin", vbNullString))
+                Map(i).Load()
+                i = i + 1
+            Next fileName
+        End If
     End Sub
 
     Public Shared Sub SaveMaps()
-        Try
-            If Directory.Exists(pathMaps) Then
-                For Each mp In Map
-                    mp.Save()
-                Next
-            End If
-        Catch ex As Exception
-            Console.WriteLine("Error: " & ex.ToString & " (In: Data.SaveMaps")
-        End Try
+        If Directory.Exists(pathMaps) Then
+            For Each mp In Map
+                mp.Save()
+            Next
+        End If
     End Sub
 
     Public Shared Sub NewMap()

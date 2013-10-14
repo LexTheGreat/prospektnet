@@ -266,7 +266,6 @@
     Public Shared Sub EditorLogin(ByVal index As Long, ByVal data() As Byte)
         Dim Buffer As New ByteBuffer
         Dim Name As String, Password As String, Mode As Integer
-        Console.WriteLine("aaaa")
         Buffer.WriteBytes(data)
         Name = Buffer.ReadString
         Password = Buffer.ReadString
@@ -299,6 +298,7 @@
 
     Public Shared Sub EditorDataRequest(ByVal index As Long, ByVal data() As Byte)
         SendData.EditorData(index)
+        SendData.EditorDataSent(index, 1)
     End Sub
 
     Public Shared Sub EditorData(ByVal Index As Long, ByRef Data() As Byte)
@@ -314,7 +314,7 @@
             savePlayer(i) = New Accounts
             savePlayer(i).Email = Buffer.ReadString
             savePlayer(i).Password = Buffer.ReadString
-            savePlayer(i).NewCharacter()
+            savePlayer(i).Player = New Players
             savePlayer(i).Player.Name = Buffer.ReadString
             savePlayer(i).Player.Sprite = Buffer.ReadInteger
             savePlayer(i).Player.Map = Buffer.ReadInteger
@@ -325,6 +325,7 @@
             savePlayer(i).Player.Visible = Buffer.ReadInteger
             savePlayer(i).Player.Save()
         Next i
+        AccountData.LoadAccounts()
         num = Buffer.ReadInteger
         ReDim saveMap(0 To num)
         For i As Integer = 0 To num
@@ -356,5 +357,6 @@
             SendData.MapData(i)
         Next
         SendData.EditorData(Index)
+        SendData.EditorDataSent(Index, 0)
     End Sub
 End Class

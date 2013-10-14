@@ -305,8 +305,8 @@ errorhandler:
         End If
 
         Dim data As TileData
-        For X As Integer = TileView.Left To TileView.Right
-            For Y As Integer = TileView.Top To TileView.Bottom
+        For X As Integer = TileView.Left To TileView.Right - 1
+            For Y As Integer = TileView.Top To TileView.Bottom - 1
                 If MapLogic.IsValidPoint(X, Y) Then
                     data = Map.Layer(i).GetTileData(X, Y)
                     If data.Tileset < 0 Then Continue For
