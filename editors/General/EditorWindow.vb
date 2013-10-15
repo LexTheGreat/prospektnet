@@ -130,7 +130,7 @@
     End Sub
 
     Private Sub mnuAccountUndo_Click(sender As Object, e As EventArgs) Handles mnuAccountUndo.Click
-        If Not IsNothing(lstAccounts.Items) Then AccountEditor.UnDo()
+        If Not IsNothing(lstAccounts.Items) Then AccountEditor.Undo()
     End Sub
 
     Private Sub lstAccounts_SelectedIndexChanged(sender As Object, e As EventArgs) Handles lstAccounts.SelectedIndexChanged
@@ -140,5 +140,13 @@
 
     Private Sub proptPlayerData_PropertyValueChanged(s As Object, e As PropertyValueChangedEventArgs) Handles proptAccountData.PropertyValueChanged
         If Not IsNothing(lstAccounts.Items) Then AccountEditor.Verify()
+    End Sub
+
+    Private Sub EditorWindow_SizeChanged(sender As Object, e As EventArgs) Handles MyBase.SizeChanged
+        If Not inEditor Then Exit Sub
+        Render.Dispose()
+        Render.Initialize()
+        If IsNothing(lstMaps.SelectedItem) Then Exit Sub
+        If Not IsNothing(Map(MapData.GetMapIndex(lstMaps.SelectedIndex))) Then MapEditor.Load(MapData.GetMapIndex(lstMaps.SelectedIndex))
     End Sub
 End Class

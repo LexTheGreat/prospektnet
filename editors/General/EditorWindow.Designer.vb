@@ -136,7 +136,7 @@ Partial Class EditorWindow
         Me.tabEditors.Location = New System.Drawing.Point(0, 24)
         Me.tabEditors.Name = "tabEditors"
         Me.tabEditors.SelectedIndex = 0
-        Me.tabEditors.Size = New System.Drawing.Size(819, 482)
+        Me.tabEditors.Size = New System.Drawing.Size(819, 452)
         Me.tabEditors.SizeMode = System.Windows.Forms.TabSizeMode.Fixed
         Me.tabEditors.TabIndex = 2
         '
@@ -148,7 +148,7 @@ Partial Class EditorWindow
         Me.tabMapEditor.Location = New System.Drawing.Point(4, 22)
         Me.tabMapEditor.Name = "tabMapEditor"
         Me.tabMapEditor.Padding = New System.Windows.Forms.Padding(3)
-        Me.tabMapEditor.Size = New System.Drawing.Size(811, 456)
+        Me.tabMapEditor.Size = New System.Drawing.Size(811, 426)
         Me.tabMapEditor.TabIndex = 0
         Me.tabMapEditor.Text = "Map Editor"
         Me.tabMapEditor.UseVisualStyleBackColor = True
@@ -159,7 +159,7 @@ Partial Class EditorWindow
         Me.groupMapData.Dock = System.Windows.Forms.DockStyle.Fill
         Me.groupMapData.Location = New System.Drawing.Point(218, 3)
         Me.groupMapData.Name = "groupMapData"
-        Me.groupMapData.Size = New System.Drawing.Size(390, 450)
+        Me.groupMapData.Size = New System.Drawing.Size(390, 420)
         Me.groupMapData.TabIndex = 55
         Me.groupMapData.TabStop = False
         Me.groupMapData.Text = "Map"
@@ -171,7 +171,7 @@ Partial Class EditorWindow
         Me.tabMaps.Location = New System.Drawing.Point(3, 16)
         Me.tabMaps.Name = "tabMaps"
         Me.tabMaps.SelectedIndex = 0
-        Me.tabMaps.Size = New System.Drawing.Size(384, 431)
+        Me.tabMaps.Size = New System.Drawing.Size(384, 401)
         Me.tabMaps.TabIndex = 0
         '
         'tabMap
@@ -183,7 +183,7 @@ Partial Class EditorWindow
         Me.tabMap.Location = New System.Drawing.Point(4, 22)
         Me.tabMap.Name = "tabMap"
         Me.tabMap.Padding = New System.Windows.Forms.Padding(3)
-        Me.tabMap.Size = New System.Drawing.Size(376, 405)
+        Me.tabMap.Size = New System.Drawing.Size(376, 375)
         Me.tabMap.TabIndex = 0
         Me.tabMap.Text = "Map"
         Me.tabMap.UseVisualStyleBackColor = True
@@ -195,14 +195,14 @@ Partial Class EditorWindow
         Me.mapScrlY.Location = New System.Drawing.Point(356, 3)
         Me.mapScrlY.Maximum = 32
         Me.mapScrlY.Name = "mapScrlY"
-        Me.mapScrlY.Size = New System.Drawing.Size(17, 382)
+        Me.mapScrlY.Size = New System.Drawing.Size(17, 352)
         Me.mapScrlY.TabIndex = 5
         '
         'mapScrlX
         '
         Me.mapScrlX.Dock = System.Windows.Forms.DockStyle.Bottom
         Me.mapScrlX.LargeChange = 1
-        Me.mapScrlX.Location = New System.Drawing.Point(3, 385)
+        Me.mapScrlX.Location = New System.Drawing.Point(3, 355)
         Me.mapScrlX.Maximum = 32
         Me.mapScrlX.Name = "mapScrlX"
         Me.mapScrlX.Size = New System.Drawing.Size(370, 17)
@@ -214,7 +214,7 @@ Partial Class EditorWindow
         Me.mapPreview.Dock = System.Windows.Forms.DockStyle.Fill
         Me.mapPreview.Location = New System.Drawing.Point(3, 3)
         Me.mapPreview.Name = "mapPreview"
-        Me.mapPreview.Size = New System.Drawing.Size(370, 399)
+        Me.mapPreview.Size = New System.Drawing.Size(370, 369)
         Me.mapPreview.TabIndex = 3
         Me.mapPreview.TabStop = False
         '
@@ -225,7 +225,7 @@ Partial Class EditorWindow
         Me.panMapRight.Dock = System.Windows.Forms.DockStyle.Right
         Me.panMapRight.Location = New System.Drawing.Point(608, 3)
         Me.panMapRight.Name = "panMapRight"
-        Me.panMapRight.Size = New System.Drawing.Size(200, 450)
+        Me.panMapRight.Size = New System.Drawing.Size(200, 420)
         Me.panMapRight.TabIndex = 54
         '
         'panMapTiles
@@ -234,7 +234,7 @@ Partial Class EditorWindow
         Me.panMapTiles.Dock = System.Windows.Forms.DockStyle.Fill
         Me.panMapTiles.Location = New System.Drawing.Point(0, 0)
         Me.panMapTiles.Name = "panMapTiles"
-        Me.panMapTiles.Size = New System.Drawing.Size(200, 414)
+        Me.panMapTiles.Size = New System.Drawing.Size(200, 384)
         Me.panMapTiles.TabIndex = 48
         '
         'panMapTileSetBack
@@ -244,7 +244,7 @@ Partial Class EditorWindow
         Me.panMapTileSetBack.Dock = System.Windows.Forms.DockStyle.Fill
         Me.panMapTileSetBack.Location = New System.Drawing.Point(0, 0)
         Me.panMapTileSetBack.Name = "panMapTileSetBack"
-        Me.panMapTileSetBack.Size = New System.Drawing.Size(200, 414)
+        Me.panMapTileSetBack.Size = New System.Drawing.Size(200, 384)
         Me.panMapTileSetBack.TabIndex = 53
         '
         'mapPanTileSet
@@ -257,7 +257,7 @@ Partial Class EditorWindow
         Me.mapPanTileSet.Dock = System.Windows.Forms.DockStyle.Fill
         Me.mapPanTileSet.Location = New System.Drawing.Point(0, 40)
         Me.mapPanTileSet.Name = "mapPanTileSet"
-        Me.mapPanTileSet.Size = New System.Drawing.Size(200, 374)
+        Me.mapPanTileSet.Size = New System.Drawing.Size(200, 344)
         Me.mapPanTileSet.TabIndex = 54
         '
         'tileSetScrlY
@@ -267,14 +267,14 @@ Partial Class EditorWindow
         Me.tileSetScrlY.Location = New System.Drawing.Point(183, 0)
         Me.tileSetScrlY.Maximum = 1
         Me.tileSetScrlY.Name = "tileSetScrlY"
-        Me.tileSetScrlY.Size = New System.Drawing.Size(17, 357)
+        Me.tileSetScrlY.Size = New System.Drawing.Size(17, 327)
         Me.tileSetScrlY.TabIndex = 8
         '
         'tileSetScrlX
         '
         Me.tileSetScrlX.Dock = System.Windows.Forms.DockStyle.Bottom
         Me.tileSetScrlX.LargeChange = 1
-        Me.tileSetScrlX.Location = New System.Drawing.Point(0, 357)
+        Me.tileSetScrlX.Location = New System.Drawing.Point(0, 327)
         Me.tileSetScrlX.Maximum = 1
         Me.tileSetScrlX.Name = "tileSetScrlX"
         Me.tileSetScrlX.Size = New System.Drawing.Size(200, 17)
@@ -286,7 +286,7 @@ Partial Class EditorWindow
         Me.TileSetPreview.Dock = System.Windows.Forms.DockStyle.Fill
         Me.TileSetPreview.Location = New System.Drawing.Point(0, 0)
         Me.TileSetPreview.Name = "TileSetPreview"
-        Me.TileSetPreview.Size = New System.Drawing.Size(200, 374)
+        Me.TileSetPreview.Size = New System.Drawing.Size(200, 344)
         Me.TileSetPreview.TabIndex = 6
         Me.TileSetPreview.TabStop = False
         '
@@ -316,7 +316,7 @@ Partial Class EditorWindow
         Me.groupMapTileBtns.Controls.Add(Me.mapBtnFillLayer)
         Me.groupMapTileBtns.Dock = System.Windows.Forms.DockStyle.Bottom
         Me.groupMapTileBtns.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.groupMapTileBtns.Location = New System.Drawing.Point(0, 414)
+        Me.groupMapTileBtns.Location = New System.Drawing.Point(0, 384)
         Me.groupMapTileBtns.Name = "groupMapTileBtns"
         Me.groupMapTileBtns.Size = New System.Drawing.Size(200, 36)
         Me.groupMapTileBtns.TabIndex = 49
@@ -349,7 +349,7 @@ Partial Class EditorWindow
         Me.panMapLeft.Dock = System.Windows.Forms.DockStyle.Left
         Me.panMapLeft.Location = New System.Drawing.Point(3, 3)
         Me.panMapLeft.Name = "panMapLeft"
-        Me.panMapLeft.Size = New System.Drawing.Size(215, 450)
+        Me.panMapLeft.Size = New System.Drawing.Size(215, 420)
         Me.panMapLeft.TabIndex = 51
         '
         'tabProperties
@@ -360,7 +360,7 @@ Partial Class EditorWindow
         Me.tabProperties.Location = New System.Drawing.Point(0, 150)
         Me.tabProperties.Name = "tabProperties"
         Me.tabProperties.SelectedIndex = 0
-        Me.tabProperties.Size = New System.Drawing.Size(215, 300)
+        Me.tabProperties.Size = New System.Drawing.Size(215, 270)
         Me.tabProperties.TabIndex = 52
         '
         'tabMapSettings
@@ -369,7 +369,7 @@ Partial Class EditorWindow
         Me.tabMapSettings.Location = New System.Drawing.Point(4, 22)
         Me.tabMapSettings.Name = "tabMapSettings"
         Me.tabMapSettings.Padding = New System.Windows.Forms.Padding(3)
-        Me.tabMapSettings.Size = New System.Drawing.Size(207, 274)
+        Me.tabMapSettings.Size = New System.Drawing.Size(207, 244)
         Me.tabMapSettings.TabIndex = 0
         Me.tabMapSettings.Text = "Map Settings"
         Me.tabMapSettings.UseVisualStyleBackColor = True
@@ -380,7 +380,7 @@ Partial Class EditorWindow
         Me.proptMapData.Location = New System.Drawing.Point(3, 3)
         Me.proptMapData.Name = "proptMapData"
         Me.proptMapData.PropertySort = System.Windows.Forms.PropertySort.Categorized
-        Me.proptMapData.Size = New System.Drawing.Size(201, 268)
+        Me.proptMapData.Size = New System.Drawing.Size(201, 238)
         Me.proptMapData.TabIndex = 49
         '
         'tabEditor
@@ -389,7 +389,7 @@ Partial Class EditorWindow
         Me.tabEditor.Location = New System.Drawing.Point(4, 22)
         Me.tabEditor.Name = "tabEditor"
         Me.tabEditor.Padding = New System.Windows.Forms.Padding(3)
-        Me.tabEditor.Size = New System.Drawing.Size(207, 274)
+        Me.tabEditor.Size = New System.Drawing.Size(207, 244)
         Me.tabEditor.TabIndex = 1
         Me.tabEditor.Text = "Editor Settings"
         Me.tabEditor.UseVisualStyleBackColor = True
@@ -399,7 +399,7 @@ Partial Class EditorWindow
         Me.proptMapEditorData.Dock = System.Windows.Forms.DockStyle.Fill
         Me.proptMapEditorData.Location = New System.Drawing.Point(3, 3)
         Me.proptMapEditorData.Name = "proptMapEditorData"
-        Me.proptMapEditorData.Size = New System.Drawing.Size(201, 268)
+        Me.proptMapEditorData.Size = New System.Drawing.Size(201, 238)
         Me.proptMapEditorData.TabIndex = 49
         '
         'GroupBox3
@@ -456,7 +456,7 @@ Partial Class EditorWindow
         Me.tabAccountEditor.Location = New System.Drawing.Point(4, 22)
         Me.tabAccountEditor.Name = "tabAccountEditor"
         Me.tabAccountEditor.Padding = New System.Windows.Forms.Padding(3)
-        Me.tabAccountEditor.Size = New System.Drawing.Size(811, 456)
+        Me.tabAccountEditor.Size = New System.Drawing.Size(811, 426)
         Me.tabAccountEditor.TabIndex = 3
         Me.tabAccountEditor.Text = "Account Editor"
         Me.tabAccountEditor.UseVisualStyleBackColor = True
@@ -467,7 +467,7 @@ Partial Class EditorWindow
         Me.groupPlayerData.Dock = System.Windows.Forms.DockStyle.Fill
         Me.groupPlayerData.Location = New System.Drawing.Point(158, 3)
         Me.groupPlayerData.Name = "groupPlayerData"
-        Me.groupPlayerData.Size = New System.Drawing.Size(650, 450)
+        Me.groupPlayerData.Size = New System.Drawing.Size(650, 420)
         Me.groupPlayerData.TabIndex = 2
         Me.groupPlayerData.TabStop = False
         Me.groupPlayerData.Text = "Account Data"
@@ -479,7 +479,7 @@ Partial Class EditorWindow
         Me.tabAccounts.Location = New System.Drawing.Point(3, 16)
         Me.tabAccounts.Name = "tabAccounts"
         Me.tabAccounts.SelectedIndex = 0
-        Me.tabAccounts.Size = New System.Drawing.Size(644, 431)
+        Me.tabAccounts.Size = New System.Drawing.Size(644, 401)
         Me.tabAccounts.TabIndex = 0
         '
         'tabAccount
@@ -488,7 +488,7 @@ Partial Class EditorWindow
         Me.tabAccount.Location = New System.Drawing.Point(4, 22)
         Me.tabAccount.Name = "tabAccount"
         Me.tabAccount.Padding = New System.Windows.Forms.Padding(3)
-        Me.tabAccount.Size = New System.Drawing.Size(636, 405)
+        Me.tabAccount.Size = New System.Drawing.Size(636, 375)
         Me.tabAccount.TabIndex = 2
         Me.tabAccount.Text = "Account"
         Me.tabAccount.UseVisualStyleBackColor = True
@@ -498,7 +498,7 @@ Partial Class EditorWindow
         Me.proptAccountData.Dock = System.Windows.Forms.DockStyle.Fill
         Me.proptAccountData.Location = New System.Drawing.Point(3, 3)
         Me.proptAccountData.Name = "proptAccountData"
-        Me.proptAccountData.Size = New System.Drawing.Size(630, 399)
+        Me.proptAccountData.Size = New System.Drawing.Size(630, 369)
         Me.proptAccountData.TabIndex = 1
         '
         'groupAccountList
@@ -508,7 +508,7 @@ Partial Class EditorWindow
         Me.groupAccountList.Dock = System.Windows.Forms.DockStyle.Left
         Me.groupAccountList.Location = New System.Drawing.Point(3, 3)
         Me.groupAccountList.Name = "groupAccountList"
-        Me.groupAccountList.Size = New System.Drawing.Size(155, 450)
+        Me.groupAccountList.Size = New System.Drawing.Size(155, 420)
         Me.groupAccountList.TabIndex = 0
         Me.groupAccountList.TabStop = False
         Me.groupAccountList.Text = "Account List"
@@ -519,7 +519,7 @@ Partial Class EditorWindow
         Me.lstAccounts.FormattingEnabled = True
         Me.lstAccounts.Location = New System.Drawing.Point(3, 40)
         Me.lstAccounts.Name = "lstAccounts"
-        Me.lstAccounts.Size = New System.Drawing.Size(149, 407)
+        Me.lstAccounts.Size = New System.Drawing.Size(149, 377)
         Me.lstAccounts.TabIndex = 0
         '
         'mnuAccountList
@@ -558,7 +558,7 @@ Partial Class EditorWindow
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(819, 506)
+        Me.ClientSize = New System.Drawing.Size(819, 476)
         Me.Controls.Add(Me.tabEditors)
         Me.Controls.Add(Me.mnuMain)
         Me.MainMenuStrip = Me.mnuMain

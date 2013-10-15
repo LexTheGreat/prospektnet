@@ -167,14 +167,20 @@ Module MapEditor
     Public Sub SelectTileset()
         selectSrcRect = New Rectangle(0, 0, 0, 0)
         curTileSet = CInt(EditorWindow.mapCmbTileSet.SelectedItem.ToString.Replace(pathTilesets, vbNullString).Replace(".png", vbNullString))
+        EditorWindow.tileSetScrlX.Minimum = 0
+        EditorWindow.tileSetScrlY.Minimum = 0
+        EditorWindow.tileSetScrlX.Maximum = (Texture(texTileset(curTileSet)).Width - EditorWindow.TileSetPreview.ClientSize.Width + picY) / picX
+        EditorWindow.tileSetScrlY.Maximum = (Texture(texTileset(curTileSet)).Height - EditorWindow.TileSetPreview.ClientSize.Height + picY) / picY
         EditorWindow.tileSetScrlX.Value = 0
         EditorWindow.tileSetScrlY.Value = 0
-        EditorWindow.tileSetScrlX.Maximum = Texture(texTileset(curTileSet)).Width / picX
-        EditorWindow.tileSetScrlY.Maximum = Texture(texTileset(curTileSet)).Height / picY
         ' Width: 1024, Height: 512
+        System.Diagnostics.Debug.WriteLine(EditorWindow.tileSetScrlX.Maximum)
+        System.Diagnostics.Debug.WriteLine(EditorWindow.tileSetScrlY.Maximum)
     End Sub
 
     Public Sub mapPreview_MouseMove(e As MouseEventArgs)
+        If index < 0 Then Exit Sub
+        If e.X >= Map(index).MaxX * picX Or e.Y >= Map(index).MaxY * picY Then Exit Sub
         mapMouseRect = New Rectangle(SnapTo(e.X, picX, EditorWindow.mapPreview.Width), SnapTo(e.Y, picY, EditorWindow.mapPreview.Height), picX, picY)
     End Sub
 
@@ -193,6 +199,8 @@ Module MapEditor
     End Sub
 
     Public Sub mapPicTileSet_MouseMove(e As MouseEventArgs)
+        If e.X + (EditorWindow.tileSetScrlX.Value * picX) >= Texture(texTileset(curTileSet)).Width Or
+            e.Y + (EditorWindow.tileSetScrlY.Value * picY) >= Texture(texTileset(curTileSet)).Height Then Exit Sub
         selectMouseRect = New Rectangle(SnapTo(e.X, picX, EditorWindow.TileSetPreview.Width), SnapTo(e.Y, picY, EditorWindow.TileSetPreview.Height), picX, picY)
     End Sub
 
@@ -201,6 +209,8 @@ Module MapEditor
     End Sub
 
     Public Sub mapPicTileSet_MouseDown(e As MouseEventArgs)
+        If e.X + (EditorWindow.tileSetScrlX.Value * picX) >= Texture(texTileset(curTileSet)).Width Or
+            e.Y + (EditorWindow.tileSetScrlY.Value * picY) >= Texture(texTileset(curTileSet)).Height Then Exit Sub
         If e.Button = MouseButtons.Left Then
             Dim selectX As Integer = EditorWindow.tileSetScrlX.Value * picX, selectY As Integer = EditorWindow.tileSetScrlY.Value * picY
             selectSrcRect = New Rectangle(selectMouseRect.X + selectX, selectMouseRect.Y + selectY, selectMouseRect.Width, selectMouseRect.Height)
@@ -258,7 +268,7 @@ Module MapEditor
 
     Public Sub DrawTileset()
         Dim ScrlX As Integer = EditorWindow.tileSetScrlX.Value, ScrlY As Integer = EditorWindow.tileSetScrlY.Value
-        If curTileSet > 0 Then Render.RenderTileTexture(texTileset(curTileSet), -ScrlX * picX, -ScrlY * picY, 0, 0, Texture(texTileset(curTileSet)).Width, Texture(texTileset(curTileSet)).Height, Texture(texTileset(curTileSet)).Width, Texture(texTileset(curTileSet)).Height)
+        If curTileSet > 0 Then Render.RenderTileTexture(texTileset(curTileSet), 0 - ScrlX * picX, 0 - ScrlY * picY, 0, 0, Texture(texTileset(curTileSet)).Width, Texture(texTileset(curTileSet)).Height, Texture(texTileset(curTileSet)).Width, Texture(texTileset(curTileSet)).Height)
     End Sub
 
     Public Sub DrawTilesetSelection()
