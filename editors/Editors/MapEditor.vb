@@ -258,7 +258,7 @@ Module MapEditor
 
     Public Sub DrawTileset()
         Dim ScrlX As Integer = EditorWindow.tileSetScrlX.Value, ScrlY As Integer = EditorWindow.tileSetScrlY.Value
-        If curTileSet > 0 Then Render.RenderTileTexture(texTileset(curTileSet), 0, 0, ScrlX * picX, ScrlY * picY, Texture(texTileset(curTileSet)).Width, Texture(texTileset(curTileSet)).Height, Texture(texTileset(curTileSet)).Width, Texture(texTileset(curTileSet)).Height)
+        If curTileSet > 0 Then Render.RenderTileTexture(texTileset(curTileSet), -ScrlX * picX, -ScrlY * picY, 0, 0, Texture(texTileset(curTileSet)).Width, Texture(texTileset(curTileSet)).Height, Texture(texTileset(curTileSet)).Width, Texture(texTileset(curTileSet)).Height)
     End Sub
 
     Public Sub DrawTilesetSelection()
