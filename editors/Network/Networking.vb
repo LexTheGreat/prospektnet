@@ -67,6 +67,7 @@ Public Class Networking
 
     Public Shared Function IsConnected() As Boolean
         If PlayerSocket.State = WinsockStates.Connected Then Return True
+        Return False
     End Function
 
     Public Shared Sub SendData(ByRef Data() As Byte)

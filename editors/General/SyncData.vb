@@ -7,6 +7,7 @@
             SendData.Login(txtEmail.Text, txtPassword.Text, 0)
         Else
             MsgBox("No connection to server")
+            Me.Focus()
         End If
     End Sub
 End Class

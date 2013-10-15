@@ -52,11 +52,12 @@
 
     Private Sub mapPreview_MouseEnter(sender As Object, e As EventArgs) Handles mapPreview.MouseEnter
         Cursor.Hide()
-        mapScrlV.Focus()
+        mapScrlY.Focus()
     End Sub
 
     Private Sub mapPreview_MouseLeave(sender As Object, e As EventArgs) Handles mapPreview.MouseLeave
         Cursor.Show()
+        If Not IsNothing(lstMaps.Items) Then MapEditor.mapPreview_MouseLeave(e)
     End Sub
 
     Private Sub mapPreview_MouseDown(sender As Object, e As MouseEventArgs) Handles mapPreview.MouseDown
@@ -67,21 +68,21 @@
         If Not IsNothing(lstMaps.Items) Then MapEditor.mapPreview_MouseMove(e)
     End Sub
 
-    Private Sub mapPicTileSet_MouseEnter(sender As Object, e As EventArgs) Handles mapPicTileSet.MouseEnter
+    Private Sub mapPicTileSet_MouseEnter(sender As Object, e As EventArgs) Handles TileSetPreview.MouseEnter
         Cursor.Hide()
-        mapPicTileSet.Focus()
+        tileSetScrlY.Focus()
     End Sub
 
-    Private Sub mapPicTileSet_MouseLeave(sender As Object, e As EventArgs) Handles mapPicTileSet.MouseLeave
+    Private Sub mapPicTileSet_MouseLeave(sender As Object, e As EventArgs) Handles TileSetPreview.MouseLeave
         Cursor.Show()
         If Not IsNothing(lstMaps.Items) Then MapEditor.mapPicTileSet_MouseLeave(e)
     End Sub
 
-    Private Sub mapPicTileSet_MouseDown(sender As Object, e As MouseEventArgs) Handles mapPicTileSet.MouseDown
+    Private Sub mapPicTileSet_MouseDown(sender As Object, e As MouseEventArgs) Handles TileSetPreview.MouseDown
         If Not IsNothing(lstMaps.Items) Then MapEditor.mapPicTileSet_MouseDown(e)
     End Sub
 
-    Private Sub mapPicTileSet_MouseMove(sender As Object, e As MouseEventArgs) Handles mapPicTileSet.MouseMove
+    Private Sub mapPicTileSet_MouseMove(sender As Object, e As MouseEventArgs) Handles TileSetPreview.MouseMove
         If Not IsNothing(lstMaps.Items) Then MapEditor.mapPicTileSet_MouseMove(e)
     End Sub
 

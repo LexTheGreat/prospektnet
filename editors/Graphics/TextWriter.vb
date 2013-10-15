@@ -4,7 +4,6 @@ Public Class TextWriter
     Implements IDisposable
     Private xFont As Font
     Private xText As Text
-    Private fontName As String
     Private IsVisible As Boolean
     Delegate Function Pressed(ByVal index As Integer) As Boolean
 

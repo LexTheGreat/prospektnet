@@ -89,25 +89,28 @@ Module MapEditor
     End Sub
 
     Public Sub Load(ByVal i As Integer)
-        Dim MapMax As Integer() = GetMapMax(), MapVisible As Integer() = GetMapVisible()
-        index = i
-        If i < 0 Then Exit Sub
-        EditorWindow.tabMap.Text = Map(i).Name
-        EditorWindow.proptMapData.SelectedObject = Map(i)
-        EditorWindow.mapScrlH.Maximum = Map(i).MaxX
-        EditorWindow.mapScrlV.Maximum = Map(i).MaxY
-        EditorWindow.mapPreview.Invalidate()
+        Dim MapMax As Integer(), MapVisible As Integer()
+        EditorWindow.mapScrlX.Value = 0
+        EditorWindow.mapScrlY.Value = 0
+        If Map.Length > i Then
+            index = i
+            EditorWindow.tabMap.Text = Map(i).Name
+            EditorWindow.proptMapData.SelectedObject = Map(i)
+            EditorWindow.mapScrlX.Value = 0
+            EditorWindow.mapScrlY.Value = 0
+            MapMax = GetMapMax()
+            MapVisible = GetMapVisible()
+            If MapMax(0) > MapVisible(0) Then
+                EditorWindow.mapScrlX.Maximum = MapMax(0)
+            Else
+                EditorWindow.mapScrlX.Maximum = 1
+            End If
 
-        If MapMax(0) > MapVisible(0) Then
-            EditorWindow.mapScrlH.Maximum = MapMax(0) - MapVisible(0)
-        Else
-            EditorWindow.mapScrlH.Maximum = 1
-        End If
-
-        If MapMax(1) > MapVisible(1) Then
-            EditorWindow.mapScrlV.Maximum = MapMax(1) - MapVisible(1)
-        Else
-            EditorWindow.mapScrlV.Maximum = 1
+            If MapMax(1) > MapVisible(1) Then
+                EditorWindow.mapScrlY.Maximum = MapMax(1)
+            Else
+                EditorWindow.mapScrlY.Maximum = 1
+            End If
         End If
     End Sub
 
@@ -134,7 +137,6 @@ Module MapEditor
         EditorWindow.tabMap.Text = "Map"
         EditorWindow.proptMapData.SelectedObject = vbNull
         index = -1
-        EditorWindow.mapPreview.Invalidate()
     End Sub
 
     Public Sub Verify()
@@ -151,20 +153,6 @@ Module MapEditor
         If Map(index).Blue > 255 Then Map(index).Blue = 255
         If Map(index).Blue < 0 Then Map(index).Blue = 0
 
-        If MapMax(0) > MapVisible(0) Then
-            EditorWindow.mapScrlH.Maximum = MapMax(0) - MapVisible(0)
-        Else
-            EditorWindow.mapScrlH.Maximum = 1
-        End If
-
-        If MapMax(1) > MapVisible(1) Then
-            EditorWindow.mapScrlV.Maximum = MapMax(1) - MapVisible(1)
-        Else
-            EditorWindow.mapScrlV.Maximum = 1
-        End If
-
-        Map(index).ReSizeTileData(curLayer, New Integer() {Map(index).MaxX, Map(index).MaxY})
-
         ' Refresh data
         EditorWindow.proptMapData.Refresh()
     End Sub
@@ -179,6 +167,11 @@ Module MapEditor
     Public Sub SelectTileset()
         selectSrcRect = New Rectangle(0, 0, 0, 0)
         curTileSet = CInt(EditorWindow.mapCmbTileSet.SelectedItem.ToString.Replace(pathTilesets, vbNullString).Replace(".png", vbNullString))
+        EditorWindow.tileSetScrlX.Value = 0
+        EditorWindow.tileSetScrlY.Value = 0
+        EditorWindow.tileSetScrlX.Maximum = Texture(texTileset(curTileSet)).Width / picX
+        EditorWindow.tileSetScrlY.Maximum = Texture(texTileset(curTileSet)).Height / picY
+        ' Width: 1024, Height: 512
     End Sub
 
     Public Sub mapPreview_MouseMove(e As MouseEventArgs)
@@ -186,7 +179,6 @@ Module MapEditor
     End Sub
 
     Public Sub mapPreview_MouseLeave(e As EventArgs)
-        selectSrcRect = New Rectangle(0, 0, 0, 0)
         mapMouseRect = New Rectangle(0, 0, 0, 0)
     End Sub
 
@@ -201,7 +193,7 @@ Module MapEditor
     End Sub
 
     Public Sub mapPicTileSet_MouseMove(e As MouseEventArgs)
-        selectMouseRect = New Rectangle(SnapTo(e.X, picX, EditorWindow.mapPicTileSet.Width), SnapTo(e.Y, picY, EditorWindow.mapPicTileSet.Height), picX, picY)
+        selectMouseRect = New Rectangle(SnapTo(e.X, picX, EditorWindow.TileSetPreview.Width), SnapTo(e.Y, picY, EditorWindow.TileSetPreview.Height), picX, picY)
     End Sub
 
     Public Sub mapPicTileSet_MouseLeave(e As EventArgs)
@@ -210,35 +202,36 @@ Module MapEditor
 
     Public Sub mapPicTileSet_MouseDown(e As MouseEventArgs)
         If e.Button = MouseButtons.Left Then
-            selectSrcRect = selectMouseRect
+            Dim selectX As Integer = EditorWindow.tileSetScrlX.Value * picX, selectY As Integer = EditorWindow.tileSetScrlY.Value * picY
+            selectSrcRect = New Rectangle(selectMouseRect.X + selectX, selectMouseRect.Y + selectY, selectMouseRect.Width, selectMouseRect.Height)
         ElseIf e.Button = MouseButtons.Right Then
             selectSrcRect = New Rectangle(0, 0, 0, 0)
         End If
     End Sub
 
     Public Sub FillLayer()
-        Dim newData As TileData
         If index < 0 Then Exit Sub
         If IsNothing(Map(index)) Or selectSrcRect.Height = 0 Then Exit Sub
-        For x As Integer = 0 To Map(index).MaxX - 1
-            For y As Integer = 0 To Map(index).MaxY - 1
-                newData = New TileData
-                newData.Tileset = curTileSet
-                newData.X = selectSrcRect.X
-                newData.Y = selectSrcRect.Y
-                Map(index).SetTileData(curLayer, x, y, newData)
+        Dim newData(Map(index).MaxX, Map(index).MaxY) As TileData
+        For x As Integer = 0 To Map(index).MaxX
+            For y As Integer = 0 To Map(index).MaxY
+                newData(x, y) = New TileData
+                newData(x, y).Tileset = curTileSet
+                newData(x, y).X = selectSrcRect.X
+                newData(x, y).Y = selectSrcRect.Y
+                Map(index).SetTileData(curLayer, newData)
             Next
         Next
     End Sub
 
     Public Sub ClearLayer()
-        Dim newData As TileData
         If index < 0 Then Exit Sub
-        If IsNothing(Map(index)) Then Exit Sub
-        For x As Integer = 0 To Map(index).MaxX - 1
-            For y As Integer = 0 To Map(index).MaxY - 1
-                newData = New TileData
-                Map(index).SetTileData(curLayer, x, y, newData)
+        If IsNothing(Map(index)) Or selectSrcRect.Height = 0 Then Exit Sub
+        Dim newData(Map(index).MaxX, Map(index).MaxY) As TileData
+        For x As Integer = 0 To Map(index).MaxX
+            For y As Integer = 0 To Map(index).MaxY
+                newData(x, y) = New TileData
+                Map(index).SetTileData(curLayer, newData)
             Next
         Next
     End Sub
@@ -246,7 +239,7 @@ Module MapEditor
     Public Sub PlaceTile()
         If index < 0 Then Exit Sub
         If IsNothing(Map(index)) Or selectSrcRect.Height = 0 Then Exit Sub
-        Dim X As Integer = (mapMouseRect.X + (EditorWindow.mapScrlH.Value * picX)) / picX, Y As Integer = (mapMouseRect.Y + (EditorWindow.mapScrlV.Value * picY)) / picY
+        Dim X As Integer = (mapMouseRect.X + (EditorWindow.mapScrlX.Value * picX)) / picX, Y As Integer = (mapMouseRect.Y + (EditorWindow.mapScrlY.Value * picY)) / picY
         Dim newData As New TileData
         newData.Tileset = curTileSet
         newData.X = selectSrcRect.X
@@ -258,35 +251,32 @@ Module MapEditor
     Public Sub RemoveTile()
         If index < 0 Then Exit Sub
         If IsNothing(Map(index)) Then Exit Sub
-        Dim X As Integer = (mapMouseRect.X + (EditorWindow.mapScrlH.Value * picX)) / picX, Y As Integer = (mapMouseRect.Y + (EditorWindow.mapScrlV.Value * picY)) / picY
+        Dim X As Integer = (mapMouseRect.X + (EditorWindow.mapScrlX.Value * picX)) / picX, Y As Integer = (mapMouseRect.Y + (EditorWindow.mapScrlY.Value * picY)) / picY
         Dim newData As New TileData
         Map(index).SetTileData(curLayer, X, Y, newData)
     End Sub
 
-    Public Sub DrawMap()
-        ' Draw Map Tiles
-        DrawMapTiles()
-    End Sub
-
     Public Sub DrawTileset()
-        If curTileSet > 0 Then Render.RenderTextureTo(texTileset(curTileSet), 0, 0, 0, 0, Texture(texTileset(curTileSet)).Width, Texture(texTileset(curTileSet)).Height, Texture(texTileset(curTileSet)).Width, Texture(texTileset(curTileSet)).Height)
+        Dim ScrlX As Integer = EditorWindow.tileSetScrlX.Value, ScrlY As Integer = EditorWindow.tileSetScrlY.Value
+        If curTileSet > 0 Then Render.RenderTileTexture(texTileset(curTileSet), 0, 0, ScrlX * picX, ScrlY * picY, Texture(texTileset(curTileSet)).Width, Texture(texTileset(curTileSet)).Height, Texture(texTileset(curTileSet)).Width, Texture(texTileset(curTileSet)).Height)
     End Sub
 
-    Public Sub DrawSelection()
-        If curTileSet > 0 Then Render.RenderTextureTo(texGui(1), selectMouseRect.X, selectMouseRect.Y, 0, 0, picX, picY, picX, picY, 200, 0, 255, 0)
-    End Sub
-
-    Public Sub DrawMapSelection()
-        Render.RenderTextureTo(texGui(1), mapMouseRect.X, mapMouseRect.Y, 0, 0, picX, picY, picX, picY, 200, 0, 255, 0)
+    Public Sub DrawTilesetSelection()
+        If Not curTileSet > 0 Then Exit Sub
+        Dim selectX As Integer = EditorWindow.tileSetScrlX.Value * picX, selectY As Integer = EditorWindow.tileSetScrlY.Value * picY
+        If selectMouseRect.Width > 0 Then Render.RenderRectangle(Render.TileWindow, selectMouseRect.X, selectMouseRect.Y, picX, picY, 2, 255, 0, 255, 255)
+        If selectSrcRect.Width > 0 Then
+            If selectSrcRect.Width > 0 Then Render.RenderRectangle(Render.TileWindow, selectSrcRect.X - selectX, selectSrcRect.Y - selectY, picX, picY, 2, 255, 255, 215, 0)
+        End If
     End Sub
 
     Public Sub DrawMapTiles()
         If index < 0 Then Exit Sub
         Dim MapVisible As Integer() = GetMapVisible()
-        Dim ScrlH As Integer = EditorWindow.mapScrlH.Value, ScrlV As Integer = EditorWindow.mapScrlV.Value
+        Dim ScrlX As Integer = EditorWindow.mapScrlX.Value, ScrlY As Integer = EditorWindow.mapScrlY.Value
 
-        For x As Integer = 0 + ScrlH To MapVisible(0) + ScrlH
-            For y As Integer = 0 + ScrlV To MapVisible(1) + ScrlV
+        For x As Integer = 0 + ScrlX To MapVisible(0) + ScrlX
+            For y As Integer = 0 + ScrlY To MapVisible(1) + ScrlY
                 For lyr As Integer = 0 To 3
                     If Map(index).GetTileData(lyr, x, y).Tileset < 0 Then Continue For
                     Select Case lyr
@@ -300,24 +290,45 @@ Module MapEditor
                             If Not editorProperty.l4 Then Continue For ' Dont Draw Fringe Mask Layer
                         Case Else
                     End Select
-                    Render.RenderTexture(texTileset(Map(index).GetTileData(lyr, x, y).Tileset), (x - ScrlH) * picX, (y - ScrlV) * picY, Map(index).GetTileData(lyr, x, y).X, Map(index).GetTileData(lyr, x, y).Y, picX, picY, picX, picY)
+                    Render.RenderMapTexture(texTileset(Map(index).GetTileData(lyr, x, y).Tileset), (x - ScrlX) * picX, (y - ScrlY) * picY, Map(index).GetTileData(lyr, x, y).X, Map(index).GetTileData(lyr, x, y).Y, picX, picY, picX, picY)
                 Next
             Next
         Next
     End Sub
 
+    Public Sub DrawMapSelection()
+        If selectSrcRect.Width > 0 And mapMouseRect.Width > 0 Then
+            Render.RenderMapTexture(texTileset(curTileSet), mapMouseRect.X, mapMouseRect.Y, selectSrcRect.X, selectSrcRect.Y, picX, picY, picX, picY)
+        End If
+        If mapMouseRect.Width > 0 Then Render.RenderRectangle(Render.Window, mapMouseRect.X, mapMouseRect.Y, picX, picY, 2, 255, 255, 215, 0)
+
+        ' Needed to fix some weird bug that only draws the second text
+        Verdana.Draw("Blank", 0, 0, SFML.Graphics.Color.Transparent)
+        If editorProperty.curPos And mapMouseRect.Width > 0 Then
+            Dim ScrlX As Integer = EditorWindow.mapScrlX.Value, ScrlY As Integer = EditorWindow.mapScrlY.Value
+            Dim DrawX As Integer = mapMouseRect.X / picX + ScrlX, DrawY As Integer = mapMouseRect.Y / picY + ScrlY
+            Verdana.Draw("X: " & DrawX & " - Y: " & DrawY, mapMouseRect.X, mapMouseRect.Y, SFML.Graphics.Color.White, 9)
+        End If
+    End Sub
+
+    Public Sub DraMapOverlay()
+        If index < 0 Then Exit Sub
+        Dim DrawRect As New Rectangle(0, 0, EditorWindow.mapPreview.Width * 2, EditorWindow.mapPreview.Height)
+        Render.RenderRectangle(Render.Window, 0, 0, EditorWindow.mapPreview.Width * 2, EditorWindow.mapPreview.Height, 2, Map(index).Alpha, Map(index).Red, Map(index).Green, Map(index).Blue, True)
+    End Sub
+
     Public Function GetMapVisible() As Integer()
-        If index < 0 Then Return New Integer() {15, 15}
+        If index < 0 Then Return New Integer() {10, 10}
         Dim maxX As Integer, maxY As Integer
 
-        If EditorWindow.mapPreview.Width / picX > Map(index).GetTileData(0).GetUpperBound(0) Then
-            maxX = Map(index).GetTileData(0).GetUpperBound(0) - 1
+        If EditorWindow.mapPreview.Width / picX > Map(index).MaxX Then
+            maxX = Map(index).MaxX
         Else
             maxX = EditorWindow.mapPreview.Width / picX
         End If
 
-        If EditorWindow.mapPreview.Height / picY > Map(index).GetTileData(0).GetUpperBound(1) Then
-            maxY = Map(index).GetTileData(0).GetUpperBound(1) - 1
+        If EditorWindow.mapPreview.Height / picY > Map(index).MaxY Then
+            maxY = Map(index).MaxY
         Else
             maxY = EditorWindow.mapPreview.Height / picY
         End If
@@ -326,22 +337,13 @@ Module MapEditor
     End Function
 
     Public Function GetMapMax() As Integer()
-        If index < 0 Then Return New Integer() {35, 35}
-        Dim maxX As Integer, maxY As Integer
+        If index < 0 Then Return New Integer() {34, 34}
+        Dim maxX As Integer, maxY As Integer, visible As Integer() = GetMapVisible()
 
-        If Map(index).GetTileData(0).GetUpperBound(0) > EditorWindow.mapPreview.Width / picX Then
-            maxX = SnapTo(Map(index).GetTileData(0).GetUpperBound(0), picX, EditorWindow.mapPreview.Width)
-        Else
-            maxX = Map(index).GetTileData(0).GetUpperBound(0) - 1
-        End If
+        maxX = Map(index).MaxX - visible(0) - 1
+        maxY = Map(index).MaxY - visible(1) - 1
 
-        If Map(index).GetTileData(0).GetUpperBound(1) > EditorWindow.mapPreview.Height / picY Then
-            maxY = SnapTo(Map(index).GetTileData(0).GetUpperBound(1), picY, EditorWindow.mapPreview.Height)
-        Else
-            maxY = Map(index).GetTileData(0).GetUpperBound(1) - 1
-        End If
-
-        Return New Integer() {maxX - 1, maxY - 1}
+        Return New Integer() {maxX, maxY}
     End Function
 
     Public Function SnapTo(ByVal loc As Integer, ByVal size As Integer, ByVal max As Integer) As Integer
@@ -362,17 +364,4 @@ Module MapEditor
     Function isDivisible(x As Integer, d As Integer) As Boolean
         Return (x Mod d) = 0
     End Function
-
-    Public Function GetImagePart(ByVal SourceImage As Image, ByVal Region As Rectangle) As Image
-        If IsNothing(New Bitmap(Region.Width, Region.Height)) Then Return Nothing
-        Dim ImagePart As Bitmap = New Bitmap(Region.Width, Region.Height)
-
-        Using G As Graphics = Graphics.FromImage(ImagePart)
-            Dim TargetRect As Rectangle = New Rectangle(0, 0, Region.Width, Region.Height)
-            Dim SourceRect As Rectangle = Region
-            G.DrawImage(SourceImage, TargetRect, SourceRect, GraphicsUnit.Pixel)
-        End Using
-        Return ImagePart
-    End Function
-
 End Module

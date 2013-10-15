@@ -32,14 +32,16 @@ Partial Class EditorWindow
         Me.groupMapData = New System.Windows.Forms.GroupBox()
         Me.tabMaps = New System.Windows.Forms.TabControl()
         Me.tabMap = New System.Windows.Forms.TabPage()
-        Me.mapScrlV = New System.Windows.Forms.VScrollBar()
-        Me.mapScrlH = New System.Windows.Forms.HScrollBar()
+        Me.mapScrlY = New System.Windows.Forms.VScrollBar()
+        Me.mapScrlX = New System.Windows.Forms.HScrollBar()
         Me.mapPreview = New System.Windows.Forms.PictureBox()
         Me.panMapRight = New System.Windows.Forms.Panel()
         Me.panMapTiles = New System.Windows.Forms.Panel()
         Me.panMapTileSetBack = New System.Windows.Forms.Panel()
         Me.mapPanTileSet = New System.Windows.Forms.Panel()
-        Me.mapPicTileSet = New System.Windows.Forms.PictureBox()
+        Me.tileSetScrlY = New System.Windows.Forms.VScrollBar()
+        Me.tileSetScrlX = New System.Windows.Forms.HScrollBar()
+        Me.TileSetPreview = New System.Windows.Forms.PictureBox()
         Me.groupMapTileset = New System.Windows.Forms.GroupBox()
         Me.mapCmbTileSet = New System.Windows.Forms.ComboBox()
         Me.groupMapTileBtns = New System.Windows.Forms.GroupBox()
@@ -80,7 +82,7 @@ Partial Class EditorWindow
         Me.panMapTiles.SuspendLayout()
         Me.panMapTileSetBack.SuspendLayout()
         Me.mapPanTileSet.SuspendLayout()
-        CType(Me.mapPicTileSet, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.TileSetPreview, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.groupMapTileset.SuspendLayout()
         Me.groupMapTileBtns.SuspendLayout()
         Me.panMapLeft.SuspendLayout()
@@ -174,8 +176,8 @@ Partial Class EditorWindow
         '
         'tabMap
         '
-        Me.tabMap.Controls.Add(Me.mapScrlV)
-        Me.tabMap.Controls.Add(Me.mapScrlH)
+        Me.tabMap.Controls.Add(Me.mapScrlY)
+        Me.tabMap.Controls.Add(Me.mapScrlX)
         Me.tabMap.Controls.Add(Me.mapPreview)
         Me.tabMap.ForeColor = System.Drawing.Color.Transparent
         Me.tabMap.Location = New System.Drawing.Point(4, 22)
@@ -186,25 +188,25 @@ Partial Class EditorWindow
         Me.tabMap.Text = "Map"
         Me.tabMap.UseVisualStyleBackColor = True
         '
-        'mapScrlV
+        'mapScrlY
         '
-        Me.mapScrlV.Dock = System.Windows.Forms.DockStyle.Right
-        Me.mapScrlV.LargeChange = 1
-        Me.mapScrlV.Location = New System.Drawing.Point(356, 3)
-        Me.mapScrlV.Maximum = 32
-        Me.mapScrlV.Name = "mapScrlV"
-        Me.mapScrlV.Size = New System.Drawing.Size(17, 382)
-        Me.mapScrlV.TabIndex = 5
+        Me.mapScrlY.Dock = System.Windows.Forms.DockStyle.Right
+        Me.mapScrlY.LargeChange = 1
+        Me.mapScrlY.Location = New System.Drawing.Point(356, 3)
+        Me.mapScrlY.Maximum = 32
+        Me.mapScrlY.Name = "mapScrlY"
+        Me.mapScrlY.Size = New System.Drawing.Size(17, 382)
+        Me.mapScrlY.TabIndex = 5
         '
-        'mapScrlH
+        'mapScrlX
         '
-        Me.mapScrlH.Dock = System.Windows.Forms.DockStyle.Bottom
-        Me.mapScrlH.LargeChange = 1
-        Me.mapScrlH.Location = New System.Drawing.Point(3, 385)
-        Me.mapScrlH.Maximum = 32
-        Me.mapScrlH.Name = "mapScrlH"
-        Me.mapScrlH.Size = New System.Drawing.Size(370, 17)
-        Me.mapScrlH.TabIndex = 4
+        Me.mapScrlX.Dock = System.Windows.Forms.DockStyle.Bottom
+        Me.mapScrlX.LargeChange = 1
+        Me.mapScrlX.Location = New System.Drawing.Point(3, 385)
+        Me.mapScrlX.Maximum = 32
+        Me.mapScrlX.Name = "mapScrlX"
+        Me.mapScrlX.Size = New System.Drawing.Size(370, 17)
+        Me.mapScrlX.TabIndex = 4
         '
         'mapPreview
         '
@@ -249,21 +251,44 @@ Partial Class EditorWindow
         '
         Me.mapPanTileSet.AutoScroll = True
         Me.mapPanTileSet.AutoSize = True
-        Me.mapPanTileSet.Controls.Add(Me.mapPicTileSet)
+        Me.mapPanTileSet.Controls.Add(Me.tileSetScrlY)
+        Me.mapPanTileSet.Controls.Add(Me.tileSetScrlX)
+        Me.mapPanTileSet.Controls.Add(Me.TileSetPreview)
         Me.mapPanTileSet.Dock = System.Windows.Forms.DockStyle.Fill
         Me.mapPanTileSet.Location = New System.Drawing.Point(0, 40)
         Me.mapPanTileSet.Name = "mapPanTileSet"
         Me.mapPanTileSet.Size = New System.Drawing.Size(200, 374)
         Me.mapPanTileSet.TabIndex = 54
         '
-        'mapPicTileSet
+        'tileSetScrlY
         '
-        Me.mapPicTileSet.Location = New System.Drawing.Point(0, 0)
-        Me.mapPicTileSet.Name = "mapPicTileSet"
-        Me.mapPicTileSet.Size = New System.Drawing.Size(200, 374)
-        Me.mapPicTileSet.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize
-        Me.mapPicTileSet.TabIndex = 54
-        Me.mapPicTileSet.TabStop = False
+        Me.tileSetScrlY.Dock = System.Windows.Forms.DockStyle.Right
+        Me.tileSetScrlY.LargeChange = 1
+        Me.tileSetScrlY.Location = New System.Drawing.Point(183, 0)
+        Me.tileSetScrlY.Maximum = 1
+        Me.tileSetScrlY.Name = "tileSetScrlY"
+        Me.tileSetScrlY.Size = New System.Drawing.Size(17, 357)
+        Me.tileSetScrlY.TabIndex = 8
+        '
+        'tileSetScrlX
+        '
+        Me.tileSetScrlX.Dock = System.Windows.Forms.DockStyle.Bottom
+        Me.tileSetScrlX.LargeChange = 1
+        Me.tileSetScrlX.Location = New System.Drawing.Point(0, 357)
+        Me.tileSetScrlX.Maximum = 1
+        Me.tileSetScrlX.Name = "tileSetScrlX"
+        Me.tileSetScrlX.Size = New System.Drawing.Size(200, 17)
+        Me.tileSetScrlX.TabIndex = 7
+        '
+        'TileSetPreview
+        '
+        Me.TileSetPreview.BackColor = System.Drawing.Color.DarkGray
+        Me.TileSetPreview.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.TileSetPreview.Location = New System.Drawing.Point(0, 0)
+        Me.TileSetPreview.Name = "TileSetPreview"
+        Me.TileSetPreview.Size = New System.Drawing.Size(200, 374)
+        Me.TileSetPreview.TabIndex = 6
+        Me.TileSetPreview.TabStop = False
         '
         'groupMapTileset
         '
@@ -552,8 +577,7 @@ Partial Class EditorWindow
         Me.panMapTileSetBack.ResumeLayout(False)
         Me.panMapTileSetBack.PerformLayout()
         Me.mapPanTileSet.ResumeLayout(False)
-        Me.mapPanTileSet.PerformLayout()
-        CType(Me.mapPicTileSet, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.TileSetPreview, System.ComponentModel.ISupportInitialize).EndInit()
         Me.groupMapTileset.ResumeLayout(False)
         Me.groupMapTileBtns.ResumeLayout(False)
         Me.panMapLeft.ResumeLayout(False)
@@ -607,8 +631,8 @@ Partial Class EditorWindow
     Friend WithEvents tabMaps As System.Windows.Forms.TabControl
     Friend WithEvents tabMap As System.Windows.Forms.TabPage
     Friend WithEvents mapPreview As System.Windows.Forms.PictureBox
-    Friend WithEvents mapScrlV As System.Windows.Forms.VScrollBar
-    Friend WithEvents mapScrlH As System.Windows.Forms.HScrollBar
+    Friend WithEvents mapScrlY As System.Windows.Forms.VScrollBar
+    Friend WithEvents mapScrlX As System.Windows.Forms.HScrollBar
     Friend WithEvents mnuMapList As System.Windows.Forms.MenuStrip
     Friend WithEvents mnuMapSave As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents mnuMapNew As System.Windows.Forms.ToolStripMenuItem
@@ -616,11 +640,13 @@ Partial Class EditorWindow
     Friend WithEvents mnuMain_Sync As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents panMapTileSetBack As System.Windows.Forms.Panel
     Friend WithEvents mapPanTileSet As System.Windows.Forms.Panel
-    Public WithEvents mapPicTileSet As System.Windows.Forms.PictureBox
     Friend WithEvents groupMapTileset As System.Windows.Forms.GroupBox
     Public WithEvents mapCmbTileSet As System.Windows.Forms.ComboBox
     Private WithEvents groupMapTileBtns As System.Windows.Forms.GroupBox
     Private WithEvents mapBtnClearLayer As System.Windows.Forms.Button
     Private WithEvents mapBtnFillLayer As System.Windows.Forms.Button
+    Friend WithEvents tileSetScrlY As System.Windows.Forms.VScrollBar
+    Friend WithEvents tileSetScrlX As System.Windows.Forms.HScrollBar
+    Friend WithEvents TileSetPreview As System.Windows.Forms.PictureBox
 
 End Class

@@ -32,14 +32,15 @@ Module General
             ' Start rendering
             Render.TileWindow.Clear(New Color(255, 255, 255))
             MapEditor.DrawTileset()
-            MapEditor.DrawSelection()
+            MapEditor.DrawTilesetSelection()
             ' End the rendering
             Render.TileWindow.Display()
 
             ' Start rendering
             Render.Window.Clear(New Color(255, 255, 255))
-            MapEditor.DrawMap()
+            MapEditor.DrawMapTiles()
             MapEditor.DrawMapSelection()
+            MapEditor.DraMapOverlay()
             ' End the rendering
             Render.Window.Display()
 

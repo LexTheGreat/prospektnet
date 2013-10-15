@@ -10,9 +10,9 @@ Public Class Render
     Public Shared Sub Initialize()
         ' Initialize rendering window
         Window = New RenderWindow(EditorWindow.mapPreview.Handle)
-        TileWindow = New RenderWindow(EditorWindow.mapPicTileSet.Handle)
-        Window.SetFramerateLimit(32)
-        TileWindow.SetFramerateLimit(32)
+        TileWindow = New RenderWindow(EditorWindow.TileSetPreview.Handle)
+        Window.SetFramerateLimit(64)
+        TileWindow.SetFramerateLimit(64)
         'Cache and load textures
         InitTextures()
     End Sub
@@ -25,6 +25,8 @@ Public Class Render
         If Window.IsOpen Then
             Window.Dispose()
             Window = Nothing
+            TileWindow.Dispose()
+            TileWindow = Nothing
         End If
     End Sub
 
@@ -76,7 +78,7 @@ Public Class Render
         End If
     End Sub
 
-    Public Shared Sub RenderTexture(ByVal textureNum As Long, ByVal destX As Long, ByVal destY As Long, ByVal srcX As Long, ByVal srcY As Long, ByVal destWidth As Long, ByVal destHeight As Long, ByVal srcWidth As Long, ByVal srcHeight As Long, Optional ByVal A As Byte = 255, Optional ByVal R As Byte = 255, Optional ByVal G As Byte = 255, Optional ByVal B As Byte = 255)
+    Public Shared Sub RenderMapTexture(ByVal textureNum As Long, ByVal destX As Long, ByVal destY As Long, ByVal srcX As Long, ByVal srcY As Long, ByVal destWidth As Long, ByVal destHeight As Long, ByVal srcWidth As Long, ByVal srcHeight As Long, Optional ByVal A As Byte = 255, Optional ByVal R As Byte = 255, Optional ByVal G As Byte = 255, Optional ByVal B As Byte = 255)
         Dim textureWidth As Integer, textureHeight As Integer
 
         ' Prevent subscript out range
@@ -96,7 +98,7 @@ Public Class Render
         Texture(textureNum).Tex.Draw(Window, RenderStates.Default)
     End Sub
 
-    Public Shared Sub RenderTextureTo(ByVal textureNum As Long, ByVal destX As Long, ByVal destY As Long, ByVal srcX As Long, ByVal srcY As Long, ByVal destWidth As Long, ByVal destHeight As Long, ByVal srcWidth As Long, ByVal srcHeight As Long, Optional ByVal A As Byte = 255, Optional ByVal R As Byte = 255, Optional ByVal G As Byte = 255, Optional ByVal B As Byte = 255)
+    Public Shared Sub RenderTileTexture(ByVal textureNum As Long, ByVal destX As Long, ByVal destY As Long, ByVal srcX As Long, ByVal srcY As Long, ByVal destWidth As Long, ByVal destHeight As Long, ByVal srcWidth As Long, ByVal srcHeight As Long, Optional ByVal A As Byte = 255, Optional ByVal R As Byte = 255, Optional ByVal G As Byte = 255, Optional ByVal B As Byte = 255)
         Dim textureWidth As Integer, textureHeight As Integer
 
         ' Prevent subscript out range
@@ -114,5 +116,16 @@ Public Class Render
         Texture(textureNum).Tex.TextureRect = New IntRect(srcX, srcY, srcWidth, srcHeight)
         Texture(textureNum).Tex.Position = New Vector2f(destX, destY)
         Texture(textureNum).Tex.Draw(TileWindow, RenderStates.Default)
+    End Sub
+
+    Public Shared Sub RenderRectangle(ByVal Window As RenderWindow, ByVal destX As Long, ByVal destY As Long, ByVal destWidth As Long, ByVal destHeight As Long, ByVal destThickness As Long, Optional ByVal A As Byte = 255, Optional ByVal R As Byte = 255, Optional ByVal G As Byte = 255, Optional ByVal B As Byte = 255, Optional ByVal Fill As Boolean = False)
+        Dim TextRect As New RectangleShape()
+
+        If Fill Then TextRect.FillColor = New Color(R, G, B, A) Else TextRect.FillColor = New Color(Color.Transparent)
+        TextRect.OutlineColor = New Color(R, G, B, A)
+        TextRect.OutlineThickness = destThickness
+        TextRect.Size = New Vector2f(destWidth, destHeight)
+        TextRect.Position = New Vector2f(destX, destY)
+        TextRect.Draw(Window, RenderStates.Default)
     End Sub
 End Class

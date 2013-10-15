@@ -39,7 +39,7 @@ Public Class Accounts
         objAccount = Files.Read(pathAccounts & Me.mEmail & ".xml", Me)
         If IsNothing(objAccount) Then objAccount = New Accounts()
         ' Convert object to newConfig
-        newAccount = CType(newAccount, Accounts)
+        newAccount = CType(objAccount, Accounts)
         Me.mEmail = newAccount.mEmail
         Me.mPassword = newAccount.mPassword
         Me.mName = newAccount.mName

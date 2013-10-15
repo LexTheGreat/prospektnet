@@ -56,8 +56,8 @@
             Map(i).Red = Buffer.ReadInteger
             Map(i).Green = Buffer.ReadInteger
             Map(i).Blue = Buffer.ReadInteger
+            Map(i).ReSizeTileData(New Integer() {Map(i).MaxX, Map(i).MaxY})
             For l As Integer = MapLayerEnum.Ground To MapLayerEnum.FringeMask
-                Map(i).Layer(l).ReSizeTileData(i, New Integer() {Map(i).MaxX, Map(i).MaxY})
                 For x As Integer = 0 To Map(i).MaxX - 1
                     For y As Integer = 0 To Map(i).MaxY - 1
                         sTileData = New TileData
