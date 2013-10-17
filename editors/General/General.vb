@@ -28,7 +28,7 @@ Module General
             Tick = System.Environment.TickCount() ' Set the inital tick
             ElapsedTime = Tick - FrameTime ' Set the time difference for time-based movement
             FrameTime = Tick
-
+            Networking.HandleMessage()
             ' Start rendering
             Render.TileWindow.Clear(New Color(255, 255, 255))
             MapEditor.DrawTileset()

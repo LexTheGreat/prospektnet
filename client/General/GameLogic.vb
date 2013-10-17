@@ -33,9 +33,9 @@
         End If
     End Function
 
-    Public Function WordWarp(ByVal str As String, ByVal numOfChar As Long) As String()
+    Public Function WordWarp(ByVal str As String, ByVal numOfChar As Integer) As String()
         Dim sArr() As String
-        Dim nCount As Long
+        Dim nCount As Integer
         Dim separators() As String = {",", ".", "!", "?", ";", ":", " "}
         Dim nSpace() As String = str.Split(separators, StringSplitOptions.RemoveEmptyEntries)
         ReDim sArr(Len(str) \ numOfChar)

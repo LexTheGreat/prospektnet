@@ -66,6 +66,10 @@
     <ApplicationManifest>My Project\app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Lidgren.Network, Version=2012.1.7.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\Lidgren.Network.dll</HintPath>
+    </Reference>
     <Reference Include="sfmlnet-audio-2, Version=2.1.0.0, Culture=neutral, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>bin\sfmlnet-audio-2.dll</HintPath>
@@ -92,10 +96,6 @@
     </Reference>
     <Reference Include="System.Data.DataSetExtensions">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
-    <Reference Include="Winsock Orcas, Version=4.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\Winsock Orcas.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -147,7 +147,6 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <Compile Include="Network\ByteBuffer.vb" />
     <Compile Include="Network\HandleData.vb" />
     <Compile Include="Network\Networking.vb" />
     <Compile Include="Network\SendData.vb" />

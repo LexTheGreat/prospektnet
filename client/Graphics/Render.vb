@@ -27,7 +27,7 @@ Public Class Render
     End Sub
 
     ' Initializing a texture
-    Public Shared Function cacheTexture(filePath As String) As Long
+    Public Shared Function cacheTexture(filePath As String) As Integer
 
         ' Set the max textures
         numTextures = numTextures + 1
@@ -43,7 +43,7 @@ Public Class Render
         cacheTexture = numTextures
     End Function
 
-    Public Shared Sub LoadTexture(ByVal TextureNum As Long)
+    Public Shared Sub LoadTexture(ByVal TextureNum As Integer)
         Dim tempTex As Texture
         Dim tempImg As Image
         Dim Tex_Info As Bitmap = New Bitmap(Texture(TextureNum).FilePath)
@@ -61,7 +61,7 @@ Public Class Render
     End Sub
 
     Public Shared Sub UnloadTextures()
-        Dim i As Long
+        Dim i As Integer
 
         ' Reload the textures
         If numTextures > 0 Then
@@ -78,7 +78,7 @@ Public Class Render
         RenderTexture(texGui(1), 0, 0, 0, 0, ClientConfig.ScreenWidth, ClientConfig.ScreenHeight, 32, 32, faderAlpha, 0, 0, 0)
     End Sub
 
-    Public Shared Sub RenderTexture(ByVal textureNum As Long, ByVal destX As Long, ByVal destY As Long, ByVal srcX As Long, ByVal srcY As Long, ByVal destWidth As Long, ByVal destHeight As Long, ByVal srcWidth As Long, ByVal srcHeight As Long, Optional ByVal A As Byte = 255, Optional ByVal R As Byte = 255, Optional ByVal G As Byte = 255, Optional ByVal B As Byte = 255)
+    Public Shared Sub RenderTexture(ByVal textureNum As Integer, ByVal destX As Integer, ByVal destY As Integer, ByVal srcX As Integer, ByVal srcY As Integer, ByVal destWidth As Integer, ByVal destHeight As Integer, ByVal srcWidth As Integer, ByVal srcHeight As Integer, Optional ByVal A As Byte = 255, Optional ByVal R As Byte = 255, Optional ByVal G As Byte = 255, Optional ByVal B As Byte = 255)
         Dim textureWidth As Integer, textureHeight As Integer
 
         ' Prevent subscript out range

@@ -100,7 +100,7 @@ Public Class GMTools
                 Render.RenderButton(X + 205, Y + 65, 15, 15, 6, 6, AddressOf PlayerModeButtonPress, 1)
             End If
             ' Check if we need a down scroll
-            If (PlayerHighindex > 9 And (Scroll + 9) <= PlayerHighindex) Then
+            If (PlayerCount > 9 And (Scroll + 9) <= PlayerCount) Then
                 ' Scroll Down
                 Render.RenderButton(X + 205, Y + 175, 15, 15, 5, 5, AddressOf PlayerModeButtonPress, 2)
             End If
@@ -181,9 +181,9 @@ Public Class GMTools
                     Return True
                 Case 2 ' Scroll Down
                     Scroll = Scroll + 9
-                    If (PlayerHighindex > 10) Then
-                        If (Scroll > PlayerHighindex - 10) Then
-                            Scroll = PlayerHighindex - 10
+                    If (PlayerCount > 10) Then
+                        If (Scroll > PlayerCount - 10) Then
+                            Scroll = PlayerCount - 10
                             Return True
                         End If
                     Else
@@ -220,7 +220,7 @@ Public Class GMTools
 
         Public Shared Function PlayerSelected(ByVal index As Integer) As Boolean
             ' Index not valid
-            If Not (index > 0 And index <= PlayerHighindex) Then
+            If Not (index > 0 And index <= PlayerCount) Then
                 MessageBox.Show("Error: Invalid Player Index!")
                 Return False
             End If

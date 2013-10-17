@@ -1,25 +1,9 @@
-﻿Imports Winsock_Orcas
+﻿Imports Lidgren.Network
 Public Class Server
-    Public Shared WithEvents sckListen As Winsock
-
-    Public Shared Sub sckListen_ConnectionRequest(ByVal sender As Object, ByVal e As WinsockConnectionRequestEventArgs) Handles sckListen.ConnectionRequest
-        Dim i As Long
-        PlayerHighIndex = PlayerHighIndex + 1
-        i = PlayerLogic.FindOpenPlayerSlot()
-
-        If i <> 0 Then
-            ' we can connect them
-            Networking.Clients(i).Socket.Accept(e.Client)
-            Networking.Clients(i).index = i
-            Networking.Clients(i).IP = e.ClientIP
-            Call Networking.SocketConnected(i)
-        End If
-    End Sub
 
     Public Shared Sub Main()
-        Dim i As Integer, time1 As Integer, time2 As Integer
+        Dim time1 As Integer, time2 As Integer
         time1 = System.Environment.TickCount
-        PlayerHighIndex = 1
         Console.Title = "Loading..."
         Console.WriteLine("Loading options...")
         ServerConfig = New Configuration
@@ -35,16 +19,10 @@ Public Class Server
         Console.WriteLine("Initializing script engine...")
         LuaScript = New LuaHandler
         Console.WriteLine("Initializing player array...")
-        ReDim Player(100)
-        ReDim Networking.Clients(100)
-        For i = 1 To ServerConfig.MaxPlayers
-            Networking.Clients(i) = New ClientSocket
-            Networking.Clients(i).Socket = New Winsock
-        Next
+        ReDim Player(ServerConfig.MaxPlayers)
+        ReDim ConnectedClients(ServerConfig.MaxPlayers)
         LuaScript.ExecuteScript("OnStartup")
-        Console.WriteLine("Starting listener...")
-        sckListen.Listen()
-        Console.Title = "Prospekt Server <IP " & Networking.GetPublicIP() & " Port " & sckListen.LocalPort & ">"
+        Console.Title = "Prospekt Server <IP " & Networking.GetPublicIP() & " Port " & ServerConfig.Port & ">"
         time2 = System.Environment.TickCount
         Console.WriteLine("Initialization complete. Server loaded in " & time2 - time1 & "ms.")
         inServer = True
@@ -58,6 +36,7 @@ Public Class Server
         Dim i As Integer
         Do While inServer
             Tick = System.Environment.TickCount()
+            Networking.HandleMessage()
             'Saves players every 5 minutes
             If tmrPlayerSave < Tick Then
                 Console.WriteLine("Saving Players...")
@@ -66,7 +45,7 @@ Public Class Server
             End If
             'Generate Npc movement every second
             If tmrNpcMove < Tick Then
-                For i = 0 To NPCCount ' Loop through Npc's
+                For i = 1 To NPCCount ' Loop through Npc's
                     If Not IsNothing(NPC(i)) Then ' Make sure Npc exists
                         NPC(i).GenerateMovement()
                     End If

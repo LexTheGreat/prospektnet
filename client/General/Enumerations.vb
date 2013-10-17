@@ -1,6 +1,6 @@
 ﻿Module Enumerations
     ' Packets sent by server to client
-    Public Enum ServerPackets
+    Public Enum ServerPackets As Integer
         Alert = 1
         RegisterOk
         LoginOk
@@ -18,7 +18,7 @@
     End Enum
 
     ' Packets sent by client to server
-    Public Enum ClientPackets
+    Public Enum ClientPackets As Integer
         Register = 1
         NewCharacter
         Login

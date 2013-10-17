@@ -1,6 +1,6 @@
 ﻿Module Enumerations
     ' Packets sent by server to client
-    Public Enum ServerPackets
+    Public Enum ServerPackets As Integer
         Alert = 1
         RegisterOk
         LoginOk
@@ -18,7 +18,7 @@
     End Enum
 
     ' Packets sent by client to server
-    Public Enum ClientPackets
+    Public Enum ClientPackets As Integer
         Register = 1
         NewCharacter
         Login
@@ -33,18 +33,20 @@
     End Enum
 
     'Packets sent by editor to server
-    Public Enum CEditorPackets
+    Public Enum CEditorPackets As Integer
         Login = ClientPackets.COUNT + 1
         DataRequest
-        Data
+        MapData
+        PlayerData
         ' Make sure MSG_COUNT is below everything else
         COUNT
     End Enum
 
     'Packets sent by server to editor
-    Public Enum SEditorPackets
+    Public Enum SEditorPackets As Integer
         LoginOk = ServerPackets.COUNT + 1
-        Data
+        MapData
+        PlayerData
         DataSent
         ' Make sure MSG_COUNT is below everything else
         COUNT

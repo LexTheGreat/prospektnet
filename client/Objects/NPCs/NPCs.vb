@@ -140,7 +140,7 @@
     End Property
 
     Sub ProcessMovement()
-        Dim MovementSpeed As Long
+        Dim MovementSpeed As Integer
 
         If mMoving = True Then
             MovementSpeed = 2

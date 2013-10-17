@@ -12,7 +12,7 @@
     Public AccessMode As Byte
     Public Visible As Boolean
     ' non-saved values
-    Public XOffset As Long, YOffset As Long
+    Public XOffset As Integer, YOffset As Integer
     Public Moving As Boolean
     Public PlayerStep As Byte
     Public PartyID As Integer
@@ -39,7 +39,7 @@
     End Function
 
     Sub ProcessMovement()
-        Dim MovementSpeed As Long
+        Dim MovementSpeed As Integer
 
         If Moving = True Then
             MovementSpeed = 2

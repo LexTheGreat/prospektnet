@@ -1,13 +1,13 @@
 ﻿Public Class MapLogic
-    Public Shared Function ConvertX(ByVal X As Long) As Long
+    Public Shared Function ConvertX(ByVal X As Integer) As Integer
         Return X - (TileView.Left * picX) - Camera.X
     End Function
 
-    Public Shared Function ConvertY(ByVal Y As Long) As Long
+    Public Shared Function ConvertY(ByVal Y As Integer) As Integer
         Return Y - (TileView.Top * picY) - Camera.Y
     End Function
 
-    Public Shared Function IsValidPoint(ByVal X As Long, ByVal Y As Long) As Boolean
+    Public Shared Function IsValidPoint(ByVal X As Integer, ByVal Y As Integer) As Boolean
         If X < 0 Then Return False
         If Y < 0 Then Return False
         If X > Map.MaxX - 1 Then Return False
@@ -16,7 +16,7 @@
     End Function
 
     Public Shared Sub UpdateCamera()
-        Dim offsetX As Long, offsetY As Long, StartX As Long, StartY As Long, EndX As Long, EndY As Long
+        Dim offsetX As Integer, offsetY As Integer, StartX As Integer, StartY As Integer, EndX As Integer, EndY As Integer
 
         ' Center of screen
         offsetX = Player(MyIndex).XOffset + picX

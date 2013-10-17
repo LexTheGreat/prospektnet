@@ -17,26 +17,26 @@ Public Class GameScene
             DrawMapTile(i)
         Next
 
-        For i = 0 To NPCCount
+        For i = 1 to NPCCount
             If Not IsNothing(NPC(i)) Then
                 DrawNPC(i)
             End If
         Next
 
-        For i = 0 To PlayerHighindex
+        For i = 1 to PlayerCount
             If Not IsNothing(Player(i)) Then
                 DrawPlayer(i)
             End If
         Next
 
 
-        For i = 0 To NPCCount
+        For i = 1 to NPCCount
             If Not IsNothing(NPC(i)) Then
                 DrawNPCName(i)
             End If
         Next
 
-        For i = 0 To PlayerHighindex
+        For i = 1 to PlayerCount
             If Not IsNothing(Player(i)) Then
                 DrawPlayerName(i)
             End If
@@ -284,7 +284,7 @@ errorhandler:
     End Sub
 
     Public Sub DrawChat()
-        Dim i As Long
+        Dim i As Integer
         Render.RenderTexture(texGui(1), 5, ClientConfig.ScreenHeight - 255, 0, 0, 300, 250, 32, 32, 120, 0, 0, 0)
         Render.RenderTexture(texGui(1), 5, ClientConfig.ScreenHeight - 25, 0, 0, 300, 20, 32, 32, 200, 0, 0, 0)
         If inChat Then

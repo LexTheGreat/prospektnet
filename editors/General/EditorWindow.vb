@@ -149,4 +149,8 @@
         If IsNothing(lstMaps.SelectedItem) Then Exit Sub
         If Not IsNothing(Map(MapData.GetMapIndex(lstMaps.SelectedIndex))) Then MapEditor.Load(MapData.GetMapIndex(lstMaps.SelectedIndex))
     End Sub
+
+    Private Sub EditorWindow_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        General.Main()
+    End Sub
 End Class

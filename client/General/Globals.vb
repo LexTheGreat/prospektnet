@@ -4,6 +4,9 @@
     ' Graphics extension
     Public Const gfxExt As String = ".png"
 
+    ' Networking
+    Public pClient As Lidgren.Network.NetClient
+
     ' Scenes
     Public MenuMain As MenuScene
     Public GameMain As GameScene
@@ -66,7 +69,7 @@
     ' Players
     Public MyIndex As Integer
     Public Player(100) As Players
-    Public PlayerHighindex As Integer
+    Public PlayerCount As Integer
 
     ' NPCs
     Public NPC As NPCs()

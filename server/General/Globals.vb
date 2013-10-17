@@ -5,6 +5,10 @@
     ' Scripting holder
     Public LuaScript As LuaHandler
 
+    ' Networking
+    Public pServer As Lidgren.Network.NetServer
+    Public ConnectedClients() As Lidgren.Network.NetConnection
+
     ' File paths
     Public Const pathContent As String = "content/"
     Public Const pathScripts As String = pathContent & "scripts/"
@@ -14,16 +18,16 @@
 
     ' Players
     Public Account As Accounts()
-    Public AccountCount As Long = 0
+    Public AccountCount As Integer = 0
     Public Player() As Players
-    Public PlayerHighIndex As Integer
+    Public PlayerCount As Integer = 1
 
     ' Maps
     Public Map As MapStructure()
 
     ' NPCs
-    Public NPC As NPCs()
-    Public NPCCount As Long = 0
+    Public NPC() As NPCs
+    Public NPCCount As Integer = 0
 
     ' Configuration holder
     Public ServerConfig As Configuration

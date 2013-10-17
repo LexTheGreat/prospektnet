@@ -7,7 +7,8 @@ Class NPCData
     Public Shared Function CreateNPC(ByVal newNPC As NPCs) As Boolean
         Try
             ' Add player to accounts array
-            ReDim Preserve NPC(0 To NPCCount + 1)
+            NPCCount = NPCCount + 1
+            ReDim Preserve NPC(0 To NPCCount)
             NPC(NPCCount) = New NPCs
             NPC(NPCCount) = newNPC
             'Serialize object to a file.
@@ -15,7 +16,6 @@ Class NPCData
             Dim ser As New XmlSerializer(newNPC.GetType)
             ser.Serialize(Writer, newNPC)
             Writer.Close()
-            NPCCount = NPCCount + 1
             Return True
         Catch ex As Exception
             Console.WriteLine("Error: " & ex.ToString & " (In: NPCData.CreateNPC)")
@@ -68,7 +68,7 @@ Class NPCData
     End Sub
 
     Public Shared Function GetNPCIndex(ByVal Name As String) As Integer
-        For index As Integer = 0 To NPC.Length
+        For index As Integer = 1 To NPCCount
             If NPC(index).Name = Name Then Return index
         Next
         Return 0
@@ -76,7 +76,7 @@ Class NPCData
 
     Public Shared Sub SendNPCs()
         Dim i As Integer
-        For i = 0 To NPCCount
+        For i = 1 To NPCCount
             If Not IsNothing(NPC(i)) Then
                 SendData.NPCData(i)
             End If

@@ -4,8 +4,8 @@ Imports System.ComponentModel
 <Serializable()> Public Class MapStructure
     Private mID As Integer
     Private mName As String
-    Private mMaxX As Long
-    Private mMaxY As Long
+    Private mMaxX As Integer
+    Private mMaxY As Integer
     Private mColor As OverLayColor
     Private mLayer(MapLayerEnum.FringeMask) As LayerData
 
@@ -99,11 +99,11 @@ Imports System.ComponentModel
 
     <CategoryAttribute("Properties"), _
        DisplayName("MaxX")> _
-    Public Property MaxX() As Long
+    Public Property MaxX() As Integer
         Get
             Return Me.mMaxX
         End Get
-        Set(value As Long)
+        Set(value As Integer)
             If Not IsNothing(Me) Then
                 Me.mMaxX = value
             End If
@@ -112,11 +112,11 @@ Imports System.ComponentModel
 
     <CategoryAttribute("Properties"), _
        DisplayName("MaxY")> _
-    Public Property MaxY() As Long
+    Public Property MaxY() As Integer
         Get
             Return Me.mMaxY
         End Get
-        Set(value As Long)
+        Set(value As Integer)
             If Not IsNothing(Me) Then
                 Me.mMaxY = value
             End If

@@ -69,7 +69,7 @@
     End Sub
 
     Public Shared Function PlayerOnTile(ByVal X As Integer, ByVal Y As Integer) As Boolean
-        For i = 1 To PlayerHighindex
+        For i = 1 to PlayerCount
             If Not IsNothing(Player(i)) Then
                 If (Player(i).X = X And Player(i).Y = Y) Then Return True
             End If

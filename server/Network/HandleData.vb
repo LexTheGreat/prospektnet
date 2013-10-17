@@ -1,5 +1,6 @@
-﻿Class HandleData
-    Public Shared Sub HandleDataPackets(ByVal PacketNum As Long, ByVal index As Long, ByRef Data() As Byte)
+﻿Imports Lidgren.Network
+Class HandleData
+    Public Shared Sub HandleDataPackets(ByVal PacketNum As Integer, ByVal index As Integer, ByRef Data As NetIncomingMessage)
         If PacketNum = 0 Then Exit Sub
         If PacketNum = ClientPackets.Register Then HandleData.Register(index, Data)
         If PacketNum = ClientPackets.NewCharacter Then HandleData.NewCharacter(index, Data)
@@ -14,16 +15,17 @@
         ' Editor packets
         If PacketNum = CEditorPackets.Login Then HandleData.EditorLogin(index, Data)
         If PacketNum = CEditorPackets.DataRequest Then HandleData.EditorDataRequest(index, Data)
-        If PacketNum = CEditorPackets.Data Then HandleData.EditorData(index, Data)
+        If PacketNum = CEditorPackets.MapData Then HandleData.EditorMapData(index, Data)
+        If PacketNum = CEditorPackets.PlayerData Then HandleData.EditorPlayerData(index, Data)
     End Sub
 
-    Public Shared Sub Register(ByVal index As Long, ByVal data() As Byte)
-        Dim Buffer As New ByteBuffer
+    Public Shared Sub Register(ByVal index As Integer, ByRef data As NetIncomingMessage)
+
         Dim Email As String, Password As String
 
-        Buffer.WriteBytes(data)
-        Email = Buffer.ReadString
-        Password = Buffer.ReadString
+
+        Email = Data.ReadString
+        Password = Data.ReadString
 
         If Not AccountData.AccountExists(Email) Then
             Dim newAccount = New Accounts
@@ -43,13 +45,13 @@
         End If
     End Sub
 
-    Public Shared Sub NewCharacter(ByVal index As Long, ByVal data() As Byte)
-        Dim Buffer As New ByteBuffer
+    Public Shared Sub NewCharacter(ByVal index As Integer, ByRef data As NetIncomingMessage)
+
         Dim Email As String, Name As String
 
-        Buffer.WriteBytes(data)
-        Email = Buffer.ReadString
-        Name = Buffer.ReadString
+
+        Email = Data.ReadString
+        Name = Data.ReadString
 
         If Not PlayerData.PlayerExists(Name) Then
             Dim newAccount As New Accounts
@@ -69,15 +71,15 @@
 
     End Sub
 
-    Public Shared Sub Login(ByVal index As Long, ByVal data() As Byte)
-        Dim Buffer As New ByteBuffer
+    Public Shared Sub Login(ByVal index As Integer, ByRef data As NetIncomingMessage)
+
         Dim Name As String, Password As String
 
-        Buffer.WriteBytes(data)
-        Name = Buffer.ReadString
-        Password = Buffer.ReadString
 
-        Player(index) = New Players()
+        Name = Data.ReadString
+        Password = Data.ReadString
+
+        Player(index) = New Players
         If Not AccountData.AccountExists(Name) Then
             Console.WriteLine("Account " & Name & " Failed To Load! [Error: account does not exist]")
             SendData.Alert(index, "Account " & Name & " Failed To Load!" & vbNewLine & "[Error: account does not exist]")
@@ -92,7 +94,7 @@
                 SendData.RegisterOk(index)
                 Exit Sub
             End If
-            PlayerLogic.UpdateHighIndex()
+            Networking.UpdateHighIndex()
             Player(index).Load(AccountData.GetAccount(Name).Player.Name)
             Player(index).SetIsPlaying(True)
             PlayerData.SendPlayers()
@@ -112,12 +114,12 @@
         End If
     End Sub
 
-    Public Shared Sub Message(ByVal index As Long, ByVal data() As Byte)
-        Dim Buffer As New ByteBuffer, ChatMode As String, Message As String
+    Public Shared Sub Message(ByVal index As Integer, ByRef data As NetIncomingMessage)
+        Dim ChatMode As String, Message As String
 
-        Buffer.WriteBytes(data)
-        ChatMode = Buffer.ReadString
-        Message = Buffer.ReadString
+
+        ChatMode = Data.ReadString
+        Message = Data.ReadString
 
         Select Case Player(index).AccessMode
             Case ACCESS.NONE : SendData.Message(ChatMode & Trim$(Player(index).Name) & ": " & Message)
@@ -129,15 +131,15 @@
         End Select
     End Sub
 
-    Public Shared Sub Position(ByVal index As Long, ByVal data() As Byte)
-        Dim Buffer As New ByteBuffer
+    Public Shared Sub Position(ByVal index As Integer, ByRef data As NetIncomingMessage)
+
         Dim Moving As Boolean, X As Integer, Y As Integer, Dir As Integer
 
-        Buffer.WriteBytes(data)
-        Moving = Buffer.ReadInteger
-        X = Buffer.ReadInteger
-        Y = Buffer.ReadInteger
-        Dir = Buffer.ReadInteger
+
+        Moving = Data.ReadInt32
+        X = Data.ReadInt32
+        Y = Data.ReadInt32
+        Dir = Data.ReadInt32
 
         If Not PlayerLogic.PlayerOnTile(X, Y) And Not NPCLogic.NpcOnTile(X, Y) Then ' Send new position to others
             Player(index).SetMoving(Moving)
@@ -149,99 +151,68 @@
         End If
     End Sub
 
-    Public Shared Sub SetAdmin(ByVal index As Long, ByVal data() As Byte)
-        Dim Buffer As New ByteBuffer
+    Public Shared Sub SetAdmin(ByVal index As Integer, ByRef data As NetIncomingMessage)
+
         Dim i As Integer
 
-        Buffer.WriteBytes(data)
-        i = Buffer.ReadInteger
+
+        i = Data.ReadInt32
         If PlayerLogic.IsPlaying(index) Then
             If Player(index).AccessMode > ACCESS.NONE Then
                 If PlayerLogic.IsPlaying(i) Then
-                    Player(i).AccessMode = Buffer.ReadInteger
+                    Player(i).AccessMode = Data.ReadInt32
                     SendData.Access(i)
-                Else
-
-                    Buffer.WriteInteger(ServerPackets.Message)
-                    Buffer.WriteString("[System] " & "Player " & Player(i).Name & " not found!")
-                    Networking.SendDataTo(index, Buffer.ToArray())
                 End If
             Else
                 Console.WriteLine("Hacking Attempt - Player: " & Player(index).Name & " - In HandleSetAdmin (Error: invalid access level)")
-
-                Buffer.WriteInteger(ServerPackets.Message)
-                Buffer.WriteString("[System] " & "Hacking Attempt - Player: " & Player(index).Name & " - In HandleSetAdmin (Error: invalid access level)")
-                Networking.SendDataToAdmins(Buffer.ToArray())
             End If
         End If
     End Sub
 
-    Public Shared Sub SetVisible(ByVal index As Long, ByVal data() As Byte)
-        Dim Buffer As New ByteBuffer
+    Public Shared Sub SetVisible(ByVal index As Integer, ByRef data As NetIncomingMessage)
+
         Dim i As Integer
 
-        Buffer.WriteBytes(data)
-        i = Buffer.ReadInteger
+
+        i = Data.ReadInt32
         If PlayerLogic.IsPlaying(index) Then
             If Player(index).AccessMode > ACCESS.NONE Then
                 If PlayerLogic.IsPlaying(i) Then
-                    Player(i).Visible = Buffer.ReadBool
+                    Player(i).Visible = data.ReadBoolean
                     SendData.Position(i)
                     SendData.Visible(i)
-                Else
-
-                    Buffer.WriteInteger(ServerPackets.Message)
-                    Buffer.WriteString("[System] " & "Player " & Player(i).Name & " not found!")
-                    Networking.SendDataTo(index, Buffer.ToArray())
                 End If
             Else
                 Console.WriteLine("Hacking Attempt - Player: " & Player(index).Name & " - In HandleSetVisible (Error: invalid access level)")
-
-                Buffer.WriteInteger(ServerPackets.Message)
-                Buffer.WriteString("[System] " & "Hacking Attempt - Player: " & Player(index).Name & " - In HandleSetVisible (Error: invalid access level)")
-                Networking.SendDataToAdmins(Buffer.ToArray())
             End If
         End If
     End Sub
 
-    Public Shared Sub WarpTo(ByVal index As Long, ByVal data() As Byte)
-        Dim Buffer As New ByteBuffer
+    Public Shared Sub WarpTo(ByVal index As Integer, ByRef data As NetIncomingMessage)
+
         Dim i As Integer
 
-        Buffer.WriteBytes(data)
-        i = Buffer.ReadInteger
+
+        i = Data.ReadInt32
         If PlayerLogic.IsPlaying(index) Then
             If Player(index).AccessMode > ACCESS.NONE Then
                 If PlayerLogic.IsPlaying(i) Then
                     Player(index).SetDir(Player(i).Dir)
                     Player(index).SetPosition(New Integer() {Player(i).X, Player(i).Y})
                     SendData.Position(index, True)
-
-                    Buffer.WriteInteger(ServerPackets.Message)
-                    Buffer.WriteString("[System] You have been summoned to " & Player(i).Name & "!")
-                    Networking.SendDataTo(index, Buffer.ToArray())
-                Else
-
-                    Buffer.WriteInteger(ServerPackets.Message)
-                    Buffer.WriteString("[System] " & "Player " & Player(i).Name & " not found!")
-                    Networking.SendDataTo(index, Buffer.ToArray())
                 End If
             Else
                 Console.WriteLine("Hacking Attempt - Player: " & Player(index).Name & " - In HandleWarpTo (Error: invalid access level)")
-
-                Buffer.WriteInteger(ServerPackets.Message)
-                Buffer.WriteString("[System] " & "Hacking Attempt - Player: " & Player(index).Name & " - In HandleWarpTo (Error: invalid access level)")
-                Networking.SendDataToAdmins(Buffer.ToArray())
             End If
         End If
     End Sub
 
-    Public Shared Sub WarpToMe(ByVal index As Long, ByVal data() As Byte)
-        Dim Buffer As New ByteBuffer
+    Public Shared Sub WarpToMe(ByVal index As Integer, ByRef data As NetIncomingMessage)
+
         Dim i As Integer
 
-        Buffer.WriteBytes(data)
-        i = Buffer.ReadInteger
+
+        i = Data.ReadInt32
         If PlayerLogic.IsPlaying(index) Then
             If Player(index).AccessMode > ACCESS.NONE Then
                 If PlayerLogic.IsPlaying(i) Then
@@ -254,22 +225,18 @@
                 End If
             Else
                 Console.WriteLine("Hacking Attempt - Player: " & Player(index).Name & " - In HandleWarpToMe (Error: invalid access level)")
-
-                Buffer.WriteInteger(ServerPackets.Message)
-                Buffer.WriteString("[System] " & "Hacking Attempt - Player: " & Player(index).Name & " - In HandleWarpToMe (Error: invalid access level)")
-                Networking.SendDataToAdmins(Buffer.ToArray())
             End If
         End If
 
     End Sub
 
-    Public Shared Sub EditorLogin(ByVal index As Long, ByVal data() As Byte)
-        Dim Buffer As New ByteBuffer
+    Public Shared Sub EditorLogin(ByVal index As Integer, ByRef data As NetIncomingMessage)
+
         Dim Name As String, Password As String, Mode As Integer
-        Buffer.WriteBytes(data)
-        Name = Buffer.ReadString
-        Password = Buffer.ReadString
-        Mode = Buffer.ReadInteger
+
+        Name = Data.ReadString
+        Password = Data.ReadString
+        Mode = data.ReadInt32
 
         Player(index) = New Players()
         If Not AccountData.AccountExists(Name) Then
@@ -287,64 +254,47 @@
                 SendData.Alert(index, "Account " & Name & " Failed To Load!" & vbNewLine & "[Error: character missing]")
                 Exit Sub
             End If
-            PlayerLogic.UpdateHighIndex()
+            Networking.UpdateHighIndex()
             Player(index).Load(AccountData.GetAccount(Name).Player.Name)
             Player(index).SetIsPlaying(False)
             SendData.EditorLoginOk(index, Mode)
-            SendData.EditorData(index)
+            SendData.EditorMapData(index)
+            SendData.EditorPlayerData(index)
             Console.WriteLine("Account: " & Name & " has logged into the editor!")
         End If
     End Sub
 
-    Public Shared Sub EditorDataRequest(ByVal index As Long, ByVal data() As Byte)
-        SendData.EditorData(index)
+    Public Shared Sub EditorDataRequest(ByVal index As Integer, ByRef data As NetIncomingMessage)
+        SendData.EditorMapData(index)
+        SendData.EditorPlayerData(index)
         SendData.EditorDataSent(index, 1)
     End Sub
 
-    Public Shared Sub EditorData(ByVal Index As Long, ByRef Data() As Byte)
+    Public Shared Sub EditorMapData(ByVal Index As Integer, ByRef data As NetIncomingMessage)
         Dim num As Integer = 0
-        Dim savePlayer() As Accounts
         Dim saveMap() As MapStructure
         Dim sTileData As TileData
-        Dim Buffer As New ByteBuffer
-        Buffer.WriteBytes(Data)
-        num = Buffer.ReadInteger
-        ReDim savePlayer(0 To num)
-        For i As Integer = 0 To num
-            savePlayer(i) = New Accounts
-            savePlayer(i).Email = Buffer.ReadString
-            savePlayer(i).Password = Buffer.ReadString
-            savePlayer(i).Player = New Players
-            savePlayer(i).Player.Name = Buffer.ReadString
-            savePlayer(i).Player.Sprite = Buffer.ReadInteger
-            savePlayer(i).Player.Map = Buffer.ReadInteger
-            savePlayer(i).Player.X = Buffer.ReadInteger
-            savePlayer(i).Player.Y = Buffer.ReadInteger
-            savePlayer(i).Player.Dir = Buffer.ReadInteger
-            savePlayer(i).Player.AccessMode = Buffer.ReadInteger
-            savePlayer(i).Player.Visible = Buffer.ReadInteger
-            savePlayer(i).Player.Save()
-        Next i
-        AccountData.LoadAccounts()
-        num = Buffer.ReadInteger
+
+
+        num = data.ReadInt32
         ReDim saveMap(0 To num)
         For i As Integer = 0 To num
             saveMap(i) = New MapStructure
-            saveMap(i).Name = Buffer.ReadString
-            saveMap(i).MaxX = Buffer.ReadInteger
-            saveMap(i).MaxY = Buffer.ReadInteger
-            saveMap(i).Alpha = Buffer.ReadInteger
-            saveMap(i).Red = Buffer.ReadInteger
-            saveMap(i).Green = Buffer.ReadInteger
-            saveMap(i).Blue = Buffer.ReadInteger
+            saveMap(i).Name = Data.ReadString
+            saveMap(i).MaxX = data.ReadInt32
+            saveMap(i).MaxY = data.ReadInt32
+            saveMap(i).Alpha = data.ReadInt32
+            saveMap(i).Red = data.ReadInt32
+            saveMap(i).Green = data.ReadInt32
+            saveMap(i).Blue = data.ReadInt32
             For l As Integer = MapLayerEnum.Ground To MapLayerEnum.FringeMask
                 saveMap(i).Layer(l) = New LayerData(saveMap(i).MaxX, saveMap(i).MaxY)
                 For x As Integer = 0 To saveMap(i).MaxX - 1
                     For y As Integer = 0 To saveMap(i).MaxY - 1
                         sTileData = New TileData
-                        sTileData.Tileset = Buffer.ReadLong
-                        sTileData.X = Buffer.ReadLong
-                        sTileData.Y = Buffer.ReadLong
+                        sTileData.Tileset = data.ReadInt32
+                        sTileData.X = data.ReadInt32
+                        sTileData.Y = data.ReadInt32
                         saveMap(i).Layer(l).SetTileData(x, y, sTileData)
                     Next y
                 Next x
@@ -353,10 +303,37 @@
         Next i
         MapData.LoadMaps()
         ' Send new maps to online players
-        For i As Integer = 1 To PlayerHighIndex
+        For i As Integer = 1 To PlayerCount
             SendData.MapData(i)
         Next
-        SendData.EditorData(Index)
+        SendData.EditorMapData(Index)
+        SendData.EditorDataSent(Index, 0)
+    End Sub
+
+    Public Shared Sub EditorPlayerData(ByVal Index As Integer, ByRef data As NetIncomingMessage)
+        Dim num As Integer = 0
+        Dim savePlayer() As Accounts
+
+
+        num = data.ReadInt32
+        ReDim savePlayer(0 To num)
+        For i As Integer = 0 To num
+            savePlayer(i) = New Accounts
+            savePlayer(i).Email = Data.ReadString
+            savePlayer(i).Password = Data.ReadString
+            savePlayer(i).Player = New Players
+            savePlayer(i).Player.Name = Data.ReadString
+            savePlayer(i).Player.Sprite = data.ReadInt32
+            savePlayer(i).Player.Map = data.ReadInt32
+            savePlayer(i).Player.X = data.ReadInt32
+            savePlayer(i).Player.Y = data.ReadInt32
+            savePlayer(i).Player.Dir = data.ReadInt32
+            savePlayer(i).Player.AccessMode = data.ReadInt32
+            savePlayer(i).Player.Visible = data.ReadInt32
+            savePlayer(i).Player.Save()
+        Next i
+        AccountData.LoadAccounts()
+        SendData.EditorPlayerData(Index)
         SendData.EditorDataSent(Index, 0)
     End Sub
 End Class

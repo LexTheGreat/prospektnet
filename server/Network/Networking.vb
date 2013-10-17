@@ -1,46 +1,61 @@
-﻿Imports Winsock_Orcas
+﻿Imports Lidgren.Network
 Public Class Networking
-    Public Shared Clients() As ClientSocket
-
     Public Shared Sub Initialize()
-        Server.sckListen = New Winsock
-        Server.sckListen.BufferSize = 8192
-        Server.sckListen.LegacySupport = False
-        Server.sckListen.LocalPort = ServerConfig.Port
-        Server.sckListen.MaxPendingConnections = 1
-        Server.sckListen.Protocol = WinsockProtocol.Tcp
-        Server.sckListen.RemoteHost = "localhost"
-        Server.sckListen.RemotePort = ServerConfig.Port
+        Dim pCOnfig As NetPeerConfiguration
+        pConfig = New NetPeerConfiguration("Prospekt")
+        pConfig.Port = ServerConfig.Port
+        pConfig.AutoFlushSendQueue = True
+        pConfig.MaximumConnections = ServerConfig.MaxPlayers
+        pServer = New NetServer(pCOnfig)
+        pServer.Start()
     End Sub
 
-    Public Shared Sub SendDataTo(ByVal index As Long, ByRef Data() As Byte)
-        Dim Buffer as New ByteBuffer
-        Dim TempData() As Byte
-        If PlayerLogic.IsConnected(index) Then
-            
-            TempData = Data
+    Public Shared Function getIndex(ByRef connection As NetConnection)
+        For I As Integer = 1 To PlayerCount
+            If Not IsNothing(Player(I)) Then
+                If Not IsNothing(ConnectedClients(I)) Then
+                    If ConnectedClients(I).Equals(connection) Then
+                        Return I
+                    End If
+                End If
+            End If
+        Next
+        Return 0
+    End Function
 
-            Buffer.WriteInteger(UBound(TempData) - LBound(TempData) + 1)
-            Buffer.WriteBytes(TempData)
+    Public Shared Function IsConnected(ByVal index As Integer) As Boolean
+        Dim tempClient As NetConnection
+        tempClient = ConnectedClients(index)
+        If IsNothing(tempClient) Then
+            Return False
+        ElseIf tempClient.Status = NetConnectionStatus.Connected Then
+            Return True
+        End If
+        Return False
+    End Function
 
-            Clients(index).Socket.Send(Buffer.ToArray)
-            
+    Public Shared Sub SendDataTo(ByVal index As Integer, ByRef Data As NetOutgoingMessage)
+        If Networking.IsConnected(index) Then
+            Dim outGoingPacket As NetOutgoingMessage = pServer.CreateMessage(Data.LengthBytes)
+            outGoingPacket.Write(Data)
+            pServer.SendMessage(outGoingPacket, ConnectedClients(index), NetDeliveryMethod.ReliableOrdered)
+            Console.WriteLine("sent data to " & ConnectedClients(index).RemoteUniqueIdentifier)
         End If
     End Sub
 
-    Public Shared Sub SendDataToAll(ByRef Data() As Byte)
-        Dim i As Long
+    Public Shared Sub SendDataToAll(ByRef Data As NetOutgoingMessage)
+        Dim i As Integer
 
-        For i = 1 To PlayerHighIndex
+        For i = 1 To PlayerCount
             If PlayerLogic.IsPlaying(i) Then
                 Call SendDataTo(i, Data)
             End If
         Next
     End Sub
 
-    Public Shared Sub SendDataToAllBut(ByVal index As Long, ByRef Data() As Byte)
-        Dim i As Long
-        For i = 1 To PlayerHighIndex
+    Public Shared Sub SendDataToAllBut(ByVal index As Integer, ByRef Data As NetOutgoingMessage)
+        Dim i As Integer
+        For i = 1 To PlayerCount
             If PlayerLogic.IsPlaying(i) Then
                 If i <> index Then
                     Call SendDataTo(i, Data)
@@ -49,56 +64,62 @@ Public Class Networking
         Next
     End Sub
 
-    Public Shared Sub SendDataToAdmins(ByRef Data() As Byte)
-        Dim i As Long
+    Public Shared Sub SendDataToAdmins(ByRef Data As NetOutgoingMessage)
+        Dim i As Integer
 
-        For i = 1 To PlayerHighIndex
+        For i = 1 To PlayerCount
             If PlayerLogic.IsPlaying(i) And Not Player(i).AccessMode = ACCESS.NONE Then
                 Call SendDataTo(i, Data)
             End If
         Next
     End Sub
-
-    Public Shared Sub Handle(ByVal index As Long, ByRef Data() As Byte)
-        Dim Buffer as New ByteBuffer
-        ' Start the command
-        
-        Buffer.WriteBytes(Data)
-        HandleData.HandleDataPackets(Buffer.ReadInteger, index, Buffer.ReadBytes(Buffer.Length))
-        
-    End Sub
-
-    Public Shared Sub SocketConnected(ByVal index As Long)
-        If index = 0 Then Exit Sub
-        Console.WriteLine("Received connection from " & PlayerLogic.GetPlayerIP(index) & ".")
-    End Sub
-
-    Public Shared Sub IncomingData(ByVal index As Long, ByVal Data() As Byte)
-        Dim pLength As Long
-        Dim Buffer as New ByteBuffer
-        
-
-        Buffer.WriteBytes(Data)
-
-        If Buffer.Length >= 4 Then pLength = Buffer.ReadInteger(False)
-
-        Do While pLength > 0 And pLength <= Buffer.Length - 4
-            If pLength <= Buffer.Length - 4 Then
-                Buffer.ReadInteger()
-                Networking.Handle(index, Buffer.ReadBytes(pLength))
+    Public Shared Sub UpdateHighIndex()
+        Dim i As Long
+        PlayerCount = 0
+        For i = ServerConfig.MaxPlayers To 1 Step -1
+            If IsConnected(i) Then
+                PlayerCount = i
+                Exit Sub
             End If
-
-            pLength = 0
-            If Buffer.Length >= 4 Then pLength = Buffer.ReadInteger(False)
-        Loop
-
-        ' Clear buffer
-        
+        Next i
     End Sub
 
-    Public Shared Sub CloseSocket(ByVal index As Long)
+
+
+    Public Shared Sub HandleMessage()
+        Dim im As NetIncomingMessage, index As Integer, I As Integer
+        im = pServer.ReadMessage
+        While Not IsNothing(im)
+
+            index = Networking.getIndex(im.SenderConnection)
+            Select Case im.MessageType
+                Case NetIncomingMessageType.DebugMessage, NetIncomingMessageType.ErrorMessage, NetIncomingMessageType.VerboseDebugMessage, NetIncomingMessageType.WarningMessage
+                    Exit Sub
+                Case NetIncomingMessageType.Data
+                    HandleData.HandleDataPackets(im.ReadInt32, index, im)
+                    Exit Sub
+                Case NetIncomingMessageType.StatusChanged
+                    Dim status As NetConnectionStatus = im.ReadByte
+                    If status = NetConnectionStatus.Connected Then
+                        PlayerCount = PlayerCount + 1
+                        I = PlayerLogic.FindOpenPlayerSlot()
+
+                        If I <> 0 Then
+                            ' we can connect them
+                            ConnectedClients(I) = im.SenderConnection
+                            Console.WriteLine("Received connection from " & im.SenderConnection.RemoteUniqueIdentifier & ".")
+                        End If
+                    ElseIf status = NetConnectionStatus.Disconnected Then
+                        CloseSocket(index)
+                    End If
+                    Exit Sub
+            End Select
+        End While
+    End Sub
+
+    Public Shared Sub CloseSocket(ByVal index As Integer)
         If index > 0 Then
-            Console.WriteLine("Connection from " & PlayerLogic.GetPlayerIP(index) & " has been terminated.")
+            Console.WriteLine("Closed connection from " & ConnectedClients(index).RemoteUniqueIdentifier & ".")
             If Not IsNothing(Player(index)) Then
                 Select Case Player(index).AccessMode
                     Case ACCESS.NONE : SendData.Message(Trim$(Player(index).Name) & " has left the game.")
@@ -112,10 +133,10 @@ Public Class Networking
                 Player(index).SetIsPlaying(False)
                 Player(index).Save()
                 Player(index) = Nothing
-                PlayerLogic.UpdateHighIndex()
+                UpdateHighIndex()
                 SendData.ClearPlayer(index)
+                ConnectedClients(index) = Nothing
             End If
-            Clients(index).Socket.Close()
         End If
     End Sub
 

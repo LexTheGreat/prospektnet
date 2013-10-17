@@ -10,7 +10,7 @@ Public Class PlayerData
         Dim Writer As StreamWriter
         Dim Ser As XmlSerializer
 
-        For index = 1 To PlayerHighIndex
+        For index = 1 To PlayerCount
             If PlayerLogic.IsPlaying(index) Then
                 Try
                     acc = Account(PlayerData.GetPlayerIndex(Player(index).Name))
@@ -80,8 +80,8 @@ Public Class PlayerData
 
     Public Shared Sub SendPlayers()
         Dim i As Integer
-        For i = 1 To PlayerHighIndex
-            SendData.PlayerData(i)
+        For i = 1 to PlayerCount
+            If Not IsNothing(Player(i)) Then SendData.PlayerData(i)
         Next
     End Sub
 End Class

@@ -5,6 +5,9 @@
     ' Configuration
     Public EditorConfig As Configuration
 
+    ' Networking
+    Public pClient As Lidgren.Network.NetClient
+
     ' Loop Control
     Public ElapsedTime As Integer
     Public EditorFPS As Integer
