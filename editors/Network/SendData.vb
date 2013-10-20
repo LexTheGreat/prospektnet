@@ -20,20 +20,19 @@ Public Class SendData
         Dim Buffer As NetOutgoingMessage = pClient.CreateMessage
         Buffer.Write(CEditorPackets.MapData)
         'Maps data
-        Buffer.Write(Map.Length)
-        For Each sMap In Map
-            If IsNothing(sMap) Then Continue For
-            Buffer.Write(sMap.Name)
-            Buffer.Write(sMap.MaxX)
-            Buffer.Write(sMap.MaxY)
-            Buffer.Write(sMap.Alpha)
-            Buffer.Write(sMap.Red)
-            Buffer.Write(sMap.Green)
-            Buffer.Write(sMap.Blue)
-            For l As Integer = MapLayerEnum.Ground To MapLayerEnum.FringeMask
-                For x As Integer = 0 To sMap.MaxX - 1
-                    For y As Integer = 0 To sMap.MaxY - 1
-                        sTileData = sMap.Layer(l).GetTileData(x, y)
+        Buffer.Write(MapCount)
+        For I As Integer = 0 To MapCount
+            Buffer.Write(Map(I).Name)
+            Buffer.Write(Map(I).MaxX)
+            Buffer.Write(Map(I).MaxY)
+            Buffer.Write(Map(I).Alpha)
+            Buffer.Write(Map(I).Red)
+            Buffer.Write(Map(I).Green)
+            Buffer.Write(Map(I).Blue)
+            For j As Integer = MapLayerEnum.Ground To MapLayerEnum.COUNT - 1
+                For x As Integer = 0 To Map(I).MaxX - 1
+                    For y As Integer = 0 To Map(I).MaxY - 1
+                        sTileData = Map(I).Layer(j).GetTileData(x, y)
                         Buffer.Write(sTileData.Tileset)
                         Buffer.Write(sTileData.X)
                         Buffer.Write(sTileData.Y)
@@ -49,19 +48,18 @@ Public Class SendData
         Buffer.Write(CEditorPackets.PlayerData)
 
         'Accounts data
-        Buffer.Write(Account.Length)
-        For Each sPlayer In Account
-            If IsNothing(sPlayer) Then Continue For
-            Buffer.Write(sPlayer.Email)
-            Buffer.Write(sPlayer.Password)
-            Buffer.Write(sPlayer.Name)
-            Buffer.Write(sPlayer.Sprite)
-            Buffer.Write(sPlayer.Map)
-            Buffer.Write(sPlayer.X)
-            Buffer.Write(sPlayer.Y)
-            Buffer.Write(sPlayer.GetPlayerDir)
-            Buffer.Write(sPlayer.GetPlayerAccess)
-            Buffer.Write(sPlayer.Visible)
+        Buffer.Write(AccountCount)
+        For I As Integer = 0 To AccountCount
+            Buffer.Write(Account(I).Email)
+            Buffer.Write(Account(I).Password)
+            Buffer.Write(Account(I).Name)
+            Buffer.Write(Account(I).Sprite)
+            Buffer.Write(Account(I).Map)
+            Buffer.Write(Account(I).X)
+            Buffer.Write(Account(I).Y)
+            Buffer.Write(Account(I).GetPlayerDir)
+            Buffer.Write(Account(I).GetPlayerAccess)
+            Buffer.Write(Account(I).Visible)
         Next
         Networking.SendData(Buffer)
     End Sub

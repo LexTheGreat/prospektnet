@@ -6,8 +6,6 @@
     ' location
     Public X As Integer, Y As Integer
     Public Dir As Byte
-    ' Guild
-    Public GuildID As Integer
     ' Admin values
     Public AccessMode As Byte
     Public Visible As Boolean
@@ -15,17 +13,14 @@
     Public XOffset As Integer, YOffset As Integer
     Public Moving As Boolean
     Public PlayerStep As Byte
-    Public PartyID As Integer
 
     ' sub routines and functions
-    Public Sub Load(NewName As String, NewSprite As Integer, NewX As Integer, NewY As Integer, NewDir As Byte, ByVal NewGuild As Integer, NewParty As Integer, NewAccess As Byte, NewVisible As Boolean)
+    Public Sub Load(NewName As String, NewSprite As Integer, NewX As Integer, NewY As Integer, NewDir As Byte, NewAccess As Byte, NewVisible As Boolean)
         Name = NewName
         Sprite = NewSprite
         X = NewX
         Y = NewY
         Dir = NewDir
-        GuildID = NewGuild
-        PartyID = NewParty
         AccessMode = NewAccess
         Visible = NewVisible
     End Sub

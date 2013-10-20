@@ -31,17 +31,17 @@ Class NPCData
             NPC(0) = New NPCs
             If Directory.Exists(pathNPCs) Then
                 Dim fileEntries As String() = Directory.GetFiles(pathNPCs)
-                Dim fileName As String, i As Integer = 0, loadNPC As New NPCs
+                Dim fileName As String, i As Integer, loadNPC As New NPCs
                 For Each fileName In fileEntries
                     'Deserialize file to object.
                     Reader = New StreamReader(fileName)
                     Ser = New XmlSerializer(loadNPC.GetType)
                     loadNPC = Ser.Deserialize(Reader)
-                    loadNPC.SetIndex(i)
                     Reader.Close()
                     NPCCount = i + 1
                     ReDim Preserve NPC(0 To NPCCount)
-                    NPC(i) = loadNPC
+                    NPC(NPCCount) = loadNPC
+                    NPC(NPCCount).SetIndex(NPCCount)
                     i = NPCCount
                 Next fileName
             End If

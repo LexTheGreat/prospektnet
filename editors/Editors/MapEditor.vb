@@ -223,8 +223,8 @@ Module MapEditor
         If index < 0 Then Exit Sub
         If IsNothing(Map(index)) Or selectSrcRect.Height = 0 Then Exit Sub
         Dim newData(Map(index).MaxX, Map(index).MaxY) As TileData
-        For x As Integer = 0 To Map(index).MaxX
-            For y As Integer = 0 To Map(index).MaxY
+        For x As Integer = 0 To Map(index).MaxX - 1
+            For y As Integer = 0 To Map(index).MaxY - 1
                 newData(x, y) = New TileData
                 newData(x, y).Tileset = curTileSet
                 newData(x, y).X = selectSrcRect.X
@@ -238,8 +238,8 @@ Module MapEditor
         If index < 0 Then Exit Sub
         If IsNothing(Map(index)) Or selectSrcRect.Height = 0 Then Exit Sub
         Dim newData(Map(index).MaxX, Map(index).MaxY) As TileData
-        For x As Integer = 0 To Map(index).MaxX
-            For y As Integer = 0 To Map(index).MaxY
+        For x As Integer = 0 To Map(index).MaxX - 1
+            For y As Integer = 0 To Map(index).MaxY - 1
                 newData(x, y) = New TileData
                 Map(index).SetTileData(curLayer, newData)
             Next
@@ -343,7 +343,7 @@ Module MapEditor
             maxY = EditorWindow.mapPreview.Height / picY
         End If
 
-        Return New Integer() {maxX - 1, maxY - 1}
+        Return New Integer() {maxX, maxY}
     End Function
 
     Public Function GetMapMax() As Integer()

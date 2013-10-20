@@ -24,6 +24,7 @@
 
     ' Maps
     Public Map As MapStructure()
+    Public MapCount As Integer = 0
 
     ' NPCs
     Public NPC() As NPCs

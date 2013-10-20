@@ -5,7 +5,7 @@
     ' location
     Private mX As Integer
     Private mY As Integer
-    Private mDir As Integer
+    Private mDir As Byte
     ' non-saved values
     Private mXOffset As Integer, mYOffset As Integer
     Private mMoving As Boolean = True
@@ -73,11 +73,11 @@
         End Set
     End Property
 
-    Public Property Dir() As Integer
+    Public Property Dir() As Byte
         Get
             Return Me.mDir
         End Get
-        Set(value As Integer)
+        Set(value As Byte)
             If Not IsNothing(Me) Then
                 Me.mDir = value
             End If

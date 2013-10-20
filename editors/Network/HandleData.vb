@@ -21,7 +21,7 @@ Public Class HandleData
         Dim mode As Byte = 0
 
 
-        mode = Data.ReadInt32()
+        mode = Data.ReadByte
         If mode = 0 Then
             SendData.DataRequest()
         Else
@@ -31,8 +31,7 @@ Public Class HandleData
     End Sub
 
     Public Shared Sub EditorMapData(ByRef Data As NetIncomingMessage)
-        Dim num As Integer = 0, sTileData As New TileData
-
+        Dim num As Integer, sTileData As New TileData
 
         num = Data.ReadInt32
         ReDim Map(0 To num)
@@ -41,12 +40,12 @@ Public Class HandleData
             Map(i).Name = Data.ReadString
             Map(i).MaxX = Data.ReadInt32
             Map(i).MaxY = Data.ReadInt32
-            Map(i).Alpha = Data.ReadInt32
-            Map(i).Red = Data.ReadInt32
-            Map(i).Green = Data.ReadInt32
-            Map(i).Blue = Data.ReadInt32
+            Map(i).Alpha = Data.ReadByte
+            Map(i).Red = Data.ReadByte
+            Map(i).Green = Data.ReadByte
+            Map(i).Blue = Data.ReadByte
             Map(i).ReSizeTileData(New Integer() {Map(i).MaxX, Map(i).MaxY})
-            For l As Integer = MapLayerEnum.Ground To MapLayerEnum.FringeMask
+            For l As Integer = MapLayerEnum.Ground To MapLayerEnum.COUNT - 1
                 For x As Integer = 0 To Map(i).MaxX - 1
                     For y As Integer = 0 To Map(i).MaxY - 1
                         sTileData = New TileData
@@ -77,9 +76,9 @@ Public Class HandleData
             Account(i).Map = Data.ReadInt32
             Account(i).X = Data.ReadInt32
             Account(i).Y = Data.ReadInt32
-            Account(i).SetPlayerDir(Data.ReadInt32)
-            Account(i).SetPlayerAccess(Data.ReadInt32)
-            Account(i).Visible = Data.ReadInt32
+            Account(i).SetPlayerDir(Data.ReadByte)
+            Account(i).SetPlayerAccess(Data.ReadByte)
+            Account(i).Visible = Data.ReadBoolean
         Next
         AccountData.SaveAccounts()
         AccountEditor.ReloadList()
@@ -89,7 +88,7 @@ Public Class HandleData
         Dim mode As Byte = 0
 
 
-        mode = Data.ReadInt32()
+        mode = Data.ReadByte
         If mode = 0 Then
             CommitData.Hide()
             MsgBox("Commit sucesfull")

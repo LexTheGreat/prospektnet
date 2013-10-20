@@ -3,13 +3,13 @@
   <Email>admin@indiearmory.com</Email>
   <Password>admin</Password>
   <Player>
-    <Name>admin</Name>
+    <Name>administrator</Name>
     <Sprite>1</Sprite>
     <Map>0</Map>
-    <X>10</X>
-    <Y>15</Y>
-    <Dir>1</Dir>
-    <AccessMode>0</AccessMode>
+    <X>14</X>
+    <Y>6</Y>
+    <Dir>3</Dir>
+    <AccessMode>5</AccessMode>
     <Visible>true</Visible>
   </Player>
 </Accounts>

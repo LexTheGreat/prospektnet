@@ -61,6 +61,7 @@ Class SendData
     Public Shared Sub Access(ByVal index As Integer)
         Dim Buffer As NetOutgoingMessage = pServer.CreateMessage
         Buffer.Write(ServerPackets.Access)
+        Buffer.Write(index)
         Buffer.Write(Player(index).AccessMode)
         Networking.SendDataTo(index, Buffer)
     End Sub
@@ -103,7 +104,7 @@ Class SendData
         Dim Buffer As NetOutgoingMessage = pServer.CreateMessage
         Buffer.Write(ServerPackets.NPC)
         Buffer.Write(Index)
-        Buffer.Write(NPC.Length)
+        Buffer.Write(NPCCount)
         Buffer.Write(NPC(Index).Name)
         Buffer.Write(NPC(Index).Sprite)
         Buffer.Write(NPC(Index).X)
@@ -162,19 +163,18 @@ Class SendData
         Dim sTileData As New TileData
 
         Buffer.Write(SEditorPackets.PlayerData)
-        Buffer.Write(Account.Length)
-        For Each sPlayer In Account
-            If IsNothing(sPlayer) Then Continue For
-            Buffer.Write(sPlayer.Email)
-            Buffer.Write(sPlayer.Password)
-            Buffer.Write(sPlayer.Player.Name)
-            Buffer.Write(sPlayer.Player.Sprite)
-            Buffer.Write(sPlayer.Player.Map)
-            Buffer.Write(sPlayer.Player.X)
-            Buffer.Write(sPlayer.Player.Y)
-            Buffer.Write(sPlayer.Player.Dir)
-            Buffer.Write(sPlayer.Player.AccessMode)
-            Buffer.Write(sPlayer.Player.Visible)
+        Buffer.Write(AccountCount)
+        For I As Integer = 0 To AccountCount
+            Buffer.Write(Account(I).Email)
+            Buffer.Write(Account(I).Password)
+            Buffer.Write(Account(I).Player.Name)
+            Buffer.Write(Account(I).Player.Sprite)
+            Buffer.Write(Account(I).Player.Map)
+            Buffer.Write(Account(I).Player.X)
+            Buffer.Write(Account(I).Player.Y)
+            Buffer.Write(Account(I).Player.Dir)
+            Buffer.Write(Account(I).Player.AccessMode)
+            Buffer.Write(Account(I).Player.Visible)
         Next
         Networking.SendDataTo(Index, Buffer)
     End Sub
@@ -184,20 +184,19 @@ Class SendData
         Dim sTileData As New TileData
 
         Buffer.Write(SEditorPackets.MapData)
-        Buffer.Write(Map.Length)
-        For Each sMap In Map
-            If IsNothing(sMap) Then Continue For
-            Buffer.Write(sMap.Name)
-            Buffer.Write(sMap.MaxX)
-            Buffer.Write(sMap.MaxY)
-            Buffer.Write(sMap.Alpha)
-            Buffer.Write(sMap.Red)
-            Buffer.Write(sMap.Green)
-            Buffer.Write(sMap.Blue)
-            For i As Integer = MapLayerEnum.Ground To MapLayerEnum.FringeMask
-                For x As Integer = 0 To sMap.MaxX - 1
-                    For y As Integer = 0 To sMap.MaxY - 1
-                        sTileData = sMap.Layer(i).GetTileData(x, y)
+        Buffer.Write(MapCount)
+        For i As Integer = 0 To MapCount
+            Buffer.Write(Map(i).Name)
+            Buffer.Write(Map(i).MaxX)
+            Buffer.Write(Map(i).MaxY)
+            Buffer.Write(Map(i).Alpha)
+            Buffer.Write(Map(i).Red)
+            Buffer.Write(Map(i).Green)
+            Buffer.Write(Map(i).Blue)
+            For j As Integer = MapLayerEnum.Ground To MapLayerEnum.COUNT - 1
+                For x As Integer = 0 To Map(i).MaxX - 1
+                    For y As Integer = 0 To Map(i).MaxY - 1
+                        sTileData = Map(i).Layer(j).GetTileData(x, y)
                         Buffer.Write(sTileData.Tileset)
                         Buffer.Write(sTileData.X)
                         Buffer.Write(sTileData.Y)

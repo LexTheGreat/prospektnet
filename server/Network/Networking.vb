@@ -1,7 +1,7 @@
 ﻿Imports Lidgren.Network
 Public Class Networking
     Public Shared Sub Initialize()
-        Dim pCOnfig As NetPeerConfiguration
+        Dim pConfig As NetPeerConfiguration
         pConfig = New NetPeerConfiguration("Prospekt")
         pConfig.Port = ServerConfig.Port
         pConfig.AutoFlushSendQueue = True
@@ -12,11 +12,9 @@ Public Class Networking
 
     Public Shared Function getIndex(ByRef connection As NetConnection)
         For I As Integer = 1 To PlayerCount
-            If Not IsNothing(Player(I)) Then
-                If Not IsNothing(ConnectedClients(I)) Then
-                    If ConnectedClients(I).Equals(connection) Then
-                        Return I
-                    End If
+            If Not IsNothing(ConnectedClients(I)) And Not IsNothing(connection) Then
+                If ConnectedClients(I).RemoteUniqueIdentifier = connection.RemoteUniqueIdentifier Then
+                    Return I
                 End If
             End If
         Next
@@ -36,10 +34,7 @@ Public Class Networking
 
     Public Shared Sub SendDataTo(ByVal index As Integer, ByRef Data As NetOutgoingMessage)
         If Networking.IsConnected(index) Then
-            Dim outGoingPacket As NetOutgoingMessage = pServer.CreateMessage(Data.LengthBytes)
-            outGoingPacket.Write(Data)
-            pServer.SendMessage(outGoingPacket, ConnectedClients(index), NetDeliveryMethod.ReliableOrdered)
-            Console.WriteLine("sent data to " & ConnectedClients(index).RemoteUniqueIdentifier)
+            pServer.SendMessage(Data, ConnectedClients(index), NetDeliveryMethod.ReliableOrdered)
         End If
     End Sub
 

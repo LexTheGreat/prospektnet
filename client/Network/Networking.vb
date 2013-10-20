@@ -17,6 +17,7 @@ Public Class Networking
                     Exit Sub
                 Case NetIncomingMessageType.Data
                     HandleData.HandleDataPackets(im.ReadInt32, im)
+                    Exit Sub
                 Case NetIncomingMessageType.StatusChanged
                     Exit Sub
             End Select
@@ -49,8 +50,8 @@ Public Class Networking
     End Function
 
     Public Shared Function IsConnected() As Boolean
-        Return True
-       
+        If pClient.ServerConnection.Status = NetConnectionStatus.Connected Then Return True
+        Return False
     End Function
 
     Public Shared Sub SendData(ByRef Data As NetOutgoingMessage)

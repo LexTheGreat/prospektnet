@@ -69,8 +69,6 @@
         Say = 0
         Whisper
         Shout
-        Guild
-        Party
         GM
         ' Make sure COUNT is below everything else
         COUNT

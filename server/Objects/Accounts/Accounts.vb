@@ -15,6 +15,12 @@
         Return True
     End Function
 
+    Public Function Save() As Boolean
+        If Me.Email = vbNullString Then Return False
+        AccountData.SaveAccount(Me)
+        Return True
+    End Function
+
     Public Function NewCharacter() As Boolean
         If Me.Email = vbNullString Or Me.Player.Name = vbNullString Then Return False
         AccountData.CreateCharacter(Me)

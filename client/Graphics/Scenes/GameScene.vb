@@ -42,7 +42,7 @@ Public Class GameScene
             End If
         Next
 
-        For i = MapLayerEnum.Fringe To MapLayerEnum.FringeMask
+        For i = MapLayerEnum.Fringe To MapLayerEnum.COUNT - 1
             DrawMapTile(i)
         Next
 
@@ -79,16 +79,6 @@ errorhandler:
                 If inChat Then
                     If chatMode + 1 < ChatModes.COUNT Then
                         chatMode = chatMode + 1
-                        If (chatMode = ChatModes.Guild And Player(MyIndex).GuildID < 0) Then
-                            If Player(MyIndex).PartyID < 0 Then
-                                If Player(MyIndex).GetAccess() = ACCESS.NONE Then chatMode = ChatModes.Say Else chatMode = ChatModes.GM
-                            Else
-                                chatMode = ChatModes.Party
-                            End If
-                        End If
-                        If (chatMode = ChatModes.Party And Player(MyIndex).PartyID < 0) Then
-                            If Player(MyIndex).GetAccess() = ACCESS.NONE Then chatMode = ChatModes.Say Else chatMode = ChatModes.GM
-                        End If
                         If (chatMode = ChatModes.GM And Player(MyIndex).GetAccess() = ACCESS.NONE) Then chatMode = ChatModes.Say
                     Else : chatMode = ChatModes.Say
                     End If

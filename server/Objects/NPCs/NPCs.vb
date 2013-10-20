@@ -9,9 +9,9 @@
     ' non-saved values
     Private mIndex As Integer
     Private mXOffset As Integer, mYOffset As Integer
-    Private mMoving As Boolean = True
+    Private mMoving As Boolean
     Private mNpcStep As Byte
-    Private mSpawned As Boolean = False
+    Private mSpawned As Boolean
 
     Public Sub New()
         Me.mName = vbNullString
@@ -86,11 +86,11 @@
         End Set
     End Property
 
-    Public Property Dir() As Integer
+    Public Property Dir() As Byte
         Get
             Return Me.mDir
         End Get
-        Set(value As Integer)
+        Set(value As Byte)
             If Not IsNothing(Me) Then
                 Me.mDir = value
             End If

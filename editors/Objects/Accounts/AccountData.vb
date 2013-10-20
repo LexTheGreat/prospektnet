@@ -6,19 +6,29 @@ Imports System.Xml.Serialization
 Class AccountData
 
     Public Shared Sub LoadAccounts()
-        If Directory.Exists(pathAccounts) Then
-            Dim fileEntries As String() = Directory.GetFiles(pathAccounts, "*.xml")
-            Dim i As Integer = 0
-            ReDim Account(0 To 0)
+        Dim objAcc As Object, loadAcc As New Accounts
+        Dim fileEntries As String()
+        Dim fileName As String
+        Try
+            ReDim Preserve Account(0 To 1)
             Account(0) = New Accounts
-            For Each fileName In fileEntries
-                ReDim Preserve Account(0 To i)
-                Account(i) = New Accounts
-                Account(i).Email = fileName.Replace(pathAccounts, vbNullString).Replace(".xml", vbNullString)
-                Account(i).Load()
-                i = i + 1
-            Next fileName
-        End If
+            If Directory.Exists(pathAccounts) Then
+                fileEntries = Directory.GetFiles(pathAccounts)
+                For Each fileName In fileEntries
+                    ' Get object from file
+                    objAcc = Files.Read(fileName, loadAcc)
+                    If IsNothing(objAcc) Then objAcc = New Accounts
+                    ' Convert object to loadAcc
+                    loadAcc = CType(objAcc, Accounts)
+                    ReDim Preserve Account(0 To AccountCount)
+                    Account(AccountCount) = loadAcc
+                    AccountCount = AccountCount + 1
+                Next fileName
+                AccountCount = AccountCount - 1
+            End If
+        Catch ex As Exception
+            Console.WriteLine("Error: " & ex.ToString & " (In: AccountData.LoadAccounts")
+        End Try
     End Sub
 
     Public Shared Sub SaveAccounts()
@@ -38,7 +48,7 @@ Class AccountData
     End Sub
 
     Public Shared Function GetAccountIndex(ByVal Email As String) As Integer
-        For index As Integer = 0 To Account.Length
+        For index As Integer = 0 To AccountCount
             If Account(index).Email = Email Then Return index
         Next
         Return 0

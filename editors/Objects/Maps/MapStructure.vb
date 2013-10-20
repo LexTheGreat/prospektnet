@@ -7,14 +7,14 @@ Imports System.ComponentModel
     Private mMaxX As Integer
     Private mMaxY As Integer
     Private mColor As OverLayColor
-    Private mLayer(MapLayerEnum.FringeMask) As LayerData
+    Private mLayer(MapLayerEnum.COUNT - 1) As LayerData
 
     Sub New()
         Me.mName = "New Map"
         Me.mMaxX = 35
         Me.mMaxY = 35
         Me.mColor = New OverLayColor()
-        For x As Integer = MapLayerEnum.Ground To MapLayerEnum.FringeMask
+        For x As Integer = MapLayerEnum.Ground To MapLayerEnum.COUNT - 1
             Me.mLayer(x) = New LayerData(Me.mMaxX, Me.mMaxY)
         Next
         ReSizeTileData(New Integer() {Me.mMaxX, Me.mMaxY})
@@ -66,7 +66,7 @@ Imports System.ComponentModel
     End Function
 
     Public Sub ReSizeTileData(ByVal newSize As Integer())
-        For x As Integer = MapLayerEnum.Ground To MapLayerEnum.FringeMask
+        For x As Integer = MapLayerEnum.Ground To MapLayerEnum.COUNT - 1
             Me.mLayer(x).ReSizeTileData(newSize)
         Next
     End Sub

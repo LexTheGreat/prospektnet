@@ -17,8 +17,9 @@ Public Class Networking
                     Exit Sub
                 Case NetIncomingMessageType.Data
                     HandleData.HandleDataPackets(im.ReadInt32, im)
+                    Exit Sub
                 Case NetIncomingMessageType.StatusChanged
-                    Dim status As NetConnectionStatus = im.ReadByte
+                    Exit Sub
             End Select
         End While
     End Sub
@@ -56,9 +57,7 @@ Public Class Networking
 
     Public Shared Sub SendData(ByRef Data As NetOutgoingMessage)
         If Networking.IsConnected Then
-            Dim outGoingPacket As NetOutgoingMessage = pClient.CreateMessage(Data.LengthBytes)
-            outGoingPacket.Write(Data)
-            pClient.SendMessage(outGoingPacket, NetDeliveryMethod.ReliableOrdered)
+            pClient.SendMessage(Data, NetDeliveryMethod.ReliableOrdered)
         End If
     End Sub
 End Class

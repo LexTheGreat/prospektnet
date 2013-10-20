@@ -35,9 +35,11 @@
     Public Const picX As Byte = 32
     Public Const picY As Byte = 32
     Public Map As MapStructure()
+    Public MapCount As Integer
     Public Camera As Rectangle
     Public TileView As Rectangle
 
     ' Accounts
     Public Account As Accounts()
+    Public AccountCount As Integer
 End Module

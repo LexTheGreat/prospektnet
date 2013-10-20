@@ -58,6 +58,35 @@ Class AccountData
         End Try
     End Sub
 
+    Public Shared Sub SaveAccounts()
+        Try
+            If Directory.Exists(pathAccounts) Then
+                For Each acc In Account
+                    acc.Save()
+                Next
+            End If
+        Catch ex As Exception
+            Console.WriteLine("Error: " & ex.ToString & " (In: Data.SaveMaps")
+        End Try
+    End Sub
+
+    Public Shared Sub SaveAccount(ByRef saccount As Accounts)
+        Dim Writer As StreamWriter
+        Dim Ser As XmlSerializer
+        Try
+            'Serialize object to a file.
+            Writer = New StreamWriter(pathAccounts & saccount.Email & ".xml")
+            Ser = New XmlSerializer(saccount.GetType)
+            Ser.Serialize(Writer, saccount)
+            Writer.Close()
+            Account(GetAccountIndex(saccount.Email)) = saccount
+            Exit Sub
+        Catch ex As Exception
+            Console.WriteLine("Error: " & ex.ToString & " (In: AccountData.SaveAccount)")
+            Exit Sub
+        End Try
+    End Sub
+
     Public Shared Function VerifyAccount(ByVal Email As String, ByVal Password As String) As Boolean
         Try
             For Each curAccount In Account

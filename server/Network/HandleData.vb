@@ -77,7 +77,7 @@ Class HandleData
 
 
         Name = Data.ReadString
-        Password = Data.ReadString
+        Password = data.ReadString
 
         Player(index) = New Players
         If Not AccountData.AccountExists(Name) Then
@@ -136,10 +136,10 @@ Class HandleData
         Dim Moving As Boolean, X As Integer, Y As Integer, Dir As Integer
 
 
-        Moving = Data.ReadInt32
+        Moving = data.ReadBoolean
         X = Data.ReadInt32
         Y = Data.ReadInt32
-        Dir = Data.ReadInt32
+        Dir = data.ReadByte
 
         If Not PlayerLogic.PlayerOnTile(X, Y) And Not NPCLogic.NpcOnTile(X, Y) Then ' Send new position to others
             Player(index).SetMoving(Moving)
@@ -258,8 +258,6 @@ Class HandleData
             Player(index).Load(AccountData.GetAccount(Name).Player.Name)
             Player(index).SetIsPlaying(False)
             SendData.EditorLoginOk(index, Mode)
-            SendData.EditorMapData(index)
-            SendData.EditorPlayerData(index)
             Console.WriteLine("Account: " & Name & " has logged into the editor!")
         End If
     End Sub
@@ -283,11 +281,11 @@ Class HandleData
             saveMap(i).Name = Data.ReadString
             saveMap(i).MaxX = data.ReadInt32
             saveMap(i).MaxY = data.ReadInt32
-            saveMap(i).Alpha = data.ReadInt32
-            saveMap(i).Red = data.ReadInt32
-            saveMap(i).Green = data.ReadInt32
-            saveMap(i).Blue = data.ReadInt32
-            For l As Integer = MapLayerEnum.Ground To MapLayerEnum.FringeMask
+            saveMap(i).Alpha = data.ReadByte
+            saveMap(i).Red = data.ReadByte
+            saveMap(i).Green = data.ReadByte
+            saveMap(i).Blue = data.ReadByte
+            For l As Integer = MapLayerEnum.Ground To MapLayerEnum.COUNT - 1
                 saveMap(i).Layer(l) = New LayerData(saveMap(i).MaxX, saveMap(i).MaxY)
                 For x As Integer = 0 To saveMap(i).MaxX - 1
                     For y As Integer = 0 To saveMap(i).MaxY - 1
@@ -327,10 +325,10 @@ Class HandleData
             savePlayer(i).Player.Map = data.ReadInt32
             savePlayer(i).Player.X = data.ReadInt32
             savePlayer(i).Player.Y = data.ReadInt32
-            savePlayer(i).Player.Dir = data.ReadInt32
-            savePlayer(i).Player.AccessMode = data.ReadInt32
-            savePlayer(i).Player.Visible = data.ReadInt32
-            savePlayer(i).Player.Save()
+            savePlayer(i).Player.Dir = data.ReadByte
+            savePlayer(i).Player.AccessMode = data.ReadByte
+            savePlayer(i).Player.Visible = data.ReadBoolean
+            savePlayer(i).Save()
         Next i
         AccountData.LoadAccounts()
         SendData.EditorPlayerData(Index)

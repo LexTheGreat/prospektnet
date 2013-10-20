@@ -8,16 +8,16 @@ Public Class Players
     ' location
     Private mX As Integer
     Private mY As Integer
-    Private mDir As Byte
+    Private mDir As Integer
     Private mMapIndex As Integer
     ' Admin values
     Private mAccessMode As Byte
     Private mVisible As Boolean
     ' non-saved values
     Private mXOffset As Integer, mYOffset As Integer
-    Private mMoving As Boolean = True
+    Private mMoving As Boolean
     Private mPlayerStep As Byte
-    Private mIsPlaying As Boolean = False
+    Private mIsPlaying As Boolean
 
     Public Sub New()
         Me.mName = vbNullString
@@ -139,22 +139,22 @@ Public Class Players
         End Set
     End Property
 
-    Public Property Dir() As Integer
+    Public Property Dir() As Byte
         Get
             Return Me.mDir
         End Get
-        Set(value As Integer)
+        Set(value As Byte)
             If Not IsNothing(Me) Then
                 Me.mDir = value
             End If
         End Set
     End Property
 
-    Public Property AccessMode() As Integer
+    Public Property AccessMode() As Byte
         Get
             Return Me.mAccessMode
         End Get
-        Set(value As Integer)
+        Set(value As Byte)
             If Not IsNothing(Me) Then
                 Me.mAccessMode = value
             End If

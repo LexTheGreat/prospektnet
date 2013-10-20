@@ -53,29 +53,29 @@
         EndX = StartX + (maxX + 1) + 1
         EndY = StartY + (maxY + 1) + 1
 
-        If EndX > Map.MaxX Then
+        If EndX > Map.MaxX - 1 Then
             offsetX = 32
 
-            If EndX = Map.MaxX + 1 Then
+            If EndX = Map.MaxX Then
                 If Player(MyIndex).XOffset < 0 Then
                     offsetX = Player(MyIndex).XOffset + picX
                 End If
             End If
 
-            EndX = Map.MaxX
+            EndX = Map.MaxX - 1
             StartX = EndX - maxX - 1
         End If
 
-        If EndY > Map.MaxY Then
+        If EndY > Map.MaxY - 1 Then
             offsetY = 32
 
-            If EndY = Map.MaxY + 1 Then
+            If EndY = Map.MaxY Then
                 If Player(MyIndex).YOffset < 0 Then
                     offsetY = Player(MyIndex).YOffset + picY
                 End If
             End If
 
-            EndY = Map.MaxY
+            EndY = Map.MaxY - 1
             StartY = EndY - maxY - 1
         End If
 

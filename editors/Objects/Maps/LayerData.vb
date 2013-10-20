@@ -3,9 +3,8 @@
 
     Sub New(ByVal maxX As Integer, ByVal maxY As Integer)
         ReDim Preserve Me.mTiles(maxX, maxY)
-        Me.mTiles = CType(ResizeArray(Me.mTiles, New Integer() {maxX, maxY}), TileData(,))
-        For X As Integer = 0 To maxX - 1
-            For Y As Integer = 0 To maxY - 1
+        For X As Integer = 0 To maxX
+            For Y As Integer = 0 To maxY
                 Me.mTiles(X, Y) = New TileData
             Next
         Next
