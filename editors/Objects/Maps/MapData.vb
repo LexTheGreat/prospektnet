@@ -28,6 +28,10 @@ Public Class MapData
         End If
     End Sub
 
+    Public Shared Sub Save(ByVal SaveMap As MapStructure)
+        Files.WriteBinary(pathMaps & Trim(SaveMap.ID) & ".bin", SaveMap)
+    End Sub
+
     Public Shared Sub NewMap()
         Dim newMap As New MapStructure, i As Integer = GetNextMapIndex()
         newMap.SetID(i)

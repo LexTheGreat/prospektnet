@@ -21,20 +21,12 @@ Imports System.ComponentModel
     End Sub
 
     Sub Save()
-        Dim fs As New FileStream(pathMaps & Trim$(Me.mID) & ".bin", FileMode.Create)
-        Dim formatter As New BinaryFormatter
-
-        formatter.Serialize(fs, Me)
-        fs.Close()
+        MapData.Save(Me)
     End Sub
 
     Sub Load()
         Dim loadMap As New MapStructure
-        Dim fs As New FileStream(pathMaps & Trim(Me.mID) & ".bin", FileMode.Open)
-
-        Dim formatter As New BinaryFormatter
-        loadMap = DirectCast(formatter.Deserialize(fs), MapStructure)
-        fs.Close()
+        loadMap = DirectCast(Files.ReadBinary(pathMaps & Trim(Me.mID) & ".bin"), MapStructure)
         Me.mID = loadMap.mID
         Me.mName = loadMap.mName
         Me.mMaxX = loadMap.mMaxX

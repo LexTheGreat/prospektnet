@@ -32,21 +32,9 @@ Public Class Players
 
     ' sub routines and functions
     Public Function Create(ByVal PName As String) As Boolean
-        Try
-            Dim newPlayer As New Players()
-            newPlayer.Name = PName
-            ' Update accounts array
-            Account(PlayerData.GetPlayerIndex(PName)).Player = newPlayer
-            'Serialize object to a file.
-            Dim Writer As New StreamWriter(pathAccounts & PName & ".xml")
-            Dim ser As New XmlSerializer(newPlayer.GetType)
-            ser.Serialize(Writer, newPlayer)
-            Writer.Close()
-            Return True
-        Catch ex As Exception
-            Console.WriteLine("Error: " & ex.ToString & " (In: Players.Create)")
-            Return False
-        End Try
+        If PName = vbNullString Then Return False
+        PlayerData.Create(PName)
+        Return True
     End Function
 
     Public Function Load(ByVal PName As String) As Boolean

@@ -34,7 +34,7 @@ Public Class PlayerData
             acc = Account(PlayerData.GetPlayerIndex(player.Name))
             acc.Player = player
             'Serialize object to a file.
-            Files.Write(pathAccounts & acc.Email & ".xml", acc)
+            Files.WriteXML(pathAccounts & acc.Email & ".xml", acc)
             Account(PlayerData.GetPlayerIndex(player.Name)) = acc
             Exit Sub
         Catch ex As Exception
@@ -42,6 +42,20 @@ Public Class PlayerData
             Exit Sub
         End Try
     End Sub
+
+    Public Shared Function Create(ByVal Name As String) As Boolean
+        Try
+            Dim newPlayer As New Players()
+            newPlayer.Name = Name
+            ' Update accounts array
+            Account(PlayerData.GetPlayerIndex(Name)).Player = newPlayer
+            Files.WriteXML(pathAccounts & Name & ".xml", newPlayer)
+            Return True
+        Catch ex As Exception
+            Console.WriteLine("Error: " & ex.ToString & " (In: Players.Create)")
+            Return False
+        End Try
+    End Function
 
     Public Shared Function PlayerExists(ByVal Name As String) As Boolean
         Try

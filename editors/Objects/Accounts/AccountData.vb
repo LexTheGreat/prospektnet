@@ -16,7 +16,7 @@ Class AccountData
                 fileEntries = Directory.GetFiles(pathAccounts)
                 For Each fileName In fileEntries
                     ' Get object from file
-                    objAcc = Files.Read(fileName, loadAcc)
+                    objAcc = Files.ReadXML(fileName, loadAcc)
                     If IsNothing(objAcc) Then objAcc = New Accounts
                     ' Convert object to loadAcc
                     loadAcc = CType(objAcc, Accounts)
@@ -68,7 +68,7 @@ Class AccountData
 
     Public Shared Function AccountExists(ByVal LoginEmail As String) As Boolean
         Dim Filename As String
-        Filename = pathAccounts & Trim(LoginEmail) & ".bin"
+        Filename = pathAccounts & Trim(LoginEmail) & ".xml"
 
         If Files.Exists(Filename) Then
             Return True

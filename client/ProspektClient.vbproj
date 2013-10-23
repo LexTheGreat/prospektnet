@@ -163,6 +163,7 @@
   <ItemGroup>
     <EmbeddedResource Include="General\GameWindow.resx">
       <DependentUpon>GameWindow.vb</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="My Project\Resources.resx">
       <Generator>VbMyResourcesResXFileCodeGenerator</Generator>

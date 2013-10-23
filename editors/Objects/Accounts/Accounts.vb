@@ -29,14 +29,14 @@ Public Class Accounts
     End Sub
 
     Public Sub Save()
-        Files.Write(pathAccounts & Me.mEmail & ".xml", Me)
+        Files.WriteXML(pathAccounts & Me.mEmail & ".xml", Me)
     End Sub
 
     Public Sub Load()
         Dim objAccount As Object, newAccount As New Accounts
 
         ' Get object from file
-        objAccount = Files.Read(pathAccounts & Me.mEmail & ".xml", Me)
+        objAccount = Files.ReadXML(pathAccounts & Me.mEmail & ".xml", Me)
         If IsNothing(objAccount) Then objAccount = New Accounts()
         ' Convert object to newConfig
         newAccount = CType(objAccount, Accounts)

@@ -11,7 +11,7 @@ Class AccountData
             Account(AccountCount) = New Accounts
             Account(AccountCount) = newAccount
             'Serialize object to a file.
-            Files.Write(pathAccounts & newAccount.Email & ".xml", newAccount)
+            Files.WriteXML(pathAccounts & newAccount.Email & ".xml", newAccount)
             AccountCount = AccountCount + 1
             Return True
         Catch ex As Exception
@@ -23,7 +23,7 @@ Class AccountData
     Public Shared Sub CreateCharacter(ByVal curAccount As Accounts)
         Try
             'Serialize object to a file.
-            Files.Write(pathAccounts & curAccount.Email & ".xml", curAccount)
+            Files.WriteXML(pathAccounts & curAccount.Email & ".xml", curAccount)
             Account(GetAccountIndex(curAccount.Email)) = curAccount
             Exit Sub
         Catch ex As Exception
@@ -43,7 +43,7 @@ Class AccountData
                 fileEntries = Directory.GetFiles(pathAccounts)
                 For Each fileName In fileEntries
                     ' Get object from file
-                    objAcc = Files.Read(fileName, loadAcc)
+                    objAcc = Files.ReadXML(fileName, loadAcc)
                     If IsNothing(objAcc) Then objAcc = New Accounts
                     ' Convert object to loadAcc
                     loadAcc = CType(objAcc, Accounts)
