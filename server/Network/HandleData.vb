@@ -17,6 +17,7 @@ Class HandleData
         If PacketNum = CEditorPackets.DataRequest Then HandleData.EditorDataRequest(index, Data)
         If PacketNum = CEditorPackets.MapData Then HandleData.EditorMapData(index, Data)
         If PacketNum = CEditorPackets.PlayerData Then HandleData.EditorPlayerData(index, Data)
+        If PacketNum = CEditorPackets.TilesetData Then HandleData.EditorTilesetData(index, Data)
     End Sub
 
     Public Shared Sub Register(ByVal index As Integer, ByRef data As NetIncomingMessage)
@@ -99,6 +100,7 @@ Class HandleData
             Player(index).SetIsPlaying(True)
             PlayerData.SendPlayers()
             NPCData.SendNPCs()
+            TilesetData.SendTilesets()
             SendData.MapData(index)
             SendData.LoginOk(index)
 
@@ -140,8 +142,8 @@ Class HandleData
         X = Data.ReadInt32
         Y = Data.ReadInt32
         Dir = data.ReadByte
-
-        If Not PlayerLogic.PlayerOnTile(X, Y) And Not NPCLogic.NpcOnTile(X, Y) Then ' Send new position to others
+        
+        If Not PlayerLogic.PlayerOnTile(X, Y) And Not NPCLogic.NpcOnTile(X, Y) And Not TilesetData.isTileBlocked(Player(index).Map, X, Y) Then ' Send new position to others
             Player(index).SetMoving(Moving)
             Player(index).SetPosition(New Integer() {X, Y})
             Player(index).SetDir(Dir)
@@ -264,6 +266,7 @@ Class HandleData
 
     Public Shared Sub EditorDataRequest(ByVal index As Integer, ByRef data As NetIncomingMessage)
         SendData.EditorMapData(index)
+        SendData.EditorTilesetData(index)
         SendData.EditorPlayerData(index)
         SendData.EditorDataSent(index, 1)
     End Sub
@@ -315,12 +318,12 @@ Class HandleData
 
         num = data.ReadInt32
         ReDim savePlayer(0 To num)
-        For i As Integer = 0 To num
+        For i As Integer = 1 To num
             savePlayer(i) = New Accounts
-            savePlayer(i).Email = Data.ReadString
-            savePlayer(i).Password = Data.ReadString
+            savePlayer(i).Email = data.ReadString
+            savePlayer(i).Password = data.ReadString
             savePlayer(i).Player = New Players
-            savePlayer(i).Player.Name = Data.ReadString
+            savePlayer(i).Player.Name = data.ReadString
             savePlayer(i).Player.Sprite = data.ReadInt32
             savePlayer(i).Player.Map = data.ReadInt32
             savePlayer(i).Player.X = data.ReadInt32
@@ -332,6 +335,29 @@ Class HandleData
         Next i
         AccountData.LoadAccounts()
         SendData.EditorPlayerData(Index)
+        SendData.EditorDataSent(Index, 0)
+    End Sub
+
+    Public Shared Sub EditorTilesetData(ByVal Index As Integer, ByRef data As NetIncomingMessage)
+        Dim saveTileset() As Tilesets, num As Integer
+
+        num = data.ReadInt32
+        ReDim saveTileset(0 To num)
+        For i As Integer = 1 To num
+            saveTileset(i) = New Tilesets
+            saveTileset(i).SetID(data.ReadString)
+            saveTileset(i).MaxX = data.ReadInt32
+            saveTileset(i).MaxY = data.ReadInt32
+            saveTileset(i).ResizeArray(New Integer() {saveTileset(i).MaxX, saveTileset(i).MaxY})
+            For x As Integer = 0 To saveTileset(i).MaxX
+                For y As Integer = 0 To saveTileset(i).MaxY
+                    saveTileset(i).Tile(x, y) = data.ReadByte
+                Next y
+            Next x
+            saveTileset(i).Save()
+        Next i
+        TilesetData.LoadTilesets()
+        SendData.EditorTilesetData(Index)
         SendData.EditorDataSent(Index, 0)
     End Sub
 End Class

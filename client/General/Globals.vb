@@ -75,6 +75,10 @@
     Public NPC As NPCs()
     Public NPCCount As Integer
 
+    ' Tilesets
+    Public Tileset() As Tilesets
+    Public TilesetCount As Integer
+
     ' fader
     Public canFade As Boolean
     Public faderAlpha As Byte

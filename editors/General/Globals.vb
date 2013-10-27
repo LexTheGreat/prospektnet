@@ -8,6 +8,12 @@
     ' Networking
     Public pClient As Lidgren.Network.NetClient
 
+    ' Editors
+
+    Public AccountEditor As AccountClass
+    Public MapEditor As MapClass
+    Public TilesetEditor As TilesetClass
+
     ' Loop Control
     Public ElapsedTime As Integer
     Public EditorFPS As Integer
@@ -38,6 +44,8 @@
     Public MapCount As Integer
     Public Camera As Rectangle
     Public TileView As Rectangle
+    Public Tileset() As Tilesets
+    Public TilesetCount As Integer
 
     ' Accounts
     Public Account As Accounts()

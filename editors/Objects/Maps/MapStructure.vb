@@ -1,6 +1,4 @@
-﻿Imports System.Runtime.Serialization.Formatters.Binary
-Imports System.IO
-Imports System.ComponentModel
+﻿Imports System.ComponentModel
 <Serializable()> Public Class MapStructure
     Private mID As Integer
     Private mName As String

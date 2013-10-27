@@ -70,7 +70,14 @@ Partial Class EditorWindow
         Me.mnuAccountSave = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuAccountNew = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuAccountUndo = New System.Windows.Forms.ToolStripMenuItem()
+        Me.tabTilesetEditor = New System.Windows.Forms.TabPage()
+        Me.GroupBox1 = New System.Windows.Forms.GroupBox()
+        Me.cmbTilesetEditor = New System.Windows.Forms.ComboBox()
+        Me.scrlTilesetEditorY = New System.Windows.Forms.VScrollBar()
+        Me.scrlTilesetEditorX = New System.Windows.Forms.HScrollBar()
+        Me.picTilesetEditor = New System.Windows.Forms.PictureBox()
         Me.imgSprites = New System.Windows.Forms.ImageList(Me.components)
+        Me.btnSaveTileset = New System.Windows.Forms.Button()
         Me.mnuMain.SuspendLayout()
         Me.tabEditors.SuspendLayout()
         Me.tabMapEditor.SuspendLayout()
@@ -97,6 +104,9 @@ Partial Class EditorWindow
         Me.tabAccount.SuspendLayout()
         Me.groupAccountList.SuspendLayout()
         Me.mnuAccountList.SuspendLayout()
+        Me.tabTilesetEditor.SuspendLayout()
+        Me.GroupBox1.SuspendLayout()
+        CType(Me.picTilesetEditor, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'mnuMain
@@ -131,6 +141,7 @@ Partial Class EditorWindow
         '
         Me.tabEditors.Controls.Add(Me.tabMapEditor)
         Me.tabEditors.Controls.Add(Me.tabAccountEditor)
+        Me.tabEditors.Controls.Add(Me.tabTilesetEditor)
         Me.tabEditors.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tabEditors.HotTrack = True
         Me.tabEditors.Location = New System.Drawing.Point(0, 24)
@@ -211,10 +222,9 @@ Partial Class EditorWindow
         'mapPreview
         '
         Me.mapPreview.BackColor = System.Drawing.Color.DarkGray
-        Me.mapPreview.Dock = System.Windows.Forms.DockStyle.Fill
         Me.mapPreview.Location = New System.Drawing.Point(3, 3)
         Me.mapPreview.Name = "mapPreview"
-        Me.mapPreview.Size = New System.Drawing.Size(370, 369)
+        Me.mapPreview.Size = New System.Drawing.Size(352, 350)
         Me.mapPreview.TabIndex = 3
         Me.mapPreview.TabStop = False
         '
@@ -283,10 +293,9 @@ Partial Class EditorWindow
         'TileSetPreview
         '
         Me.TileSetPreview.BackColor = System.Drawing.Color.DarkGray
-        Me.TileSetPreview.Dock = System.Windows.Forms.DockStyle.Fill
         Me.TileSetPreview.Location = New System.Drawing.Point(0, 0)
         Me.TileSetPreview.Name = "TileSetPreview"
-        Me.TileSetPreview.Size = New System.Drawing.Size(200, 344)
+        Me.TileSetPreview.Size = New System.Drawing.Size(183, 326)
         Me.TileSetPreview.TabIndex = 6
         Me.TileSetPreview.TabStop = False
         '
@@ -324,22 +333,22 @@ Partial Class EditorWindow
         '
         'mapBtnClearLayer
         '
-        Me.mapBtnClearLayer.Location = New System.Drawing.Point(135, 9)
+        Me.mapBtnClearLayer.Location = New System.Drawing.Point(117, 9)
         Me.mapBtnClearLayer.Name = "mapBtnClearLayer"
-        Me.mapBtnClearLayer.Size = New System.Drawing.Size(59, 23)
+        Me.mapBtnClearLayer.Size = New System.Drawing.Size(80, 23)
         Me.mapBtnClearLayer.TabIndex = 12
         Me.mapBtnClearLayer.Tag = "Clear Layer"
-        Me.mapBtnClearLayer.Text = "Clear"
+        Me.mapBtnClearLayer.Text = "Clear Layer"
         Me.mapBtnClearLayer.UseVisualStyleBackColor = True
         '
         'mapBtnFillLayer
         '
-        Me.mapBtnFillLayer.Location = New System.Drawing.Point(6, 11)
+        Me.mapBtnFillLayer.Location = New System.Drawing.Point(3, 9)
         Me.mapBtnFillLayer.Name = "mapBtnFillLayer"
-        Me.mapBtnFillLayer.Size = New System.Drawing.Size(59, 23)
+        Me.mapBtnFillLayer.Size = New System.Drawing.Size(80, 23)
         Me.mapBtnFillLayer.TabIndex = 11
         Me.mapBtnFillLayer.Tag = "Fill Layer"
-        Me.mapBtnFillLayer.Text = "Fill"
+        Me.mapBtnFillLayer.Text = "Fill Layer"
         Me.mapBtnFillLayer.UseVisualStyleBackColor = True
         '
         'panMapLeft
@@ -548,11 +557,83 @@ Partial Class EditorWindow
         Me.mnuAccountUndo.Size = New System.Drawing.Size(48, 20)
         Me.mnuAccountUndo.Text = "Undo"
         '
+        'tabTilesetEditor
+        '
+        Me.tabTilesetEditor.Controls.Add(Me.GroupBox1)
+        Me.tabTilesetEditor.Controls.Add(Me.scrlTilesetEditorY)
+        Me.tabTilesetEditor.Controls.Add(Me.scrlTilesetEditorX)
+        Me.tabTilesetEditor.Controls.Add(Me.picTilesetEditor)
+        Me.tabTilesetEditor.Location = New System.Drawing.Point(4, 22)
+        Me.tabTilesetEditor.Name = "tabTilesetEditor"
+        Me.tabTilesetEditor.Size = New System.Drawing.Size(811, 426)
+        Me.tabTilesetEditor.TabIndex = 4
+        Me.tabTilesetEditor.Text = "Tileset Editor"
+        Me.tabTilesetEditor.UseVisualStyleBackColor = True
+        '
+        'GroupBox1
+        '
+        Me.GroupBox1.Controls.Add(Me.btnSaveTileset)
+        Me.GroupBox1.Controls.Add(Me.cmbTilesetEditor)
+        Me.GroupBox1.Dock = System.Windows.Forms.DockStyle.Top
+        Me.GroupBox1.Location = New System.Drawing.Point(0, 0)
+        Me.GroupBox1.Name = "GroupBox1"
+        Me.GroupBox1.Size = New System.Drawing.Size(794, 40)
+        Me.GroupBox1.TabIndex = 59
+        Me.GroupBox1.TabStop = False
+        Me.GroupBox1.Text = "TileSet"
+        '
+        'cmbTilesetEditor
+        '
+        Me.cmbTilesetEditor.Anchor = System.Windows.Forms.AnchorStyles.None
+        Me.cmbTilesetEditor.FormattingEnabled = True
+        Me.cmbTilesetEditor.Location = New System.Drawing.Point(8, 13)
+        Me.cmbTilesetEditor.Name = "cmbTilesetEditor"
+        Me.cmbTilesetEditor.Size = New System.Drawing.Size(704, 21)
+        Me.cmbTilesetEditor.TabIndex = 0
+        '
+        'scrlTilesetEditorY
+        '
+        Me.scrlTilesetEditorY.Dock = System.Windows.Forms.DockStyle.Right
+        Me.scrlTilesetEditorY.LargeChange = 1
+        Me.scrlTilesetEditorY.Location = New System.Drawing.Point(794, 0)
+        Me.scrlTilesetEditorY.Maximum = 1
+        Me.scrlTilesetEditorY.Name = "scrlTilesetEditorY"
+        Me.scrlTilesetEditorY.Size = New System.Drawing.Size(17, 409)
+        Me.scrlTilesetEditorY.TabIndex = 58
+        '
+        'scrlTilesetEditorX
+        '
+        Me.scrlTilesetEditorX.Dock = System.Windows.Forms.DockStyle.Bottom
+        Me.scrlTilesetEditorX.LargeChange = 1
+        Me.scrlTilesetEditorX.Location = New System.Drawing.Point(0, 409)
+        Me.scrlTilesetEditorX.Maximum = 1
+        Me.scrlTilesetEditorX.Name = "scrlTilesetEditorX"
+        Me.scrlTilesetEditorX.Size = New System.Drawing.Size(811, 17)
+        Me.scrlTilesetEditorX.TabIndex = 57
+        '
+        'picTilesetEditor
+        '
+        Me.picTilesetEditor.BackColor = System.Drawing.Color.DarkGray
+        Me.picTilesetEditor.Location = New System.Drawing.Point(0, 43)
+        Me.picTilesetEditor.Name = "picTilesetEditor"
+        Me.picTilesetEditor.Size = New System.Drawing.Size(794, 366)
+        Me.picTilesetEditor.TabIndex = 56
+        Me.picTilesetEditor.TabStop = False
+        '
         'imgSprites
         '
         Me.imgSprites.ColorDepth = System.Windows.Forms.ColorDepth.Depth8Bit
         Me.imgSprites.ImageSize = New System.Drawing.Size(16, 16)
         Me.imgSprites.TransparentColor = System.Drawing.Color.Transparent
+        '
+        'btnSaveTileset
+        '
+        Me.btnSaveTileset.Location = New System.Drawing.Point(713, 11)
+        Me.btnSaveTileset.Name = "btnSaveTileset"
+        Me.btnSaveTileset.Size = New System.Drawing.Size(75, 23)
+        Me.btnSaveTileset.TabIndex = 1
+        Me.btnSaveTileset.Text = "Save"
+        Me.btnSaveTileset.UseVisualStyleBackColor = True
         '
         'EditorWindow
         '
@@ -596,6 +677,9 @@ Partial Class EditorWindow
         Me.groupAccountList.PerformLayout()
         Me.mnuAccountList.ResumeLayout(False)
         Me.mnuAccountList.PerformLayout()
+        Me.tabTilesetEditor.ResumeLayout(False)
+        Me.GroupBox1.ResumeLayout(False)
+        CType(Me.picTilesetEditor, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -648,5 +732,12 @@ Partial Class EditorWindow
     Friend WithEvents tileSetScrlY As System.Windows.Forms.VScrollBar
     Friend WithEvents tileSetScrlX As System.Windows.Forms.HScrollBar
     Friend WithEvents TileSetPreview As System.Windows.Forms.PictureBox
+    Friend WithEvents tabTilesetEditor As System.Windows.Forms.TabPage
+    Friend WithEvents GroupBox1 As System.Windows.Forms.GroupBox
+    Public WithEvents cmbTilesetEditor As System.Windows.Forms.ComboBox
+    Friend WithEvents scrlTilesetEditorY As System.Windows.Forms.VScrollBar
+    Friend WithEvents scrlTilesetEditorX As System.Windows.Forms.HScrollBar
+    Friend WithEvents picTilesetEditor As System.Windows.Forms.PictureBox
+    Friend WithEvents btnSaveTileset As System.Windows.Forms.Button
 
 End Class

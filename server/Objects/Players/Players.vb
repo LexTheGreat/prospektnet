@@ -51,13 +51,6 @@ Public Class Players
             Me.mDir = newPlayer.Dir
             Me.mAccessMode = newPlayer.AccessMode
             Me.mVisible = newPlayer.Visible
-            ' Add player to accounts array
-            ReDim Preserve Account(0 To AccountCount + 1)
-            Account(AccountCount) = New Accounts
-            Account(AccountCount).Email = Account(PlayerData.GetPlayerIndex(PName)).Email
-            Account(AccountCount).Password = Account(PlayerData.GetPlayerIndex(PName)).Password
-            Account(AccountCount).Player = newPlayer
-            AccountCount = AccountCount + 1
             Return True
         Catch ex As Exception
             Console.WriteLine("Error: " & ex.ToString & " (In: Players.Load)")

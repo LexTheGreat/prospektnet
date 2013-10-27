@@ -38,6 +38,7 @@
 
         If PlayerLogic.PlayerOnTile(tempX, tempY) Then Return False
         If NPCLogic.NpcOnTile(tempX, tempY) Then Return False
+        If TilesetData.isTileNPCBlocked(0, tempX, tempY) Then Return False
         Return True
     End Function
 End Class

@@ -159,6 +159,8 @@
     <Compile Include="Objects\NPCs\NPCs.vb" />
     <Compile Include="Objects\Players\PlayerLogic.vb" />
     <Compile Include="Objects\Players\Players.vb" />
+    <Compile Include="Objects\Tilesets\TilesetLogic.vb" />
+    <Compile Include="Objects\Tilesets\Tilesets.vb" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="General\GameWindow.resx">

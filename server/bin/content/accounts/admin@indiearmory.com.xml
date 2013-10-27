@@ -6,9 +6,9 @@
     <Name>administrator</Name>
     <Sprite>1</Sprite>
     <Map>0</Map>
-    <X>14</X>
-    <Y>6</Y>
-    <Dir>3</Dir>
+    <X>7</X>
+    <Y>3</Y>
+    <Dir>2</Dir>
     <AccessMode>5</AccessMode>
     <Visible>true</Visible>
   </Player>

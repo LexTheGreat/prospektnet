@@ -79,8 +79,6 @@ Public Class Networking
         Next i
     End Sub
 
-
-
     Public Shared Sub HandleMessage()
         Dim im As NetIncomingMessage, index As Integer, I As Integer
         im = pServer.ReadMessage

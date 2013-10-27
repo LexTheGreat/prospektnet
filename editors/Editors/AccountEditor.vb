@@ -1,4 +1,4 @@
-﻿Module AccountEditor
+﻿Class AccountClass
     Private index As Integer
 
     Public Sub Init()
@@ -54,4 +54,4 @@
         ' Refresh data
         EditorWindow.proptAccountData.Refresh()
     End Sub
-End Module
+End Class

@@ -8,10 +8,16 @@ Module General
         Verdana = New TextWriter("content/fonts/Verdana.ttf")
         'Setup Map Editor
         MapData.LoadMaps()
+        MapEditor = New MapClass
         MapEditor.Init()
         ' Setup Account Editor
         AccountData.LoadAccounts()
+        AccountEditor = New AccountClass
         AccountEditor.Init()
+        ' Setup Tileset Editor
+        TilesetData.LoadTilesets()
+        TilesetEditor = New TilesetClass
+        TilesetEditor.Init()
         EditorWindow.Visible = True
         inEditor = True
         EditorLoop()
@@ -35,6 +41,14 @@ Module General
             MapEditor.DrawTilesetSelection()
             ' End the rendering
             Render.TileWindow.Display()
+
+            ' Start rendering
+            Render.TileEditWindow.Clear(New Color(255, 255, 255))
+            TilesetEditor.DrawTileset()
+            TilesetEditor.DrawTileTypes()
+            TilesetEditor.DrawTilesetSelection()
+            ' End the rendering
+            Render.TileEditWindow.Display()
 
             ' Start rendering
             Render.Window.Clear(New Color(255, 255, 255))

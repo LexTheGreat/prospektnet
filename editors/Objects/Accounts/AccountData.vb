@@ -8,7 +8,7 @@ Class AccountData
     Public Shared Sub LoadAccounts()
         Dim objAcc As Object, loadAcc As New Accounts
         Dim fileEntries As String()
-        Dim fileName As String
+        Dim fileName As String, i As Integer = 0
         Try
             ReDim Preserve Account(0 To 1)
             Account(0) = New Accounts
@@ -20,11 +20,11 @@ Class AccountData
                     If IsNothing(objAcc) Then objAcc = New Accounts
                     ' Convert object to loadAcc
                     loadAcc = CType(objAcc, Accounts)
+                    AccountCount = i + 1
                     ReDim Preserve Account(0 To AccountCount)
                     Account(AccountCount) = loadAcc
-                    AccountCount = AccountCount + 1
+                    i = AccountCount
                 Next fileName
-                AccountCount = AccountCount - 1
             End If
         Catch ex As Exception
             Console.WriteLine("Error: " & ex.ToString & " (In: AccountData.LoadAccounts")
@@ -33,8 +33,8 @@ Class AccountData
 
     Public Shared Sub SaveAccounts()
         If Directory.Exists(pathAccounts) Then
-            For Each plyr In Account
-                plyr.Save()
+            For I As Integer = 1 To AccountCount
+                Account(I).Save()
             Next
         End If
     End Sub
@@ -48,7 +48,7 @@ Class AccountData
     End Sub
 
     Public Shared Function GetAccountIndex(ByVal Email As String) As Integer
-        For index As Integer = 0 To AccountCount
+        For index As Integer = 1 To AccountCount
             If Account(index).Email = Email Then Return index
         Next
         Return 0

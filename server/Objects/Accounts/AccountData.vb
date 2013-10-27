@@ -49,7 +49,7 @@ Class AccountData
                     loadAcc = CType(objAcc, Accounts)
                     AccountCount = i + 1
                     ReDim Preserve Account(0 To AccountCount)
-                    Account(i) = loadAcc
+                    Account(AccountCount) = loadAcc
                     i = AccountCount
                 Next fileName
             End If

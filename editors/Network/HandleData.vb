@@ -6,6 +6,7 @@ Public Class HandleData
         If PacketNum = SEditorPackets.LoginOk Then HandleData.LoginOk(Data)
         If PacketNum = SEditorPackets.MapData Then HandleData.EditorMapData(Data)
         If PacketNum = SEditorPackets.PlayerData Then HandleData.EditorPlayerData(Data)
+        If PacketNum = SEditorPackets.TilesetData Then HandleData.EditorTilesetData(Data)
         If PacketNum = SEditorPackets.DataSent Then HandleData.DataSent(Data)
     End Sub
 
@@ -27,6 +28,7 @@ Public Class HandleData
         Else
             SendData.MapData()
             SendData.PlayerData()
+            SendData.TilesetData()
         End If
     End Sub
 
@@ -67,7 +69,7 @@ Public Class HandleData
 
         num = Data.ReadInt32
         ReDim Account(0 To num)
-        For i As Integer = 0 To num
+        For i As Integer = 1 To num
             Account(i) = New Accounts
             Account(i).Email = Data.ReadString
             Account(i).Password = Data.ReadString
@@ -82,6 +84,27 @@ Public Class HandleData
         Next
         AccountData.SaveAccounts()
         AccountEditor.ReloadList()
+    End Sub
+
+    Public Shared Sub EditorTilesetData(ByRef data As NetIncomingMessage)
+        Dim num As Integer
+
+        num = data.ReadInt32
+        ReDim Tileset(0 To num)
+        For i As Integer = 1 To num
+            Tileset(i) = New Tilesets
+            Tileset(i).SetID(data.ReadString)
+            Tileset(i).MaxX = data.ReadInt32
+            Tileset(i).MaxY = data.ReadInt32
+            Tileset(i).ResizeArray(New Integer() {Tileset(i).MaxX, Tileset(i).MaxY})
+            For x As Integer = 0 To Tileset(i).MaxX
+                For y As Integer = 0 To Tileset(i).MaxY
+                    Tileset(i).Tile(x, y) = data.ReadByte
+                Next y
+            Next x
+            TilesetData.Save(Tileset(i))
+        Next i
+        TilesetEditor.Init()
     End Sub
 
     Public Shared Sub DataSent(ByRef Data As NetIncomingMessage)

@@ -5,16 +5,29 @@ Public Class Render
     ' Rendering window
     Public Shared Window As RenderWindow
     Public Shared TileWindow As RenderWindow
+    Public Shared TileEditWindow As RenderWindow
     Delegate Function Pressed(ByVal index As Integer) As Boolean
 
     Public Shared Sub Initialize()
         ' Initialize rendering window
         Window = New RenderWindow(EditorWindow.mapPreview.Handle)
         TileWindow = New RenderWindow(EditorWindow.TileSetPreview.Handle)
+        TileEditWindow = New RenderWindow(EditorWindow.picTilesetEditor.Handle)
         Window.SetFramerateLimit(64)
         TileWindow.SetFramerateLimit(64)
+        TileEditWindow.SetFramerateLimit(64)
         'Cache and load textures
         InitTextures()
+    End Sub
+
+    Public Shared Sub ReInitialize()
+        ' Initialize rendering window
+        Window.SetView(New View(New FloatRect(0, 0, EditorWindow.mapPreview.Width, EditorWindow.mapPreview.Height)))
+        TileWindow.SetView(New View(New FloatRect(0, 0, EditorWindow.TileSetPreview.Width, EditorWindow.TileSetPreview.Height)))
+        TileEditWindow.SetView(New View(New FloatRect(0, 0, EditorWindow.picTilesetEditor.Width, EditorWindow.picTilesetEditor.Height)))
+        Window.Size = New Vector2u(EditorWindow.mapPreview.Width, EditorWindow.mapPreview.Height)
+        TileWindow.Size = New Vector2u(EditorWindow.TileSetPreview.Width, EditorWindow.TileSetPreview.Height)
+        TileEditWindow.Size = New Vector2u(EditorWindow.picTilesetEditor.Width, EditorWindow.picTilesetEditor.Height)
     End Sub
 
     Public Shared Sub Dispose()
@@ -22,12 +35,12 @@ Public Class Render
         UnloadTextures()
 
         ' Unload Sfml object
-        If Window.IsOpen Then
-            Window.Dispose()
-            Window = Nothing
-            TileWindow.Dispose()
-            TileWindow = Nothing
-        End If
+        Window.Dispose()
+        Window = Nothing
+        TileWindow.Dispose()
+        TileWindow = Nothing
+        TileEditWindow.Dispose()
+        TileEditWindow = Nothing
     End Sub
 
     ' Initializing a texture
@@ -78,7 +91,7 @@ Public Class Render
         End If
     End Sub
 
-    Public Shared Sub RenderMapTexture(ByVal textureNum As Integer, ByVal destX As Integer, ByVal destY As Integer, ByVal srcX As Integer, ByVal srcY As Integer, ByVal destWidth As Integer, ByVal destHeight As Integer, ByVal srcWidth As Integer, ByVal srcHeight As Integer, Optional ByVal A As Byte = 255, Optional ByVal R As Byte = 255, Optional ByVal G As Byte = 255, Optional ByVal B As Byte = 255)
+    Public Shared Sub RenderTexture(ByVal Window As RenderWindow, ByVal textureNum As Integer, ByVal destX As Integer, ByVal destY As Integer, ByVal srcX As Integer, ByVal srcY As Integer, ByVal destWidth As Integer, ByVal destHeight As Integer, ByVal srcWidth As Integer, ByVal srcHeight As Integer, Optional ByVal A As Byte = 255, Optional ByVal R As Byte = 255, Optional ByVal G As Byte = 255, Optional ByVal B As Byte = 255)
         Dim textureWidth As Integer, textureHeight As Integer
 
         ' Prevent subscript out range
@@ -96,26 +109,6 @@ Public Class Render
         Texture(textureNum).Tex.TextureRect = New IntRect(srcX, srcY, srcWidth, srcHeight)
         Texture(textureNum).Tex.Position = New Vector2f(destX, destY)
         Texture(textureNum).Tex.Draw(Window, RenderStates.Default)
-    End Sub
-
-    Public Shared Sub RenderTileTexture(ByVal textureNum As Integer, ByVal destX As Integer, ByVal destY As Integer, ByVal srcX As Integer, ByVal srcY As Integer, ByVal destWidth As Integer, ByVal destHeight As Integer, ByVal srcWidth As Integer, ByVal srcHeight As Integer, Optional ByVal A As Byte = 255, Optional ByVal R As Byte = 255, Optional ByVal G As Byte = 255, Optional ByVal B As Byte = 255)
-        Dim textureWidth As Integer, textureHeight As Integer
-
-        ' Prevent subscript out range
-        If textureNum <= 0 Or textureNum > numTextures Then Exit Sub
-
-        ' texture sizes
-        textureWidth = Texture(textureNum).Width
-        textureHeight = Texture(textureNum).Height
-
-        ' exit out if we need to
-        If textureWidth <= 0 Or textureHeight <= 0 Then Exit Sub
-
-        Texture(textureNum).Tex.Color = New Color(R, G, B, A)
-        If destWidth <> srcWidth Or destHeight <> srcHeight Then Texture(textureNum).Tex.Scale = New Vector2f(destWidth / srcWidth, destHeight / srcHeight)
-        Texture(textureNum).Tex.TextureRect = New IntRect(srcX, srcY, srcWidth, srcHeight)
-        Texture(textureNum).Tex.Position = New Vector2f(destX, destY)
-        Texture(textureNum).Tex.Draw(TileWindow, RenderStates.Default)
     End Sub
 
     Public Shared Sub RenderRectangle(ByVal Window As RenderWindow, ByVal destX As Integer, ByVal destY As Integer, ByVal destWidth As Integer, ByVal destHeight As Integer, ByVal destThickness As Integer, Optional ByVal A As Byte = 255, Optional ByVal R As Byte = 255, Optional ByVal G As Byte = 255, Optional ByVal B As Byte = 255, Optional ByVal Fill As Boolean = False)

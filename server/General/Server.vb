@@ -14,6 +14,8 @@ Public Class Server
         NPCData.LoadNPCs()
         Console.WriteLine("Loading maps...")
         MapData.LoadMaps()
+        Console.WriteLine("Loading tilesets...")
+        TilesetData.LoadTilesets()
         Console.WriteLine("Loading networking...")
         Networking.Initialize()
         Console.WriteLine("Initializing script engine...")

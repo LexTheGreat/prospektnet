@@ -150,6 +150,23 @@ Class SendData
         Networking.SendDataTo(Index, Buffer)
     End Sub
 
+    Public Shared Sub TilesetData(ByVal Index As Integer)
+        Dim Buffer As NetOutgoingMessage = pServer.CreateMessage
+
+        Buffer.Write(ServerPackets.TilesetData)
+        Buffer.Write(Index)
+        Buffer.Write(TilesetCount)
+        Buffer.Write(Tileset(Index).ID)
+        Buffer.Write(Tileset(Index).MaxX)
+        Buffer.Write(Tileset(Index).MaxY)
+        For x As Integer = 0 To Tileset(Index).MaxX
+            For y As Integer = 0 To Tileset(Index).MaxY
+                Buffer.Write(Tileset(Index).Tile(x, y))
+            Next
+        Next
+        Networking.SendDataToAll(Buffer)
+    End Sub
+
     ' Editor Packets
     Public Shared Sub EditorLoginOk(ByVal index As Integer, ByVal Mode As Byte)
         Dim Buffer As NetOutgoingMessage = pServer.CreateMessage
@@ -164,7 +181,7 @@ Class SendData
 
         Buffer.Write(SEditorPackets.PlayerData)
         Buffer.Write(AccountCount)
-        For I As Integer = 0 To AccountCount
+        For I As Integer = 1 To AccountCount
             Buffer.Write(Account(I).Email)
             Buffer.Write(Account(I).Password)
             Buffer.Write(Account(I).Player.Name)
@@ -204,6 +221,24 @@ Class SendData
                 Next
             Next
         Next
+        Networking.SendDataTo(Index, Buffer)
+    End Sub
+
+    Public Shared Sub EditorTilesetData(ByVal Index As Integer)
+        Dim Buffer As NetOutgoingMessage = pServer.CreateMessage
+
+        Buffer.Write(SEditorPackets.TilesetData)
+        Buffer.Write(TilesetCount)
+        For i As Integer = 1 To TilesetCount
+            Buffer.Write(Tileset(i).ID)
+            Buffer.Write(Tileset(i).MaxX)
+            Buffer.Write(Tileset(i).MaxY)
+            For x As Integer = 0 To Tileset(i).MaxX
+                For y As Integer = 0 To Tileset(i).MaxY
+                    Buffer.Write(Tileset(i).Tile(x, y))
+                Next
+            Next
+        Next i
         Networking.SendDataTo(Index, Buffer)
     End Sub
 

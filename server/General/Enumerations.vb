@@ -13,6 +13,7 @@
         NPC
         NPCPosition
         MapData
+        TilesetData
         ' Make sure SMSG_COUNT is below everything else
         COUNT
     End Enum
@@ -38,6 +39,7 @@
         DataRequest
         MapData
         PlayerData
+        TilesetData
         ' Make sure MSG_COUNT is below everything else
         COUNT
     End Enum
@@ -47,6 +49,7 @@
         LoginOk = ServerPackets.COUNT + 1
         MapData
         PlayerData
+        TilesetData
         DataSent
         ' Make sure MSG_COUNT is below everything else
         COUNT
@@ -92,6 +95,15 @@
         GroundMask
         Fringe
         FringeMask
+        ' Make sure COUNT is below everything else
+        COUNT
+    End Enum
+
+    ' Tile type
+    Public Enum TileType As Byte
+        Walkable = 0
+        Blocked
+        NPCAvoid
         ' Make sure COUNT is below everything else
         COUNT
     End Enum

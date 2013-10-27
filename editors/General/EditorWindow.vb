@@ -144,13 +144,38 @@
 
     Private Sub EditorWindow_SizeChanged(sender As Object, e As EventArgs) Handles MyBase.SizeChanged
         If Not inEditor Then Exit Sub
-        Render.Dispose()
-        Render.Initialize()
+        Render.ReInitialize()
         If IsNothing(lstMaps.SelectedItem) Then Exit Sub
         If Not IsNothing(Map(MapData.GetMapIndex(lstMaps.SelectedIndex))) Then MapEditor.Load(MapData.GetMapIndex(lstMaps.SelectedIndex))
     End Sub
 
     Private Sub EditorWindow_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         General.Main()
+    End Sub
+
+    Private Sub cmbTilesetEditor_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cmbTilesetEditor.SelectedIndexChanged
+        If Not IsNothing(cmbTilesetEditor.Items) Then TilesetEditor.SelectTileset()
+    End Sub
+
+    Private Sub picTilesetEditor_MouseEnter(sender As Object, e As EventArgs) Handles picTilesetEditor.MouseEnter
+        Cursor.Hide()
+        scrlTilesetEditorY.Focus()
+    End Sub
+
+    Private Sub picTilesetEditor_MouseLeave(sender As Object, e As EventArgs) Handles picTilesetEditor.MouseLeave
+        Cursor.Show()
+        TilesetEditor.picTilesetEditor_MouseLeave(e)
+    End Sub
+
+    Private Sub picTilesetEditor_MouseDown(sender As Object, e As MouseEventArgs) Handles picTilesetEditor.MouseDown
+        TilesetEditor.picTilesetEditor_MouseDown(e)
+    End Sub
+
+    Private Sub picTilesetEditor_MouseMove(sender As Object, e As MouseEventArgs) Handles picTilesetEditor.MouseMove
+        TilesetEditor.picTilesetEditor_MouseMove(e)
+    End Sub
+
+    Private Sub btnSaveTileset_Click(sender As Object, e As EventArgs) Handles btnSaveTileset.Click
+        TilesetEditor.btnSaveTileset_Click(e)
     End Sub
 End Class

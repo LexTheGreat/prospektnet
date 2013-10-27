@@ -136,6 +136,8 @@
     <Compile Include="Objects\Players\PlayerData.vb" />
     <Compile Include="Objects\Players\PlayerLogic.vb" />
     <Compile Include="Objects\Players\Players.vb" />
+    <Compile Include="Objects\Tilesets\TilesetData.vb" />
+    <Compile Include="Objects\Tilesets\Tilesets.vb" />
     <Compile Include="Scripting\LuaCommands.vb" />
     <Compile Include="Scripting\LuaHandler.vb" />
   </ItemGroup>

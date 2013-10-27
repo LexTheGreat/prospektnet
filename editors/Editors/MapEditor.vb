@@ -1,6 +1,6 @@
 ﻿Imports System.ComponentModel
 
-Module MapEditor
+Class MapClass
     Private index As Integer = -1
     Private curTileSet As Integer
     Private curLayer As Byte
@@ -92,6 +92,7 @@ Module MapEditor
         Dim MapMax As Integer(), MapVisible As Integer()
         EditorWindow.mapScrlX.Value = 0
         EditorWindow.mapScrlY.Value = 0
+        If i < 0 Then Exit Sub
         If Map.Length > i Then
             index = i
             EditorWindow.tabMap.Text = Map(i).Name
@@ -268,7 +269,7 @@ Module MapEditor
 
     Public Sub DrawTileset()
         Dim ScrlX As Integer = EditorWindow.tileSetScrlX.Value, ScrlY As Integer = EditorWindow.tileSetScrlY.Value
-        If curTileSet > 0 Then Render.RenderTileTexture(texTileset(curTileSet), 0 - ScrlX * picX, 0 - ScrlY * picY, 0, 0, Texture(texTileset(curTileSet)).Width, Texture(texTileset(curTileSet)).Height, Texture(texTileset(curTileSet)).Width, Texture(texTileset(curTileSet)).Height)
+        If curTileSet > 0 Then Render.RenderTexture(Render.TileWindow, texTileset(curTileSet), 0 - ScrlX * picX, 0 - ScrlY * picY, 0, 0, Texture(texTileset(curTileSet)).Width, Texture(texTileset(curTileSet)).Height, Texture(texTileset(curTileSet)).Width, Texture(texTileset(curTileSet)).Height)
     End Sub
 
     Public Sub DrawTilesetSelection()
@@ -300,7 +301,7 @@ Module MapEditor
                             If Not editorProperty.l4 Then Continue For ' Dont Draw Fringe Mask Layer
                         Case Else
                     End Select
-                    Render.RenderMapTexture(texTileset(Map(index).GetTileData(lyr, x, y).Tileset), (x - ScrlX) * picX, (y - ScrlY) * picY, Map(index).GetTileData(lyr, x, y).X, Map(index).GetTileData(lyr, x, y).Y, picX, picY, picX, picY)
+                    Render.RenderTexture(Render.Window, texTileset(Map(index).GetTileData(lyr, x, y).Tileset), (x - ScrlX) * picX, (y - ScrlY) * picY, Map(index).GetTileData(lyr, x, y).X, Map(index).GetTileData(lyr, x, y).Y, picX, picY, picX, picY)
                 Next
             Next
         Next
@@ -308,7 +309,7 @@ Module MapEditor
 
     Public Sub DrawMapSelection()
         If selectSrcRect.Width > 0 And mapMouseRect.Width > 0 Then
-            Render.RenderMapTexture(texTileset(curTileSet), mapMouseRect.X, mapMouseRect.Y, selectSrcRect.X, selectSrcRect.Y, picX, picY, picX, picY)
+            Render.RenderTexture(Render.Window, texTileset(curTileSet), mapMouseRect.X, mapMouseRect.Y, selectSrcRect.X, selectSrcRect.Y, picX, picY, picX, picY)
         End If
         If mapMouseRect.Width > 0 Then Render.RenderRectangle(Render.Window, mapMouseRect.X, mapMouseRect.Y, picX, picY, 2, 255, 255, 215, 0)
 
@@ -374,4 +375,4 @@ Module MapEditor
     Function isDivisible(x As Integer, d As Integer) As Boolean
         Return (x Mod d) = 0
     End Function
-End Module
+End Class

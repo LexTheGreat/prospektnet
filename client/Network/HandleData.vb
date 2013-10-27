@@ -15,6 +15,7 @@ Class HandleData
         If PacketNum = ServerPackets.NPC Then HandleData.NPCData(Data)
         If PacketNum = ServerPackets.NPCPosition Then HandleData.NPCPosition(Data)
         If PacketNum = ServerPackets.MapData Then HandleData.MapData(Data)
+        If PacketNum = ServerPackets.TilesetData Then HandleData.TilesetData(Data)
     End Sub
 
     Public Shared Sub Alert(ByRef Data As NetIncomingMessage)
@@ -181,5 +182,22 @@ Class HandleData
                 Next y
             Next x
         Next i
+    End Sub
+
+    Public Shared Sub TilesetData(ByRef data As NetIncomingMessage)
+        Dim tempIndex As Integer
+        tempIndex = data.ReadInt32
+        TilesetCount = data.ReadInt32
+        ReDim Preserve Tileset(0 To TilesetCount)
+        Tileset(tempIndex) = New Tilesets
+        Tileset(tempIndex).SetID(data.ReadString)
+        Tileset(tempIndex).MaxX = data.ReadInt32
+        Tileset(tempIndex).MaxY = data.ReadInt32
+        Tileset(tempIndex).ResizeArray(New Integer() {Tileset(tempIndex).MaxX, Tileset(tempIndex).MaxY})
+        For x As Integer = 0 To Tileset(tempIndex).MaxX
+            For y As Integer = 0 To Tileset(tempIndex).MaxY
+                Tileset(tempIndex).Tile(x, y) = data.ReadByte
+            Next y
+        Next x
     End Sub
 End Class

@@ -15,6 +15,7 @@
     Public Const pathAccounts As String = pathContent & "accounts/"
     Public Const pathNPCs As String = pathContent & "npcs/"
     Public Const pathMaps As String = pathContent & "maps/"
+    Public Const pathTilesets As String = pathContent & "tilesets/"
 
     ' Players
     Public Account As Accounts()
@@ -25,6 +26,10 @@
     ' Maps
     Public Map As MapStructure()
     Public MapCount As Integer = 0
+
+    ' Tilesets
+    Public Tileset() As Tilesets
+    Public TilesetCount As Integer = 0
 
     ' NPCs
     Public NPC() As NPCs

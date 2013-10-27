@@ -42,6 +42,7 @@
 
         If PlayerLogic.PlayerOnTile(tempX, tempY) Then Return False
         If NPCLogic.NpcOnTile(tempX, tempY) Then Return False
+        If TilesetLogic.isTileBlocked(tempX, tempY) Then Return False
     End Function
 
     Public Shared Sub CheckMovement()

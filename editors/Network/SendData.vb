@@ -49,7 +49,7 @@ Public Class SendData
 
         'Accounts data
         Buffer.Write(AccountCount)
-        For I As Integer = 0 To AccountCount
+        For I As Integer = 1 To AccountCount
             Buffer.Write(Account(I).Email)
             Buffer.Write(Account(I).Password)
             Buffer.Write(Account(I).Name)
@@ -60,6 +60,25 @@ Public Class SendData
             Buffer.Write(Account(I).GetPlayerDir)
             Buffer.Write(Account(I).GetPlayerAccess)
             Buffer.Write(Account(I).Visible)
+        Next
+        Networking.SendData(Buffer)
+    End Sub
+
+    Public Shared Sub TilesetData()
+        Dim Buffer As NetOutgoingMessage = pClient.CreateMessage
+        Buffer.Write(CEditorPackets.TilesetData)
+
+        'Tileset data
+        Buffer.Write(TilesetCount)
+        For I As Integer = 1 To TilesetCount
+            Buffer.Write(Tileset(I).ID)
+            Buffer.Write(Tileset(I).MaxX)
+            Buffer.Write(Tileset(I).MaxY)
+            For x As Integer = 0 To Tileset(I).MaxX
+                For y As Integer = 0 To Tileset(I).MaxY
+                    Buffer.Write(Tileset(I).Tile(x, y))
+                Next
+            Next
         Next
         Networking.SendData(Buffer)
     End Sub

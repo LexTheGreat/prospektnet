@@ -93,6 +93,7 @@
     <Compile Include="Database\Files.vb" />
     <Compile Include="Editors\AccountEditor.vb" />
     <Compile Include="Editors\MapEditor.vb" />
+    <Compile Include="Editors\TilesetEditor.vb" />
     <Compile Include="General\EditorWindow.Designer.vb">
       <DependentUpon>EditorWindow.vb</DependentUpon>
     </Compile>
@@ -142,6 +143,8 @@
     <Compile Include="Objects\Maps\MapStructure.vb" />
     <Compile Include="Objects\Maps\OverlayColor.vb" />
     <Compile Include="Objects\Maps\TileData.vb" />
+    <Compile Include="Objects\Tilesets\TilesetData.vb" />
+    <Compile Include="Objects\Tilesets\Tilesets.vb" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="General\EditorWindow.resx">
