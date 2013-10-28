@@ -1,5 +1,4 @@
 ﻿Public Class EditorWindow
-
     Private Sub EditorWindow_Disposed(sender As Object, e As EventArgs) Handles Me.Disposed
         inEditor = False
         Verdana.Dispose()
@@ -14,6 +13,10 @@
 
     Private Sub mnuMain_Sync_Click(sender As Object, e As EventArgs) Handles mnuMain_Sync.Click
         SyncData.Show()
+    End Sub
+
+    Private Sub tabEditors_SelectedIndexChanged(sender As Object, e As EventArgs) Handles tabEditors.SelectedIndexChanged
+        SelectedEditor = tabEditors.SelectedIndex
     End Sub
 
     ' Map Editor
@@ -94,7 +97,6 @@
         If Not IsNothing(mapCmbTileSet.Items) Then
             Dim reply As DialogResult = MessageBox.Show("Are you sure you wish to full this layer?", "Wait!", _
                           MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1)
-
             If reply = DialogResult.Yes Then
                 MapEditor.FillLayer()
             End If
@@ -105,7 +107,6 @@
         If Not IsNothing(mapCmbTileSet.Items) Then
             Dim reply As DialogResult = MessageBox.Show("Are you sure you wish to clear this layer?", "Wait!", _
                           MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1)
-
             If reply = DialogResult.Yes Then
                 MapEditor.ClearLayer()
             End If
@@ -177,5 +178,19 @@
 
     Private Sub btnSaveTileset_Click(sender As Object, e As EventArgs) Handles btnSaveTileset.Click
         TilesetEditor.btnSaveTileset_Click(e)
+    End Sub
+
+    Private Sub btnClearTileset_Click(sender As Object, e As EventArgs) Handles btnClearTileset.Click
+        If Not IsNothing(mapCmbTileSet.Items) Then
+            Dim reply As DialogResult = MessageBox.Show("Are you sure you wish to clear this tileset?", "Wait!", _
+                          MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1)
+            If reply = DialogResult.Yes Then
+                TilesetEditor.ClearTileset()
+            End If
+        End If
+    End Sub
+
+    Private Sub txtTilesetName_TextChanged(sender As Object, e As EventArgs) Handles txtTilesetName.TextChanged
+        If Not IsNothing(cmbTilesetEditor.Items) Then TilesetEditor.txtTilesetName_TextChanged()
     End Sub
 End Class

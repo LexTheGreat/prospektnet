@@ -13,14 +13,12 @@ Public Class HandleData
     Public Shared Sub Alert(ByRef Data As NetIncomingMessage)
         Dim Message As String
 
-
         Message = Data.ReadString
         MsgBox(Message)
     End Sub
 
     Public Shared Sub LoginOk(ByRef Data As NetIncomingMessage)
         Dim mode As Byte = 0
-
 
         mode = Data.ReadByte
         If mode = 0 Then
@@ -66,7 +64,6 @@ Public Class HandleData
     Public Shared Sub EditorPlayerData(ByRef Data As NetIncomingMessage)
         Dim num As Integer = 0, sTileData As New TileData
 
-
         num = Data.ReadInt32
         ReDim Account(0 To num)
         For i As Integer = 1 To num
@@ -94,6 +91,7 @@ Public Class HandleData
         For i As Integer = 1 To num
             Tileset(i) = New Tilesets
             Tileset(i).SetID(data.ReadString)
+            Tileset(i).Name = data.ReadString
             Tileset(i).MaxX = data.ReadInt32
             Tileset(i).MaxY = data.ReadInt32
             Tileset(i).ResizeArray(New Integer() {Tileset(i).MaxX, Tileset(i).MaxY})
@@ -109,7 +107,6 @@ Public Class HandleData
 
     Public Shared Sub DataSent(ByRef Data As NetIncomingMessage)
         Dim mode As Byte = 0
-
 
         mode = Data.ReadByte
         If mode = 0 Then

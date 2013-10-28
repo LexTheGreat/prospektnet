@@ -52,7 +52,6 @@ Class HandleData
         ReDim Preserve Player(0 To PlayerCount)
         If IsNothing(Player(tempIndex)) Then Player(tempIndex) = New Players
         Player(tempIndex).Load(Data.ReadString, Data.ReadInt32, Data.ReadInt32, Data.ReadInt32, Data.ReadByte, Data.ReadByte, Data.ReadBoolean)
-
     End Sub
 
     Public Shared Sub ClearPlayer(ByRef Data As NetIncomingMessage)
@@ -60,8 +59,6 @@ Class HandleData
         tempIndex = Data.ReadInt32
         PlayerCount = Data.ReadInt32
         Player(tempIndex) = Nothing
-
-
     End Sub
 
     Public Shared Sub Position(ByRef Data As NetIncomingMessage)
@@ -191,6 +188,7 @@ Class HandleData
         ReDim Preserve Tileset(0 To TilesetCount)
         Tileset(tempIndex) = New Tilesets
         Tileset(tempIndex).SetID(data.ReadString)
+        Tileset(tempIndex).Name = data.ReadString
         Tileset(tempIndex).MaxX = data.ReadInt32
         Tileset(tempIndex).MaxY = data.ReadInt32
         Tileset(tempIndex).ResizeArray(New Integer() {Tileset(tempIndex).MaxX, Tileset(tempIndex).MaxY})

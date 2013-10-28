@@ -6,6 +6,10 @@ Module General
         Networking.Initialize()
         Render.Initialize()
         Verdana = New TextWriter("content/fonts/Verdana.ttf")
+        ' Setup Tileset Editor
+        TilesetData.LoadTilesets()
+        TilesetEditor = New TilesetClass
+        TilesetEditor.Init()
         'Setup Map Editor
         MapData.LoadMaps()
         MapEditor = New MapClass
@@ -14,10 +18,6 @@ Module General
         AccountData.LoadAccounts()
         AccountEditor = New AccountClass
         AccountEditor.Init()
-        ' Setup Tileset Editor
-        TilesetData.LoadTilesets()
-        TilesetEditor = New TilesetClass
-        TilesetEditor.Init()
         EditorWindow.Visible = True
         inEditor = True
         EditorLoop()
@@ -35,26 +35,28 @@ Module General
             ElapsedTime = Tick - FrameTime ' Set the time difference for time-based movement
             FrameTime = Tick
             Networking.HandleMessage()
-            ' Start rendering
-            Render.TileWindow.Clear(New Color(255, 255, 255))
-            MapEditor.DrawTileset()
-            MapEditor.DrawTilesetSelection()
-            ' End the rendering
-            Render.TileWindow.Display()
 
-            ' Start rendering
-            Render.TileEditWindow.Clear(New Color(255, 255, 255))
-            TilesetEditor.DrawTileset()
-            TilesetEditor.DrawTileTypes()
-            TilesetEditor.DrawTilesetSelection()
-            ' End the rendering
-            Render.TileEditWindow.Display()
+            Select Case SelectedEditor
+                Case 0 ' Map Editor
+                    ' Start rendering
+                    Render.TileWindow.Clear(New Color(255, 255, 255))
+                    MapEditor.DrawTileset()
+                    MapEditor.DrawTilesetSelection()
+                    MapEditor.DrawMapTiles()
+                    MapEditor.DrawMapSelection()
+                    MapEditor.DraMapOverlay()
+                    ' End the rendering
+                    Render.TileWindow.Display()
+                Case 1 ' Tile Editor
+                    ' Start rendering
+                    Render.TileEditWindow.Clear(New Color(255, 255, 255))
+                    TilesetEditor.DrawTileset()
+                    TilesetEditor.DrawTileTypes()
+                    TilesetEditor.DrawTilesetSelection()
+                    ' End the rendering
+                    Render.TileEditWindow.Display()
+            End Select
 
-            ' Start rendering
-            Render.Window.Clear(New Color(255, 255, 255))
-            MapEditor.DrawMapTiles()
-            MapEditor.DrawMapSelection()
-            MapEditor.DraMapOverlay()
             ' End the rendering
             Render.Window.Display()
 

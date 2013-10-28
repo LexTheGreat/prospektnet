@@ -24,6 +24,13 @@ Public Class TilesetData
         End Try
     End Sub
 
+    Public Shared Function GetTilesetID(ByVal name As String)
+        For Each tile In Tileset
+            If tile.Name = name Then Return tile.ID
+        Next
+        Return 0
+    End Function
+
     Public Shared Function isTileBlocked(ByVal MapNum As Integer, ByVal X As Integer, ByVal Y As Integer) As Boolean
         Dim tempTile As New TileData
         For I As Integer = 0 To MapLayerEnum.COUNT - 1

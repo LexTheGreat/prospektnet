@@ -21,12 +21,10 @@ Class HandleData
     End Sub
 
     Public Shared Sub Register(ByVal index As Integer, ByRef data As NetIncomingMessage)
-
         Dim Email As String, Password As String
 
-
-        Email = Data.ReadString
-        Password = Data.ReadString
+        Email = data.ReadString
+        Password = data.ReadString
 
         If Not AccountData.AccountExists(Email) Then
             Dim newAccount = New Accounts
@@ -47,12 +45,10 @@ Class HandleData
     End Sub
 
     Public Shared Sub NewCharacter(ByVal index As Integer, ByRef data As NetIncomingMessage)
-
         Dim Email As String, Name As String
 
-
-        Email = Data.ReadString
-        Name = Data.ReadString
+        Email = data.ReadString
+        Name = data.ReadString
 
         If Not PlayerData.PlayerExists(Name) Then
             Dim newAccount As New Accounts
@@ -73,11 +69,9 @@ Class HandleData
     End Sub
 
     Public Shared Sub Login(ByVal index As Integer, ByRef data As NetIncomingMessage)
-
         Dim Name As String, Password As String
 
-
-        Name = Data.ReadString
+        Name = data.ReadString
         Password = data.ReadString
 
         Player(index) = New Players
@@ -119,7 +113,6 @@ Class HandleData
     Public Shared Sub Message(ByVal index As Integer, ByRef data As NetIncomingMessage)
         Dim ChatMode As String, Message As String
 
-
         ChatMode = Data.ReadString
         Message = Data.ReadString
 
@@ -134,15 +127,13 @@ Class HandleData
     End Sub
 
     Public Shared Sub Position(ByVal index As Integer, ByRef data As NetIncomingMessage)
-
         Dim Moving As Boolean, X As Integer, Y As Integer, Dir As Integer
 
-
         Moving = data.ReadBoolean
-        X = Data.ReadInt32
-        Y = Data.ReadInt32
+        X = data.ReadInt32
+        Y = data.ReadInt32
         Dir = data.ReadByte
-        
+
         If Not PlayerLogic.PlayerOnTile(X, Y) And Not NPCLogic.NpcOnTile(X, Y) And Not TilesetData.isTileBlocked(Player(index).Map, X, Y) Then ' Send new position to others
             Player(index).SetMoving(Moving)
             Player(index).SetPosition(New Integer() {X, Y})
@@ -154,15 +145,13 @@ Class HandleData
     End Sub
 
     Public Shared Sub SetAdmin(ByVal index As Integer, ByRef data As NetIncomingMessage)
-
         Dim i As Integer
 
-
-        i = Data.ReadInt32
+        i = data.ReadInt32
         If PlayerLogic.IsPlaying(index) Then
             If Player(index).AccessMode > ACCESS.NONE Then
                 If PlayerLogic.IsPlaying(i) Then
-                    Player(i).AccessMode = Data.ReadInt32
+                    Player(i).AccessMode = data.ReadInt32
                     SendData.Access(i)
                 End If
             Else
@@ -172,11 +161,9 @@ Class HandleData
     End Sub
 
     Public Shared Sub SetVisible(ByVal index As Integer, ByRef data As NetIncomingMessage)
-
         Dim i As Integer
 
-
-        i = Data.ReadInt32
+        i = data.ReadInt32
         If PlayerLogic.IsPlaying(index) Then
             If Player(index).AccessMode > ACCESS.NONE Then
                 If PlayerLogic.IsPlaying(i) Then
@@ -191,11 +178,9 @@ Class HandleData
     End Sub
 
     Public Shared Sub WarpTo(ByVal index As Integer, ByRef data As NetIncomingMessage)
-
         Dim i As Integer
 
-
-        i = Data.ReadInt32
+        i = data.ReadInt32
         If PlayerLogic.IsPlaying(index) Then
             If Player(index).AccessMode > ACCESS.NONE Then
                 If PlayerLogic.IsPlaying(i) Then
@@ -210,11 +195,9 @@ Class HandleData
     End Sub
 
     Public Shared Sub WarpToMe(ByVal index As Integer, ByRef data As NetIncomingMessage)
-
         Dim i As Integer
 
-
-        i = Data.ReadInt32
+        i = data.ReadInt32
         If PlayerLogic.IsPlaying(index) Then
             If Player(index).AccessMode > ACCESS.NONE Then
                 If PlayerLogic.IsPlaying(i) Then
@@ -233,11 +216,10 @@ Class HandleData
     End Sub
 
     Public Shared Sub EditorLogin(ByVal index As Integer, ByRef data As NetIncomingMessage)
-
         Dim Name As String, Password As String, Mode As Integer
 
-        Name = Data.ReadString
-        Password = Data.ReadString
+        Name = data.ReadString
+        Password = data.ReadString
         Mode = data.ReadInt32
 
         Player(index) = New Players()
@@ -275,7 +257,6 @@ Class HandleData
         Dim num As Integer = 0
         Dim saveMap() As MapStructure
         Dim sTileData As TileData
-
 
         num = data.ReadInt32
         ReDim saveMap(0 To num)
@@ -315,7 +296,6 @@ Class HandleData
         Dim num As Integer = 0
         Dim savePlayer() As Accounts
 
-
         num = data.ReadInt32
         ReDim savePlayer(0 To num)
         For i As Integer = 1 To num
@@ -346,6 +326,7 @@ Class HandleData
         For i As Integer = 1 To num
             saveTileset(i) = New Tilesets
             saveTileset(i).SetID(data.ReadString)
+            saveTileset(i).Name = data.ReadString
             saveTileset(i).MaxX = data.ReadInt32
             saveTileset(i).MaxY = data.ReadInt32
             saveTileset(i).ResizeArray(New Integer() {saveTileset(i).MaxX, saveTileset(i).MaxY})

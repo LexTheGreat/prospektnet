@@ -12,12 +12,12 @@ Public Class TextWriter
         IsVisible = True
     End Sub
 
-    Public Sub Draw(ByVal DrawText As String, ByVal X As Integer, ByVal Y As Integer, ByVal textColor As Color, Optional ByVal Size As Integer = 12)
+    Public Sub Draw(ByVal Window As RenderWindow, ByVal DrawText As String, ByVal X As Integer, ByVal Y As Integer, ByVal textColor As Color, Optional ByVal Size As Integer = 12)
         If IsVisible Then
             xText = New Text(DrawText, xFont, Size)
             xText.Color = New Color(textColor)
             xText.Position = New Vector2f(X, Y)
-            xText.Draw(Render.Window, RenderStates.Default)
+            xText.Draw(Window, RenderStates.Default)
         End If
     End Sub
 

@@ -9,10 +9,10 @@
     Public pClient As Lidgren.Network.NetClient
 
     ' Editors
-
     Public AccountEditor As AccountClass
     Public MapEditor As MapClass
     Public TilesetEditor As TilesetClass
+    Public SelectedEditor As Byte = 0
 
     ' Loop Control
     Public ElapsedTime As Integer

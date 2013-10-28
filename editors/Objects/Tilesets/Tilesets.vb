@@ -1,8 +1,13 @@
 ﻿<Serializable()> Public Class Tilesets
     Private mID As Integer
+    Private mName As String
     Private mMaxX As Integer
     Private mMaxY As Integer
     Public Tile(0, 0) As Byte
+
+    Sub New()
+        Me.mName = "Tileset" & Tileset.Length - 1
+    End Sub
 
     Public Sub Save()
         TilesetData.Save(Me)
@@ -12,6 +17,7 @@
         Dim loadTileset As New Tilesets
         loadTileset = DirectCast(Files.ReadBinary(pathTilesets & Trim(Me.mID) & ".bin"), Tilesets)
         Me.mID = loadTileset.mID
+        Me.mName = loadTileset.mName
         Me.mMaxX = loadTileset.mMaxX
         Me.mMaxY = loadTileset.mMaxY
         ReDim Me.Tile(0 To loadTileset.mMaxX, 0 To loadTileset.mMaxY)
@@ -40,6 +46,16 @@
         Get
             Return Me.mID
         End Get
+    End Property
+
+    Public Property Name() As String
+        Get
+            Return Me.mName
+        End Get
+
+        Set(value As String)
+            Me.mName = value
+        End Set
     End Property
 
     Public Property MaxX() As Integer

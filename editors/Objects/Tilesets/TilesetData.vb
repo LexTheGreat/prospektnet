@@ -23,4 +23,11 @@ Public Class TilesetData
             Console.WriteLine("Error: " & ex.ToString & " (In: Data.LoadTilesets")
         End Try
     End Sub
+
+    Public Shared Function GetTilesetID(ByVal name As String)
+        For Each tile In Tileset
+            If tile.Name = name Then Return tile.ID
+        Next
+        Return 0
+    End Function
 End Class

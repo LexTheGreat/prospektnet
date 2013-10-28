@@ -1,5 +1,6 @@
 ﻿<Serializable()> Public Class Tilesets
     Private mID As Integer
+    Private mName As String
     Private mMaxX As Integer
     Private mMaxY As Integer
     Public Tile(0, 0) As Byte
@@ -26,6 +27,16 @@
         Get
             Return Me.mID
         End Get
+    End Property
+
+    Public Property Name() As String
+        Get
+            Return Me.mName
+        End Get
+
+        Set(value As String)
+            Me.mName = value
+        End Set
     End Property
 
     Public Property MaxX() As Integer

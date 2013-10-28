@@ -72,6 +72,7 @@ Public Class SendData
         Buffer.Write(TilesetCount)
         For I As Integer = 1 To TilesetCount
             Buffer.Write(Tileset(I).ID)
+            Buffer.Write(Tileset(I).Name)
             Buffer.Write(Tileset(I).MaxX)
             Buffer.Write(Tileset(I).MaxY)
             For x As Integer = 0 To Tileset(I).MaxX

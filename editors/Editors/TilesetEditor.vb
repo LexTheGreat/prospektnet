@@ -8,6 +8,7 @@ Class TilesetClass
 
     Public Sub Init()
         If countTileset > 0 Then
+            EditorWindow.cmbTilesetEditor.Items.Clear()
             ReDim Preserve Tileset(0 To countTileset)
             For I As Integer = 1 To countTileset
                 EditorWindow.cmbTilesetEditor.Items.Add(pathTilesets & I & ".png")
@@ -19,17 +20,19 @@ Class TilesetClass
     Public Sub SelectTileset()
         selectSrcRect = New Rectangle(0, 0, 0, 0)
         curTileSet = CInt(EditorWindow.cmbTilesetEditor.SelectedItem.ToString.Replace(pathTilesets, vbNullString).Replace(".png", vbNullString))
-        If curTileSet = 0 Then Exit Sub
+        index = curTileSet - 1
+        If Not curTileSet >= 0 Then Exit Sub
         EditorWindow.scrlTilesetEditorX.Minimum = 0
         EditorWindow.scrlTilesetEditorY.Minimum = 0
         EditorWindow.scrlTilesetEditorX.Maximum = (Texture(texTileset(curTileSet)).Width - EditorWindow.picTilesetEditor.ClientSize.Width + picX) / picX
         EditorWindow.scrlTilesetEditorY.Maximum = (Texture(texTileset(curTileSet)).Height - EditorWindow.picTilesetEditor.ClientSize.Height + picY) / picY
         EditorWindow.scrlTilesetEditorX.Value = 0
         EditorWindow.scrlTilesetEditorY.Value = 0
-        If IsNothing(Tileset(curTileSet)) Then Tileset(curTileSet) = New Tilesets
-        Tileset(curTileSet).ResizeArray(New Integer() {Texture(texTileset(curTileSet)).Width / picX, Texture(texTileset(curTileSet)).Width / picY})
-        Tileset(curTileSet).MaxX = Texture(texTileset(curTileSet)).Width / picX
-        Tileset(curTileSet).MaxY = Texture(texTileset(curTileSet)).Height / picY
+        If IsNothing(Tileset(index)) Then Tileset(index) = New Tilesets
+        Tileset(index).ResizeArray(New Integer() {Texture(texTileset(curTileSet)).Width / picX, Texture(texTileset(curTileSet)).Width / picY})
+        Tileset(index).MaxX = Texture(texTileset(curTileSet)).Width / picX
+        Tileset(index).MaxY = Texture(texTileset(curTileSet)).Height / picY
+        EditorWindow.txtTilesetName.Text = Tileset(index).Name
     End Sub
 
     Public Sub picTilesetEditor_MouseMove(e As MouseEventArgs)
@@ -47,45 +50,61 @@ Class TilesetClass
             e.Y + (EditorWindow.scrlTilesetEditorY.Value * picY) >= Texture(texTileset(curTileSet)).Height Then Exit Sub
         Dim selectX As Integer = EditorWindow.scrlTilesetEditorX.Value * picX, selectY As Integer = EditorWindow.scrlTilesetEditorY.Value * picY
         If e.Button = MouseButtons.Left Then
-            If Tileset(curTileSet).Tile((selectMouseRect.X + selectX) / picX, (selectMouseRect.Y + selectY) / picY) < TileType.COUNT - 1 Then
-                Tileset(curTileSet).Tile((selectMouseRect.X + selectX) / picX, (selectMouseRect.Y + selectY) / picY) += 1
+            If Tileset(index).Tile((selectMouseRect.X + selectX) / picX, (selectMouseRect.Y + selectY) / picY) < TileType.COUNT - 1 Then
+                Tileset(index).Tile((selectMouseRect.X + selectX) / picX, (selectMouseRect.Y + selectY) / picY) += 1
             Else
-                Tileset(curTileSet).Tile((selectMouseRect.X + selectX) / picX, (selectMouseRect.Y + selectY) / picY) = 0
+                Tileset(index).Tile((selectMouseRect.X + selectX) / picX, (selectMouseRect.Y + selectY) / picY) = 0
             End If
         ElseIf e.Button = MouseButtons.Right Then
-            Tileset(curTileSet).Tile((selectMouseRect.X + selectX) / picX, (selectMouseRect.Y + selectY) / picY) = TileType.Walkable
+            Tileset(index).Tile((selectMouseRect.X + selectX) / picX, (selectMouseRect.Y + selectY) / picY) = TileType.Walkable
         End If
     End Sub
 
     Public Sub btnSaveTileset_Click(e As EventArgs)
-        If curTileSet > 0 Then
-            If Not IsNothing(Tileset(curTileSet)) Then
-                Tileset(curTileSet).SetID(curTileSet)
-                Tileset(curTileSet).Save()
+        If curTileSet >= 0 Then
+            If Not IsNothing(Tileset(index)) Then
+                Tileset(index).SetID(curTileSet)
+                Tileset(index).Save()
             End If
         End If
     End Sub
 
+    Public Sub ClearTileset()
+        If Not curTileSet >= 0 Then Exit Sub
+        For X As Integer = 0 To Tileset(index).Tile.GetUpperBound(0)
+            For Y As Integer = 0 To Tileset(index).Tile.GetUpperBound(1)
+                Tileset(index).Tile(X, Y) = TileType.Walkable
+            Next
+        Next
+    End Sub
+
+    Public Sub txtTilesetName_TextChanged()
+        If Not curTileSet >= 0 Then Exit Sub
+        Tileset(index).Name = EditorWindow.txtTilesetName.Text
+    End Sub
+
     Public Sub DrawTileset()
         Dim ScrlX As Integer = EditorWindow.scrlTilesetEditorX.Value, ScrlY As Integer = EditorWindow.scrlTilesetEditorY.Value
-        If curTileSet > 0 Then Render.RenderTexture(Render.TileEditWindow, texTileset(curTileSet), 0 - ScrlX * picX, 0 - ScrlY * picY, 0, 0, Texture(texTileset(curTileSet)).Width, Texture(texTileset(curTileSet)).Height, Texture(texTileset(curTileSet)).Width, Texture(texTileset(curTileSet)).Height)
+        If curTileSet >= 0 Then Render.RenderTexture(Render.TileEditWindow, texTileset(curTileSet), 0 - ScrlX * picX, 0 - ScrlY * picY, 0, 0, Texture(texTileset(curTileSet)).Width, Texture(texTileset(curTileSet)).Height, Texture(texTileset(curTileSet)).Width, Texture(texTileset(curTileSet)).Height)
     End Sub
 
     Public Sub DrawTilesetSelection()
-        If Not curTileSet > 0 Then Exit Sub
+        If Not curTileSet >= 0 Then Exit Sub
         If selectMouseRect.Width > 0 Then Render.RenderRectangle(Render.TileEditWindow, selectMouseRect.X, selectMouseRect.Y, picX, picY, 2, 255, 0, 255, 255)
     End Sub
 
     Public Sub DrawTileTypes()
         If Not curTileSet > 0 Then Exit Sub
         Dim selectX As Integer = EditorWindow.scrlTilesetEditorX.Value, selectY As Integer = EditorWindow.scrlTilesetEditorY.Value
-        For X As Integer = 0 To Tileset(curTileSet).Tile.GetUpperBound(0)
-            For Y As Integer = 0 To Tileset(curTileSet).Tile.GetUpperBound(1)
-                Select Case Tileset(curTileSet).Tile(X, Y)
+        For X As Integer = 0 To Tileset(index).Tile.GetUpperBound(0)
+            For Y As Integer = 0 To Tileset(index).Tile.GetUpperBound(1)
+                Select Case Tileset(index).Tile(X, Y)
                     Case TileType.Blocked
                         Render.RenderRectangle(Render.TileEditWindow, (X - selectX) * picX, (Y - selectY) * picY, picX, picY, 0, 150, 255, 0, 0, True)
+                        Verdana.Draw(Render.TileEditWindow, "B", (X - selectX) * picX, (Y - selectY) * picY, SFML.Graphics.Color.White, 22)
                     Case TileType.NPCAvoid
                         Render.RenderRectangle(Render.TileEditWindow, (X - selectX) * picX, (Y - selectY) * picY, picX, picY, 0, 150, 0, 0, 255, True)
+                        Verdana.Draw(Render.TileEditWindow, "NA", (X - selectX) * picX, (Y - selectY) * picY, SFML.Graphics.Color.White, 22)
                 End Select
             Next Y
         Next X

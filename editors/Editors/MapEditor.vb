@@ -71,6 +71,7 @@ Class MapClass
 
     Public Sub Init()
         If Not IsNothing(Map) Then
+            EditorWindow.lstMaps.Items.Clear()
             For Each mp In Map
                 If Not IsNothing(mp) Then
                     EditorWindow.lstMaps.Items.Add(mp.Name)
@@ -81,8 +82,9 @@ Class MapClass
         EditorWindow.proptMapEditorData.SelectedObject = editorProperty
         curLayer = editorProperty.GetLayer
         If countTileset > 0 Then
-            For I As Integer = 1 To countTileset
-                EditorWindow.mapCmbTileSet.Items.Add(pathTilesets & I & ".png")
+            EditorWindow.mapCmbTileSet.Items.Clear()
+            For I As Integer = 0 To Tileset.Length - 2
+                EditorWindow.mapCmbTileSet.Items.Add(Tileset(I).Name)
             Next
         End If
         EditorWindow.mapCmbTileSet.SelectedIndex = 0
@@ -167,16 +169,13 @@ Class MapClass
 
     Public Sub SelectTileset()
         selectSrcRect = New Rectangle(0, 0, 0, 0)
-        curTileSet = CInt(EditorWindow.mapCmbTileSet.SelectedItem.ToString.Replace(pathTilesets, vbNullString).Replace(".png", vbNullString))
+        curTileSet = TilesetData.GetTilesetID(EditorWindow.mapCmbTileSet.SelectedItem.ToString)
         EditorWindow.tileSetScrlX.Minimum = 0
         EditorWindow.tileSetScrlY.Minimum = 0
         EditorWindow.tileSetScrlX.Maximum = (Texture(texTileset(curTileSet)).Width - EditorWindow.TileSetPreview.ClientSize.Width + picY) / picX
         EditorWindow.tileSetScrlY.Maximum = (Texture(texTileset(curTileSet)).Height - EditorWindow.TileSetPreview.ClientSize.Height + picY) / picY
         EditorWindow.tileSetScrlX.Value = 0
         EditorWindow.tileSetScrlY.Value = 0
-        ' Width: 1024, Height: 512
-        System.Diagnostics.Debug.WriteLine(EditorWindow.tileSetScrlX.Maximum)
-        System.Diagnostics.Debug.WriteLine(EditorWindow.tileSetScrlY.Maximum)
     End Sub
 
     Public Sub mapPreview_MouseMove(e As MouseEventArgs)
@@ -314,11 +313,11 @@ Class MapClass
         If mapMouseRect.Width > 0 Then Render.RenderRectangle(Render.Window, mapMouseRect.X, mapMouseRect.Y, picX, picY, 2, 255, 255, 215, 0)
 
         ' Needed to fix some weird bug that only draws the second text
-        Verdana.Draw("Blank", 0, 0, SFML.Graphics.Color.Transparent)
+        Verdana.Draw(Render.Window, "Blank", 0, 0, SFML.Graphics.Color.Transparent)
         If editorProperty.curPos And mapMouseRect.Width > 0 Then
             Dim ScrlX As Integer = EditorWindow.mapScrlX.Value, ScrlY As Integer = EditorWindow.mapScrlY.Value
             Dim DrawX As Integer = mapMouseRect.X / picX + ScrlX, DrawY As Integer = mapMouseRect.Y / picY + ScrlY
-            Verdana.Draw("X: " & DrawX & " - Y: " & DrawY, mapMouseRect.X, mapMouseRect.Y, SFML.Graphics.Color.White, 9)
+            Verdana.Draw(Render.Window, "X: " & DrawX & " - Y: " & DrawY, mapMouseRect.X, mapMouseRect.Y, SFML.Graphics.Color.White, 9)
         End If
     End Sub
 
