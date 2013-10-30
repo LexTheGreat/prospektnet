@@ -44,7 +44,7 @@ Class Files
             fs.Close()
             Return True
         Catch ex As Exception
-            Console.WriteLine("Error: " & ex.ToString & " (In: Files.WriteXMLBinary")
+            Console.WriteLine("Error: " & ex.ToString & " (In: Files.WriteBinary")
             Return False
         End Try
     End Function
@@ -57,7 +57,7 @@ Class Files
             fs.Close()
             Return obj
         Catch ex As Exception
-            Console.WriteLine("Error: " & ex.ToString & " (In: Files.ReadXMLBinary")
+            Console.WriteLine("Error: " & ex.ToString & " (In: Files.ReadBinary")
             Return Nothing
         End Try
     End Function

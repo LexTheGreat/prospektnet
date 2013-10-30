@@ -24,8 +24,6 @@ Class NPCData
     End Function
 
     Public Shared Sub LoadNPCs()
-        Dim Reader As StreamReader
-        Dim Ser As XmlSerializer
         Try
             ReDim Preserve NPC(0 To 1)
             NPC(0) = New NPCs
@@ -33,11 +31,7 @@ Class NPCData
                 Dim fileEntries As String() = Directory.GetFiles(pathNPCs)
                 Dim fileName As String, i As Integer, loadNPC As New NPCs
                 For Each fileName In fileEntries
-                    'Deserialize file to object.
-                    Reader = New StreamReader(fileName)
-                    Ser = New XmlSerializer(loadNPC.GetType)
-                    loadNPC = Ser.Deserialize(Reader)
-                    Reader.Close()
+                    loadNPC = DirectCast(Files.ReadXML(fileName, loadNPC), NPCs)
                     NPCCount = i + 1
                     ReDim Preserve NPC(0 To NPCCount)
                     NPC(NPCCount) = loadNPC

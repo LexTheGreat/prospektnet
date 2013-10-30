@@ -6,7 +6,7 @@ Imports System.Xml.Serialization
 Class AccountData
 
     Public Shared Sub LoadAccounts()
-        Dim objAcc As Object, loadAcc As New Accounts
+        Dim loadAcc As New Accounts
         Dim fileEntries As String()
         Dim fileName As String, i As Integer = 0
         Try
@@ -15,11 +15,7 @@ Class AccountData
             If Directory.Exists(pathAccounts) Then
                 fileEntries = Directory.GetFiles(pathAccounts)
                 For Each fileName In fileEntries
-                    ' Get object from file
-                    objAcc = Files.ReadXML(fileName, loadAcc)
-                    If IsNothing(objAcc) Then objAcc = New Accounts
-                    ' Convert object to loadAcc
-                    loadAcc = CType(objAcc, Accounts)
+                    loadAcc = DirectCast(Files.ReadXML(fileName, loadAcc), Accounts)
                     AccountCount = i + 1
                     ReDim Preserve Account(0 To AccountCount)
                     Account(AccountCount) = loadAcc

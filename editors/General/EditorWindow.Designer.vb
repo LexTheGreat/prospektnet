@@ -32,16 +32,16 @@ Partial Class EditorWindow
         Me.groupMapData = New System.Windows.Forms.GroupBox()
         Me.tabMaps = New System.Windows.Forms.TabControl()
         Me.tabMap = New System.Windows.Forms.TabPage()
+        Me.mapPreview = New System.Windows.Forms.PictureBox()
         Me.mapScrlY = New System.Windows.Forms.VScrollBar()
         Me.mapScrlX = New System.Windows.Forms.HScrollBar()
-        Me.mapPreview = New System.Windows.Forms.PictureBox()
         Me.panMapRight = New System.Windows.Forms.Panel()
         Me.panMapTiles = New System.Windows.Forms.Panel()
         Me.panMapTileSetBack = New System.Windows.Forms.Panel()
         Me.mapPanTileSet = New System.Windows.Forms.Panel()
+        Me.mapPicTileset = New System.Windows.Forms.PictureBox()
         Me.tileSetScrlY = New System.Windows.Forms.VScrollBar()
         Me.tileSetScrlX = New System.Windows.Forms.HScrollBar()
-        Me.TileSetPreview = New System.Windows.Forms.PictureBox()
         Me.groupMapTileset = New System.Windows.Forms.GroupBox()
         Me.mapCmbTileSet = New System.Windows.Forms.ComboBox()
         Me.groupMapTileBtns = New System.Windows.Forms.GroupBox()
@@ -60,13 +60,15 @@ Partial Class EditorWindow
         Me.mnuMapNew = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuMapUndo = New System.Windows.Forms.ToolStripMenuItem()
         Me.tabTilesetEditor = New System.Windows.Forms.TabPage()
+        Me.picTilesetEditor = New System.Windows.Forms.PictureBox()
         Me.groupTilesetEditor = New System.Windows.Forms.GroupBox()
+        Me.lblTilesetName = New System.Windows.Forms.Label()
+        Me.txtTilesetName = New System.Windows.Forms.TextBox()
         Me.btnClearTileset = New System.Windows.Forms.Button()
         Me.btnSaveTileset = New System.Windows.Forms.Button()
         Me.cmbTilesetEditor = New System.Windows.Forms.ComboBox()
         Me.scrlTilesetEditorY = New System.Windows.Forms.VScrollBar()
         Me.scrlTilesetEditorX = New System.Windows.Forms.HScrollBar()
-        Me.picTilesetEditor = New System.Windows.Forms.PictureBox()
         Me.tabAccountEditor = New System.Windows.Forms.TabPage()
         Me.groupPlayerData = New System.Windows.Forms.GroupBox()
         Me.tabAccounts = New System.Windows.Forms.TabControl()
@@ -79,8 +81,6 @@ Partial Class EditorWindow
         Me.mnuAccountNew = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuAccountUndo = New System.Windows.Forms.ToolStripMenuItem()
         Me.imgSprites = New System.Windows.Forms.ImageList(Me.components)
-        Me.txtTilesetName = New System.Windows.Forms.TextBox()
-        Me.lblTilesetName = New System.Windows.Forms.Label()
         Me.mnuMain.SuspendLayout()
         Me.tabEditors.SuspendLayout()
         Me.tabMapEditor.SuspendLayout()
@@ -92,7 +92,7 @@ Partial Class EditorWindow
         Me.panMapTiles.SuspendLayout()
         Me.panMapTileSetBack.SuspendLayout()
         Me.mapPanTileSet.SuspendLayout()
-        CType(Me.TileSetPreview, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.mapPicTileset, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.groupMapTileset.SuspendLayout()
         Me.groupMapTileBtns.SuspendLayout()
         Me.panMapLeft.SuspendLayout()
@@ -102,8 +102,8 @@ Partial Class EditorWindow
         Me.GroupBox3.SuspendLayout()
         Me.mnuMapList.SuspendLayout()
         Me.tabTilesetEditor.SuspendLayout()
-        Me.groupTilesetEditor.SuspendLayout()
         CType(Me.picTilesetEditor, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.groupTilesetEditor.SuspendLayout()
         Me.tabAccountEditor.SuspendLayout()
         Me.groupPlayerData.SuspendLayout()
         Me.tabAccounts.SuspendLayout()
@@ -190,9 +190,9 @@ Partial Class EditorWindow
         '
         'tabMap
         '
+        Me.tabMap.Controls.Add(Me.mapPreview)
         Me.tabMap.Controls.Add(Me.mapScrlY)
         Me.tabMap.Controls.Add(Me.mapScrlX)
-        Me.tabMap.Controls.Add(Me.mapPreview)
         Me.tabMap.ForeColor = System.Drawing.Color.Transparent
         Me.tabMap.Location = New System.Drawing.Point(4, 22)
         Me.tabMap.Name = "tabMap"
@@ -202,6 +202,16 @@ Partial Class EditorWindow
         Me.tabMap.Text = "Map"
         Me.tabMap.UseVisualStyleBackColor = True
         '
+        'mapPreview
+        '
+        Me.mapPreview.BackColor = System.Drawing.Color.DarkGray
+        Me.mapPreview.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.mapPreview.Location = New System.Drawing.Point(3, 3)
+        Me.mapPreview.Name = "mapPreview"
+        Me.mapPreview.Size = New System.Drawing.Size(353, 352)
+        Me.mapPreview.TabIndex = 8
+        Me.mapPreview.TabStop = False
+        '
         'mapScrlY
         '
         Me.mapScrlY.Dock = System.Windows.Forms.DockStyle.Right
@@ -210,7 +220,7 @@ Partial Class EditorWindow
         Me.mapScrlY.Maximum = 32
         Me.mapScrlY.Name = "mapScrlY"
         Me.mapScrlY.Size = New System.Drawing.Size(17, 352)
-        Me.mapScrlY.TabIndex = 5
+        Me.mapScrlY.TabIndex = 7
         '
         'mapScrlX
         '
@@ -221,15 +231,6 @@ Partial Class EditorWindow
         Me.mapScrlX.Name = "mapScrlX"
         Me.mapScrlX.Size = New System.Drawing.Size(370, 17)
         Me.mapScrlX.TabIndex = 4
-        '
-        'mapPreview
-        '
-        Me.mapPreview.BackColor = System.Drawing.Color.DarkGray
-        Me.mapPreview.Location = New System.Drawing.Point(3, 3)
-        Me.mapPreview.Name = "mapPreview"
-        Me.mapPreview.Size = New System.Drawing.Size(352, 350)
-        Me.mapPreview.TabIndex = 3
-        Me.mapPreview.TabStop = False
         '
         'panMapRight
         '
@@ -264,14 +265,24 @@ Partial Class EditorWindow
         '
         Me.mapPanTileSet.AutoScroll = True
         Me.mapPanTileSet.AutoSize = True
+        Me.mapPanTileSet.Controls.Add(Me.mapPicTileset)
         Me.mapPanTileSet.Controls.Add(Me.tileSetScrlY)
         Me.mapPanTileSet.Controls.Add(Me.tileSetScrlX)
-        Me.mapPanTileSet.Controls.Add(Me.TileSetPreview)
         Me.mapPanTileSet.Dock = System.Windows.Forms.DockStyle.Fill
         Me.mapPanTileSet.Location = New System.Drawing.Point(0, 40)
         Me.mapPanTileSet.Name = "mapPanTileSet"
         Me.mapPanTileSet.Size = New System.Drawing.Size(200, 344)
         Me.mapPanTileSet.TabIndex = 54
+        '
+        'mapPicTileset
+        '
+        Me.mapPicTileset.BackColor = System.Drawing.Color.DarkGray
+        Me.mapPicTileset.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.mapPicTileset.Location = New System.Drawing.Point(0, 0)
+        Me.mapPicTileset.Name = "mapPicTileset"
+        Me.mapPicTileset.Size = New System.Drawing.Size(183, 327)
+        Me.mapPicTileset.TabIndex = 9
+        Me.mapPicTileset.TabStop = False
         '
         'tileSetScrlY
         '
@@ -292,15 +303,6 @@ Partial Class EditorWindow
         Me.tileSetScrlX.Name = "tileSetScrlX"
         Me.tileSetScrlX.Size = New System.Drawing.Size(200, 17)
         Me.tileSetScrlX.TabIndex = 7
-        '
-        'TileSetPreview
-        '
-        Me.TileSetPreview.BackColor = System.Drawing.Color.DarkGray
-        Me.TileSetPreview.Location = New System.Drawing.Point(0, 0)
-        Me.TileSetPreview.Name = "TileSetPreview"
-        Me.TileSetPreview.Size = New System.Drawing.Size(183, 326)
-        Me.TileSetPreview.TabIndex = 6
-        Me.TileSetPreview.TabStop = False
         '
         'groupMapTileset
         '
@@ -474,6 +476,16 @@ Partial Class EditorWindow
         Me.tabTilesetEditor.Text = "Tileset Editor"
         Me.tabTilesetEditor.UseVisualStyleBackColor = True
         '
+        'picTilesetEditor
+        '
+        Me.picTilesetEditor.BackColor = System.Drawing.Color.DarkGray
+        Me.picTilesetEditor.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.picTilesetEditor.Location = New System.Drawing.Point(0, 66)
+        Me.picTilesetEditor.Name = "picTilesetEditor"
+        Me.picTilesetEditor.Size = New System.Drawing.Size(794, 343)
+        Me.picTilesetEditor.TabIndex = 56
+        Me.picTilesetEditor.TabStop = False
+        '
         'groupTilesetEditor
         '
         Me.groupTilesetEditor.Controls.Add(Me.lblTilesetName)
@@ -488,6 +500,22 @@ Partial Class EditorWindow
         Me.groupTilesetEditor.TabIndex = 59
         Me.groupTilesetEditor.TabStop = False
         Me.groupTilesetEditor.Text = "TileSet"
+        '
+        'lblTilesetName
+        '
+        Me.lblTilesetName.AutoSize = True
+        Me.lblTilesetName.Location = New System.Drawing.Point(9, 40)
+        Me.lblTilesetName.Name = "lblTilesetName"
+        Me.lblTilesetName.Size = New System.Drawing.Size(38, 13)
+        Me.lblTilesetName.TabIndex = 15
+        Me.lblTilesetName.Text = "Name:"
+        '
+        'txtTilesetName
+        '
+        Me.txtTilesetName.Location = New System.Drawing.Point(53, 39)
+        Me.txtTilesetName.Name = "txtTilesetName"
+        Me.txtTilesetName.Size = New System.Drawing.Size(568, 20)
+        Me.txtTilesetName.TabIndex = 14
         '
         'btnClearTileset
         '
@@ -536,16 +564,6 @@ Partial Class EditorWindow
         Me.scrlTilesetEditorX.Name = "scrlTilesetEditorX"
         Me.scrlTilesetEditorX.Size = New System.Drawing.Size(811, 17)
         Me.scrlTilesetEditorX.TabIndex = 57
-        '
-        'picTilesetEditor
-        '
-        Me.picTilesetEditor.BackColor = System.Drawing.Color.DarkGray
-        Me.picTilesetEditor.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.picTilesetEditor.Location = New System.Drawing.Point(0, 66)
-        Me.picTilesetEditor.Name = "picTilesetEditor"
-        Me.picTilesetEditor.Size = New System.Drawing.Size(794, 343)
-        Me.picTilesetEditor.TabIndex = 56
-        Me.picTilesetEditor.TabStop = False
         '
         'tabAccountEditor
         '
@@ -652,22 +670,6 @@ Partial Class EditorWindow
         Me.imgSprites.ImageSize = New System.Drawing.Size(16, 16)
         Me.imgSprites.TransparentColor = System.Drawing.Color.Transparent
         '
-        'txtTilesetName
-        '
-        Me.txtTilesetName.Location = New System.Drawing.Point(53, 39)
-        Me.txtTilesetName.Name = "txtTilesetName"
-        Me.txtTilesetName.Size = New System.Drawing.Size(568, 20)
-        Me.txtTilesetName.TabIndex = 14
-        '
-        'lblTilesetName
-        '
-        Me.lblTilesetName.AutoSize = True
-        Me.lblTilesetName.Location = New System.Drawing.Point(9, 40)
-        Me.lblTilesetName.Name = "lblTilesetName"
-        Me.lblTilesetName.Size = New System.Drawing.Size(38, 13)
-        Me.lblTilesetName.TabIndex = 15
-        Me.lblTilesetName.Text = "Name:"
-        '
         'EditorWindow
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -691,7 +693,7 @@ Partial Class EditorWindow
         Me.panMapTileSetBack.ResumeLayout(False)
         Me.panMapTileSetBack.PerformLayout()
         Me.mapPanTileSet.ResumeLayout(False)
-        CType(Me.TileSetPreview, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.mapPicTileset, System.ComponentModel.ISupportInitialize).EndInit()
         Me.groupMapTileset.ResumeLayout(False)
         Me.groupMapTileBtns.ResumeLayout(False)
         Me.panMapLeft.ResumeLayout(False)
@@ -703,9 +705,9 @@ Partial Class EditorWindow
         Me.mnuMapList.ResumeLayout(False)
         Me.mnuMapList.PerformLayout()
         Me.tabTilesetEditor.ResumeLayout(False)
+        CType(Me.picTilesetEditor, System.ComponentModel.ISupportInitialize).EndInit()
         Me.groupTilesetEditor.ResumeLayout(False)
         Me.groupTilesetEditor.PerformLayout()
-        CType(Me.picTilesetEditor, System.ComponentModel.ISupportInitialize).EndInit()
         Me.tabAccountEditor.ResumeLayout(False)
         Me.groupPlayerData.ResumeLayout(False)
         Me.tabAccounts.ResumeLayout(False)
@@ -748,8 +750,6 @@ Partial Class EditorWindow
     Friend WithEvents groupMapData As System.Windows.Forms.GroupBox
     Friend WithEvents tabMaps As System.Windows.Forms.TabControl
     Friend WithEvents tabMap As System.Windows.Forms.TabPage
-    Friend WithEvents mapPreview As System.Windows.Forms.PictureBox
-    Friend WithEvents mapScrlY As System.Windows.Forms.VScrollBar
     Friend WithEvents mapScrlX As System.Windows.Forms.HScrollBar
     Friend WithEvents mnuMapList As System.Windows.Forms.MenuStrip
     Friend WithEvents mnuMapSave As System.Windows.Forms.ToolStripMenuItem
@@ -765,7 +765,6 @@ Partial Class EditorWindow
     Private WithEvents mapBtnFillLayer As System.Windows.Forms.Button
     Friend WithEvents tileSetScrlY As System.Windows.Forms.VScrollBar
     Friend WithEvents tileSetScrlX As System.Windows.Forms.HScrollBar
-    Friend WithEvents TileSetPreview As System.Windows.Forms.PictureBox
     Friend WithEvents tabTilesetEditor As System.Windows.Forms.TabPage
     Friend WithEvents groupTilesetEditor As System.Windows.Forms.GroupBox
     Public WithEvents cmbTilesetEditor As System.Windows.Forms.ComboBox
@@ -776,5 +775,8 @@ Partial Class EditorWindow
     Private WithEvents btnClearTileset As System.Windows.Forms.Button
     Friend WithEvents lblTilesetName As System.Windows.Forms.Label
     Friend WithEvents txtTilesetName As System.Windows.Forms.TextBox
+    Friend WithEvents mapPreview As System.Windows.Forms.PictureBox
+    Friend WithEvents mapScrlY As System.Windows.Forms.VScrollBar
+    Friend WithEvents mapPicTileset As System.Windows.Forms.PictureBox
 
 End Class

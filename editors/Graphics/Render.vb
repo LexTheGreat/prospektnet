@@ -11,7 +11,7 @@ Public Class Render
     Public Shared Sub Initialize()
         ' Initialize rendering window
         Window = New RenderWindow(EditorWindow.mapPreview.Handle)
-        TileWindow = New RenderWindow(EditorWindow.TileSetPreview.Handle)
+        TileWindow = New RenderWindow(EditorWindow.mapPicTileset.Handle)
         TileEditWindow = New RenderWindow(EditorWindow.picTilesetEditor.Handle)
         Window.SetFramerateLimit(64)
         TileWindow.SetFramerateLimit(64)
@@ -22,12 +22,15 @@ Public Class Render
 
     Public Shared Sub ReInitialize()
         ' Initialize rendering window
-        Window.SetView(New View(New FloatRect(0, 0, EditorWindow.mapPreview.Width, EditorWindow.mapPreview.Height)))
-        TileWindow.SetView(New View(New FloatRect(0, 0, EditorWindow.TileSetPreview.Width, EditorWindow.TileSetPreview.Height)))
-        TileEditWindow.SetView(New View(New FloatRect(0, 0, EditorWindow.picTilesetEditor.Width, EditorWindow.picTilesetEditor.Height)))
-        Window.Size = New Vector2u(EditorWindow.mapPreview.Width, EditorWindow.mapPreview.Height)
-        TileWindow.Size = New Vector2u(EditorWindow.TileSetPreview.Width, EditorWindow.TileSetPreview.Height)
-        TileEditWindow.Size = New Vector2u(EditorWindow.picTilesetEditor.Width, EditorWindow.picTilesetEditor.Height)
+        Window.Dispose()
+        TileWindow.Dispose()
+        TileEditWindow.Dispose()
+        Window = New RenderWindow(EditorWindow.mapPreview.Handle)
+        TileWindow = New RenderWindow(EditorWindow.mapPicTileset.Handle)
+        TileEditWindow = New RenderWindow(EditorWindow.picTilesetEditor.Handle)
+        Window.SetFramerateLimit(64)
+        TileWindow.SetFramerateLimit(64)
+        TileEditWindow.SetFramerateLimit(64)
     End Sub
 
     Public Shared Sub Dispose()

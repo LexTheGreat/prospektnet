@@ -2,7 +2,7 @@
 
 Class MapClass
     Private index As Integer = -1
-    Private curTileSet As Integer
+    Private curTileSet As Integer = 1
     Private curLayer As Byte
     Private editorProperty As New EditorProperties()
     Private mapMouseRect As Rectangle, mapSrcRect As Rectangle
@@ -83,7 +83,7 @@ Class MapClass
         curLayer = editorProperty.GetLayer
         If countTileset > 0 Then
             EditorWindow.mapCmbTileSet.Items.Clear()
-            For I As Integer = 0 To Tileset.Length - 2
+            For I As Integer = 1 To TilesetCount
                 EditorWindow.mapCmbTileSet.Items.Add(Tileset(I).Name)
             Next
         End If
@@ -133,6 +133,7 @@ Class MapClass
 
     Public Sub Reload()
         Load(index)
+        SelectTileset()
     End Sub
 
     Public Sub Undo()
@@ -172,10 +173,18 @@ Class MapClass
         curTileSet = TilesetData.GetTilesetID(EditorWindow.mapCmbTileSet.SelectedItem.ToString)
         EditorWindow.tileSetScrlX.Minimum = 0
         EditorWindow.tileSetScrlY.Minimum = 0
-        EditorWindow.tileSetScrlX.Maximum = (Texture(texTileset(curTileSet)).Width - EditorWindow.TileSetPreview.ClientSize.Width + picY) / picX
-        EditorWindow.tileSetScrlY.Maximum = (Texture(texTileset(curTileSet)).Height - EditorWindow.TileSetPreview.ClientSize.Height + picY) / picY
-        EditorWindow.tileSetScrlX.Value = 0
-        EditorWindow.tileSetScrlY.Value = 0
+        If Texture(texTileset(curTileSet)).Width < EditorWindow.mapPicTileset.Width Then
+            EditorWindow.tileSetScrlX.Maximum = 0
+        Else
+            EditorWindow.tileSetScrlX.Maximum = (Texture(texTileset(curTileSet)).Width - EditorWindow.mapPicTileset.Width) / picX
+            EditorWindow.tileSetScrlX.Value = 0
+        End If
+        If Texture(texTileset(curTileSet)).Height < EditorWindow.mapPicTileset.Height Then
+            EditorWindow.tileSetScrlY.Maximum = 0
+        Else
+            EditorWindow.tileSetScrlY.Maximum = (Texture(texTileset(curTileSet)).Height - EditorWindow.mapPicTileset.Height) / picY
+            EditorWindow.tileSetScrlY.Value = 0
+        End If
     End Sub
 
     Public Sub mapPreview_MouseMove(e As MouseEventArgs)
@@ -201,7 +210,7 @@ Class MapClass
     Public Sub mapPicTileSet_MouseMove(e As MouseEventArgs)
         If e.X + (EditorWindow.tileSetScrlX.Value * picX) >= Texture(texTileset(curTileSet)).Width Or
             e.Y + (EditorWindow.tileSetScrlY.Value * picY) >= Texture(texTileset(curTileSet)).Height Then Exit Sub
-        selectMouseRect = New Rectangle(SnapTo(e.X, picX, EditorWindow.TileSetPreview.Width), SnapTo(e.Y, picY, EditorWindow.TileSetPreview.Height), picX, picY)
+        selectMouseRect = New Rectangle(SnapTo(e.X, picX, EditorWindow.mapPicTileset.Width), SnapTo(e.Y, picY, EditorWindow.mapPicTileset.Height), picX, picY)
     End Sub
 
     Public Sub mapPicTileSet_MouseLeave(e As EventArgs)
@@ -334,13 +343,13 @@ Class MapClass
         If EditorWindow.mapPreview.Width / picX > Map(index).MaxX Then
             maxX = Map(index).MaxX
         Else
-            maxX = EditorWindow.mapPreview.Width / picX
+            maxX = System.Math.Round(EditorWindow.mapPreview.Width / picX, 0)
         End If
 
         If EditorWindow.mapPreview.Height / picY > Map(index).MaxY Then
             maxY = Map(index).MaxY
         Else
-            maxY = EditorWindow.mapPreview.Height / picY
+            maxY = System.Math.Round(EditorWindow.mapPreview.Height / picY, 0)
         End If
 
         Return New Integer() {maxX, maxY}
@@ -350,8 +359,8 @@ Class MapClass
         If index < 0 Then Return New Integer() {34, 34}
         Dim maxX As Integer, maxY As Integer, visible As Integer() = GetMapVisible()
 
-        maxX = Map(index).MaxX - visible(0) - 1
-        maxY = Map(index).MaxY - visible(1) - 1
+        maxX = Map(index).MaxX - visible(0)
+        maxY = Map(index).MaxY - visible(1)
 
         Return New Integer() {maxX, maxY}
     End Function

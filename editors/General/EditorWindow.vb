@@ -71,21 +71,21 @@
         If Not IsNothing(lstMaps.Items) Then MapEditor.mapPreview_MouseMove(e)
     End Sub
 
-    Private Sub mapPicTileSet_MouseEnter(sender As Object, e As EventArgs) Handles TileSetPreview.MouseEnter
+    Private Sub mapPicTileSet_MouseEnter(sender As Object, e As EventArgs) Handles mapPicTileSet.MouseEnter
         Cursor.Hide()
         tileSetScrlY.Focus()
     End Sub
 
-    Private Sub mapPicTileSet_MouseLeave(sender As Object, e As EventArgs) Handles TileSetPreview.MouseLeave
+    Private Sub mapPicTileSet_MouseLeave(sender As Object, e As EventArgs) Handles mapPicTileset.MouseLeave
         Cursor.Show()
         If Not IsNothing(lstMaps.Items) Then MapEditor.mapPicTileSet_MouseLeave(e)
     End Sub
 
-    Private Sub mapPicTileSet_MouseDown(sender As Object, e As MouseEventArgs) Handles TileSetPreview.MouseDown
+    Private Sub mapPicTileSet_MouseDown(sender As Object, e As MouseEventArgs) Handles mapPicTileset.MouseDown
         If Not IsNothing(lstMaps.Items) Then MapEditor.mapPicTileSet_MouseDown(e)
     End Sub
 
-    Private Sub mapPicTileSet_MouseMove(sender As Object, e As MouseEventArgs) Handles TileSetPreview.MouseMove
+    Private Sub mapPicTileSet_MouseMove(sender As Object, e As MouseEventArgs) Handles mapPicTileset.MouseMove
         If Not IsNothing(lstMaps.Items) Then MapEditor.mapPicTileSet_MouseMove(e)
     End Sub
 
@@ -145,9 +145,11 @@
 
     Private Sub EditorWindow_SizeChanged(sender As Object, e As EventArgs) Handles MyBase.SizeChanged
         If Not inEditor Then Exit Sub
+        Select SelectedEditor
+            Case 0 : MapEditor.Reload()
+            Case 1 : TilesetEditor.Reload()
+        End Select
         Render.ReInitialize()
-        If IsNothing(lstMaps.SelectedItem) Then Exit Sub
-        If Not IsNothing(Map(MapData.GetMapIndex(lstMaps.SelectedIndex))) Then MapEditor.Load(MapData.GetMapIndex(lstMaps.SelectedIndex))
     End Sub
 
     Private Sub EditorWindow_Load(sender As Object, e As EventArgs) Handles MyBase.Load

@@ -2,7 +2,7 @@
 
 Class TilesetClass
     Private index As Integer = -1
-    Private curTileSet As Integer
+    Private curTileSet As Integer = 1
     Private mapMouseRect As Rectangle, mapSrcRect As Rectangle
     Private selectMouseRect As Rectangle, selectSrcRect As Rectangle
 
@@ -17,17 +17,29 @@ Class TilesetClass
         EditorWindow.cmbTilesetEditor.SelectedIndex = 0
     End Sub
 
+    Public Sub Reload()
+        SelectTileset()
+    End Sub
+
     Public Sub SelectTileset()
         selectSrcRect = New Rectangle(0, 0, 0, 0)
         curTileSet = CInt(EditorWindow.cmbTilesetEditor.SelectedItem.ToString.Replace(pathTilesets, vbNullString).Replace(".png", vbNullString))
-        index = curTileSet - 1
+        index = curTileSet
         If Not curTileSet >= 0 Then Exit Sub
         EditorWindow.scrlTilesetEditorX.Minimum = 0
         EditorWindow.scrlTilesetEditorY.Minimum = 0
-        EditorWindow.scrlTilesetEditorX.Maximum = (Texture(texTileset(curTileSet)).Width - EditorWindow.picTilesetEditor.ClientSize.Width + picX) / picX
-        EditorWindow.scrlTilesetEditorY.Maximum = (Texture(texTileset(curTileSet)).Height - EditorWindow.picTilesetEditor.ClientSize.Height + picY) / picY
-        EditorWindow.scrlTilesetEditorX.Value = 0
-        EditorWindow.scrlTilesetEditorY.Value = 0
+        If Texture(texTileset(curTileSet)).Width < EditorWindow.picTilesetEditor.Width Then
+            EditorWindow.scrlTilesetEditorX.Maximum = 0
+        Else
+            EditorWindow.scrlTilesetEditorX.Maximum = (Texture(texTileset(curTileSet)).Width - EditorWindow.picTilesetEditor.Width) / picX
+            EditorWindow.scrlTilesetEditorX.Value = 0
+        End If
+        If Texture(texTileset(curTileSet)).Height < EditorWindow.picTilesetEditor.Height Then
+            EditorWindow.scrlTilesetEditorY.Maximum = 0
+        Else
+            EditorWindow.scrlTilesetEditorY.Maximum = (Texture(texTileset(curTileSet)).Height - EditorWindow.picTilesetEditor.Height) / picY
+            EditorWindow.scrlTilesetEditorY.Value = 0
+        End If
         If IsNothing(Tileset(index)) Then Tileset(index) = New Tilesets
         Tileset(index).ResizeArray(New Integer() {Texture(texTileset(curTileSet)).Width / picX, Texture(texTileset(curTileSet)).Width / picY})
         Tileset(index).MaxX = Texture(texTileset(curTileSet)).Width / picX

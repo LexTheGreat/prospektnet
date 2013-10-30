@@ -14,6 +14,7 @@
     End Sub
 
     Public Sub Load(ByVal i As Integer)
+        If i <= 0 Then Exit Sub
         index = i
         EditorWindow.tabAccount.Text = Account(i).Email
         EditorWindow.proptAccountData.SelectedObject = Account(i)

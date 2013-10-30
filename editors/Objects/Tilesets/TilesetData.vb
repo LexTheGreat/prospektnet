@@ -5,19 +5,21 @@ Public Class TilesetData
     End Sub
 
     Public Shared Sub LoadTilesets()
+        Dim I As Integer
+        Dim fileEntries As String()
         Try
+            ReDim Preserve Tileset(0 To 1)
+            Tileset(0) = New Tilesets
             If Directory.Exists(pathTilesets) Then
-                Dim fileEntries As String() = Directory.GetFiles(pathTilesets, "*.bin")
-                ReDim Preserve Tileset(0 To 1)
-                Tileset(0) = New Tilesets
+                fileEntries = Directory.GetFiles(pathTilesets, "*.bin")
                 For Each fileName In fileEntries
+                    TilesetCount = I + 1
                     ReDim Preserve Tileset(0 To TilesetCount)
                     Tileset(TilesetCount) = New Tilesets
                     Tileset(TilesetCount).SetID(fileName.Replace(pathTilesets, vbNullString).Replace(".bin", vbNullString))
                     Tileset(TilesetCount).Load()
-                    TilesetCount = TilesetCount + 1
+                    I = TilesetCount
                 Next fileName
-                TilesetCount = TilesetCount - 1
             End If
         Catch ex As Exception
             Console.WriteLine("Error: " & ex.ToString & " (In: Data.LoadTilesets")

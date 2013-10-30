@@ -5,8 +5,8 @@
   <Name>administrator</Name>
   <Sprite>1</Sprite>
   <Map>0</Map>
-  <X>8</X>
-  <Y>6</Y>
+  <X>7</X>
+  <Y>7</Y>
   <PlayerDir>Right</PlayerDir>
   <AccessMode>ADMIN</AccessMode>
   <Visible>true</Visible>

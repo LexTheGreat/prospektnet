@@ -7,8 +7,8 @@
     <Sprite>1</Sprite>
     <Map>0</Map>
     <X>7</X>
-    <Y>3</Y>
-    <Dir>2</Dir>
+    <Y>7</Y>
+    <Dir>3</Dir>
     <AccessMode>5</AccessMode>
     <Visible>true</Visible>
   </Player>
