@@ -23,7 +23,7 @@ Public Class Server
         Console.WriteLine("Initializing player array...")
         ReDim Player(ServerConfig.MaxPlayers)
         ReDim ConnectedClients(ServerConfig.MaxPlayers)
-        LuaScript.ExecuteScript("OnStartup")
+        LuaScript.ExecuteFile("server.lua")
         Console.Title = "Prospekt Server <IP " & Networking.GetPublicIP() & " Port " & ServerConfig.Port & ">"
         time2 = System.Environment.TickCount
         Console.WriteLine("Initialization complete. Server loaded in " & time2 - time1 & "ms.")
