@@ -62,7 +62,7 @@ Class AccountData
                 Next
             End If
         Catch ex As Exception
-            Console.WriteLine("Error: " & ex.ToString & " (In: Data.SaveMaps")
+            Console.WriteLine("Error: " & ex.ToString & " (In: AccountData.SaveAccounts")
         End Try
     End Sub
 
