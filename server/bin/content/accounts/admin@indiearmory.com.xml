@@ -6,8 +6,8 @@
     <Name>administrator</Name>
     <Sprite>1</Sprite>
     <Map>0</Map>
-    <X>7</X>
-    <Y>7</Y>
+    <X>20</X>
+    <Y>11</Y>
     <Dir>3</Dir>
     <AccessMode>5</AccessMode>
     <Visible>true</Visible>

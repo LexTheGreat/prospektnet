@@ -90,7 +90,7 @@ Public Class HandleData
         ReDim Tileset(0 To num)
         For i As Integer = 1 To num
             Tileset(i) = New Tilesets
-            Tileset(i).SetID(data.ReadString)
+            Tileset(i).SetID(data.ReadInt32)
             Tileset(i).Name = data.ReadString
             Tileset(i).MaxX = data.ReadInt32
             Tileset(i).MaxY = data.ReadInt32

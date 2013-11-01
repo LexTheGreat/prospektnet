@@ -133,7 +133,7 @@ Class HandleData
         NPCCount = Data.ReadInt32
         ReDim Preserve NPC(0 To NPCCount)
         If IsNothing(NPC(tempIndex)) Then NPC(tempIndex) = New NPCs
-        NPC(tempIndex).Load(Data.ReadString, Data.ReadInt32, Data.ReadInt32, Data.ReadInt32, Data.ReadByte)
+        Data.ReadAllFields(NPC(tempIndex).Base)
     End Sub
 
     Public Shared Sub NPCPosition(ByRef Data As NetIncomingMessage)
@@ -187,7 +187,7 @@ Class HandleData
         TilesetCount = data.ReadInt32
         ReDim Preserve Tileset(0 To TilesetCount)
         Tileset(tempIndex) = New Tilesets
-        Tileset(tempIndex).SetID(data.ReadString)
+        Tileset(tempIndex).SetID(data.ReadInt32)
         Tileset(tempIndex).Name = data.ReadString
         Tileset(tempIndex).MaxX = data.ReadInt32
         Tileset(tempIndex).MaxY = data.ReadInt32

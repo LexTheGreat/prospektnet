@@ -1,24 +1,15 @@
 ﻿Public Class NPCs
     ' general
-    Private mName As String
-    Private mSprite As Integer
-    ' location
-    Private mX As Integer
-    Private mY As Integer
-    Private mDir As Byte
+    Public Base As NpcBase
     ' non-saved values
     Private mIndex As Integer
     Private mXOffset As Integer, mYOffset As Integer
     Private mMoving As Boolean
-    Private mNpcStep As Byte
+    Private mStep As Byte
     Private mSpawned As Boolean
 
     Public Sub New()
-        Me.mName = vbNullString
-        Me.mSprite = 1
-        Me.mY = 15
-        Me.mX = 10
-        Me.mDir = 1
+        Me.Base = New NpcBase
     End Sub
 
     ' sub routines and functions
@@ -34,72 +25,72 @@
         Return True
     End Function
 
-    Public Function GetMoving() As Boolean
-        If Not IsNothing(Me) Then
-            Return Me.mMoving
-        End If
-        Return False
-    End Function
-
-    ' Saved variables
     Public Property Name() As String
         Get
-            Return Me.mName
+            Return Me.Base.Name
         End Get
         Set(value As String)
             If Not IsNothing(Me) Then
-                Me.mName = value
+                Me.Base.Name = value
             End If
         End Set
     End Property
 
     Public Property Sprite() As Integer
         Get
-            Return Me.mSprite
+            Return Me.Base.Sprite
         End Get
         Set(value As Integer)
             If Not IsNothing(Me) Then
-                Me.mSprite = value
+                Me.Base.Sprite = value
             End If
         End Set
     End Property
 
     Public Property X() As Integer
         Get
-            Return Me.mX
+            Return Me.Base.X
         End Get
         Set(value As Integer)
             If Not IsNothing(Me) Then
-                Me.mX = value
+                Me.Base.X = value
             End If
         End Set
     End Property
 
     Public Property Y() As Integer
         Get
-            Return Me.mY
+            Return Me.Base.Y
         End Get
         Set(value As Integer)
             If Not IsNothing(Me) Then
-                Me.mY = value
+                Me.Base.Y = value
             End If
         End Set
     End Property
 
     Public Property Dir() As Byte
         Get
-            Return Me.mDir
+            Return Me.Base.Dir
         End Get
         Set(value As Byte)
             If Not IsNothing(Me) Then
-                Me.mDir = value
+                Me.Base.Dir = value
             End If
         End Set
     End Property
 
-    Public Sub SetIndex(ByVal index As Integer)
-        Me.mIndex = index
-    End Sub
+    Public ReadOnly Property Moving() As Boolean
+        Get
+            Return Me.mMoving
+        End Get
+    End Property
+
+    Public WriteOnly Property Index As Integer
+        Set(value As Integer)
+            Me.mIndex = value
+        End Set
+    End Property
 
     Public Sub GenerateMovement()
         Dim i As Integer
@@ -110,15 +101,15 @@
             If NPCLogic.CanNPCMove(Me.mIndex, i) Then
                 Select Case i
                     Case DirEnum.Up
-                        Me.mY = Me.mY - 1
+                        Me.Base.Y = Me.Base.Y - 1
                     Case DirEnum.Down
-                        Me.mY = Me.mY + 1
+                        Me.Base.Y = Me.Base.Y + 1
                     Case DirEnum.Left
-                        Me.mX = Me.mX - 1
+                        Me.Base.X = Me.Base.X - 1
                     Case DirEnum.Right
-                        Me.mX = Me.mX + 1
+                        Me.Base.X = Me.Base.X + 1
                 End Select
-                Me.mDir = i
+                Me.Base.Dir = i
                 Me.mMoving = True
                 SendData.NPCPosition(Me.mIndex)
             Else
