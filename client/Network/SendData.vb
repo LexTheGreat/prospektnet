@@ -27,7 +27,7 @@ Class SendData
 
         Buffer.Write(ClientPackets.Login)
         Buffer.Write(Login)
-        Buffer.Write(Password)
+        Buffer.Write(Md5FromString(Password))
         Networking.SendData(Buffer)
 
         loginSent = True

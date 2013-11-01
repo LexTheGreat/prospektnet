@@ -32,7 +32,7 @@
         Get
             Return Me.mEmail
         End Get
-        Set(value As String)
+        Set(ByVal value As String)
             If Not IsNothing(Me) Then
                 Me.mEmail = value
             End If
@@ -43,9 +43,9 @@
         Get
             Return Me.mPassword
         End Get
-        Set(value As String)
+        Set(ByVal value As String)
             If Not IsNothing(Me) Then
-                Me.mPassword = value
+                Me.mPassword = Md5FromString(value)
             End If
         End Set
     End Property
@@ -54,7 +54,7 @@
         Get
             Return Me.mPlayer
         End Get
-        Set(value As Players)
+        Set(ByVal value As Players)
             If Not IsNothing(Me) Then
                 Me.mPlayer = value
             End If

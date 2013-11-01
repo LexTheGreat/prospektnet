@@ -1,0 +1,1 @@
+print("On load scripting is working")
