@@ -105,11 +105,7 @@ Class SendData
         Buffer.Write(ServerPackets.NPC)
         Buffer.Write(Index)
         Buffer.Write(NPCCount)
-        Buffer.Write(NPC(Index).Name)
-        Buffer.Write(NPC(Index).Sprite)
-        Buffer.Write(NPC(Index).X)
-        Buffer.Write(NPC(Index).Y)
-        Buffer.Write(NPC(Index).Dir)
+        Buffer.WriteAllFields(NPC(Index).Base)
         Networking.SendDataToAll(Buffer)
     End Sub
 
@@ -117,7 +113,7 @@ Class SendData
         Dim Buffer As NetOutgoingMessage = pServer.CreateMessage
         Buffer.Write(ServerPackets.NPCPosition)
         Buffer.Write(Index)
-        Buffer.Write(NPC(Index).GetMoving)
+        Buffer.Write(NPC(Index).Moving)
         Buffer.Write(NPC(Index).X)
         Buffer.Write(NPC(Index).Y)
         Buffer.Write(NPC(Index).Dir)

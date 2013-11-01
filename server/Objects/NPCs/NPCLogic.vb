@@ -11,7 +11,7 @@
     Public Shared Function CanNPCMove(ByVal Index As Integer, ByVal Dir As Integer) As Boolean
         Dim tempX As Integer, tempY As Integer
         ' Make sure they aren't trying to move when they are already moving
-        If NPC(Index).GetMoving = True Then
+        If NPC(Index).Moving = True Then
             Return False
         End If
 

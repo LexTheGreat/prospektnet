@@ -23,7 +23,7 @@
         Me.mID = id
     End Sub
 
-    ReadOnly Property ID() As String
+    ReadOnly Property ID() As Integer
         Get
             Return Me.mID
         End Get

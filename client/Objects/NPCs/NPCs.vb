@@ -1,11 +1,6 @@
 ﻿Public Class NPCs
     ' general
-    Private mName As String
-    Private mSprite As Integer
-    ' location
-    Private mX As Integer
-    Private mY As Integer
-    Private mDir As Byte
+    Public Base As NpcBase
     ' non-saved values
     Private mXOffset As Integer, mYOffset As Integer
     Private mMoving As Boolean = True
@@ -13,11 +8,7 @@
     Private mSpawned As Boolean = False
 
     Public Sub New()
-        Me.mName = vbNullString
-        Me.mSprite = 1
-        Me.mY = 15
-        Me.mX = 10
-        Me.mDir = 1
+        Me.Base = New NpcBase
     End Sub
 
     Public Sub Load(NewName As String, NewSprite As Integer, NewX As Integer, NewY As Integer, NewDir As Byte)
@@ -31,55 +22,55 @@
     ' Saved variables
     Public Property Name() As String
         Get
-            Return Me.mName
+            Return Me.Base.Name
         End Get
         Set(value As String)
             If Not IsNothing(Me) Then
-                Me.mName = value
+                Me.Base.Name = value
             End If
         End Set
     End Property
 
     Public Property Sprite() As Integer
         Get
-            Return Me.mSprite
+            Return Me.Base.Sprite
         End Get
         Set(value As Integer)
             If Not IsNothing(Me) Then
-                Me.mSprite = value
+                Me.Base.Sprite = value
             End If
         End Set
     End Property
 
     Public Property X() As Integer
         Get
-            Return Me.mX
+            Return Me.Base.X
         End Get
         Set(value As Integer)
             If Not IsNothing(Me) Then
-                Me.mX = value
+                Me.Base.X = value
             End If
         End Set
     End Property
 
     Public Property Y() As Integer
         Get
-            Return Me.mY
+            Return Me.Base.Y
         End Get
         Set(value As Integer)
             If Not IsNothing(Me) Then
-                Me.mY = value
+                Me.Base.Y = value
             End If
         End Set
     End Property
 
     Public Property Dir() As Byte
         Get
-            Return Me.mDir
+            Return Me.Base.Dir
         End Get
         Set(value As Byte)
             If Not IsNothing(Me) Then
-                Me.mDir = value
+                Me.Base.Dir = value
             End If
         End Set
     End Property
