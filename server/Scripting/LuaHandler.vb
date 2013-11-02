@@ -10,8 +10,13 @@ Public Class LuaHandler
     Public Sub New()
         LuaObject = New Lua
         Commands = New LuaCommands
-        addFunction("getPlayers")
-        addFunction("cPrint")
+        REM server
+        addFunction("getPlayers", "getPlayers")
+        addFunction("getPlayerIndex", "getPlayerIndex")
+        REM player
+        addFunction("isOnline", "isOnline")
+        REM Util's
+        addFunction("cPrint", "cPrint")
         autorun()
     End Sub
 
@@ -19,13 +24,13 @@ Public Class LuaHandler
         If String.IsNullOrEmpty(vbfunction) Then
             vbfunction = luafunction
         End If
-        LuaObject.RegisterFunction(luafunction, Commands, Commands.GetType().GetMethod(vbfunction))
-        Commands.cPrint("Added LuaFunction |" & luafunction + "| to .NET function |" + vbfunction + "|", ConsoleColor.Green)
+        Try : LuaObject.RegisterFunction(luafunction, Commands, Commands.GetType().GetMethod(vbfunction)) : Catch ex As LuaException : ServerLogic.WriteLine(ex, ConsoleColor.Red) : End Try
+        ServerLogic.WriteLine("Added LuaFunction |" & luafunction + "| to .NET function |" + vbfunction + "|", ConsoleColor.Green)
     End Sub
 
     Public Sub removeFunction(ByVal luafunction As String)
         If LuaObject.GetFunction(luafunction).Equals(Nothing) Then
-            Console.WriteLine(luafunction + " could not be found.")
+            ServerLogic.WriteLine(luafunction + " could not be found.", ConsoleColor.Yellow)
             Return
         End If
         LuaObject.GetFunction(luafunction).Dispose()
@@ -38,12 +43,8 @@ Public Class LuaHandler
         Next
     End Sub
 
-    REM Public Sub ExecuteScript(ByVal Script As String)
-    REM    If Files.Exists(pathScripts & Script & ".lua") Then LuaObject.DoFile(pathScripts & Script & ".lua")
-    REM End Sub
-    REM Better way to run with functions ~ Created lua error handler
     Public Sub ExecuteFile(ByVal File As String)
-        If Files.Exists(pathScripts & File) Then : Try : LuaObject.DoFile(pathScripts & File) : Catch ex As LuaInterface.LuaException : Console.WriteLine(ex) : End Try : Else : Console.WriteLine(File & " Not found") : End If
+        If Files.Exists(pathScripts & File) Then : Try : LuaObject.DoFile(pathScripts & File) : Catch ex As LuaInterface.LuaException : ServerLogic.WriteLine(ex, ConsoleColor.Red) : End Try : Else : Console.WriteLine(File & " Not found") : End If
     End Sub
 
     Public Sub Dispose() Implements IDisposable.Dispose
