@@ -1,4 +1,4 @@
-netProspekt
+Prospekt.NET
 ===============
 
 2D open source ORPG engine developed by Eatenbrain Games. Official site is [Indie Armory](http://indiearmory.com).

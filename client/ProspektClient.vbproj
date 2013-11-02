@@ -155,6 +155,7 @@
     <Compile Include="Objects\Maps\MapStructure.vb" />
     <Compile Include="Objects\Maps\OverlayColor.vb" />
     <Compile Include="Objects\Maps\TileData.vb" />
+    <Compile Include="Objects\NPCs\NPCBase.vb" />
     <Compile Include="Objects\NPCs\NPCLogic.vb" />
     <Compile Include="Objects\NPCs\NPCs.vb" />
     <Compile Include="Objects\Players\PlayerLogic.vb" />

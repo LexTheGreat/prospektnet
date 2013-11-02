@@ -325,7 +325,7 @@ Class HandleData
         ReDim saveTileset(0 To num)
         For i As Integer = 1 To num
             saveTileset(i) = New Tilesets
-            saveTileset(i).SetID(data.ReadString)
+            saveTileset(i).SetID(data.ReadInt32)
             saveTileset(i).Name = data.ReadString
             saveTileset(i).MaxX = data.ReadInt32
             saveTileset(i).MaxY = data.ReadInt32

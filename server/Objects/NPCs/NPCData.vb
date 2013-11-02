@@ -35,7 +35,7 @@ Class NPCData
                     NPCCount = i + 1
                     ReDim Preserve NPC(0 To NPCCount)
                     NPC(NPCCount) = loadNPC
-                    NPC(NPCCount).SetIndex(NPCCount)
+                    NPC(NPCCount).Index = NPCCount
                     i = NPCCount
                 Next fileName
             End If
@@ -50,8 +50,8 @@ Class NPCData
         Try
             'Serialize object to a file.
             Writer = New StreamWriter(pathNPCs & snpc.Name & ".xml")
-            Ser = New XmlSerializer(snpc.GetType)
-            Ser.Serialize(Writer, snpc)
+            Ser = New XmlSerializer(snpc.Base.GetType)
+            Ser.Serialize(Writer, snpc.Base)
             Writer.Close()
             NPC(GetNPCIndex(snpc.Name)) = snpc
             Exit Sub

@@ -16,7 +16,7 @@ Public Class TilesetData
                     TilesetCount = I + 1
                     ReDim Preserve Tileset(0 To TilesetCount)
                     Tileset(TilesetCount) = New Tilesets
-                    Tileset(TilesetCount).SetID(fileName.Replace(pathTilesets, vbNullString).Replace(".bin", vbNullString))
+                    Tileset(TilesetCount).SetID(CInt(fileName.Replace(pathTilesets, vbNullString).Replace(".bin", vbNullString)))
                     Tileset(TilesetCount).Load()
                     I = TilesetCount
                 Next fileName
