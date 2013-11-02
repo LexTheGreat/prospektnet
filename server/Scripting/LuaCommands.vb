@@ -1,21 +1,18 @@
 ﻿Public Class LuaCommands
-    REM !!! Defualt lua command apply use print("message here") !!!
-    REM Public Sub ServerMessage(ByVal Message As String)
-    REM    Console.WriteLine(Message)
-    REM End Sub
-    Public Function getPlayers()
-        REM Server counts as a player? - 1 him ;/
+    Public Function getPlayerIndex(ByVal name As String) As Integer
+        For index As Integer = 0 To Account.Length
+            If Account(index).Player.Name = name Then Return index
+        Next
+        Return 0 ' <- Server idk about this...
+    End Function
+    Public Function getPlayers() As Integer
         Return PlayerCount - 1
     End Function
-    Public Sub cPrint(ByVal Message As String, Optional ByVal color As Integer = 15)
-        If color <= 15 Then
-            Console.ForegroundColor = color
-            Console.WriteLine(Message)
-            Console.ResetColor()
-            Return
-        End If
-        Console.ForegroundColor = ConsoleColor.Red
-        Console.WriteLine("cPrint usage error (color must be <= 15)")
-        Console.ResetColor()
+    Public Function isOnline(ByVal index As Integer) As Boolean
+        Return Networking.IsConnected(index)
+    End Function
+    ' Functions
+    Public Sub cPrint(ByVal Message As Object, Optional ByVal color As Object = ConsoleColor.Gray)
+        ServerLogic.WriteLine(Message, color)
     End Sub
 End Class

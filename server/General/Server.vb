@@ -20,13 +20,13 @@ Public Class Server
         Networking.Initialize()
         Console.WriteLine("Initializing script engine...")
         LuaScript = New LuaHandler
+        LuaScript.ExecuteFile("server.lua")
         Console.WriteLine("Initializing player array...")
         ReDim Player(ServerConfig.MaxPlayers)
         ReDim ConnectedClients(ServerConfig.MaxPlayers)
-        LuaScript.ExecuteFile("server.lua")
         Console.Title = "Prospekt Server <IP " & Networking.GetPublicIP() & " Port " & ServerConfig.Port & ">"
         time2 = System.Environment.TickCount
-        Console.WriteLine("Initialization complete. Server loaded in " & time2 - time1 & "ms.")
+        ServerLogic.WriteLine("Initialization complete. Server loaded in " & time2 - time1 & "ms.", ConsoleColor.Green)
         inServer = True
         ServerLoop()
     End Sub
@@ -41,7 +41,7 @@ Public Class Server
             Networking.HandleMessage()
             'Saves players every 5 minutes
             If tmrPlayerSave < Tick Then
-                Console.WriteLine("Saving Players...")
+                ServerLogic.WriteLine("Saving Players...", ConsoleColor.Green)
                 PlayerData.SaveOnlinePlayers()
                 tmrPlayerSave = System.Environment.TickCount + 300000
             End If
