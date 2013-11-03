@@ -1,69 +1,45 @@
 ﻿Imports System.ComponentModel
 Public Class Accounts
-    ' account
-    Private mEmail As String
-    Private mPassword As String
-    ' general
-    Private mName As String
-    Private mSprite As Integer
-    ' location
-    Private mX As Integer
-    Private mY As Integer
-    Private mDir As Byte
-    Private mMapIndex As Integer
-    ' Admin values
-    Private mAccessMode As Byte
-    Private mVisible As Boolean
+    Public Base As AccountBase
+    Public Shared Data As New AccountData
 
     Public Sub New()
-        Me.mEmail = "Email@email.com"
-        Me.mPassword = "password"
-        Me.mName = "New Character"
-        Me.mSprite = 1
-        Me.mMapIndex = 0
-        Me.mX = 15
-        Me.mY = 15
-        Me.mDir = DirEnum.Down
-        Me.mAccessMode = ACCESS.NONE
-        Me.mVisible = True
+        Me.Base = New AccountBase
     End Sub
 
     Public Sub Save()
-        Files.WriteXML(pathAccounts & Me.mEmail & ".xml", Me)
+        Data.Save(Me.Base)
     End Sub
 
     Public Sub Load()
-        Dim objAccount As Object, newAccount As New Accounts
+        Dim newAccount As New AccountBase
 
         ' Get object from file
-        objAccount = Files.ReadXML(pathAccounts & Me.mEmail & ".xml", Me)
-        If IsNothing(objAccount) Then objAccount = New Accounts()
-        ' Convert object to newConfig
-        newAccount = CType(objAccount, Accounts)
-        Me.mEmail = newAccount.mEmail
-        Me.mPassword = newAccount.mPassword
-        Me.mName = newAccount.mName
-        Me.mSprite = newAccount.mSprite
-        Me.mMapIndex = newAccount.mMapIndex
-        Me.mX = newAccount.mX
-        Me.mY = newAccount.mY
-        Me.mDir = newAccount.mDir
+        newAccount = DirectCast(Files.ReadXML(pathAccounts & Me.Base.Email & ".xml", Me.Base), AccountBase)
+        Me.Base.Email = newAccount.Email
+        Me.Base.Password = newAccount.Password
+        Me.Base.Player.Name = newAccount.Player.Name
+        Me.Base.Player.Sprite = newAccount.Player.Sprite
+        Me.Base.Player.Map = newAccount.Player.Map
+        Me.Base.Player.X = newAccount.Player.X
+        Me.Base.Player.Y = newAccount.Player.Y
+        Me.Base.Player.Dir = newAccount.Player.Dir
     End Sub
 
     Public Sub SetPlayerDir(ByVal value As Byte)
-        Me.mDir = value
+        Me.Base.Player.Dir = value
     End Sub
 
     Public Function GetPlayerDir() As Byte
-        Return Me.mDir
+        Return Me.Base.Player.Dir
     End Function
 
     Public Sub SetPlayerAccess(ByVal value As Byte)
-        Me.mAccessMode = value
+        Me.Base.Player.AccessMode = value
     End Sub
 
     Public Function GetPlayerAccess() As Byte
-        Return Me.mAccessMode
+        Return Me.Base.Player.AccessMode
     End Function
 
     ' ProptyGrid Functions
@@ -109,11 +85,11 @@ Public Class Accounts
        DisplayName("Email")> _
     Public Property Email() As String
         Get
-            Return Me.mEmail
+            Return Me.Base.Email
         End Get
         Set(value As String)
             If Not IsNothing(Me) Then
-                Me.mEmail = value
+                Me.Base.Email = value
             End If
         End Set
     End Property
@@ -122,11 +98,11 @@ Public Class Accounts
        DisplayName("Password")> _
     Public Property Password() As String
         Get
-            Return Me.mPassword
+            Return Me.Base.Password
         End Get
         Set(value As String)
             If Not IsNothing(Me) Then
-                Me.mPassword = value
+                Me.Base.Password = value
             End If
         End Set
     End Property
@@ -135,11 +111,11 @@ Public Class Accounts
        DisplayName("Name")> _
     Public Property Name() As String
         Get
-            Return Me.mName
+            Return Me.Base.Player.Name
         End Get
         Set(value As String)
             If Not IsNothing(Me) Then
-                Me.mName = value
+                Me.Base.Player.Name = value
             End If
         End Set
     End Property
@@ -148,11 +124,11 @@ Public Class Accounts
        DisplayName("Sprite")> _
     Public Property Sprite() As Integer
         Get
-            Return Me.mSprite
+            Return Me.Base.Player.Sprite
         End Get
         Set(value As Integer)
             If Not IsNothing(Me) Then
-                Me.mSprite = value
+                Me.Base.Player.Sprite = value
             End If
         End Set
     End Property
@@ -161,11 +137,11 @@ Public Class Accounts
        DisplayName("Map")> _
     Public Property Map() As Integer
         Get
-            Return Me.mMapIndex
+            Return Me.Base.Player.Map
         End Get
         Set(value As Integer)
             If Not IsNothing(Me) Then
-                Me.mMapIndex = value
+                Me.Base.Player.Map = value
             End If
         End Set
     End Property
@@ -174,11 +150,11 @@ Public Class Accounts
        DisplayName("X")> _
     Public Property X() As Integer
         Get
-            Return Me.mX
+            Return Me.Base.Player.X
         End Get
         Set(value As Integer)
             If Not IsNothing(Me) Then
-                Me.mX = value
+                Me.Base.Player.X = value
             End If
         End Set
     End Property
@@ -187,11 +163,11 @@ Public Class Accounts
        DisplayName("Y")> _
     Public Property Y() As Integer
         Get
-            Return Me.mY
+            Return Me.Base.Player.Y
         End Get
         Set(value As Integer)
             If Not IsNothing(Me) Then
-                Me.mY = value
+                Me.Base.Player.Y = value
             End If
         End Set
     End Property
@@ -201,11 +177,11 @@ Public Class Accounts
        DisplayName("Dir")> _
     Public Property PlayerDir() As String
         Get
-            Return [Enum].GetName(GetType(DirEnum), Me.mDir)
+            Return [Enum].GetName(GetType(DirEnum), Me.Base.Player.Dir)
         End Get
         Set(value As String)
             If Not IsNothing(Me) Then
-                Me.mDir = DirectCast([Enum].Parse(GetType(DirEnum), value), DirEnum)
+                Me.Base.Player.Dir = DirectCast([Enum].Parse(GetType(DirEnum), value), DirEnum)
             End If
         End Set
     End Property
@@ -214,11 +190,11 @@ Public Class Accounts
        DisplayName("Access")> _
     Public Property AccessMode() As String
         Get
-            Return [Enum].GetName(GetType(ACCESS), Me.mAccessMode)
+            Return [Enum].GetName(GetType(ACCESS), Me.Base.Player.AccessMode)
         End Get
         Set(value As String)
             If Not IsNothing(Me) Then
-                Me.mAccessMode = DirectCast([Enum].Parse(GetType(ACCESS), value), ACCESS)
+                Me.Base.Player.AccessMode = DirectCast([Enum].Parse(GetType(ACCESS), value), ACCESS)
             End If
         End Set
     End Property
@@ -227,11 +203,11 @@ Public Class Accounts
        DisplayName("Visible")> _
     Public Property Visible() As Boolean
         Get
-            Return Me.mVisible
+            Return Me.Base.Player.Visible
         End Get
         Set(value As Boolean)
             If Not IsNothing(Me) Then
-                Me.mVisible = value
+                Me.Base.Player.Visible = value
             End If
         End Set
     End Property

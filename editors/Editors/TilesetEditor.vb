@@ -1,4 +1,5 @@
 ﻿Imports System.ComponentModel
+Imports Prospekt.Graphics
 
 Class TilesetClass
     Private index As Integer = -1
@@ -28,28 +29,28 @@ Class TilesetClass
         If Not curTileSet >= 0 Then Exit Sub
         EditorWindow.scrlTilesetEditorX.Minimum = 0
         EditorWindow.scrlTilesetEditorY.Minimum = 0
-        If Texture(texTileset(curTileSet)).Width < EditorWindow.picTilesetEditor.Width Then
+        If gTexture(texTileset(curTileSet)).Width < EditorWindow.picTilesetEditor.Width Then
             EditorWindow.scrlTilesetEditorX.Maximum = 0
         Else
-            EditorWindow.scrlTilesetEditorX.Maximum = (Texture(texTileset(curTileSet)).Width - EditorWindow.picTilesetEditor.Width) / picX
+            EditorWindow.scrlTilesetEditorX.Maximum = (gTexture(texTileset(curTileSet)).Width - EditorWindow.picTilesetEditor.Width) / picX
             EditorWindow.scrlTilesetEditorX.Value = 0
         End If
-        If Texture(texTileset(curTileSet)).Height < EditorWindow.picTilesetEditor.Height Then
+        If gTexture(texTileset(curTileSet)).Height < EditorWindow.picTilesetEditor.Height Then
             EditorWindow.scrlTilesetEditorY.Maximum = 0
         Else
-            EditorWindow.scrlTilesetEditorY.Maximum = (Texture(texTileset(curTileSet)).Height - EditorWindow.picTilesetEditor.Height) / picY
+            EditorWindow.scrlTilesetEditorY.Maximum = (gTexture(texTileset(curTileSet)).Height - EditorWindow.picTilesetEditor.Height) / picY
             EditorWindow.scrlTilesetEditorY.Value = 0
         End If
         If IsNothing(Tileset(index)) Then Tileset(index) = New Tilesets
-        Tileset(index).ResizeArray(New Integer() {Texture(texTileset(curTileSet)).Width / picX, Texture(texTileset(curTileSet)).Width / picY})
-        Tileset(index).MaxX = Texture(texTileset(curTileSet)).Width / picX
-        Tileset(index).MaxY = Texture(texTileset(curTileSet)).Height / picY
+        Tileset(index).ResizeTileData(New Integer() {gTexture(texTileset(curTileSet)).Width / picX, gTexture(texTileset(curTileSet)).Width / picY})
+        Tileset(index).MaxX = gTexture(texTileset(curTileSet)).Width / picX
+        Tileset(index).MaxY = gTexture(texTileset(curTileSet)).Height / picY
         EditorWindow.txtTilesetName.Text = Tileset(index).Name
     End Sub
 
     Public Sub picTilesetEditor_MouseMove(e As MouseEventArgs)
-        If e.X + (EditorWindow.tileSetScrlX.Value * picX) >= Texture(texTileset(curTileSet)).Width Or
-            e.Y + (EditorWindow.tileSetScrlY.Value * picY) >= Texture(texTileset(curTileSet)).Height Then Exit Sub
+        If e.X + (EditorWindow.tileSetScrlX.Value * picX) >= gTexture(texTileset(curTileSet)).Width Or
+            e.Y + (EditorWindow.tileSetScrlY.Value * picY) >= gTexture(texTileset(curTileSet)).Height Then Exit Sub
         selectMouseRect = New Rectangle(SnapTo(e.X, picX, EditorWindow.picTilesetEditor.Width), SnapTo(e.Y, picY, EditorWindow.picTilesetEditor.Height), picX, picY)
     End Sub
 
@@ -58,8 +59,8 @@ Class TilesetClass
     End Sub
 
     Public Sub picTilesetEditor_MouseDown(e As MouseEventArgs)
-        If e.X + (EditorWindow.scrlTilesetEditorX.Value * picX) >= Texture(texTileset(curTileSet)).Width Or
-            e.Y + (EditorWindow.scrlTilesetEditorY.Value * picY) >= Texture(texTileset(curTileSet)).Height Then Exit Sub
+        If e.X + (EditorWindow.scrlTilesetEditorX.Value * picX) >= gTexture(texTileset(curTileSet)).Width Or
+            e.Y + (EditorWindow.scrlTilesetEditorY.Value * picY) >= gTexture(texTileset(curTileSet)).Height Then Exit Sub
         Dim selectX As Integer = EditorWindow.scrlTilesetEditorX.Value * picX, selectY As Integer = EditorWindow.scrlTilesetEditorY.Value * picY
         If e.Button = MouseButtons.Left Then
             If Tileset(index).Tile((selectMouseRect.X + selectX) / picX, (selectMouseRect.Y + selectY) / picY) < TileType.COUNT - 1 Then
@@ -75,7 +76,7 @@ Class TilesetClass
     Public Sub btnSaveTileset_Click(e As EventArgs)
         If curTileSet >= 0 Then
             If Not IsNothing(Tileset(index)) Then
-                Tileset(index).SetID(curTileSet)
+                Tileset(index).ID = curTileSet
                 Tileset(index).Save()
             End If
         End If
@@ -97,7 +98,7 @@ Class TilesetClass
 
     Public Sub DrawTileset()
         Dim ScrlX As Integer = EditorWindow.scrlTilesetEditorX.Value, ScrlY As Integer = EditorWindow.scrlTilesetEditorY.Value
-        If curTileSet >= 0 Then Render.RenderTexture(Render.TileEditWindow, texTileset(curTileSet), 0 - ScrlX * picX, 0 - ScrlY * picY, 0, 0, Texture(texTileset(curTileSet)).Width, Texture(texTileset(curTileSet)).Height, Texture(texTileset(curTileSet)).Width, Texture(texTileset(curTileSet)).Height)
+        If curTileSet >= 0 Then Render.RenderTexture(Render.TileEditWindow, texTileset(curTileSet), 0 - ScrlX * picX, 0 - ScrlY * picY, 0, 0, gTexture(texTileset(curTileSet)).Width, gTexture(texTileset(curTileSet)).Height, gTexture(texTileset(curTileSet)).Width, gTexture(texTileset(curTileSet)).Height)
     End Sub
 
     Public Sub DrawTilesetSelection()

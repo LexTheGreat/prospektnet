@@ -2,53 +2,47 @@
 Imports System.IO
 Imports System.Collections
 Imports System.Xml.Serialization
+Imports Prospekt.Network
 
 Public Class PlayerData
-    Public Shared Sub SaveOnlinePlayers()
+    Public Sub SaveOnlinePlayers()
         Dim index As Integer
         Dim acc As New Accounts
-        Dim Writer As StreamWriter
-        Dim Ser As XmlSerializer
 
         For index = 1 To PlayerCount
-            If PlayerLogic.IsPlaying(index) Then
+            If Players.Logic.IsPlaying(index) Then
                 Try
-                    acc = Account(PlayerData.GetPlayerIndex(Player(index).Name))
-                    'Serialize object to a file.
-                    Writer = New StreamWriter(pathAccounts & acc.Email & ".xml")
-                    Ser = New XmlSerializer(acc.GetType)
-                    Ser.Serialize(Writer, acc)
-                    Writer.Close()
-                    Account(PlayerData.GetPlayerIndex(Player(index).Name)).Player = Player(index)
+                    Files.WriteXML(pathAccounts & acc.Email & ".xml", acc)
+                    Account(Players.Data.GetPlayerIndex(Player(index).Name)).Player = Player(index).Base
                 Catch ex As Exception
-                    Console.WriteLine("Error: " & ex.ToString & " (In: AccountData.SaveOnlineAccounts)")
+                    Console.WriteLine("Error: " & ex.ToString & " (In: Players.Data.SaveOnlinePlayers)")
                     Continue For
                 End Try
             End If
         Next index
     End Sub
 
-    Public Shared Sub SavePlayer(ByVal player As Players)
+    Public Sub SavePlayer(ByVal player As PlayerBase)
         Dim acc As New Accounts
         Try
-            acc = Account(PlayerData.GetPlayerIndex(player.Name))
+            acc = Account(Players.Data.GetPlayerIndex(player.Name))
             acc.Player = player
             'Serialize object to a file.
             Files.WriteXML(pathAccounts & acc.Email & ".xml", acc)
-            Account(PlayerData.GetPlayerIndex(player.Name)) = acc
+            Account(Players.Data.GetPlayerIndex(player.Name)) = acc
             Exit Sub
         Catch ex As Exception
-            Console.WriteLine("Error: " & ex.ToString & " (In: AccountData.SavePlayer)")
+            Console.WriteLine("Error: " & ex.ToString & " (In: Accounts.Data.SavePlayer)")
             Exit Sub
         End Try
     End Sub
 
-    Public Shared Function Create(ByVal Name As String) As Boolean
+    Public Function Create(ByVal Name As String) As Boolean
         Try
-            Dim newPlayer As New Players()
+            Dim newPlayer As New PlayerBase()
             newPlayer.Name = Name
             ' Update accounts array
-            Account(PlayerData.GetPlayerIndex(Name)).Player = newPlayer
+            Account(Players.Data.GetPlayerIndex(Name)).Player = newPlayer
             Files.WriteXML(pathAccounts & Name & ".xml", newPlayer)
             Return True
         Catch ex As Exception
@@ -57,7 +51,7 @@ Public Class PlayerData
         End Try
     End Function
 
-    Public Shared Function PlayerExists(ByVal Name As String) As Boolean
+    Public Function PlayerExists(ByVal Name As String) As Boolean
         Try
             For Each curAccount In Account
                 If curAccount.Player.Name = Name Then Return True
@@ -68,7 +62,7 @@ Public Class PlayerData
         Return False
     End Function
 
-    Public Shared Function HasPlayer(ByVal index As Integer) As Boolean
+    Public Function HasPlayer(ByVal index As Integer) As Boolean
         Try
             If Not Account(index).Player.Name = vbNullString Then Return True
         Catch ex As Exception
@@ -77,24 +71,24 @@ Public Class PlayerData
         Return False
     End Function
 
-    Public Shared Function GetPlayer(ByVal Name As String) As Players
-        Dim player As New Players
+    Public Function GetPlayer(ByVal Name As String) As PlayerBase
+        Dim player As New PlayerBase
         For Each curAccount In Account
             If curAccount.Player.Name = Name Then Return curAccount.Player
         Next
         Return player
     End Function
 
-    Public Shared Function GetPlayerIndex(ByVal Name As String) As Integer
+    Public Function GetPlayerIndex(ByVal Name As String) As Integer
         For index As Integer = 0 To Account.Length
             If Account(index).Player.Name = Name Then Return index
         Next
         Return 0
     End Function
 
-    Public Shared Sub SendPlayers()
+    Public Sub SendPlayers()
         Dim i As Integer
-        For i = 1 to PlayerCount
+        For i = 1 To PlayerCount
             If Not IsNothing(Player(i)) Then SendData.PlayerData(i)
         Next
     End Sub

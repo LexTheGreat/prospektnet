@@ -1,5 +1,5 @@
 ﻿Public Class NPCLogic
-    Public Shared Function NpcOnTile(ByVal X As Integer, ByVal Y As Integer) As Boolean
+    Public Function NpcOnTile(ByVal X As Integer, ByVal Y As Integer) As Boolean
         For i = 1 To NPCCount
             If Not IsNothing(NPC(i)) Then
                 If (NPC(i).X = X And NPC(i).Y = Y) Then Return True
@@ -8,7 +8,7 @@
         Return False
     End Function
 
-    Public Shared Function CanNPCMove(ByVal Index As Integer, ByVal Dir As Integer) As Boolean
+    Public Function CanNPCMove(ByVal Index As Integer, ByVal Dir As Integer) As Boolean
         Dim tempX As Integer, tempY As Integer
         ' Make sure they aren't trying to move when they are already moving
         If NPC(Index).Moving = True Then
@@ -36,9 +36,9 @@
                 tempX = NPC(Index).X + 1
         End Select
 
-        If PlayerLogic.PlayerOnTile(tempX, tempY) Then Return False
-        If NPCLogic.NpcOnTile(tempX, tempY) Then Return False
-        If TilesetData.isTileNPCBlocked(0, tempX, tempY) Then Return False
+        If Players.Logic.PlayerOnTile(tempX, tempY) Then Return False
+        If NPCs.Logic.NpcOnTile(tempX, tempY) Then Return False
+        If Tilesets.Data.isTileNPCBlocked(0, tempX, tempY) Then Return False
         Return True
     End Function
 End Class

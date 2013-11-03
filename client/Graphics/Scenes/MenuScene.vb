@@ -1,5 +1,8 @@
 ﻿Imports SFML.Graphics
-Imports SFML.Window
+Imports Prospekt.Input
+Imports Prospekt.Audio
+Imports Prospekt.Graphics
+Imports Prospekt.Network
 
 Public Class MenuScene
     Public Sub Draw()
@@ -11,12 +14,12 @@ Public Class MenuScene
         Render.Window.Clear(New Color(255, 255, 255))
 
         If faderState < 2 Then
-            If Not faderAlpha = 255 Then Render.RenderTexture(texGui(2), (ClientConfig.ScreenWidth * 0.5) - (Texture(texGui(2)).Width * 0.5), (ClientConfig.ScreenHeight * 0.5) - (Texture(texGui(2)).Height * 0.5), 0, 0, Texture(texGui(2)).Width, Texture(texGui(2)).Height, Texture(texGui(2)).Width, Texture(texGui(2)).Height)
+            If Not faderAlpha = 255 Then Render.RenderTexture(texGui(2), (ClientConfig.ScreenWidth * 0.5) - (gTexture(texGui(2)).Width * 0.5), (ClientConfig.ScreenHeight * 0.5) - (gTexture(texGui(2)).Height * 0.5), 0, 0, gTexture(texGui(2)).Width, gTexture(texGui(2)).Height, gTexture(texGui(2)).Width, gTexture(texGui(2)).Height)
             Render.DrawFader()
             Verdana.Draw("Press 'SPACE' to skip intro", 2, 2, New Color(100, 100, 100, 255))
         Else
             ' Render background
-            Render.RenderTexture(texGui(3), 0, 0, 0, 0, ClientConfig.ScreenWidth, ClientConfig.ScreenHeight, Texture(texGui(3)).Width, Texture(texGui(3)).Height)
+            Render.RenderTexture(texGui(3), 0, 0, 0, 0, ClientConfig.ScreenWidth, ClientConfig.ScreenHeight, gTexture(texGui(3)).Width, gTexture(texGui(3)).Height)
 
             Render.RenderTexture(texGui(1), 0, ClientConfig.ScreenHeight - 20, 0, 0, ClientConfig.ScreenWidth, 20, 32, 32, 200, 0, 0, 0)
             Render.RenderTexture(texGui(1), (ClientConfig.ScreenWidth * 0.5) - 200, (ClientConfig.ScreenHeight * 0.5) - 100, 0, 0, 400, 200, 32, 32, 120, 0, 0, 0)
@@ -55,7 +58,7 @@ errorhandler:
             Case Keys.Escape
                 If curMenu <> MenuEnum.Main Then
                     ' Button sound
-                    AudioPlayer.playSound("button.ogg")
+                    playSound("button.ogg")
                     curMenu = MenuEnum.Main
                 Else
                     GameWindow.Close()
@@ -141,7 +144,7 @@ errorhandler:
         ' Logging in
         If loginSent Then Return False
 
-        If Not KeyboardInput.GetKeyState(Keys.Back) And Not KeyboardInput.GetKeyState(Keys.Return) And Not KeyboardInput.GetKeyState(Keys.Tab) And Not KeyboardInput.GetKeyState(Keys.Escape) Then
+        If Not Keyboard.GetKeyState(Keys.Back) And Not Keyboard.GetKeyState(Keys.Return) And Not Keyboard.GetKeyState(Keys.Tab) And Not Keyboard.GetKeyState(Keys.Escape) Then
             If curMenu = MenuEnum.Login Or curMenu = MenuEnum.Register Then
                 If curTextbox = 0 Then
                     sEmail = sEmail & Key.ToString

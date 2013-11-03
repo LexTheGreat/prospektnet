@@ -1,21 +1,25 @@
 ﻿Imports SFML.Graphics
+Imports System.Security.Cryptography
+Imports System.Text
+Imports Prospekt.Graphics
+Imports Prospekt.Network
 Module General
     Public Sub Main()
         EditorConfig = New Configuration
         EditorConfig.Load()
-        Networking.Initialize()
+        InitializeNetwork()
         Render.Initialize()
         Verdana = New TextWriter("content/fonts/Verdana.ttf")
         ' Setup Tileset Editor
-        TilesetData.LoadTilesets()
+        Tilesets.Data.LoadTilesets()
         TilesetEditor = New TilesetClass
         TilesetEditor.Init()
         'Setup Map Editor
-        MapData.LoadMaps()
+        Maps.Data.LoadMaps()
         MapEditor = New MapClass
         MapEditor.Init()
         ' Setup Account Editor
-        AccountData.LoadAccounts()
+        Accounts.Data.LoadAccounts()
         AccountEditor = New AccountClass
         AccountEditor.Init()
         EditorWindow.Visible = True

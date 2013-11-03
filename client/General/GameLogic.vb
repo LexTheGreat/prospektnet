@@ -1,12 +1,13 @@
 ﻿Imports System.Text
 Imports System.Security.Cryptography
+Imports Prospekt.Audio
 
 Module GameLogic
     Public Sub showMenu()
         inGame = False
-        AudioPlayer.stopMusic()
+        stopMusic()
 
-        AudioPlayer.playMusic(ClientConfig.MenuMusic)
+        playMusic(ClientConfig.MenuMusic)
         ' fader
         faderAlpha = 255
         faderState = 0
@@ -18,8 +19,8 @@ Module GameLogic
 
     Public Sub showGame()
         inMenu = False
-        AudioPlayer.stopMusic()
-        AudioPlayer.playMusic(ClientConfig.GameMusic)
+        stopMusic()
+        playMusic(ClientConfig.GameMusic)
         inGame = True
         chatMode = ChatModes.Say
         GMTools.Init()
@@ -59,18 +60,5 @@ Module GameLogic
         Dim length As Integer = If(arr.Length <= temp.Length, arr.Length, temp.Length)
         Array.ConstrainedCopy(arr, 0, temp, 0, length)
         Return temp
-    End Function
-    Public Function Md5FromString(ByVal Source As String) As String
-        Dim Bytes() As Byte
-        Dim sb As New StringBuilder()
-        If String.IsNullOrEmpty(Source) Then
-            Throw New ArgumentNullException
-        End If
-        Bytes = Encoding.Default.GetBytes(Source)
-        Bytes = MD5.Create().ComputeHash(Bytes)
-        For x As Integer = 0 To Bytes.Length - 1
-            sb.Append(Bytes(x).ToString("x2"))
-        Next
-        Return sb.ToString()
     End Function
 End Module

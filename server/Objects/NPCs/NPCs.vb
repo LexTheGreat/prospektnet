@@ -1,6 +1,9 @@
-﻿Public Class NPCs
+﻿Imports Prospekt.Network
+Public Class NPCs
     ' general
-    Public Base As NpcBase
+    Public Base As NPCBase
+    Public Shared Data As New NPCData
+    Public Shared Logic As New NPCLogic
     ' non-saved values
     Private mIndex As Integer
     Private mXOffset As Integer, mYOffset As Integer
@@ -9,19 +12,13 @@
     Private mSpawned As Boolean
 
     Public Sub New()
-        Me.Base = New NpcBase
+        Me.Base = New NPCBase
     End Sub
 
     ' sub routines and functions
-    Public Function Create() As Boolean
-        If Me.Name = vbNullString Then Return False
-        NPCData.CreateNPC(Me)
-        Return True
-    End Function
-
     Public Function Save() As Boolean
         If Me.Name = vbNullString Then Return False
-        NPCData.SaveNPC(Me)
+        NPCs.Data.SaveNPC(Me.Base)
         Return True
     End Function
 
@@ -98,7 +95,7 @@
 
         If i = 1 Then
             i = Int(Rnd() * 4)
-            If NPCLogic.CanNPCMove(Me.mIndex, i) Then
+            If NPCs.Logic.CanNPCMove(Me.mIndex, i) Then
                 Select Case i
                     Case DirEnum.Up
                         Me.Base.Y = Me.Base.Y - 1

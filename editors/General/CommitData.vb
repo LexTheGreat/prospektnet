@@ -1,4 +1,5 @@
-﻿Public Class CommitData
+﻿Imports Prospekt.Network
+Public Class CommitData
     Private Sub btnPublish_Click(sender As Object, e As EventArgs) Handles btnPublish.Click
         If IsNothing(txtEmail.Text) Or IsNothing(txtPassword.Text) Then MessageBox.Show("You must enter a Email and Password!")
         ' Setup Networking

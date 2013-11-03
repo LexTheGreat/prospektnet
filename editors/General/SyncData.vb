@@ -1,4 +1,5 @@
-﻿Public Class SyncData
+﻿Imports Prospekt.Network
+Public Class SyncData
 
     Private Sub btnSync_Click(sender As Object, e As EventArgs) Handles btnSync.Click
         If IsNothing(txtEmail.Text) Or IsNothing(txtPassword.Text) Then MessageBox.Show("You must enter a Email and Password!")

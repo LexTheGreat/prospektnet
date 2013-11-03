@@ -1,4 +1,5 @@
 ﻿Imports Lidgren.Network
+Imports Prospekt.Network
 Public Class Networking
     Public Shared Sub Initialize()
         Dim pConfig As NetPeerConfiguration
@@ -6,7 +7,7 @@ Public Class Networking
         pConfig.Port = ServerConfig.Port
         pConfig.AutoFlushSendQueue = True
         pConfig.MaximumConnections = ServerConfig.MaxPlayers
-        pServer = New NetServer(pCOnfig)
+        pServer = New NetServer(pConfig)
         pServer.Start()
     End Sub
 
@@ -42,7 +43,7 @@ Public Class Networking
         Dim i As Integer
 
         For i = 1 To PlayerCount
-            If PlayerLogic.IsPlaying(i) Then
+            If Players.Logic.IsPlaying(i) Then
                 Call SendDataTo(i, Data)
             End If
         Next
@@ -51,7 +52,7 @@ Public Class Networking
     Public Shared Sub SendDataToAllBut(ByVal index As Integer, ByRef Data As NetOutgoingMessage)
         Dim i As Integer
         For i = 1 To PlayerCount
-            If PlayerLogic.IsPlaying(i) Then
+            If Players.Logic.IsPlaying(i) Then
                 If i <> index Then
                     Call SendDataTo(i, Data)
                 End If
@@ -63,7 +64,7 @@ Public Class Networking
         Dim i As Integer
 
         For i = 1 To PlayerCount
-            If PlayerLogic.IsPlaying(i) And Not Player(i).AccessMode = ACCESS.NONE Then
+            If Players.Logic.IsPlaying(i) And Not Player(i).AccessMode = ACCESS.NONE Then
                 Call SendDataTo(i, Data)
             End If
         Next
@@ -95,7 +96,7 @@ Public Class Networking
                     Dim status As NetConnectionStatus = im.ReadByte
                     If status = NetConnectionStatus.Connected Then
                         PlayerCount = PlayerCount + 1
-                        I = PlayerLogic.FindOpenPlayerSlot()
+                        I = Players.Logic.FindOpenPlayerSlot()
 
                         If I <> 0 Then
                             ' we can connect them
@@ -123,7 +124,7 @@ Public Class Networking
                     Case ACCESS.ADMIN : SendData.Message(Trim$("(Admin) " & Player(index).Name) & " has left the game.")
                 End Select
                 Console.WriteLine(Player(index).Name & " has left the game.")
-                Player(index).SetIsPlaying(False)
+                Player(index).IsPlaying = False
                 Player(index).Save()
                 Player(index) = Nothing
                 UpdateHighIndex()
@@ -136,21 +137,21 @@ Public Class Networking
     Public Shared Function GetPublicIP() As String
         Dim direction As String = ""
         Dim request As System.Net.WebRequest
-        On Error GoTo errorhandler
-        request = System.Net.WebRequest.Create("http://checkip.dyndns.org/")
-        Using response As System.Net.WebResponse = request.GetResponse()
-            Using stream As New System.IO.StreamReader(response.GetResponseStream())
-                direction = stream.ReadToEnd()
+        Try
+            request = System.Net.WebRequest.Create("http://checkip.dyndns.org/")
+            Using response As System.Net.WebResponse = request.GetResponse()
+                Using stream As New System.IO.StreamReader(response.GetResponseStream())
+                    direction = stream.ReadToEnd()
+                End Using
             End Using
-        End Using
 
-        'Search for the ip in the html
-        Dim first As Integer = direction.IndexOf("Address: ") + 9
-        Dim last As Integer = direction.LastIndexOf("</body>")
-        direction = direction.Substring(first, last - first)
-
-        Return direction
-errorhandler:
-        Return "localhost"
+            'Search for the ip in the html
+            Dim first As Integer = direction.IndexOf("Address: ") + 9
+            Dim last As Integer = direction.LastIndexOf("</body>")
+            direction = direction.Substring(first, last - first)
+            Return direction
+        Catch ex As Exception
+            Return "localhost"
+        End Try
     End Function
 End Class

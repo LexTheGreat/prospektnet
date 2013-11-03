@@ -1,4 +1,6 @@
-﻿Module General
+﻿Imports Prospekt.Graphics
+Imports Prospekt.Network
+Module General
     Public Sub Main()
         ClientConfig = New Configuration
         ClientConfig.Load()
@@ -9,7 +11,7 @@
         GameWindow.Width = ClientConfig.ScreenWidth + (16)
         GameWindow.Height = ClientConfig.ScreenHeight + SystemInformation.CaptionHeight + (16)
         GameWindow.Show()
-        Networking.Initialize()
+        InitializeNetwork()
         Render.Initialize()
         Verdana = New TextWriter("content/fonts/Verdana.ttf")
         showMenu()
@@ -25,7 +27,7 @@
         MenuMain = New MenuScene
         Do While inMenu = True
             Tick = System.Environment.TickCount() ' Set the inital tick
-            ElapsedTime = Tick - FrameTime ' Set the time difference for time-based movement
+            elapsedTime = Tick - FrameTime ' Set the time difference for time-based movement
             FrameTime = Tick
             Networking.HandleMessage()
             If tmr500 < Tick Then
@@ -123,18 +125,18 @@
             FrameTime = Tick
             Networking.HandleMessage()
             If tmr25 < Tick Then
-                If GameWindow.Focused Then PlayerLogic.CheckInputKeys() ' Check which keys were pressed
+                If GameWindow.Focused Then Players.Logic.CheckInputKeys() ' Check which keys were pressed
 
-                PlayerLogic.CheckMovement() ' Check if player is trying to move
+                Players.Logic.CheckMovement() ' Check if player is trying to move
                 tmr25 = Tick + 25
             End If
 
             ' Process input before rendering, otherwise input will be behind by 1 frame
             If walkTimer < Tick Then
-                For i = 1 to PlayerCount
+                For I = 1 To PlayerCount
                     If Not IsNothing(Player(I)) Then Player(I).ProcessMovement()
                 Next I
-                For i = 1 to NPCCount
+                For I = 1 To NPCCount
                     If Not IsNothing(NPC(I)) Then NPC(I).ProcessMovement()
                 Next I
                 walkTimer = Tick + 30 ' edit this value to change WalkTimer

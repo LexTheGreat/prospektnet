@@ -1,80 +1,89 @@
 ﻿<Serializable()> Public Class Tilesets
-    Private mID As Integer
-    Private mName As String
-    Private mMaxX As Integer
-    Private mMaxY As Integer
-    Public Tile(0, 0) As Byte
+    Public Base As TilesetBase
+    Public Shared Data As New TilesetData
 
     Sub New()
-        Me.mName = "Tileset" & Tileset.Length - 1
+        Me.Base = New TilesetBase
     End Sub
 
     Public Sub Save()
-        TilesetData.Save(Me)
+        Tilesets.Data.Save(Me.Base)
     End Sub
 
     Public Sub Load()
-        Dim loadTileset As New Tilesets
-        loadTileset = DirectCast(Files.ReadBinary(pathTilesets & Trim(Me.mID) & ".bin"), Tilesets)
-        Me.mID = loadTileset.mID
-        Me.mName = loadTileset.mName
-        Me.mMaxX = loadTileset.mMaxX
-        Me.mMaxY = loadTileset.mMaxY
-        ReDim Me.Tile(0 To loadTileset.mMaxX, 0 To loadTileset.mMaxY)
-        Me.Tile = loadTileset.Tile
+        Dim loadTileset As New TilesetBase
+        loadTileset = DirectCast(Files.ReadBinary(pathTilesetData & Trim(Me.Base.ID) & ".bin"), TilesetBase)
+        Me.Base.ID = loadTileset.ID
+        Me.Base.Name = loadTileset.Name
+        Me.Base.MaxX = loadTileset.MaxX
+        Me.Base.MaxY = loadTileset.MaxY
+        Me.Base.ResizeTileData(New Integer() {loadTileset.MaxX, loadTileset.MaxY})
+        Me.Base.Tile = loadTileset.Tile
     End Sub
 
-    Public Sub ResizeArray(ByVal newSize As Integer())
-        Dim newTiles(newSize(0), newSize(1)) As Byte
-        For x As Integer = 0 To newSize(0)
-            For y As Integer = 0 To newSize(1)
-                If Me.Tile.GetUpperBound(0) <= x Or Me.Tile.GetUpperBound(1) <= y Then
-                    newTiles(x, y) = 0
-                Else
-                    newTiles(x, y) = Me.Tile(x, y)
-                End If
-            Next
-        Next
-        Me.Tile = newTiles
+    Public Sub ResizeTileData(ByVal newSize As Integer())
+        Me.Base.ResizeTileData(newSize)
     End Sub
 
-    Public Sub SetID(ByVal id As Integer)
-        Me.mID = id
-    End Sub
-
-    ReadOnly Property ID() As Integer
+    Public Property ID() As Integer
         Get
-            Return Me.mID
+            Return Me.Base.ID
         End Get
+
+        Set(value As Integer)
+            Me.Base.ID = value
+        End Set
     End Property
 
     Public Property Name() As String
         Get
-            Return Me.mName
+            Return Me.Base.Name
         End Get
 
         Set(value As String)
-            Me.mName = value
+            Me.Base.Name = value
         End Set
     End Property
 
     Public Property MaxX() As Integer
         Get
-            Return Me.mMaxX
+            Return Me.Base.MaxX
         End Get
 
         Set(value As Integer)
-            Me.mMaxX = value
+            Me.Base.MaxX = value
         End Set
     End Property
 
     Public Property MaxY() As Integer
         Get
-            Return Me.mMaxY
+            Return Me.Base.MaxY
         End Get
 
         Set(value As Integer)
-            Me.mMaxY = value
+            Me.Base.MaxY = value
+        End Set
+    End Property
+
+    Public Overloads Property Tile(ByVal X As Integer, ByVal Y As Integer) As Byte
+        Get
+            Return Me.Base.Tile(X, Y)
+        End Get
+        Set(value As Byte)
+            If Not IsNothing(Me) Then
+                Me.Base.Tile(X, Y) = value
+            End If
+        End Set
+    End Property
+
+    Public Overloads Property Tile As Byte(,)
+        Get
+            Return Me.Base.Tile
+        End Get
+        Set(value As Byte(,))
+            If Not IsNothing(Me) Then
+                Me.Base.Tile = value
+            End If
         End Set
     End Property
 End Class

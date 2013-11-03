@@ -1,5 +1,7 @@
 ﻿Imports SFML.Graphics
-Imports SFML.Window
+Imports Prospekt.Input
+Imports Prospekt.Graphics
+Imports Prospekt.Network
 
 Public Class GameScene
     Public Sub Draw()
@@ -8,7 +10,7 @@ Public Class GameScene
         ' don't render
         If GameWindow.WindowState = FormWindowState.Minimized Then Exit Sub
 
-        MapLogic.UpdateCamera()
+        Maps.Logic.UpdateCamera()
 
         ' Start rendering
         Render.Window.Clear(New Color(255, 255, 255))
@@ -17,26 +19,26 @@ Public Class GameScene
             DrawMapTile(i)
         Next
 
-        For i = 1 to NPCCount
+        For i = 1 To NPCCount
             If Not IsNothing(NPC(i)) Then
                 DrawNPC(i)
             End If
         Next
 
-        For i = 1 to PlayerCount
+        For i = 1 To PlayerCount
             If Not IsNothing(Player(i)) Then
                 DrawPlayer(i)
             End If
         Next
 
 
-        For i = 1 to NPCCount
+        For i = 1 To NPCCount
             If Not IsNothing(NPC(i)) Then
                 DrawNPCName(i)
             End If
         Next
 
-        For i = 1 to PlayerCount
+        For i = 1 To PlayerCount
             If Not IsNothing(Player(i)) Then
                 DrawPlayerName(i)
             End If
@@ -45,6 +47,8 @@ Public Class GameScene
         For i = MapLayerEnum.Fringe To MapLayerEnum.COUNT - 1
             DrawMapTile(i)
         Next
+
+        DrawMapOverlay()
 
         DrawChat()
         Verdana.Draw("FPS: " & gameFPS, 5, 5, Color.White)
@@ -79,20 +83,20 @@ errorhandler:
                 If inChat Then
                     If chatMode + 1 < ChatModes.COUNT Then
                         chatMode = chatMode + 1
-                        If (chatMode = ChatModes.GM And Player(MyIndex).GetAccess() = ACCESS.NONE) Then chatMode = ChatModes.Say
+                        If (chatMode = ChatModes.GM And Player(MyIndex).AccessMode = ACCESS.NONE) Then chatMode = ChatModes.Say
                     Else : chatMode = ChatModes.Say
                     End If
                 End If
             Case Keys.G
                 If Not inChat Then
-                    If Not (Player(MyIndex).GetAccess() > ACCESS.NONE) Then Return False
+                    If Not (Player(MyIndex).AccessMode > ACCESS.NONE) Then Return False
                     If GMTools.Visible Then GMTools.Close() Else GMTools.Show()
                 End If
         End Select
     End Function
 
     Public Function KeyPress(ByVal Key As Char) As Boolean
-        If inChat And Not KeyboardInput.GetKeyState(Keys.Back) And Not KeyboardInput.GetKeyState(Keys.Return) And Not KeyboardInput.GetKeyState(Keys.Tab) And Not KeyboardInput.GetKeyState(Keys.Escape) Then
+        If inChat And Not Keyboard.GetKeyState(Keys.Back) And Not Keyboard.GetKeyState(Keys.Return) And Not Keyboard.GetKeyState(Keys.Tab) And Not Keyboard.GetKeyState(Keys.Escape) Then
             sChat = sChat & Key.ToString
             UpdateVisibleChat()
         End If
@@ -120,19 +124,18 @@ errorhandler:
         textY = Player(Index).Y * picY + Player(Index).YOffset - picY
 
         If Player(Index).Sprite >= 1 Then
-            textY = Player(Index).Y * picY + Player(Index).YOffset - (Texture(texSprite(Player(Index).Sprite)).Height / 4) + 12
+            textY = Player(Index).Y * picY + Player(Index).YOffset - (gTexture(texSprite(Player(Index).Sprite)).Height / 4) + 12
         End If
 
-        Verdana.Draw(Text, MapLogic.ConvertX(textX), MapLogic.ConvertY(textY), Color.White)
+        Verdana.Draw(Text, Maps.Logic.ConvertX(textX), Maps.Logic.ConvertY(textY), Color.White)
     End Sub
 
     Private Function DrawPlayerAccess(ByVal Index As Integer) As String
         Dim textX As Integer, textY As Integer, Text As String = vbNullString, textSize As Integer, TextColor As Color = Color.White
 
-        Select Case Player(Index).GetAccess()
+        Select Case Player(Index).AccessMode
             Case ACCESS.NONE
-                DrawPlayerAccess = vbNullString
-                Exit Function
+                Return vbNullString
             Case ACCESS.GMIT
                 Text = Trim$("(GMIT) ")
                 TextColor = Color.Cyan
@@ -156,12 +159,12 @@ errorhandler:
         textY = Player(Index).Y * picY + Player(Index).YOffset - picY
 
         If Player(Index).Sprite >= 1 Then
-            textY = Player(Index).Y * picY + Player(Index).YOffset - (Texture(texSprite(Player(Index).Sprite)).Height / 4) + 12
+            textY = Player(Index).Y * picY + Player(Index).YOffset - (gTexture(texSprite(Player(Index).Sprite)).Height / 4) + 12
         End If
 
-        Verdana.Draw(Text, MapLogic.ConvertX(textX), MapLogic.ConvertY(textY), TextColor)
+        Verdana.Draw(Text, Maps.Logic.ConvertX(textX), Maps.Logic.ConvertY(textY), TextColor)
 
-        DrawPlayerAccess = Text
+        Return Text
     End Function
 
     Public Sub DrawPlayer(ByVal Index As Integer)
@@ -200,16 +203,16 @@ errorhandler:
                 spritetop = 1
         End Select
 
-        rec.Top = spritetop * (Texture(texSprite(Sprite)).Height / 4)
-        rec.Height = Texture(texSprite(Sprite)).Height / 4
-        rec.Left = Anim * (Texture(texSprite(Sprite)).Width / 3)
-        rec.Width = Texture(texSprite(Sprite)).Width / 3
+        rec.Top = spritetop * (gTexture(texSprite(Sprite)).Height / 4)
+        rec.Height = gTexture(texSprite(Sprite)).Height / 4
+        rec.Left = Anim * (gTexture(texSprite(Sprite)).Width / 3)
+        rec.Width = gTexture(texSprite(Sprite)).Width / 3
 
         ' Calculate the X and Y
-        X = Player(Index).X * picX + Player(Index).XOffset - ((Texture(texSprite(Sprite)).Width / 3 - 32) / 2)
-        Y = Player(Index).Y * picY + Player(Index).YOffset - ((Texture(texSprite(Sprite)).Height / 4) - 32) - 4
+        X = Player(Index).X * picX + Player(Index).XOffset - ((gTexture(texSprite(Sprite)).Width / 3 - 32) / 2)
+        Y = Player(Index).Y * picY + Player(Index).YOffset - ((gTexture(texSprite(Sprite)).Height / 4) - 32) - 4
 
-        Render.RenderTexture(texSprite(Sprite), MapLogic.ConvertX(X), MapLogic.ConvertY(Y), rec.Left, rec.Top, rec.Width, rec.Height, rec.Width, rec.Height)
+        Render.RenderTexture(texSprite(Sprite), Maps.Logic.ConvertX(X), Maps.Logic.ConvertY(Y), rec.Left, rec.Top, rec.Width, rec.Height, rec.Width, rec.Height)
     End Sub
 
     Public Sub DrawNPCName(ByVal Index As Integer)
@@ -223,10 +226,10 @@ errorhandler:
         textY = NPC(Index).Y * picY + NPC(Index).YOffset - picY
 
         If NPC(Index).Sprite >= 1 Then
-            textY = NPC(Index).Y * picY + NPC(Index).YOffset - (Texture(texSprite(NPC(Index).Sprite)).Height / 4) + 12
+            textY = NPC(Index).Y * picY + NPC(Index).YOffset - (gTexture(texSprite(NPC(Index).Sprite)).Height / 4) + 12
         End If
 
-        Verdana.Draw(Text, MapLogic.ConvertX(textX), MapLogic.ConvertY(textY), Color.White)
+        Verdana.Draw(Text, Maps.Logic.ConvertX(textX), Maps.Logic.ConvertY(textY), Color.White)
     End Sub
 
     Public Sub DrawNPC(ByVal Index As Integer)
@@ -261,16 +264,16 @@ errorhandler:
                 spritetop = 1
         End Select
 
-        rec.Top = spritetop * (Texture(texSprite(Sprite)).Height / 4)
-        rec.Height = Texture(texSprite(Sprite)).Height / 4
-        rec.Left = Anim * (Texture(texSprite(Sprite)).Width / 3)
-        rec.Width = Texture(texSprite(Sprite)).Width / 3
+        rec.Top = spritetop * (gTexture(texSprite(Sprite)).Height / 4)
+        rec.Height = gTexture(texSprite(Sprite)).Height / 4
+        rec.Left = Anim * (gTexture(texSprite(Sprite)).Width / 3)
+        rec.Width = gTexture(texSprite(Sprite)).Width / 3
 
         ' Calculate the X and Y
-        X = NPC(Index).X * picX + NPC(Index).XOffset - ((Texture(texSprite(Sprite)).Width / 3 - 32) / 2)
-        Y = NPC(Index).Y * picY + NPC(Index).YOffset - ((Texture(texSprite(Sprite)).Height / 4) - 32) - 4
+        X = NPC(Index).X * picX + NPC(Index).XOffset - ((gTexture(texSprite(Sprite)).Width / 3 - 32) / 2)
+        Y = NPC(Index).Y * picY + NPC(Index).YOffset - ((gTexture(texSprite(Sprite)).Height / 4) - 32) - 4
 
-        Render.RenderTexture(texSprite(Sprite), MapLogic.ConvertX(X), MapLogic.ConvertY(Y), rec.Left, rec.Top, rec.Width, rec.Height, rec.Width, rec.Height)
+        Render.RenderTexture(texSprite(Sprite), Maps.Logic.ConvertX(X), Maps.Logic.ConvertY(Y), rec.Left, rec.Top, rec.Width, rec.Height, rec.Width, rec.Height)
     End Sub
 
     Public Sub DrawChat()
@@ -295,14 +298,19 @@ errorhandler:
         End If
 
         Dim data As TileData
-        For X As Integer = TileView.Left To TileView.Right - 1
-            For Y As Integer = TileView.Top To TileView.Bottom - 1
-                If MapLogic.IsValidPoint(X, Y) Then
+        For X As Integer = TileView.Left To TileView.Right
+            For Y As Integer = TileView.Top To TileView.Bottom
+                If Maps.Logic.IsValidPoint(X, Y) Then
                     data = Map.Layer(i).GetTileData(X, Y)
                     If data.Tileset < 0 Then Continue For
-                    Call Render.RenderTexture(texTileset(data.Tileset), MapLogic.ConvertX(X * picX), MapLogic.ConvertY(Y * picY), data.X, data.Y, picX, picY, picX, picY)
+                    Call Render.RenderTexture(texTileset(data.Tileset), Maps.Logic.ConvertX(X * picX), Maps.Logic.ConvertY(Y * picY), data.X, data.Y, picX, picY, picX, picY)
                 End If
             Next Y
         Next X
+    End Sub
+
+    Private Sub DrawMapOverlay()
+        If IsNothing(Map) Then Exit Sub
+        Render.RenderRectangle(0, 0, ClientConfig.ScreenWidth, ClientConfig.ScreenHeight, 1, Map.Alpha, Map.Red, Map.Green, Map.Blue, True)
     End Sub
 End Class

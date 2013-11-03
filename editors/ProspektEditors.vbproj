@@ -136,25 +136,29 @@
     <Compile Include="Network\HandleData.vb" />
     <Compile Include="Network\Networking.vb" />
     <Compile Include="Network\SendData.vb" />
+    <Compile Include="Objects\Accounts\AccountCore.vb" />
     <Compile Include="Objects\Accounts\AccountData.vb" />
     <Compile Include="Objects\Accounts\Accounts.vb" />
-    <Compile Include="Objects\Maps\LayerData.vb" />
+    <Compile Include="Objects\Accounts\PlayerCore.vb" />
+    <Compile Include="Objects\Maps\MapCore.vb" />
     <Compile Include="Objects\Maps\MapData.vb" />
-    <Compile Include="Objects\Maps\MapStructure.vb" />
-    <Compile Include="Objects\Maps\OverlayColor.vb" />
-    <Compile Include="Objects\Maps\TileData.vb" />
+    <Compile Include="Objects\Maps\Maps.vb" />
+    <Compile Include="Objects\Tilesets\TilesetCore.vb" />
     <Compile Include="Objects\Tilesets\TilesetData.vb" />
     <Compile Include="Objects\Tilesets\Tilesets.vb" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="General\EditorWindow.resx">
       <DependentUpon>EditorWindow.vb</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="General\CommitData.resx">
       <DependentUpon>CommitData.vb</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="General\SyncData.resx">
       <DependentUpon>SyncData.vb</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="My Project\Resources.resx">
       <Generator>VbMyResourcesResXFileCodeGenerator</Generator>

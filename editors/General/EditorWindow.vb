@@ -1,9 +1,10 @@
-﻿Public Class EditorWindow
+﻿Imports Prospekt.Network
+Public Class EditorWindow
     Private Sub EditorWindow_Disposed(sender As Object, e As EventArgs) Handles Me.Disposed
         inEditor = False
         Verdana.Dispose()
-        Networking.Dispose()
-        Render.Dispose()
+        DestroyNetwork()
+        Graphics.Render.Dispose()
         End
     End Sub
 
@@ -22,17 +23,17 @@
     ' Map Editor
     Private Sub mnuMapSave_Click(sender As Object, e As EventArgs) Handles mnuMapSave.Click
         If Not IsNothing(lstMaps.Items) Then
-            MapData.SaveMaps()
+            Maps.Data.SaveMaps()
             ' Reload Editor Data
-            MapData.LoadMaps()
+            Maps.Data.LoadMaps()
             MapEditor.ReloadList()
         End If
     End Sub
 
     Private Sub mnuMapNew_Click(sender As Object, e As EventArgs) Handles mnuMapNew.Click
-        MapData.NewMap()
+        Maps.Data.NewMap()
         ' Reload Editor Data
-        MapData.LoadMaps()
+        Maps.Data.LoadMaps()
         MapEditor.ReloadList()
     End Sub
 
@@ -42,7 +43,7 @@
 
     Private Sub lstMaps_SelectedIndexChanged(sender As Object, e As EventArgs) Handles lstMaps.SelectedIndexChanged
         If IsNothing(lstMaps.SelectedItem) Then Exit Sub
-        If Not IsNothing(Map(MapData.GetMapIndex(lstMaps.SelectedIndex))) Then MapEditor.Load(MapData.GetMapIndex(lstMaps.SelectedIndex))
+        If Not IsNothing(Map(Maps.Data.GetMapIndex(lstMaps.SelectedIndex))) Then MapEditor.Load(Maps.Data.GetMapIndex(lstMaps.SelectedIndex))
     End Sub
 
     Private Sub proptMapData_PropertyValueChanged(s As Object, e As PropertyValueChangedEventArgs) Handles proptMapData.PropertyValueChanged
@@ -71,7 +72,7 @@
         If Not IsNothing(lstMaps.Items) Then MapEditor.mapPreview_MouseMove(e)
     End Sub
 
-    Private Sub mapPicTileSet_MouseEnter(sender As Object, e As EventArgs) Handles mapPicTileSet.MouseEnter
+    Private Sub mapPicTileSet_MouseEnter(sender As Object, e As EventArgs) Handles mapPicTileset.MouseEnter
         Cursor.Hide()
         tileSetScrlY.Focus()
     End Sub
@@ -116,17 +117,17 @@
     ' Account Editor
     Private Sub mnuAccountSave_Click(sender As Object, e As EventArgs) Handles mnuAccountSave.Click
         If Not IsNothing(lstAccounts.Items) Then
-            AccountData.SaveAccounts()
+            Accounts.Data.SaveAccounts()
             ' Reload Editor Data
-            AccountData.LoadAccounts()
+            Accounts.Data.LoadAccounts()
             AccountEditor.Reload()
         End If
     End Sub
 
     Private Sub mnuAccountNew_Click(sender As Object, e As EventArgs) Handles mnuAccountNew.Click
-        AccountData.NewAccount()
+        Accounts.Data.NewAccount()
         ' Reload Editor Data
-        AccountData.LoadAccounts()
+        Accounts.Data.LoadAccounts()
         AccountEditor.ReloadList()
     End Sub
 
@@ -136,7 +137,7 @@
 
     Private Sub lstAccounts_SelectedIndexChanged(sender As Object, e As EventArgs) Handles lstAccounts.SelectedIndexChanged
         If IsNothing(lstAccounts.SelectedItem) Then Exit Sub
-        If Not IsNothing(Account(AccountData.GetAccountIndex(lstAccounts.SelectedItem.ToString))) Then AccountEditor.Load(AccountData.GetAccountIndex(lstAccounts.SelectedItem.ToString))
+        If Not IsNothing(Account(Accounts.Data.GetAccountIndex(lstAccounts.SelectedItem.ToString))) Then AccountEditor.Load(Accounts.Data.GetAccountIndex(lstAccounts.SelectedItem.ToString))
     End Sub
 
     Private Sub proptPlayerData_PropertyValueChanged(s As Object, e As PropertyValueChangedEventArgs) Handles proptAccountData.PropertyValueChanged
@@ -145,11 +146,11 @@
 
     Private Sub EditorWindow_SizeChanged(sender As Object, e As EventArgs) Handles MyBase.SizeChanged
         If Not inEditor Then Exit Sub
-        Select SelectedEditor
+        Select Case SelectedEditor
             Case 0 : MapEditor.Reload()
             Case 1 : TilesetEditor.Reload()
         End Select
-        Render.ReInitialize()
+        Graphics.Render.ReInitialize()
     End Sub
 
     Private Sub EditorWindow_Load(sender As Object, e As EventArgs) Handles MyBase.Load

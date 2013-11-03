@@ -33,14 +33,15 @@
     Public Const pathAccounts As String = pathContent & "accounts/"
     Public Const pathNPCs As String = pathContent & "npcs/"
     Public Const pathMaps As String = pathContent & "maps/"
+    Public Const pathTilesetData As String = pathContent & "tilesets/"
 
     ' Fonts
-    Public Verdana As TextWriter
+    Public Verdana As Graphics.TextWriter
 
     ' Tile engine
     Public Const picX As Byte = 32
     Public Const picY As Byte = 32
-    Public Map As MapStructure()
+    Public Map As Maps()
     Public MapCount As Integer
     Public Camera As Rectangle
     Public TileView As Rectangle

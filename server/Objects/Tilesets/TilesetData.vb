@@ -1,10 +1,11 @@
 ﻿Imports System.IO
+Imports Prospekt.Network
 Public Class TilesetData
-    Public Shared Sub Save(ByVal SaveTileset As Tilesets)
+    Public Sub Save(ByVal SaveTileset As TilesetBase)
         Files.WriteBinary(pathTilesets & Trim(SaveTileset.ID) & ".bin", SaveTileset)
     End Sub
 
-    Public Shared Sub LoadTilesets()
+    Public Sub LoadAll()
         Dim I As Integer
         Dim fileEntries As String()
         Try
@@ -16,7 +17,7 @@ Public Class TilesetData
                     TilesetCount = I + 1
                     ReDim Preserve Tileset(0 To TilesetCount)
                     Tileset(TilesetCount) = New Tilesets
-                    Tileset(TilesetCount).SetID(CInt(fileName.Replace(pathTilesets, vbNullString).Replace(".bin", vbNullString)))
+                    Tileset(TilesetCount).ID = CInt(fileName.Replace(pathTilesets, vbNullString).Replace(".bin", vbNullString))
                     Tileset(TilesetCount).Load()
                     I = TilesetCount
                 Next fileName
@@ -26,14 +27,14 @@ Public Class TilesetData
         End Try
     End Sub
 
-    Public Shared Function GetTilesetID(ByVal name As String)
+    Public Function GetTilesetID(ByVal name As String)
         For Each tile In Tileset
             If tile.Name = name Then Return tile.ID
         Next
         Return 0
     End Function
 
-    Public Shared Function isTileBlocked(ByVal MapNum As Integer, ByVal X As Integer, ByVal Y As Integer) As Boolean
+    Public Function isTileBlocked(ByVal MapNum As Integer, ByVal X As Integer, ByVal Y As Integer) As Boolean
         Dim tempTile As New TileData
         For I As Integer = 0 To MapLayerEnum.COUNT - 1
             tempTile = Map(MapNum).Layer(I).GetTileData(X, Y)
@@ -44,7 +45,7 @@ Public Class TilesetData
         Return False
     End Function
 
-    Public Shared Function isTileNPCBlocked(ByVal MapNum As Integer, ByVal X As Integer, ByVal Y As Integer) As Boolean
+    Public Function isTileNPCBlocked(ByVal MapNum As Integer, ByVal X As Integer, ByVal Y As Integer) As Boolean
         Dim tempTile As New TileData
         For I As Integer = 0 To MapLayerEnum.COUNT - 1
             tempTile = Map(MapNum).Layer(I).GetTileData(X, Y)
@@ -55,7 +56,7 @@ Public Class TilesetData
         Return False
     End Function
 
-    Public Shared Sub SendTilesets()
+    Public Sub SendTilesets()
         Dim i As Integer
         For i = 1 To TilesetCount
             If Not IsNothing(Tileset(i)) Then

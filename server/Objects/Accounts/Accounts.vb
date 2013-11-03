@@ -1,62 +1,60 @@
 ﻿Public Class Accounts
-    Private mEmail As String
-    Private mPassword As String
-    Private mPlayer As Players
+    ' general
+    Public Base As AccountBase
+    Public Shared Data As New AccountData
 
     Public Sub New()
-        Me.mEmail = vbNullString
-        Me.mPassword = vbNullString
-        Me.mPlayer = New Players
+        Me.Base = New AccountBase
     End Sub
 
     Public Function Create() As Boolean
         If Me.Email = vbNullString Then Return False
-        AccountData.CreateAccount(Me)
+        Data.CreateAccount(Me.Base)
         Return True
     End Function
 
     Public Function Save() As Boolean
         If Me.Email = vbNullString Then Return False
-        AccountData.SaveAccount(Me)
+        Data.SaveAccount(Me.Base)
         Return True
     End Function
 
     Public Function NewCharacter() As Boolean
         If Me.Email = vbNullString Or Me.Player.Name = vbNullString Then Return False
-        AccountData.CreateCharacter(Me)
+        Data.CreateCharacter(Me.Base)
         Return True
     End Function
 
     ' Saved variables
     Public Property Email() As String
         Get
-            Return Me.mEmail
+            Return Me.Base.Email
         End Get
         Set(ByVal value As String)
             If Not IsNothing(Me) Then
-                Me.mEmail = value
+                Me.Base.Email = value
             End If
         End Set
     End Property
 
     Public Property Password() As String
         Get
-            Return Me.mPassword
+            Return Me.Base.Password
         End Get
         Set(ByVal value As String)
             If Not IsNothing(Me) Then
-                Me.mPassword = Md5FromString(value)
+                Me.Base.Password = value
             End If
         End Set
     End Property
 
-    Public Property Player() As Players
+    Public Property Player() As PlayerBase
         Get
-            Return Me.mPlayer
+            Return Me.Base.Player
         End Get
-        Set(ByVal value As Players)
+        Set(ByVal value As PlayerBase)
             If Not IsNothing(Me) Then
-                Me.mPlayer = value
+                Me.Base.Player = value
             End If
         End Set
     End Property

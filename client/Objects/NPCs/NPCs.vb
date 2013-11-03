@@ -1,6 +1,7 @@
 ﻿Public Class NPCs
     ' general
     Public Base As NpcBase
+    Public Shared Logic As New NPCLogic
     ' non-saved values
     Private mXOffset As Integer, mYOffset As Integer
     Private mMoving As Boolean = True
@@ -12,11 +13,11 @@
     End Sub
 
     Public Sub Load(NewName As String, NewSprite As Integer, NewX As Integer, NewY As Integer, NewDir As Byte)
-        Me.Name = NewName
-        Me.Sprite = NewSprite
-        Me.X = NewX
-        Me.Y = NewY
-        Me.Dir = NewDir
+        Me.Base.Name = NewName
+        Me.Base.Sprite = NewSprite
+        Me.Base.X = NewX
+        Me.Base.Y = NewY
+        Me.Base.Dir = NewDir
     End Sub
 
     ' Saved variables

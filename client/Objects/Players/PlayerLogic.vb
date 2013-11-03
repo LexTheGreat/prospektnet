@@ -1,12 +1,14 @@
-﻿Public Class PlayerLogic
-    Public Shared Function IsTryingToMove() As Boolean
+﻿Imports Prospekt.Input
+Imports Prospekt.Network
+Public Class PlayerLogic
+    Public Function IsTryingToMove() As Boolean
         'If DirUp Or DirDown Or DirLeft Or DirRight Then
         If dirUp Or dirDown Or dirLeft Or dirRight Then
             IsTryingToMove = True
         End If
     End Function
 
-    Public Shared Function CanMove() As Boolean
+    Public Function CanMove() As Boolean
         Dim tempX As Integer, tempY As Integer
         CanMove = True
         ' Make sure they aren't trying to move when they are already moving
@@ -40,12 +42,12 @@
             tempX = Player(MyIndex).X + 1
         End If
 
-        If PlayerLogic.PlayerOnTile(tempX, tempY) Then Return False
-        If NPCLogic.NpcOnTile(tempX, tempY) Then Return False
-        If TilesetLogic.isTileBlocked(tempX, tempY) Then Return False
+        If Players.Logic.PlayerOnTile(tempX, tempY) Then Return False
+        If NPCs.Logic.NpcOnTile(tempX, tempY) Then Return False
+        If Tilesets.Logic.isTileBlocked(tempX, tempY) Then Return False
     End Function
 
-    Public Shared Sub CheckMovement()
+    Public Sub CheckMovement()
         If IsTryingToMove() Then
             If CanMove() Then
                 Player(MyIndex).Moving = True
@@ -69,8 +71,8 @@
         End If
     End Sub
 
-    Public Shared Function PlayerOnTile(ByVal X As Integer, ByVal Y As Integer) As Boolean
-        For i = 1 to PlayerCount
+    Public Function PlayerOnTile(ByVal X As Integer, ByVal Y As Integer) As Boolean
+        For i = 1 To PlayerCount
             If Not IsNothing(Player(i)) Then
                 If (Player(i).X = X And Player(i).Y = Y) Then Return True
             End If
@@ -78,10 +80,10 @@
         Return False
     End Function
 
-    Public Shared Sub CheckInputKeys()
+    Public Sub CheckInputKeys()
 
         'Move Up
-        If KeyboardInput.GetKeyState(Keys.W) < 0 Or KeyboardInput.GetKeyState(Keys.Up) < 0 Then
+        If Keyboard.GetKeyState(Keys.W) < 0 Or Keyboard.GetKeyState(Keys.Up) < 0 Then
             dirUp = True
             dirDown = False
             dirLeft = False
@@ -92,7 +94,7 @@
         End If
 
         'Move Down
-        If KeyboardInput.GetKeyState(Keys.S) < 0 Or KeyboardInput.GetKeyState(Keys.Down) < 0 Then
+        If Keyboard.GetKeyState(Keys.S) < 0 Or Keyboard.GetKeyState(Keys.Down) < 0 Then
             dirUp = False
             dirDown = True
             dirLeft = False
@@ -103,7 +105,7 @@
         End If
 
         'Move left
-        If KeyboardInput.GetKeyState(Keys.A) < 0 Or KeyboardInput.GetKeyState(Keys.Left) < 0 Then
+        If Keyboard.GetKeyState(Keys.A) < 0 Or Keyboard.GetKeyState(Keys.Left) < 0 Then
             dirUp = False
             dirDown = False
             dirLeft = True
@@ -114,7 +116,7 @@
         End If
 
         'Move Right
-        If KeyboardInput.GetKeyState(Keys.D) < 0 Or KeyboardInput.GetKeyState(Keys.Right) < 0 Then
+        If Keyboard.GetKeyState(Keys.D) < 0 Or Keyboard.GetKeyState(Keys.Right) < 0 Then
             dirUp = False
             dirDown = False
             dirLeft = False

@@ -26,7 +26,7 @@
     ' Tile engine
     Public Const picX As Byte = 32
     Public Const picY As Byte = 32
-    Public Map As MapStructure
+    Public Map As Maps
     Public Camera As Rectangle
     Public TileView As Rectangle
 
@@ -64,7 +64,7 @@
     Public chatShowLine As String
 
     ' Fonts
-    Public Verdana As TextWriter
+    Public Verdana As Prospekt.Graphics.TextWriter
 
     ' Players
     Public MyIndex As Integer

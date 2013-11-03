@@ -2,13 +2,11 @@
     Private index As Integer
 
     Public Sub Init()
-        If Not IsNothing(Account) Then
-            For Each plyr In Account
-                If Not IsNothing(plyr) Then
-                    EditorWindow.lstAccounts.Items.Add(plyr.Email)
-                End If
-            Next
-        End If
+        For I As Integer = 1 To AccountCount
+            If Not IsNothing(Account(I)) Then
+                EditorWindow.lstAccounts.Items.Add(Account(I).Email)
+            End If
+        Next
         EditorWindow.tabAccount.Text = "Account"
         EditorWindow.proptAccountData.SelectedObject = vbNull
     End Sub
@@ -39,7 +37,7 @@
     End Sub
 
     Public Sub Undo()
-        AccountData.LoadAccounts()
+        Accounts.Data.LoadAccounts()
         EditorWindow.tabAccount.Text = "Account"
         EditorWindow.proptAccountData.SelectedObject = vbNull
     End Sub

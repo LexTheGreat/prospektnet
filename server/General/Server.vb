@@ -1,29 +1,28 @@
 ﻿Imports Lidgren.Network
 Public Class Server
-
     Public Shared Sub Main()
         Dim time1 As Integer, time2 As Integer
         time1 = System.Environment.TickCount
         Console.Title = "Loading..."
-        Console.WriteLine("Loading options...")
+        Console.WriteLine("Loading configuration...")
         ServerConfig = New Configuration
         ServerConfig.Load()
         Console.WriteLine("Loading accounts...")
-        AccountData.LoadAccounts()
+        Accounts.Data.LoadAccounts()
+        Console.WriteLine("Loading players...")
+        ReDim Player(ServerConfig.MaxPlayers)
+        ReDim ConnectedClients(ServerConfig.MaxPlayers)
         Console.WriteLine("Loading npcs...")
-        NPCData.LoadNPCs()
+        NPCs.Data.LoadNPCs()
         Console.WriteLine("Loading maps...")
-        MapData.LoadMaps()
+        Maps.Data.LoadAll()
         Console.WriteLine("Loading tilesets...")
-        TilesetData.LoadTilesets()
+        Tilesets.Data.LoadAll()
         Console.WriteLine("Loading networking...")
         Networking.Initialize()
         Console.WriteLine("Initializing script engine...")
-        LuaScript = New LuaHandler
-        LuaScript.ExecuteFile("server.lua")
-        Console.WriteLine("Initializing player array...")
-        ReDim Player(ServerConfig.MaxPlayers)
-        ReDim ConnectedClients(ServerConfig.MaxPlayers)
+        LuaScript = New Scripting.LuaHandler
+        LuaScript.ExecuteFile("server.lua")   
         Console.Title = "Prospekt Server <IP " & Networking.GetPublicIP() & " Port " & ServerConfig.Port & ">"
         time2 = System.Environment.TickCount
         ServerLogic.WriteLine("Initialization complete. Server loaded in " & time2 - time1 & "ms.", ConsoleColor.Green)
@@ -42,7 +41,7 @@ Public Class Server
             'Saves players every 5 minutes
             If tmrPlayerSave < Tick Then
                 ServerLogic.WriteLine("Saving Players...", ConsoleColor.Green)
-                PlayerData.SaveOnlinePlayers()
+                Players.Data.SaveOnlinePlayers()
                 tmrPlayerSave = System.Environment.TickCount + 300000
             End If
             'Generate Npc movement every second

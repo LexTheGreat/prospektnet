@@ -1,5 +1,5 @@
 ﻿Public Class PlayerLogic
-    Public Shared Function PlayerOnTile(ByVal X As Integer, ByVal Y As Integer) As Boolean
+    Public Function PlayerOnTile(ByVal X As Integer, ByVal Y As Integer) As Boolean
         For i = 1 To PlayerCount
             If Not IsNothing(Player(i)) Then
                 If (Player(i).X = X And Player(i).Y = Y) Then Return True
@@ -8,11 +8,11 @@
         Return False
     End Function
 
-    Public Shared Function IsPlaying(ByVal index As Integer) As Boolean
+    Public Function IsPlaying(ByVal index As Integer) As Boolean
         ' Checks if the player is online
         If Networking.IsConnected(index) Then
             If Not IsNothing(Player(index)) Then
-                If Player(index).GetIsPlaying Then
+                If Player(index).IsPlaying Then
                     Return True
                 End If
             End If
@@ -20,7 +20,7 @@
         Return False
     End Function
 
-    Public Shared Function FindOpenPlayerSlot() As Integer
+    Public Function FindOpenPlayerSlot() As Integer
         Dim i As Integer
         For i = 1 To PlayerCount
             If Not Networking.IsConnected(i) Then

@@ -12,19 +12,6 @@ Public Module ServerLogic
         Array.ConstrainedCopy(arr, 0, temp, 0, length)
         Return temp
     End Function
-    Function Md5FromString(ByVal Source As String) As String
-        Dim Bytes() As Byte
-        Dim sb As New StringBuilder()
-        If String.IsNullOrEmpty(Source) Then
-            Throw New ArgumentNullException
-        End If
-        Bytes = Encoding.Default.GetBytes(Source)
-        Bytes = MD5.Create().ComputeHash(Bytes)
-        For x As Integer = 0 To Bytes.Length - 1
-            sb.Append(Bytes(x).ToString("x2"))
-        Next
-        Return sb.ToString()
-    End Function
     Sub WriteLine(ByVal obj As Object, Optional ByVal color As Object = "Gray")
         Dim colorNames() As String = ConsoleColor.GetNames(GetType(ConsoleColor))
         For Each colorName As String In colorNames

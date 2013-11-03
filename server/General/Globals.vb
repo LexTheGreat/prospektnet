@@ -3,7 +3,7 @@
     Public inServer As Boolean
 
     ' Scripting holder
-    Public LuaScript As LuaHandler
+    Public LuaScript As Scripting.LuaHandler
 
     ' Networking
     Public pServer As Lidgren.Network.NetServer
@@ -24,7 +24,7 @@
     Public PlayerCount As Integer = 1
 
     ' Maps
-    Public Map As MapStructure()
+    Public Map As Maps()
     Public MapCount As Integer = 0
 
     ' Tilesets

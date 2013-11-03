@@ -22,13 +22,10 @@ Public Class Configuration
     End Sub
 
     Public Sub Load()
-        Dim objConfig As Object, newConfig As New Configuration
+        Dim newConfig As New Configuration
 
         ' Get object from file
-        objConfig = Files.ReadXML(pathContent & "config.xml", Me)
-        If IsNothing(objConfig) Then objConfig = New Configuration()
-        ' Convert object to newConfig
-        newConfig = CType(objConfig, Configuration)
+        newConfig = DirectCast(Files.ReadXML(pathContent & "config.xml", Me), Configuration)
         Me.ScreenWidth = newConfig.ScreenWidth
         Me.ScreenHeight = newConfig.ScreenHeight
         Me.MenuMusic = newConfig.MenuMusic

@@ -9,6 +9,8 @@
 *.suo
 *.user
 *.sln.docstates
+*.lastcodeanalysissucceeded
+*.CodeAnalysisLog.xml
 
 # Build results
 

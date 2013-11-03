@@ -1,14 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Accounts xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Base>
+    <Email>admin@indiearmory.com</Email>
+    <Password>admin</Password>
+    <Player>
+      <Name>Thomasko</Name>
+      <Sprite>1</Sprite>
+      <X>9</X>
+      <Y>5</Y>
+      <Dir>0</Dir>
+      <Map>0</Map>
+      <AccessMode>5</AccessMode>
+      <Visible>true</Visible>
+    </Player>
+  </Base>
   <Email>admin@indiearmory.com</Email>
   <Password>admin</Password>
   <Player>
-    <Name>administrator</Name>
+    <Name>Thomasko</Name>
     <Sprite>1</Sprite>
+    <X>9</X>
+    <Y>5</Y>
+    <Dir>0</Dir>
     <Map>0</Map>
-    <X>20</X>
-    <Y>11</Y>
-    <Dir>3</Dir>
     <AccessMode>5</AccessMode>
     <Visible>true</Visible>
   </Player>

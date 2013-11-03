@@ -1,5 +1,7 @@
 ﻿Imports SFML.Graphics
 Imports SFML.Window
+Imports Prospekt.Graphics
+Imports Prospekt.Network
 
 Public Class GMTools
     Public Shared Visible As Boolean
@@ -29,13 +31,13 @@ Public Class GMTools
         Public Sub Draw()
             Render.RenderTexture(Texture, X, Y, 0, 0, Width, Height, Width, Height, 120, 0, 0, 0)
             ' Draw Title
-            Verdana.Draw(Title, X + (Textures.Texture(Me.Texture).Width * 0.5) + Verdana.GetWidth(Title), Y + 5, Color.White, 22)
+            Verdana.Draw(Title, X + (gTexture(Me.Texture).Width * 0.5) + Verdana.GetWidth(Title), Y + 5, Color.White, 22)
             Dim line As String = "-", i As Integer
             For i = 0 To Title.Length
                 line = line + "-"
             Next
             ' Draw Title Underline
-            Verdana.Draw(line, X + (Textures.Texture(Me.Texture).Width * 0.5) + Verdana.GetWidth(Title), Y + 23, Color.White, 22)
+            Verdana.Draw(line, X + (gTexture(Me.Texture).Width * 0.5) + Verdana.GetWidth(Title), Y + 23, Color.White, 22)
             ' Exit Button
             Render.RenderButton(X + 215, Y, 15, 15, 9, 9, AddressOf ButtonPress, -1)
 
@@ -55,16 +57,16 @@ Public Class GMTools
             Dim text As String = vbNullString
 
             text = "- Player List -"
-            Verdana.Draw(text, X + (Textures.Texture(Me.Texture).Width * 0.5) + Verdana.GetWidth(Title) - (Verdana.GetWidth(text) * 0.2), Y + 58, Color.White, AddressOf ButtonPress, 1, 18)
+            Verdana.Draw(text, X + (gTexture(Me.Texture).Width * 0.5) + Verdana.GetWidth(Title) - (Verdana.GetWidth(text) * 0.2), Y + 58, Color.White, AddressOf ButtonPress, 1, 18)
 
             text = "- Item List -"
-            Verdana.Draw(text, X + (Textures.Texture(Me.Texture).Width * 0.5) + Verdana.GetWidth(Title) - (Verdana.GetWidth(text) * 0.2), Y + 88, Color.White, AddressOf ButtonPress, 2, 18)
+            Verdana.Draw(text, X + (gTexture(Me.Texture).Width * 0.5) + Verdana.GetWidth(Title) - (Verdana.GetWidth(text) * 0.2), Y + 88, Color.White, AddressOf ButtonPress, 2, 18)
 
             text = "- Npc List -"
-            Verdana.Draw(text, X + (Textures.Texture(Me.Texture).Width * 0.5) + Verdana.GetWidth(Title) - (Verdana.GetWidth(text) * 0.2), Y + 118, Color.White, AddressOf ButtonPress, 3, 18)
+            Verdana.Draw(text, X + (gTexture(Me.Texture).Width * 0.5) + Verdana.GetWidth(Title) - (Verdana.GetWidth(text) * 0.2), Y + 118, Color.White, AddressOf ButtonPress, 3, 18)
 
             text = "- Terrain List -"
-            Verdana.Draw(text, X + (Textures.Texture(Me.Texture).Width * 0.5) + Verdana.GetWidth(Title) - (Verdana.GetWidth(text) * 0.2), Y + 148, Color.White, AddressOf ButtonPress, 4, 18)
+            Verdana.Draw(text, X + (gTexture(Me.Texture).Width * 0.5) + Verdana.GetWidth(Title) - (Verdana.GetWidth(text) * 0.2), Y + 148, Color.White, AddressOf ButtonPress, 4, 18)
         End Sub
 
         Public Sub DrawPlayerMode()
@@ -77,7 +79,7 @@ Public Class GMTools
 
         Public Sub DrawPlayerList()
             Dim i As Integer, text As String = "Online Players"
-            Verdana.Draw(text, X + (Textures.Texture(Me.Texture).Width * 0.5) + Verdana.GetWidth(Title), Y + 45, Color.White, 12)
+            Verdana.Draw(text, X + (gTexture(Me.Texture).Width * 0.5) + Verdana.GetWidth(Title), Y + 45, Color.White, 12)
 
             For i = Scroll + 1 To Scroll + 10
                 If Not IsNothing(Player(i)) Then
@@ -115,7 +117,7 @@ Public Class GMTools
             Dim text As String = "Player Options"
             If (pMode = 1) Then
                 'Draw title
-                Verdana.Draw(text, X + (Textures.Texture(Me.Texture).Width * 0.5) + Verdana.GetWidth(Title), Y + 45, Color.White, 12)
+                Verdana.Draw(text, X + (gTexture(Me.Texture).Width * 0.5) + Verdana.GetWidth(Title), Y + 45, Color.White, 12)
 
                 text = "- Edit Player -"
                 Verdana.Draw(text, X + 12, Y + 65, Color.White, AddressOf PlayerModeButtonPress, 4, 12)
@@ -149,7 +151,7 @@ Public Class GMTools
                 text = "Edit: " & Trim$(Player(sPlayerIndex).Name).Substring(0, 7) & "..."
             End If
 
-            Verdana.Draw(text, X + (Textures.Texture(Me.Texture).Width * 0.5) + Verdana.GetWidth(text), Y + 45, Color.White, 12)
+            Verdana.Draw(text, X + (gTexture(Me.Texture).Width * 0.5) + Verdana.GetWidth(text), Y + 45, Color.White, 12)
 
         End Sub
 
