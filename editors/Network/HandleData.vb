@@ -73,7 +73,7 @@ Namespace Network.HandleData
                 Account(i).Password = Data.ReadString
                 Account(i).Name = Data.ReadString
                 Account(i).Sprite = Data.ReadInt32
-                Account(i).Map = Data.ReadInt32
+                Account(i).PlayerMap = Data.ReadInt32
                 Account(i).X = Data.ReadInt32
                 Account(i).Y = Data.ReadInt32
                 Account(i).SetPlayerDir(Data.ReadByte)

@@ -298,6 +298,7 @@ Class MapClass
         For x As Integer = 0 + ScrlX To MapVisible(0) + ScrlX
             For y As Integer = 0 + ScrlY To MapVisible(1) + ScrlY
                 For lyr As Integer = 0 To 3
+                    If x >= Map(index).MaxX Or y >= Map(index).MaxY Then Continue For
                     If Map(index).GetTileData(lyr, x, y).Tileset < 0 Then Continue For
                     Select Case lyr
                         Case MapLayerEnum.Ground

@@ -81,6 +81,25 @@ Public Class Accounts
         End Function
     End Class
 
+    Public Class MapConverter
+        Inherits StringConverter
+
+        Public Overloads Overrides Function GetStandardValuesSupported(ByVal context As ITypeDescriptorContext) As Boolean
+            Return True
+        End Function
+
+        Public Overloads Overrides Function GetStandardValues(ByVal context As ITypeDescriptorContext) As StandardValuesCollection
+            Dim mapString() As String, i As Integer = 0
+            ReDim Preserve mapString(0 To i)
+            For i = 0 To MapCount
+                ReDim Preserve mapString(0 To i)
+                mapString(i) = Map(i).Name
+            Next
+
+            Return New StandardValuesCollection(mapString)
+        End Function
+    End Class
+
     <CategoryAttribute("Account"), _
        DisplayName("Email")> _
     Public Property Email() As String
@@ -133,15 +152,18 @@ Public Class Accounts
         End Set
     End Property
 
-    <CategoryAttribute("Position"), _
+    <TypeConverter(GetType(MapConverter)), _
+       CategoryAttribute("Position"), _
        DisplayName("Map")> _
-    Public Property Map() As Integer
+    Public Property PlayerMap() As String
         Get
-            Return Me.Base.Player.Map
+            Return Map(Me.Base.Player.Map).Name
         End Get
-        Set(value As Integer)
+        Set(value As String)
             If Not IsNothing(Me) Then
-                Me.Base.Player.Map = value
+                For i As Integer = 0 To MapCount
+                    If Map(i).Name = value Then Me.Base.Player.Map = i
+                Next
             End If
         End Set
     End Property
@@ -185,6 +207,7 @@ Public Class Accounts
             End If
         End Set
     End Property
+
     <TypeConverter(GetType(AccessConverter)), _
        CategoryAttribute("Admin"), _
        DisplayName("Access")> _

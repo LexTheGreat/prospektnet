@@ -55,7 +55,7 @@ Namespace Network.SendData
                 Buffer.Write(Account(I).Password)
                 Buffer.Write(Account(I).Name)
                 Buffer.Write(Account(I).Sprite)
-                Buffer.Write(Account(I).Map)
+                Buffer.Write(Account(I).PlayerMap)
                 Buffer.Write(Account(I).X)
                 Buffer.Write(Account(I).Y)
                 Buffer.Write(Account(I).GetPlayerDir)
