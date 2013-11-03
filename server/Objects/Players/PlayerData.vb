@@ -7,13 +7,12 @@ Imports Prospekt.Network
 Public Class PlayerData
     Public Sub SaveOnlinePlayers()
         Dim index As Integer
-        Dim acc As New Accounts
 
         For index = 1 To PlayerCount
             If Players.Logic.IsPlaying(index) Then
                 Try
-                    Files.WriteXML(pathAccounts & acc.Email & ".xml", acc)
                     Account(Players.Data.GetPlayerIndex(Player(index).Name)).Player = Player(index).Base
+                    Account(Players.Data.GetPlayerIndex(Player(index).Name)).Save()
                 Catch ex As Exception
                     Console.WriteLine("Error: " & ex.ToString & " (In: Players.Data.SaveOnlinePlayers)")
                     Continue For
