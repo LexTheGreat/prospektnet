@@ -124,6 +124,7 @@ Public Class Networking
                     Case ACCESS.ADMIN : SendData.Message(Trim$("(Admin) " & Player(index).Name) & " has left the game.")
                 End Select
                 Console.WriteLine(Player(index).Name & " has left the game.")
+                LuaScript.executeFunction("onLogout", index)
                 Player(index).IsPlaying = False
                 Player(index).Save()
                 Player(index) = Nothing

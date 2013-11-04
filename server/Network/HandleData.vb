@@ -108,6 +108,7 @@ Namespace Network.HandleData
                     Case ACCESS.ADMIN : SendData.Message(Trim$("(Admin) " & Player(index).Name) & " has logged in.")
                 End Select
                 Console.WriteLine(Name & " has logged in.")
+                LuaScript.executeFunction("onLogin", index)
             End If
         End Sub
 
