@@ -90,7 +90,7 @@ Namespace Network.HandleData
                     SendData.RegisterOk(index)
                     Exit Sub
                 End If
-                Networking.UpdateHighIndex()
+                UpdateHighIndex()
                 Player(index).Load(Accounts.Data.GetAccount(Name).Player.Name)
                 Player(index).IsPlaying = True
                 Players.Data.SendPlayers()
@@ -243,7 +243,7 @@ Namespace Network.HandleData
                     SendData.Alert(index, "Account " & Name & " Failed To Load!" & vbNewLine & "[Error: character missing]")
                     Exit Sub
                 End If
-                Networking.UpdateHighIndex()
+                UpdateHighIndex()
                 Player(index).Load(Accounts.Data.GetAccount(Name).Player.Name)
                 Player(index).IsPlaying = False
                 SendData.EditorLoginOk(index, Mode)

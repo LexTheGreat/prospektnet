@@ -1,4 +1,5 @@
-﻿Namespace Scripting
+﻿Imports Prospekt.Network
+Namespace Scripting
     Public Class LuaCommands
         Public Function getPlayerIndex(ByVal name As String) As Integer
             For index As Integer = 1 To PlayerCount
@@ -16,7 +17,7 @@
             Return PlayerCount - 1
         End Function
         Public Function isOnline(ByVal index As Integer) As Boolean
-            Return Networking.IsConnected(index)
+            Return IsConnected(index)
         End Function
         ' Functions
         Public Sub cPrint(ByVal Message As Object, Optional ByVal color As Object = ConsoleColor.Gray)

@@ -1,4 +1,5 @@
 ﻿Imports Lidgren.Network
+Imports Prospekt.Network
 Public Class Server
     Public Shared Sub Main()
         Dim time1 As Integer, time2 As Integer
@@ -18,12 +19,12 @@ Public Class Server
         Maps.Data.LoadAll()
         Console.WriteLine("Loading tilesets...")
         Tilesets.Data.LoadAll()
-        Console.WriteLine("Loading networking...")
-        Networking.Initialize()
+        Console.WriteLine("Initializing networking..")
+        InitializeNetwork()
         Console.WriteLine("Initializing script engine...")
         LuaScript = New Scripting.LuaHandler
         LuaScript.ExecuteFile("server.lua")
-        Console.Title = "Prospekt Server <IP " & Networking.GetPublicIP() & " Port " & ServerConfig.Port & ">"
+        Console.Title = "Prospekt Server <IP " & GetPublicIP() & " Port " & ServerConfig.Port & ">"
         time2 = System.Environment.TickCount
         ServerLogic.WriteLine("Initialization complete. Server loaded in " & time2 - time1 & "ms.", ConsoleColor.Green)
         inServer = True
@@ -33,26 +34,27 @@ Public Class Server
     Public Shared Sub ServerLoop()
         Dim Tick As Integer
         Dim tmrPlayerSave As Integer = System.Environment.TickCount + 300000
-        Dim tmrNpcMove As Integer
+        Dim tmr1000 As Integer
         Dim i As Integer
         Do While inServer
             Tick = System.Environment.TickCount()
-            Networking.HandleMessage()
+            HandleMessage()
             'Saves players every 5 minutes
             If tmrPlayerSave < Tick Then
                 ServerLogic.WriteLine("Saving Players...", ConsoleColor.Green)
                 Players.Data.SaveOnlinePlayers()
                 tmrPlayerSave = System.Environment.TickCount + 300000
             End If
-            'Generate Npc movement every second
-            If tmrNpcMove < Tick Then
+            If tmr1000 < Tick Then
+                'Generate Npc movement every second
                 For i = 1 To NPCCount ' Loop through Npc's
                     If Not IsNothing(NPC(i)) Then ' Make sure Npc exists
                         NPC(i).GenerateMovement()
                     End If
                 Next i
+                'Execute lua script every second
                 LuaScript.executeFunction("onTick")
-                tmrNpcMove = System.Environment.TickCount + 1000
+                tmr1000 = System.Environment.TickCount + 1000
             End If
         Loop
     End Sub

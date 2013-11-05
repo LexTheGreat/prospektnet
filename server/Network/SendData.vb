@@ -5,20 +5,20 @@ Namespace Network.SendData
             Dim Buffer As NetOutgoingMessage = pServer.CreateMessage
             Buffer.Write(ServerPackets.Alert)
             Buffer.Write(Message)
-            Networking.SendDataTo(index, Buffer)
+            SendDataTo(index, Buffer)
         End Sub
 
         Public Sub RegisterOk(ByVal index As Integer)
             Dim Buffer As NetOutgoingMessage = pServer.CreateMessage
             Buffer.Write(ServerPackets.RegisterOk)
-            Networking.SendDataTo(index, Buffer)
+            SendDataTo(index, Buffer)
         End Sub
 
         Public Sub LoginOk(ByVal index As Integer)
             Dim Buffer As NetOutgoingMessage = pServer.CreateMessage
             Buffer.Write(ServerPackets.LoginOk)
             Buffer.Write(index)
-            Networking.SendDataTo(index, Buffer)
+            SendDataTo(index, Buffer)
         End Sub
 
         Public Sub PlayerData(ByVal index As Integer)
@@ -33,7 +33,7 @@ Namespace Network.SendData
             Buffer.Write(Player(index).Dir)
             Buffer.Write(Player(index).AccessMode)
             Buffer.Write(Player(index).Visible)
-            Networking.SendDataToAll(Buffer)
+            SendDataToAll(Buffer)
         End Sub
 
         Public Sub ClearPlayer(ByVal index As Integer)
@@ -41,7 +41,7 @@ Namespace Network.SendData
             Buffer.Write(ServerPackets.ClearPlayer)
             Buffer.Write(index)
             Buffer.Write(PlayerCount)
-            Networking.SendDataToAllBut(index, Buffer)
+            SendDataToAllBut(index, Buffer)
         End Sub
 
         Public Sub Position(ByVal index As Integer, Optional ByVal UpdateOwn As Boolean = False)
@@ -53,9 +53,9 @@ Namespace Network.SendData
             Buffer.Write(Player(index).Y)
             Buffer.Write(Player(index).Dir)
             If Not UpdateOwn Then
-                Networking.SendDataToAllBut(index, Buffer)
+                SendDataToAllBut(index, Buffer)
             Else
-                Networking.SendDataToAll(Buffer)
+                SendDataToAll(Buffer)
             End If
         End Sub
 
@@ -64,7 +64,7 @@ Namespace Network.SendData
             Buffer.Write(ServerPackets.Access)
             Buffer.Write(index)
             Buffer.Write(Player(index).AccessMode)
-            Networking.SendDataTo(index, Buffer)
+            SendDataTo(index, Buffer)
         End Sub
 
         Public Sub Visible(ByVal index As Integer)
@@ -72,7 +72,7 @@ Namespace Network.SendData
             Buffer.Write(ServerPackets.Visible)
             Buffer.Write(index)
             Buffer.Write(Player(index).Visible)
-            Networking.SendDataToAll(Buffer)
+            SendDataToAll(Buffer)
         End Sub
 
         Public Sub Message(ByVal Message As String, Optional ByVal ChatMode As String = vbNullString)
@@ -81,9 +81,9 @@ Namespace Network.SendData
             Buffer.Write(Message)
 
             If ChatMode = vbNullString Then
-                Networking.SendDataToAll(Buffer)
+                SendDataToAll(Buffer)
             ElseIf (ChatMode = "[" & ChatModes.GM & "] ") Then
-                Networking.SendDataToAdmins(Buffer)
+                SendDataToAdmins(Buffer)
             End If
         End Sub
 
@@ -91,14 +91,14 @@ Namespace Network.SendData
             Dim Buffer As NetOutgoingMessage = pServer.CreateMessage
             Buffer.Write(ServerPackets.Message)
             Buffer.Write(Message)
-            Networking.SendDataTo(Index, Buffer)
+            SendDataTo(Index, Buffer)
         End Sub
 
         Public Sub MessageToAdmins(ByVal Message As String)
             Dim Buffer As NetOutgoingMessage = pServer.CreateMessage
             Buffer.Write(ServerPackets.Message)
             Buffer.Write(Message)
-            Networking.SendDataToAdmins(Buffer)
+            SendDataToAdmins(Buffer)
         End Sub
 
         Public Sub NPCData(ByVal Index As Integer)
@@ -107,7 +107,7 @@ Namespace Network.SendData
             Buffer.Write(Index)
             Buffer.Write(NPCCount)
             Buffer.WriteAllFields(NPC(Index).Base)
-            Networking.SendDataToAll(Buffer)
+            SendDataToAll(Buffer)
         End Sub
 
         Public Sub NPCPosition(ByVal Index As Integer)
@@ -118,7 +118,7 @@ Namespace Network.SendData
             Buffer.Write(NPC(Index).X)
             Buffer.Write(NPC(Index).Y)
             Buffer.Write(NPC(Index).Dir)
-            Networking.SendDataToAll(Buffer)
+            SendDataToAll(Buffer)
         End Sub
 
         Public Sub MapData(ByVal Index As Integer)
@@ -144,7 +144,7 @@ Namespace Network.SendData
                     Next
                 Next
             Next
-            Networking.SendDataTo(Index, Buffer)
+            SendDataTo(Index, Buffer)
         End Sub
 
         Public Sub TilesetData(ByVal Index As Integer)
@@ -162,7 +162,7 @@ Namespace Network.SendData
                     Buffer.Write(Tileset(Index).Tile(x, y))
                 Next
             Next
-            Networking.SendDataToAll(Buffer)
+            SendDataToAll(Buffer)
         End Sub
 
         ' Editor Packets
@@ -170,7 +170,7 @@ Namespace Network.SendData
             Dim Buffer As NetOutgoingMessage = pServer.CreateMessage
             Buffer.Write(SEditorPackets.LoginOk)
             Buffer.Write(Mode)
-            Networking.SendDataTo(index, Buffer)
+            SendDataTo(index, Buffer)
         End Sub
 
         Public Sub EditorPlayerData(ByVal Index As Integer)
@@ -191,7 +191,7 @@ Namespace Network.SendData
                 Buffer.Write(Account(I).Player.AccessMode)
                 Buffer.Write(Account(I).Player.Visible)
             Next
-            Networking.SendDataTo(Index, Buffer)
+            SendDataTo(Index, Buffer)
         End Sub
 
         Public Sub EditorMapData(ByVal Index As Integer)
@@ -219,7 +219,7 @@ Namespace Network.SendData
                     Next
                 Next
             Next
-            Networking.SendDataTo(Index, Buffer)
+            SendDataTo(Index, Buffer)
         End Sub
 
         Public Sub EditorTilesetData(ByVal Index As Integer)
@@ -238,14 +238,14 @@ Namespace Network.SendData
                     Next
                 Next
             Next i
-            Networking.SendDataTo(Index, Buffer)
+            SendDataTo(Index, Buffer)
         End Sub
 
         Public Sub EditorDataSent(ByVal index As Integer, ByVal Mode As Byte)
             Dim Buffer As NetOutgoingMessage = pServer.CreateMessage
             Buffer.Write(SEditorPackets.DataSent)
             Buffer.Write(Mode)
-            Networking.SendDataTo(index, Buffer)
+            SendDataTo(index, Buffer)
         End Sub
     End Module
 End Namespace

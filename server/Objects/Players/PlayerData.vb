@@ -27,7 +27,7 @@ Public Class PlayerData
             acc = Account(Players.Data.GetPlayerIndex(player.Name))
             acc.Player = player
             'Serialize object to a file.
-            Files.WriteXML(pathAccounts & acc.Email & ".xml", acc)
+            Files.WriteXML(pathAccounts & acc.Email & ".xml", acc.Base)
             Account(Players.Data.GetPlayerIndex(player.Name)) = acc
             Exit Sub
         Catch ex As Exception

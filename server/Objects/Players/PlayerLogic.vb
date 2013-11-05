@@ -1,4 +1,5 @@
-﻿Public Class PlayerLogic
+﻿Imports Prospekt.Network
+Public Class PlayerLogic
     Public Function PlayerOnTile(ByVal X As Integer, ByVal Y As Integer) As Boolean
         For i = 1 To PlayerCount
             If Not IsNothing(Player(i)) Then
@@ -10,7 +11,7 @@
 
     Public Function IsPlaying(ByVal index As Integer) As Boolean
         ' Checks if the player is online
-        If Networking.IsConnected(index) Then
+        If IsConnected(index) Then
             If Not IsNothing(Player(index)) Then
                 If Player(index).IsPlaying Then
                     Return True
@@ -23,7 +24,7 @@
     Public Function FindOpenPlayerSlot() As Integer
         Dim i As Integer
         For i = 1 To PlayerCount
-            If Not Networking.IsConnected(i) Then
+            If Not IsConnected(i) Then
                 Return i
                 Exit Function
             End If

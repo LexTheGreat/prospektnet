@@ -13,15 +13,12 @@ Module General
         ' Setup Tileset Editor
         Tilesets.Data.LoadTilesets()
         TilesetEditor = New TilesetClass
-        TilesetEditor.Init()
         'Setup Map Editor
         Maps.Data.LoadMaps()
         MapEditor = New MapClass
-        MapEditor.Init()
         ' Setup Account Editor
         Accounts.Data.LoadAccounts()
         AccountEditor = New AccountClass
-        AccountEditor.Init()
         EditorWindow.Visible = True
         inEditor = True
         EditorLoop()
