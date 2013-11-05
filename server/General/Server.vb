@@ -32,7 +32,7 @@ Public Class Server
 
     Public Shared Sub ServerLoop()
         Dim Tick As Integer
-        Dim tmrPlayerSave As Integer
+        Dim tmrPlayerSave As Integer = System.Environment.TickCount + 300000
         Dim tmrNpcMove As Integer
         Dim i As Integer
         Do While inServer
