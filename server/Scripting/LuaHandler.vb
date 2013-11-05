@@ -11,6 +11,7 @@ Namespace Scripting
             LuaObject = New Lua
             Commands = New LuaCommands
             REM server
+            addFunction("getPlayer", "getPlayer")
             addFunction("getPlayers", "getPlayers")
             addFunction("getPlayerIndex", "getPlayerIndex")
             REM player
@@ -28,12 +29,12 @@ Namespace Scripting
             ServerLogic.WriteLine("Added LuaFunction |" & luafunction + "| to .NET function |" + vbfunction + "|", ConsoleColor.Green)
         End Sub
 
-        Public Sub removeFunction(ByVal luafunction As String)
-            If LuaObject.GetFunction(luafunction).Equals(Nothing) Then
-                ServerLogic.WriteLine(luafunction + " could not be found.", ConsoleColor.Yellow)
-                Return
+        Public Sub executeFunction(ByVal luafunction As String, ByVal ParamArray arg() As Object)
+            If arg.Length >= 1 Then
+                Try : LuaObject.GetFunction(luafunction).Call(arg) : Catch ex As LuaException : ServerLogic.WriteLine(ex, ConsoleColor.Red) : Catch ex As Exception : End Try
+            Else
+                Try : LuaObject.GetFunction(luafunction).Call() : Catch ex As LuaException : ServerLogic.WriteLine(ex, ConsoleColor.Red) : Catch ex As Exception : End Try
             End If
-            LuaObject.GetFunction(luafunction).Dispose()
         End Sub
 
         Public Sub autorun()

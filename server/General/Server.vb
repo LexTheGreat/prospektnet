@@ -22,7 +22,7 @@ Public Class Server
         Networking.Initialize()
         Console.WriteLine("Initializing script engine...")
         LuaScript = New Scripting.LuaHandler
-        LuaScript.ExecuteFile("server.lua")   
+        LuaScript.ExecuteFile("server.lua")
         Console.Title = "Prospekt Server <IP " & Networking.GetPublicIP() & " Port " & ServerConfig.Port & ">"
         time2 = System.Environment.TickCount
         ServerLogic.WriteLine("Initialization complete. Server loaded in " & time2 - time1 & "ms.", ConsoleColor.Green)
@@ -51,6 +51,7 @@ Public Class Server
                         NPC(i).GenerateMovement()
                     End If
                 Next i
+                LuaScript.executeFunction("onTick")
                 tmrNpcMove = System.Environment.TickCount + 1000
             End If
         Loop

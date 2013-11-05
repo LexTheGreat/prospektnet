@@ -1,16 +1,16 @@
 ﻿Namespace Scripting
     Public Class LuaCommands
-        Public Function getAccountIndex(ByVal name As String) As Integer
-            For index As Integer = 0 To Account.Length
-                If Account(index).Player.Name = name Then Return index
-            Next
-            Return 0 ' <- Server idk about this...
-        End Function
         Public Function getPlayerIndex(ByVal name As String) As Integer
             For index As Integer = 1 To PlayerCount
                 If Player(index).Name = name Then Return index
             Next
             Return 0 ' <- Server idk about this...
+        End Function
+        Public Function getPlayer(ByVal index As Integer) As Players
+            If isOnline(index) Then
+                Return Player(index)
+            End If
+            Return Player(0)
         End Function
         Public Function getPlayers() As Integer
             Return PlayerCount - 1
