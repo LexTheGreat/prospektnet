@@ -92,7 +92,6 @@ Class MapClass
     End Sub
 
     Public Sub Load(ByVal i As Integer)
-        Dim MapMax As Integer(), MapVisible As Integer()
         EditorWindow.mapScrlX.Value = 0
         EditorWindow.mapScrlY.Value = 0
         If i < 0 Then Exit Sub
@@ -100,21 +99,22 @@ Class MapClass
             index = i
             EditorWindow.tabMap.Text = Map(i).Name
             EditorWindow.proptMapData.SelectedObject = Map(i)
+            If Math.Round(Map(i).MaxX - (EditorWindow.mapPreview.Width / picX), 0) < 0 Then
+                EditorWindow.mapScrlX.Maximum = 0
+            Else
+                EditorWindow.mapScrlX.Maximum = Math.Round(Map(i).MaxX - (EditorWindow.mapPreview.Width / picX), 0)
+            End If
+            If Math.Round(Map(i).MaxY - (EditorWindow.mapPreview.Height / picX), 0) < 0 Then
+                EditorWindow.mapScrlY.Maximum = 0
+            Else
+                EditorWindow.mapScrlY.Maximum = Math.Round(Map(i).MaxY - (EditorWindow.mapPreview.Height / picX), 0)
+            End If
+            Diagnostics.Debug.WriteLine(EditorWindow.mapScrlX.Maximum)
+            Diagnostics.Debug.WriteLine(EditorWindow.mapScrlY.Maximum)
+            Diagnostics.Debug.WriteLine(vbNullString)
+            Diagnostics.Debug.WriteLine(vbNullString)
             EditorWindow.mapScrlX.Value = 0
             EditorWindow.mapScrlY.Value = 0
-            MapMax = GetMapMax()
-            MapVisible = GetMapVisible()
-            If MapMax(0) > MapVisible(0) Then
-                EditorWindow.mapScrlX.Maximum = MapMax(0)
-            Else
-                EditorWindow.mapScrlX.Maximum = 1
-            End If
-
-            If MapMax(1) > MapVisible(1) Then
-                EditorWindow.mapScrlY.Maximum = MapMax(1)
-            Else
-                EditorWindow.mapScrlY.Maximum = 1
-            End If
         End If
     End Sub
 
@@ -145,7 +145,7 @@ Class MapClass
     End Sub
 
     Public Sub Verify()
-        Dim MapMax As Integer() = GetMapMax(), MapVisible As Integer() = GetMapVisible()
+        Dim MapVisible As Integer() = GetMapVisible()
         If Map(index).Name = vbNullString Then Map(index).Name = "New Map"
         If Map(index).MaxX < 35 Then Map(index).MaxX = 35
         If Map(index).MaxY < 35 Then Map(index).MaxY = 35
@@ -344,24 +344,14 @@ Class MapClass
         If EditorWindow.mapPreview.Width / picX > Map(index).MaxX Then
             maxX = Map(index).MaxX
         Else
-            maxX = System.Math.Round(EditorWindow.mapPreview.Width / picX, 0)
+            maxX = Math.Round(EditorWindow.mapPreview.Width / picX, 0)
         End If
 
         If EditorWindow.mapPreview.Height / picY > Map(index).MaxY Then
             maxY = Map(index).MaxY
         Else
-            maxY = System.Math.Round(EditorWindow.mapPreview.Height / picY, 0)
+            maxY = Math.Round(EditorWindow.mapPreview.Height / picY, 0)
         End If
-
-        Return New Integer() {maxX, maxY}
-    End Function
-
-    Public Function GetMapMax() As Integer()
-        If index < 0 Then Return New Integer() {34, 34}
-        Dim maxX As Integer, maxY As Integer, visible As Integer() = GetMapVisible()
-
-        maxX = Map(index).MaxX - visible(0)
-        maxY = Map(index).MaxY - visible(1)
 
         Return New Integer() {maxX, maxY}
     End Function
