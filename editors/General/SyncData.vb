@@ -11,4 +11,8 @@ Public Class SyncData
             Me.Focus()
         End If
     End Sub
+
+    Private Sub SyncData_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+
+    End Sub
 End Class

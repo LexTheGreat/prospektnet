@@ -6,16 +6,19 @@ Namespace Graphics
         Public Shared Window As RenderWindow
         Public Shared TileWindow As RenderWindow
         Public Shared TileEditWindow As RenderWindow
+        Public Shared MapNPCWindow As RenderWindow
         Delegate Function Pressed(ByVal index As Integer) As Boolean
 
         Public Shared Sub Initialize()
             ' Initialize rendering window
             Window = New RenderWindow(EditorWindow.mapPreview.Handle)
-            TileWindow = New RenderWindow(EditorWindow.mapPicTileset.Handle)
-            TileEditWindow = New RenderWindow(EditorWindow.picTilesetEditor.Handle)
             Window.SetFramerateLimit(64)
+            TileWindow = New RenderWindow(EditorWindow.mapPicTileset.Handle)
             TileWindow.SetFramerateLimit(64)
+            TileEditWindow = New RenderWindow(EditorWindow.picTilesetEditor.Handle)
             TileEditWindow.SetFramerateLimit(64)
+            MapNPCWindow = New RenderWindow(MapNPCs.picNPCs.Handle)
+            MapNPCWindow.SetFramerateLimit(64)
             'Cache and load textures
             InitTextures()
         End Sub
@@ -23,14 +26,17 @@ Namespace Graphics
         Public Shared Sub ReInitialize()
             ' Initialize rendering window
             Window.Dispose()
-            TileWindow.Dispose()
-            TileEditWindow.Dispose()
             Window = New RenderWindow(EditorWindow.mapPreview.Handle)
-            TileWindow = New RenderWindow(EditorWindow.mapPicTileset.Handle)
-            TileEditWindow = New RenderWindow(EditorWindow.picTilesetEditor.Handle)
             Window.SetFramerateLimit(64)
+            TileWindow.Dispose()
+            TileWindow = New RenderWindow(EditorWindow.mapPicTileset.Handle)
             TileWindow.SetFramerateLimit(64)
+            TileEditWindow.Dispose()
+            TileEditWindow = New RenderWindow(EditorWindow.picTilesetEditor.Handle)
             TileEditWindow.SetFramerateLimit(64)
+            MapNPCWindow.Dispose()
+            MapNPCWindow = New RenderWindow(MapNPCs.picNPCs.Handle)
+            MapNPCWindow.SetFramerateLimit(64)
         End Sub
 
         Public Shared Sub Dispose()

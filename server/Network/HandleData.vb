@@ -255,6 +255,7 @@ Namespace Network.HandleData
             SendData.EditorMapData(index)
             SendData.EditorTilesetData(index)
             SendData.EditorPlayerData(index)
+            SendData.EditorNPCData(index)
             SendData.EditorDataSent(index, 1)
         End Sub
 

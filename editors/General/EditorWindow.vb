@@ -54,6 +54,10 @@ Public Class EditorWindow
         If Not IsNothing(lstMaps.Items) Then MapEditor.VerifyEditor()
     End Sub
 
+    Private Sub mapPreview_DoubleClick(sender As Object, e As EventArgs) Handles mapPreview.DoubleClick
+        If Not IsNothing(lstMaps.Items) Then MapEditor.AddMapNpc()
+    End Sub
+
     Private Sub mapPreview_MouseEnter(sender As Object, e As EventArgs) Handles mapPreview.MouseEnter
         Cursor.Hide()
         mapScrlY.Focus()
@@ -144,6 +148,10 @@ Public Class EditorWindow
         If Not IsNothing(lstAccounts.Items) Then AccountEditor.Verify()
     End Sub
 
+    Private Sub EditorWindow_Load(sender As Object, e As EventArgs) Handles Me.Load
+        General.Main()
+    End Sub
+
     Private Sub EditorWindow_SizeChanged(sender As Object, e As EventArgs) Handles MyBase.SizeChanged
         If Not inEditor Then Exit Sub
         Select Case SelectedEditor
@@ -151,10 +159,6 @@ Public Class EditorWindow
             Case 1 : TilesetEditor.Reload()
         End Select
         Graphics.Render.ReInitialize()
-    End Sub
-
-    Private Sub EditorWindow_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        General.Main()
     End Sub
 
     Private Sub cmbTilesetEditor_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cmbTilesetEditor.SelectedIndexChanged

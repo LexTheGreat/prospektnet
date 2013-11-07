@@ -13,12 +13,19 @@ Module General
         ' Setup Tileset Editor
         Tilesets.Data.LoadTilesets()
         TilesetEditor = New TilesetClass
+        TilesetEditor.Init()
         'Setup Map Editor
         Maps.Data.LoadMaps()
         MapEditor = New MapClass
+        MapEditor.Init()
         ' Setup Account Editor
         Accounts.Data.LoadAccounts()
         AccountEditor = New AccountClass
+        AccountEditor.Init()
+        'Setup Map NPC Editor
+        NPCs.Data.LoadNPCs()
+        MapNPCEditor = New MapNPCClass
+        MapNPCEditor.Init()
         EditorWindow.Visible = True
         inEditor = True
         EditorLoop()
@@ -36,7 +43,11 @@ Module General
             ElapsedTime = Tick - FrameTime ' Set the time difference for time-based movement
             FrameTime = Tick
             Networking.HandleMessage()
-
+            If MapNPCs.Visible Then
+                Render.MapNPCWindow.Clear(New Color(255, 255, 255))
+                MapNPCEditor.DrawNPC()
+                Render.MapNPCWindow.Display()
+            End If
             Select Case SelectedEditor
                 Case 0 ' Map Editor
                     ' Start rendering

@@ -7,10 +7,6 @@ Class TilesetClass
     Private mapMouseRect As Rectangle, mapSrcRect As Rectangle
     Private selectMouseRect As Rectangle, selectSrcRect As Rectangle
 
-    Public Sub New()
-        Init()
-    End Sub
-
     Public Sub Init()
         If countTileset > 0 Then
             EditorWindow.cmbTilesetEditor.Items.Clear()

@@ -1,10 +1,6 @@
 ﻿Class AccountClass
     Private index As Integer
 
-    Public Sub New()
-        Init()
-    End Sub
-
     Public Sub Init()
         For I As Integer = 1 To AccountCount
             If Not IsNothing(Account(I)) Then

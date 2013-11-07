@@ -12,6 +12,7 @@
     Public AccountEditor As AccountClass
     Public MapEditor As MapClass
     Public TilesetEditor As TilesetClass
+    Public MapNPCEditor As MapNPCClass
     Public SelectedEditor As Byte = 0
 
     ' Loop Control
@@ -51,4 +52,8 @@
     ' Accounts
     Public Account As Accounts()
     Public AccountCount As Integer
+
+    ' NPCs
+    Public NPC() As NPCs
+    Public NPCCount As Integer
 End Module

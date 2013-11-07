@@ -9,10 +9,6 @@ Class MapClass
     Private mapMouseRect As Rectangle, mapSrcRect As Rectangle
     Private selectMouseRect As Rectangle, selectSrcRect As Rectangle
 
-    Public Sub New()
-        Init()
-    End Sub
-
     Class EditorProperties
         ' ProptyGrid Functions
         Public Class TypeConverter
@@ -171,6 +167,10 @@ Class MapClass
 
         ' Refresh data
         EditorWindow.proptMapEditorData.Refresh()
+    End Sub
+    Public Sub AddMapNpc()
+        MapNPCEditor.Init()
+        MapNPCs.Show()
     End Sub
 
     Public Sub SelectTileset()

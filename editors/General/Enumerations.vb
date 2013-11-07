@@ -50,6 +50,7 @@
         MapData
         PlayerData
         TilesetData
+        NPCData
         DataSent
         ' Make sure MSG_COUNT is below everything else
         COUNT

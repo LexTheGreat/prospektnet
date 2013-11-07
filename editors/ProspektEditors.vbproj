@@ -93,6 +93,7 @@
     <Compile Include="Database\Files.vb" />
     <Compile Include="Editors\AccountEditor.vb" />
     <Compile Include="Editors\MapEditor.vb" />
+    <Compile Include="Editors\MapNPCEditor.vb" />
     <Compile Include="Editors\TilesetEditor.vb" />
     <Compile Include="General\EditorWindow.Designer.vb">
       <DependentUpon>EditorWindow.vb</DependentUpon>
@@ -109,6 +110,12 @@
     <Compile Include="General\Enumerations.vb" />
     <Compile Include="General\General.vb" />
     <Compile Include="General\Globals.vb" />
+    <Compile Include="General\MapNPCs.Designer.vb">
+      <DependentUpon>MapNPCs.vb</DependentUpon>
+    </Compile>
+    <Compile Include="General\MapNPCs.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="General\SyncData.Designer.vb">
       <DependentUpon>SyncData.vb</DependentUpon>
     </Compile>
@@ -143,6 +150,9 @@
     <Compile Include="Objects\Maps\MapCore.vb" />
     <Compile Include="Objects\Maps\MapData.vb" />
     <Compile Include="Objects\Maps\Maps.vb" />
+    <Compile Include="Objects\NPCs\NPCCore.vb" />
+    <Compile Include="Objects\NPCs\NPCData.vb" />
+    <Compile Include="Objects\NPCs\NPCs.vb" />
     <Compile Include="Objects\Tilesets\TilesetCore.vb" />
     <Compile Include="Objects\Tilesets\TilesetData.vb" />
     <Compile Include="Objects\Tilesets\Tilesets.vb" />
@@ -155,6 +165,9 @@
     <EmbeddedResource Include="General\CommitData.resx">
       <DependentUpon>CommitData.vb</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="General\MapNPCs.resx">
+      <DependentUpon>MapNPCs.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="General\SyncData.resx">
       <DependentUpon>SyncData.vb</DependentUpon>

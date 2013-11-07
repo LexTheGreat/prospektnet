@@ -8,6 +8,7 @@ Namespace Network.HandleData
             If PacketNum = SEditorPackets.MapData Then HandleData.EditorMapData(Data)
             If PacketNum = SEditorPackets.PlayerData Then HandleData.EditorPlayerData(Data)
             If PacketNum = SEditorPackets.TilesetData Then HandleData.EditorTilesetData(Data)
+            If PacketNum = SEditorPackets.NPCData Then HandleData.EditorNPCData(Data)
             If PacketNum = SEditorPackets.DataSent Then HandleData.DataSent(Data)
         End Sub
 
@@ -104,6 +105,19 @@ Namespace Network.HandleData
                 Tileset(i).Save()
             Next i
             TilesetEditor.Init()
+        End Sub
+
+        Public Sub EditorNPCData(ByRef data As NetIncomingMessage)
+            Dim num As Integer
+
+            num = data.ReadInt32
+            ReDim NPC(0 To num)
+            For i As Integer = 1 To num
+                NPC(i) = New NPCs
+                data.ReadAllFields(NPC(i))
+            Next i
+            NPCCount = num
+            MapNPCEditor.Init()
         End Sub
 
         Public Sub DataSent(ByRef Data As NetIncomingMessage)

@@ -71,7 +71,7 @@ Partial Class SyncData
         Me.btnSync.Text = "Sync"
         Me.btnSync.UseVisualStyleBackColor = True
         '
-        'frmSyncData
+        'SyncData
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
@@ -84,7 +84,7 @@ Partial Class SyncData
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow
         Me.MaximizeBox = False
         Me.MinimizeBox = False
-        Me.Name = "frmSyncData"
+        Me.Name = "SyncData"
         Me.Text = "Sync Data"
         Me.ResumeLayout(False)
         Me.PerformLayout()

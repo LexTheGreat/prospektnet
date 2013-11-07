@@ -241,6 +241,16 @@ Namespace Network.SendData
             SendDataTo(Index, Buffer)
         End Sub
 
+        Public Sub EditorNPCData(ByVal Index As Integer)
+            Dim Buffer As NetOutgoingMessage = pServer.CreateMessage
+            Buffer.Write(SEditorPackets.NPCData)
+            Buffer.Write(NPCCount)
+            For I As Integer = 1 To NPCCount
+                Buffer.WriteAllFields(NPC(I).Base)
+            Next
+            SendDataTo(Index, Buffer)
+        End Sub
+
         Public Sub EditorDataSent(ByVal index As Integer, ByVal Mode As Byte)
             Dim Buffer As NetOutgoingMessage = pServer.CreateMessage
             Buffer.Write(SEditorPackets.DataSent)
