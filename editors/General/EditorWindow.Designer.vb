@@ -27,6 +27,8 @@ Partial Class EditorWindow
         Me.mnuMain_File = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuMain_Publish = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuMain_Sync = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuMain_View = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuMain_Textures = New System.Windows.Forms.ToolStripMenuItem()
         Me.tabEditors = New System.Windows.Forms.TabControl()
         Me.tabMapEditor = New System.Windows.Forms.TabPage()
         Me.groupMapData = New System.Windows.Forms.GroupBox()
@@ -80,6 +82,17 @@ Partial Class EditorWindow
         Me.mnuAccountSave = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuAccountNew = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuAccountUndo = New System.Windows.Forms.ToolStripMenuItem()
+        Me.tabNpcEditor = New System.Windows.Forms.TabPage()
+        Me.groupNpcData = New System.Windows.Forms.GroupBox()
+        Me.tabNpcs = New System.Windows.Forms.TabControl()
+        Me.tabNpc = New System.Windows.Forms.TabPage()
+        Me.proptNpcData = New System.Windows.Forms.PropertyGrid()
+        Me.groupNpcList = New System.Windows.Forms.GroupBox()
+        Me.lstNpcs = New System.Windows.Forms.ListBox()
+        Me.mnuNpcList = New System.Windows.Forms.MenuStrip()
+        Me.mnuNpcSave = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuNpcNew = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuNpcUndo = New System.Windows.Forms.ToolStripMenuItem()
         Me.imgSprites = New System.Windows.Forms.ImageList(Me.components)
         Me.mnuMain.SuspendLayout()
         Me.tabEditors.SuspendLayout()
@@ -110,11 +123,17 @@ Partial Class EditorWindow
         Me.tabAccount.SuspendLayout()
         Me.groupAccountList.SuspendLayout()
         Me.mnuAccountList.SuspendLayout()
+        Me.tabNpcEditor.SuspendLayout()
+        Me.groupNpcData.SuspendLayout()
+        Me.tabNpcs.SuspendLayout()
+        Me.tabNpc.SuspendLayout()
+        Me.groupNpcList.SuspendLayout()
+        Me.mnuNpcList.SuspendLayout()
         Me.SuspendLayout()
         '
         'mnuMain
         '
-        Me.mnuMain.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuMain_File})
+        Me.mnuMain.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuMain_File, Me.mnuMain_View})
         Me.mnuMain.Location = New System.Drawing.Point(0, 0)
         Me.mnuMain.Name = "mnuMain"
         Me.mnuMain.Size = New System.Drawing.Size(819, 24)
@@ -140,11 +159,25 @@ Partial Class EditorWindow
         Me.mnuMain_Sync.Size = New System.Drawing.Size(162, 22)
         Me.mnuMain_Sync.Text = "Sync Local Data"
         '
+        'mnuMain_View
+        '
+        Me.mnuMain_View.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuMain_Textures})
+        Me.mnuMain_View.Name = "mnuMain_View"
+        Me.mnuMain_View.Size = New System.Drawing.Size(44, 20)
+        Me.mnuMain_View.Text = "View"
+        '
+        'mnuMain_Textures
+        '
+        Me.mnuMain_Textures.Name = "mnuMain_Textures"
+        Me.mnuMain_Textures.Size = New System.Drawing.Size(152, 22)
+        Me.mnuMain_Textures.Text = "Textures"
+        '
         'tabEditors
         '
         Me.tabEditors.Controls.Add(Me.tabMapEditor)
         Me.tabEditors.Controls.Add(Me.tabTilesetEditor)
         Me.tabEditors.Controls.Add(Me.tabAccountEditor)
+        Me.tabEditors.Controls.Add(Me.tabNpcEditor)
         Me.tabEditors.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tabEditors.HotTrack = True
         Me.tabEditors.Location = New System.Drawing.Point(0, 24)
@@ -664,6 +697,105 @@ Partial Class EditorWindow
         Me.mnuAccountUndo.Size = New System.Drawing.Size(48, 20)
         Me.mnuAccountUndo.Text = "Undo"
         '
+        'tabNpcEditor
+        '
+        Me.tabNpcEditor.Controls.Add(Me.groupNpcData)
+        Me.tabNpcEditor.Controls.Add(Me.groupNpcList)
+        Me.tabNpcEditor.Location = New System.Drawing.Point(4, 22)
+        Me.tabNpcEditor.Name = "tabNpcEditor"
+        Me.tabNpcEditor.Padding = New System.Windows.Forms.Padding(3)
+        Me.tabNpcEditor.Size = New System.Drawing.Size(811, 426)
+        Me.tabNpcEditor.TabIndex = 5
+        Me.tabNpcEditor.Text = "Npc Editor"
+        Me.tabNpcEditor.UseVisualStyleBackColor = True
+        '
+        'groupNpcData
+        '
+        Me.groupNpcData.Controls.Add(Me.tabNpcs)
+        Me.groupNpcData.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.groupNpcData.Location = New System.Drawing.Point(158, 3)
+        Me.groupNpcData.Name = "groupNpcData"
+        Me.groupNpcData.Size = New System.Drawing.Size(650, 420)
+        Me.groupNpcData.TabIndex = 4
+        Me.groupNpcData.TabStop = False
+        Me.groupNpcData.Text = "Npc Data"
+        '
+        'tabNpcs
+        '
+        Me.tabNpcs.Controls.Add(Me.tabNpc)
+        Me.tabNpcs.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.tabNpcs.Location = New System.Drawing.Point(3, 16)
+        Me.tabNpcs.Name = "tabNpcs"
+        Me.tabNpcs.SelectedIndex = 0
+        Me.tabNpcs.Size = New System.Drawing.Size(644, 401)
+        Me.tabNpcs.TabIndex = 0
+        '
+        'tabNpc
+        '
+        Me.tabNpc.Controls.Add(Me.proptNpcData)
+        Me.tabNpc.Location = New System.Drawing.Point(4, 22)
+        Me.tabNpc.Name = "tabNpc"
+        Me.tabNpc.Padding = New System.Windows.Forms.Padding(3)
+        Me.tabNpc.Size = New System.Drawing.Size(636, 375)
+        Me.tabNpc.TabIndex = 2
+        Me.tabNpc.Text = "Npc"
+        Me.tabNpc.UseVisualStyleBackColor = True
+        '
+        'proptNpcData
+        '
+        Me.proptNpcData.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.proptNpcData.Location = New System.Drawing.Point(3, 3)
+        Me.proptNpcData.Name = "proptNpcData"
+        Me.proptNpcData.Size = New System.Drawing.Size(630, 369)
+        Me.proptNpcData.TabIndex = 1
+        '
+        'groupNpcList
+        '
+        Me.groupNpcList.Controls.Add(Me.lstNpcs)
+        Me.groupNpcList.Controls.Add(Me.mnuNpcList)
+        Me.groupNpcList.Dock = System.Windows.Forms.DockStyle.Left
+        Me.groupNpcList.Location = New System.Drawing.Point(3, 3)
+        Me.groupNpcList.Name = "groupNpcList"
+        Me.groupNpcList.Size = New System.Drawing.Size(155, 420)
+        Me.groupNpcList.TabIndex = 3
+        Me.groupNpcList.TabStop = False
+        Me.groupNpcList.Text = "Npc List"
+        '
+        'lstNpcs
+        '
+        Me.lstNpcs.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.lstNpcs.FormattingEnabled = True
+        Me.lstNpcs.Location = New System.Drawing.Point(3, 40)
+        Me.lstNpcs.Name = "lstNpcs"
+        Me.lstNpcs.Size = New System.Drawing.Size(149, 377)
+        Me.lstNpcs.TabIndex = 0
+        '
+        'mnuNpcList
+        '
+        Me.mnuNpcList.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuNpcSave, Me.mnuNpcNew, Me.mnuNpcUndo})
+        Me.mnuNpcList.Location = New System.Drawing.Point(3, 16)
+        Me.mnuNpcList.Name = "mnuNpcList"
+        Me.mnuNpcList.Size = New System.Drawing.Size(149, 24)
+        Me.mnuNpcList.TabIndex = 1
+        '
+        'mnuNpcSave
+        '
+        Me.mnuNpcSave.Name = "mnuNpcSave"
+        Me.mnuNpcSave.Size = New System.Drawing.Size(43, 20)
+        Me.mnuNpcSave.Text = "Save"
+        '
+        'mnuNpcNew
+        '
+        Me.mnuNpcNew.Name = "mnuNpcNew"
+        Me.mnuNpcNew.Size = New System.Drawing.Size(43, 20)
+        Me.mnuNpcNew.Text = "New"
+        '
+        'mnuNpcUndo
+        '
+        Me.mnuNpcUndo.Name = "mnuNpcUndo"
+        Me.mnuNpcUndo.Size = New System.Drawing.Size(48, 20)
+        Me.mnuNpcUndo.Text = "Undo"
+        '
         'imgSprites
         '
         Me.imgSprites.ColorDepth = System.Windows.Forms.ColorDepth.Depth8Bit
@@ -716,6 +848,14 @@ Partial Class EditorWindow
         Me.groupAccountList.PerformLayout()
         Me.mnuAccountList.ResumeLayout(False)
         Me.mnuAccountList.PerformLayout()
+        Me.tabNpcEditor.ResumeLayout(False)
+        Me.groupNpcData.ResumeLayout(False)
+        Me.tabNpcs.ResumeLayout(False)
+        Me.tabNpc.ResumeLayout(False)
+        Me.groupNpcList.ResumeLayout(False)
+        Me.groupNpcList.PerformLayout()
+        Me.mnuNpcList.ResumeLayout(False)
+        Me.mnuNpcList.PerformLayout()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -778,5 +918,18 @@ Partial Class EditorWindow
     Friend WithEvents mapPreview As System.Windows.Forms.PictureBox
     Friend WithEvents mapScrlY As System.Windows.Forms.VScrollBar
     Friend WithEvents mapPicTileset As System.Windows.Forms.PictureBox
+    Friend WithEvents tabNpcEditor As System.Windows.Forms.TabPage
+    Friend WithEvents groupNpcData As System.Windows.Forms.GroupBox
+    Friend WithEvents tabNpcs As System.Windows.Forms.TabControl
+    Friend WithEvents tabNpc As System.Windows.Forms.TabPage
+    Friend WithEvents proptNpcData As System.Windows.Forms.PropertyGrid
+    Friend WithEvents groupNpcList As System.Windows.Forms.GroupBox
+    Friend WithEvents lstNpcs As System.Windows.Forms.ListBox
+    Friend WithEvents mnuNpcList As System.Windows.Forms.MenuStrip
+    Friend WithEvents mnuNpcSave As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents mnuNpcNew As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents mnuNpcUndo As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents mnuMain_View As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents mnuMain_Textures As System.Windows.Forms.ToolStripMenuItem
 
 End Class

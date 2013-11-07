@@ -109,10 +109,6 @@ Class MapClass
             Else
                 EditorWindow.mapScrlY.Maximum = Math.Round(Map(i).MaxY - (EditorWindow.mapPreview.Height / picX), 0)
             End If
-            Diagnostics.Debug.WriteLine(EditorWindow.mapScrlX.Maximum)
-            Diagnostics.Debug.WriteLine(EditorWindow.mapScrlY.Maximum)
-            Diagnostics.Debug.WriteLine(vbNullString)
-            Diagnostics.Debug.WriteLine(vbNullString)
             EditorWindow.mapScrlX.Value = 0
             EditorWindow.mapScrlY.Value = 0
         End If
@@ -133,6 +129,7 @@ Class MapClass
     End Sub
 
     Public Sub Reload()
+        ReloadList()
         Load(index)
         SelectTileset()
     End Sub

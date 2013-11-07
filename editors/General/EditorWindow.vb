@@ -16,8 +16,26 @@ Public Class EditorWindow
         SyncData.Show()
     End Sub
 
+    Private Sub EditorWindow_Load(sender As Object, e As EventArgs) Handles Me.Load
+        General.Main()
+    End Sub
+
+    Private Sub EditorWindow_SizeChanged(sender As Object, e As EventArgs) Handles MyBase.SizeChanged
+        If Not inEditor Then Exit Sub
+        Select Case SelectedEditor
+            Case 0 : MapEditor.Reload()
+            Case 1 : TilesetEditor.Reload()
+        End Select
+        Graphics.Render.ReInitialize()
+    End Sub
+
     Private Sub tabEditors_SelectedIndexChanged(sender As Object, e As EventArgs) Handles tabEditors.SelectedIndexChanged
         SelectedEditor = tabEditors.SelectedIndex
+    End Sub
+
+    Private Sub mnuMain_Textures_Click(sender As Object, e As EventArgs) Handles mnuMain_Textures.Click
+        Dim TV As TextureViewer = New TextureViewer
+        TV.init()
     End Sub
 
     ' Map Editor
@@ -118,49 +136,7 @@ Public Class EditorWindow
         End If
     End Sub
 
-    ' Account Editor
-    Private Sub mnuAccountSave_Click(sender As Object, e As EventArgs) Handles mnuAccountSave.Click
-        If Not IsNothing(lstAccounts.Items) Then
-            Accounts.Data.SaveAccounts()
-            ' Reload Editor Data
-            Accounts.Data.LoadAccounts()
-            AccountEditor.Reload()
-        End If
-    End Sub
-
-    Private Sub mnuAccountNew_Click(sender As Object, e As EventArgs) Handles mnuAccountNew.Click
-        Accounts.Data.NewAccount()
-        ' Reload Editor Data
-        Accounts.Data.LoadAccounts()
-        AccountEditor.ReloadList()
-    End Sub
-
-    Private Sub mnuAccountUndo_Click(sender As Object, e As EventArgs) Handles mnuAccountUndo.Click
-        If Not IsNothing(lstAccounts.Items) Then AccountEditor.Undo()
-    End Sub
-
-    Private Sub lstAccounts_SelectedIndexChanged(sender As Object, e As EventArgs) Handles lstAccounts.SelectedIndexChanged
-        If IsNothing(lstAccounts.SelectedItem) Then Exit Sub
-        If Not IsNothing(Account(Accounts.Data.GetAccountIndex(lstAccounts.SelectedItem.ToString))) Then AccountEditor.Load(Accounts.Data.GetAccountIndex(lstAccounts.SelectedItem.ToString))
-    End Sub
-
-    Private Sub proptPlayerData_PropertyValueChanged(s As Object, e As PropertyValueChangedEventArgs) Handles proptAccountData.PropertyValueChanged
-        If Not IsNothing(lstAccounts.Items) Then AccountEditor.Verify()
-    End Sub
-
-    Private Sub EditorWindow_Load(sender As Object, e As EventArgs) Handles Me.Load
-        General.Main()
-    End Sub
-
-    Private Sub EditorWindow_SizeChanged(sender As Object, e As EventArgs) Handles MyBase.SizeChanged
-        If Not inEditor Then Exit Sub
-        Select Case SelectedEditor
-            Case 0 : MapEditor.Reload()
-            Case 1 : TilesetEditor.Reload()
-        End Select
-        Graphics.Render.ReInitialize()
-    End Sub
-
+    ' Tileset Editor
     Private Sub cmbTilesetEditor_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cmbTilesetEditor.SelectedIndexChanged
         If Not IsNothing(cmbTilesetEditor.Items) Then TilesetEditor.SelectTileset()
     End Sub
@@ -199,5 +175,65 @@ Public Class EditorWindow
 
     Private Sub txtTilesetName_TextChanged(sender As Object, e As EventArgs) Handles txtTilesetName.TextChanged
         If Not IsNothing(cmbTilesetEditor.Items) Then TilesetEditor.txtTilesetName_TextChanged()
+    End Sub
+
+    ' Account Editor
+    Private Sub mnuAccountSave_Click(sender As Object, e As EventArgs) Handles mnuAccountSave.Click
+        If Not IsNothing(lstAccounts.Items) Then
+            Accounts.Data.SaveAccounts()
+            ' Reload Editor Data
+            Accounts.Data.LoadAccounts()
+            AccountEditor.Reload()
+        End If
+    End Sub
+
+    Private Sub mnuAccountNew_Click(sender As Object, e As EventArgs) Handles mnuAccountNew.Click
+        Accounts.Data.NewAccount()
+        ' Reload Editor Data
+        Accounts.Data.LoadAccounts()
+        AccountEditor.ReloadList()
+    End Sub
+
+    Private Sub mnuAccountUndo_Click(sender As Object, e As EventArgs) Handles mnuAccountUndo.Click
+        If Not IsNothing(lstAccounts.Items) Then AccountEditor.Undo()
+    End Sub
+
+    Private Sub lstAccounts_SelectedIndexChanged(sender As Object, e As EventArgs) Handles lstAccounts.SelectedIndexChanged
+        If IsNothing(lstAccounts.SelectedItem) Then Exit Sub
+        If Not IsNothing(Account(Accounts.Data.GetAccountIndex(lstAccounts.SelectedItem.ToString))) Then AccountEditor.Load(Accounts.Data.GetAccountIndex(lstAccounts.SelectedItem.ToString))
+    End Sub
+
+    Private Sub proptPlayerData_PropertyValueChanged(s As Object, e As PropertyValueChangedEventArgs) Handles proptAccountData.PropertyValueChanged
+        If Not IsNothing(lstAccounts.Items) Then AccountEditor.Verify()
+    End Sub
+
+    ' Npc Editor
+    Private Sub mnuNpcSave_Click(sender As Object, e As EventArgs) Handles mnuNpcSave.Click
+        If Not IsNothing(lstNpcs.Items) Then
+            NPCs.Data.SaveNpcs()
+            ' Reload Editor Data
+            NPCs.Data.LoadNpcs()
+            NpcEditor.Reload()
+        End If
+    End Sub
+
+    Private Sub mnuNpcNew_Click(sender As Object, e As EventArgs) Handles mnuNpcNew.Click
+        NPCs.Data.NewNpc()
+        ' Reload Editor Data
+        NPCs.Data.LoadNpcs()
+        NpcEditor.ReloadList()
+    End Sub
+
+    Private Sub mnuNpctUndo_Click(sender As Object, e As EventArgs) Handles mnuNpcUndo.Click
+        If Not IsNothing(lstAccounts.Items) Then NpcEditor.Undo()
+    End Sub
+
+    Private Sub lstNpcs_SelectedIndexChanged(sender As Object, e As EventArgs) Handles lstNpcs.SelectedIndexChanged
+        If IsNothing(lstNpcs.SelectedItem) Then Exit Sub
+        If Not IsNothing(NPC(NPCs.Data.GetNpcIndex(lstNpcs.SelectedItem.ToString))) Then NpcEditor.Load(NPCs.Data.GetNpcIndex(lstNpcs.SelectedItem.ToString))
+    End Sub
+
+    Private Sub proptNpcrData_PropertyValueChanged(s As Object, e As PropertyValueChangedEventArgs) Handles proptNpcData.PropertyValueChanged
+        If Not IsNothing(lstAccounts.Items) Then NpcEditor.Verify()
     End Sub
 End Class

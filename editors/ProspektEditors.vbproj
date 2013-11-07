@@ -92,6 +92,7 @@
     <Compile Include="Database\Configuration.vb" />
     <Compile Include="Database\Files.vb" />
     <Compile Include="Editors\AccountEditor.vb" />
+    <Compile Include="Editors\NpcEditor.vb" />
     <Compile Include="Editors\MapEditor.vb" />
     <Compile Include="Editors\MapNPCEditor.vb" />
     <Compile Include="Editors\TilesetEditor.vb" />
@@ -120,6 +121,12 @@
       <DependentUpon>SyncData.vb</DependentUpon>
     </Compile>
     <Compile Include="General\SyncData.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="General\TextureViewer.Designer.vb">
+      <DependentUpon>TextureViewer.vb</DependentUpon>
+    </Compile>
+    <Compile Include="General\TextureViewer.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Graphics\Render.vb" />
@@ -172,6 +179,9 @@
     <EmbeddedResource Include="General\SyncData.resx">
       <DependentUpon>SyncData.vb</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="General\TextureViewer.resx">
+      <DependentUpon>TextureViewer.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="My Project\Resources.resx">
       <Generator>VbMyResourcesResXFileCodeGenerator</Generator>

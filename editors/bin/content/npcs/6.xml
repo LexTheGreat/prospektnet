@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <NPCBase xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <ID>6</ID>
   <Name>NPC #6</Name>
   <Sprite>2</Sprite>
-  <X>22</X>
-  <Y>4</Y>
-  <Dir>0</Dir>
 </NPCBase>

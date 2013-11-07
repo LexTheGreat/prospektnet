@@ -5,7 +5,7 @@ Public Class MapNPCClass
         If NPCCount > 0 Then
             If Not IsNothing(NPC) Then
                 MapNPCs.lstNPCs.Items.Clear()
-                For I As Integer = 1 To NPCCount
+                For I As Integer = 0 To NPCCount
                     If Not IsNothing(NPC(I)) Then
                         MapNPCs.lstNPCs.Items.Add(NPC(I).Name)
                     End If

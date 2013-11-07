@@ -14,6 +14,10 @@ Module General
         Tilesets.Data.LoadTilesets()
         TilesetEditor = New TilesetClass
         TilesetEditor.Init()
+        'Setup Map NPC Editor
+        NPCs.Data.LoadNpcs()
+        MapNPCEditor = New MapNPCClass
+        MapNPCEditor.Init()
         'Setup Map Editor
         Maps.Data.LoadMaps()
         MapEditor = New MapClass
@@ -22,10 +26,10 @@ Module General
         Accounts.Data.LoadAccounts()
         AccountEditor = New AccountClass
         AccountEditor.Init()
-        'Setup Map NPC Editor
-        NPCs.Data.LoadNPCs()
-        MapNPCEditor = New MapNPCClass
-        MapNPCEditor.Init()
+        ' Setup Npc Editor
+        NPCs.Data.LoadNpcs()
+        NpcEditor = New NpcClass
+        NpcEditor.Init()
         EditorWindow.Visible = True
         inEditor = True
         EditorLoop()

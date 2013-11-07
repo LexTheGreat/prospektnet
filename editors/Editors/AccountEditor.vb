@@ -33,6 +33,7 @@
     End Sub
 
     Public Sub Reload()
+        ReloadList()
         Load(index)
     End Sub
 
