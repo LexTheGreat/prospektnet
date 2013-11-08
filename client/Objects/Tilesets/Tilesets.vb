@@ -1,4 +1,5 @@
-﻿<Serializable()> Public Class Tilesets
+﻿Imports IHProspekt.Core
+<Serializable()> Public Class Tilesets
     Public Base As TilesetBase
     Public Shared Logic As New TilesetLogic
 

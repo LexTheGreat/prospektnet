@@ -2,6 +2,7 @@
 Imports Prospekt.Input
 Imports Prospekt.Graphics
 Imports Prospekt.Network
+Imports IHProspekt.Core
 
 Public Class GameScene
     Public Sub Draw()

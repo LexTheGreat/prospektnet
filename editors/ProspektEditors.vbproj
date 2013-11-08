@@ -108,7 +108,6 @@
     <Compile Include="General\CommitData.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="General\Enumerations.vb" />
     <Compile Include="General\General.vb" />
     <Compile Include="General\Globals.vb" />
     <Compile Include="General\MapNPCs.Designer.vb">
@@ -150,17 +149,12 @@
     <Compile Include="Network\HandleData.vb" />
     <Compile Include="Network\Networking.vb" />
     <Compile Include="Network\SendData.vb" />
-    <Compile Include="Objects\Accounts\AccountCore.vb" />
     <Compile Include="Objects\Accounts\AccountData.vb" />
     <Compile Include="Objects\Accounts\Accounts.vb" />
-    <Compile Include="Objects\Accounts\PlayerCore.vb" />
-    <Compile Include="Objects\Maps\MapCore.vb" />
     <Compile Include="Objects\Maps\MapData.vb" />
     <Compile Include="Objects\Maps\Maps.vb" />
-    <Compile Include="Objects\NPCs\NPCCore.vb" />
     <Compile Include="Objects\NPCs\NPCData.vb" />
     <Compile Include="Objects\NPCs\NPCs.vb" />
-    <Compile Include="Objects\Tilesets\TilesetCore.vb" />
     <Compile Include="Objects\Tilesets\TilesetData.vb" />
     <Compile Include="Objects\Tilesets\Tilesets.vb" />
   </ItemGroup>
@@ -202,7 +196,12 @@
     </None>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\IHProspekt\IHProspekt.vbproj">
+      <Project>{519f115b-ce7a-4cb8-8f85-d0cf0c2e161b}</Project>
+      <Name>IHProspekt</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

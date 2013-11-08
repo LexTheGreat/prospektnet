@@ -1,4 +1,5 @@
-﻿Public Class Players
+﻿Imports IHProspekt.Core
+Public Class Players
     ' general
     Public Base As PlayerBase
     Public Shared Logic As New PlayerLogic

@@ -1,4 +1,6 @@
 ﻿Imports Lidgren.Network
+Imports IHProspekt.Core
+Imports IHProspekt.Network.Packets
 Namespace Network.SendData
     Public Module SendData
         Public Sub Login(ByVal Login As String, ByVal Password As String, ByVal Mode As Integer)
@@ -31,8 +33,8 @@ Namespace Network.SendData
                 Buffer.Write(Map(I).Green)
                 Buffer.Write(Map(I).Blue)
                 For j As Integer = MapLayerEnum.Ground To MapLayerEnum.COUNT - 1
-                    For x As Integer = 0 To Map(I).MaxX - 1
-                        For y As Integer = 0 To Map(I).MaxY - 1
+                    For x As Integer = 0 To Map(I).MaxX
+                        For y As Integer = 0 To Map(I).MaxY
                             sTileData = Map(I).Layer(j).GetTileData(x, y)
                             Buffer.Write(sTileData.Tileset)
                             Buffer.Write(sTileData.X)

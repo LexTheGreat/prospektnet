@@ -12,6 +12,8 @@
     <FileAlignment>512</FileAlignment>
     <MyType>Console</MyType>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <TargetFrameworkProfile />
     <PublishUrl>\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -24,10 +26,8 @@
     <MapFileExtensions>true</MapFileExtensions>
     <ApplicationRevision>0</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
-    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>x86</PlatformTarget>
@@ -101,7 +101,6 @@
   <ItemGroup>
     <Compile Include="Database\Files.vb" />
     <Compile Include="Database\Configuration.vb" />
-    <Compile Include="General\Enumerations.vb" />
     <Compile Include="General\Globals.vb" />
     <Compile Include="General\Server.vb" />
     <Compile Include="General\ServerLogic.vb" />
@@ -123,21 +122,16 @@
     <Compile Include="Network\HandleData.vb" />
     <Compile Include="Network\Networking.vb" />
     <Compile Include="Network\SendData.vb" />
-    <Compile Include="Objects\Accounts\AccountCore.vb" />
     <Compile Include="Objects\Accounts\AccountData.vb" />
     <Compile Include="Objects\Accounts\Accounts.vb" />
-    <Compile Include="Objects\Maps\MapCore.vb" />
     <Compile Include="Objects\Maps\MapData.vb" />
     <Compile Include="Objects\Maps\Maps.vb" />
-    <Compile Include="Objects\NPCs\NPCCore.vb" />
     <Compile Include="Objects\NPCs\NPCData.vb" />
     <Compile Include="Objects\NPCs\NPCLogic.vb" />
     <Compile Include="Objects\NPCs\NPCs.vb" />
-    <Compile Include="Objects\Players\PlayerCore.vb" />
     <Compile Include="Objects\Players\PlayerData.vb" />
     <Compile Include="Objects\Players\PlayerLogic.vb" />
     <Compile Include="Objects\Players\Players.vb" />
-    <Compile Include="Objects\Tilesets\TilesetCore.vb" />
     <Compile Include="Objects\Tilesets\TilesetData.vb" />
     <Compile Include="Objects\Tilesets\Tilesets.vb" />
     <Compile Include="Scripting\LuaCommands.vb" />
@@ -183,7 +177,15 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\IHProspekt\IHProspekt.vbproj">
+      <Project>{519f115b-ce7a-4cb8-8f85-d0cf0c2e161b}</Project>
+      <Name>IHProspekt</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

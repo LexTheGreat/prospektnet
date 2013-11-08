@@ -1,6 +1,7 @@
 ﻿Imports System.Text
 Imports System.Security.Cryptography
 Imports Prospekt.Audio
+Imports IHProspekt.Core
 
 Module GameLogic
     Public Sub showMenu()
@@ -49,16 +50,5 @@ Module GameLogic
             nCount = nCount + 1
         Loop
         WordWarp = sArr
-    End Function
-
-    Public Function ResizeArray(ByVal arr As Array, ByVal newSizes() As Integer) As Array
-        If newSizes.Length <> arr.Rank Then
-            Throw New ArgumentException()
-        End If
-
-        Dim temp As Array = Array.CreateInstance(arr.GetType().GetElementType(), newSizes)
-        Dim length As Integer = If(arr.Length <= temp.Length, arr.Length, temp.Length)
-        Array.ConstrainedCopy(arr, 0, temp, 0, length)
-        Return temp
     End Function
 End Module

@@ -1,4 +1,5 @@
 ﻿Imports System.ComponentModel
+Imports IHProspekt.Core
 <Serializable()> Public Class Maps
     Public Base As MapBase
     Public Shared Data As New MapData

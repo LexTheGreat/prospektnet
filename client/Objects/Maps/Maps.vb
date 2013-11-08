@@ -1,4 +1,5 @@
-﻿Public Class Maps
+﻿Imports IHProspekt.Core
+Public Class Maps
     Public Base As MapBase
     Public Shared Logic As New MapLogic
 

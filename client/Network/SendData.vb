@@ -1,4 +1,6 @@
 ﻿Imports Lidgren.Network
+Imports IHProspekt.Core
+Imports IHProspekt.Network.Packets
 Namespace Network.SendData
     Public Module SendData
         Public Sub Register(ByVal Name As String, ByVal Password As String)

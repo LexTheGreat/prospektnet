@@ -1,4 +1,5 @@
 ﻿Imports System.ComponentModel
+Imports IHProspekt.Core
 Public Class Accounts
     Public Base As AccountBase
     Public Shared Data As New AccountData

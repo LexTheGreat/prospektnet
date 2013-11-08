@@ -1,6 +1,7 @@
-﻿Public Class NPCs
+﻿Imports IHProspekt.Core
+Public Class NPCs
     ' general
-    Public Base As NpcBase
+    Public Base As NPCBase
     Public Shared Logic As New NPCLogic
     ' non-saved values
     Private mXOffset As Integer, mYOffset As Integer

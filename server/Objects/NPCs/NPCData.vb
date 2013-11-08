@@ -1,5 +1,6 @@
 ﻿Imports System.IO
 Imports Prospekt.Network
+Imports IHProspekt.Core
 Public Class NPCData
 
     Public Sub LoadNPCs()

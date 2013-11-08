@@ -1,4 +1,5 @@
 ﻿Imports Lidgren.Network
+Imports IHProspekt.Core
 Namespace Network
     Public Module Networking
         Public Sub InitializeNetwork()

@@ -1,5 +1,6 @@
 ﻿Imports System.ComponentModel
 Imports Prospekt.Graphics
+Imports IHProspekt.Core
 
 Class TilesetClass
     Private index As Integer = -1

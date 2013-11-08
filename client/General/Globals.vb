@@ -1,4 +1,5 @@
-﻿Module Globals
+﻿Imports IHProspekt.Core
+Public Module Globals
     Public Declare Function GetAsyncKeyState Lib "user32" (ByVal vkey As Integer) As Short
 
     ' Graphics extension

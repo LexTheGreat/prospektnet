@@ -3,6 +3,7 @@ Imports System.IO
 Imports System.Collections
 Imports System.Xml.Serialization
 Imports Prospekt.Network
+Imports IHProspekt.Core
 
 Public Class PlayerData
     Public Sub SaveOnlinePlayers()

@@ -1,4 +1,5 @@
-﻿Public Class Tilesets
+﻿Imports IHProspekt.Core
+Public Class Tilesets
     ' general
     Public Base As TilesetBase
     Public Shared Data As New TilesetData

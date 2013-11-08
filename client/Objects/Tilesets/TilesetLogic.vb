@@ -1,4 +1,5 @@
 ﻿Imports System.IO
+Imports IHProspekt.Core
 Public Class TilesetLogic
     Public Function isTileBlocked(ByVal X As Integer, ByVal Y As Integer) As Boolean
         Dim tempTile As New TileData

@@ -1,4 +1,5 @@
 ﻿Imports System.IO
+Imports IHProspekt.Core
 Public Class TilesetData
     Public Sub Save(ByVal SaveTileset As TilesetBase)
         Files.WriteBinary(pathTilesetData & Trim(SaveTileset.ID) & ".bin", SaveTileset)

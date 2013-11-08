@@ -1,4 +1,6 @@
 ﻿Imports Lidgren.Network
+Imports IHProspekt.Core
+Imports IHProspekt.Network.Packets
 Namespace Network.HandleData
     Public Module HandleData
         Public Sub HandleDataPackets(ByVal PacketNum As Integer, ByRef Data As NetIncomingMessage)
@@ -48,8 +50,8 @@ Namespace Network.HandleData
                 Map(i).Blue = Data.ReadByte
                 Map(i).ReSizeTileData(New Integer() {Map(i).MaxX, Map(i).MaxY})
                 For l As Integer = MapLayerEnum.Ground To MapLayerEnum.COUNT - 1
-                    For x As Integer = 0 To Map(i).MaxX - 1
-                        For y As Integer = 0 To Map(i).MaxY - 1
+                    For x As Integer = 0 To Map(i).MaxX
+                        For y As Integer = 0 To Map(i).MaxY
                             sTileData = New TileData
                             sTileData.Tileset = Data.ReadInt32
                             sTileData.X = Data.ReadInt32

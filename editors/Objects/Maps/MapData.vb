@@ -1,4 +1,5 @@
 ﻿Imports System.IO
+Imports IHProspekt.Core
 Public Class MapData
     Public Sub LoadMaps()
         Try

@@ -1,5 +1,6 @@
 ﻿Imports System.ComponentModel
 Imports Prospekt.Network
+Imports IHProspekt.Core
 Public Class NPCs
     ' general
     Public Base As NPCBase

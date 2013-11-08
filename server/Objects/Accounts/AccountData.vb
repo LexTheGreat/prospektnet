@@ -1,5 +1,5 @@
 ﻿Imports System.IO
-
+Imports IHProspekt.Core
 Public Class AccountData
     Public Function CreateAccount(ByVal newAccount As AccountBase) As Boolean
         Try

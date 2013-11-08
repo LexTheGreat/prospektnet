@@ -10,8 +10,8 @@
     Public Function IsValidPoint(ByVal X As Integer, ByVal Y As Integer) As Boolean
         If X < 0 Then Return False
         If Y < 0 Then Return False
-        If X > Map.MaxX - 1 Then Return False
-        If Y > Map.MaxY - 1 Then Return False
+        If X > Map.MaxX Then Return False
+        If Y > Map.MaxY Then Return False
         Return True
     End Function
 
@@ -53,7 +53,7 @@
         EndX = StartX + (maxX + 1) + 1
         EndY = StartY + (maxY + 1) + 1
 
-        If EndX > Map.MaxX - 1 Then
+        If EndX > Map.MaxX Then
             offsetX = 32
 
             If EndX = Map.MaxX Then
@@ -62,11 +62,11 @@
                 End If
             End If
 
-            EndX = Map.MaxX - 1
+            EndX = Map.MaxX
             StartX = EndX - maxX - 1
         End If
 
-        If EndY > Map.MaxY - 1 Then
+        If EndY > Map.MaxY Then
             offsetY = 32
 
             If EndY = Map.MaxY Then
@@ -75,7 +75,7 @@
                 End If
             End If
 
-            EndY = Map.MaxY - 1
+            EndY = Map.MaxY
             StartY = EndY - maxY - 1
         End If
 

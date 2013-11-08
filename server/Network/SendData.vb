@@ -1,4 +1,6 @@
 ﻿Imports Lidgren.Network
+Imports IHProspekt.Core
+Imports IHProspekt.Network.Packets
 Namespace Network.SendData
     Public Module SendData
         Public Sub Alert(ByVal index As Integer, ByVal Message As String)
@@ -135,8 +137,8 @@ Namespace Network.SendData
             Buffer.Write(sMap.Green)
             Buffer.Write(sMap.Blue)
             For I As Integer = MapLayerEnum.Ground To MapLayerEnum.COUNT - 1
-                For x As Integer = 0 To sMap.MaxX - 1
-                    For y As Integer = 0 To sMap.MaxY - 1
+                For x As Integer = 0 To sMap.MaxX
+                    For y As Integer = 0 To sMap.MaxY
                         sTileData = sMap.Layer(I).GetTileData(x, y)
                         Buffer.Write(sTileData.Tileset)
                         Buffer.Write(sTileData.X)
@@ -209,8 +211,8 @@ Namespace Network.SendData
                 Buffer.Write(Map(i).Green)
                 Buffer.Write(Map(i).Blue)
                 For j As Integer = MapLayerEnum.Ground To MapLayerEnum.COUNT - 1
-                    For x As Integer = 0 To Map(i).MaxX - 1
-                        For y As Integer = 0 To Map(i).MaxY - 1
+                    For x As Integer = 0 To Map(i).MaxX
+                        For y As Integer = 0 To Map(i).MaxY
                             sTileData = Map(i).Layer(j).GetTileData(x, y)
                             Buffer.Write(sTileData.Tileset)
                             Buffer.Write(sTileData.X)

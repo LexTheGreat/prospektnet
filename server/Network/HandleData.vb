@@ -1,4 +1,6 @@
 ﻿Imports Lidgren.Network
+Imports IHProspekt.Core
+Imports IHProspekt.Network.Packets
 Namespace Network.HandleData
     Public Module HandleData
         Public Sub HandleDataPackets(ByVal PacketNum As Integer, ByVal index As Integer, ByRef Data As NetIncomingMessage)
@@ -277,8 +279,8 @@ Namespace Network.HandleData
                 saveMap(i).Blue = data.ReadByte
                 For l As Integer = MapLayerEnum.Ground To MapLayerEnum.COUNT - 1
                     saveMap(i).Layer(l) = New LayerData(saveMap(i).MaxX, saveMap(i).MaxY)
-                    For x As Integer = 0 To saveMap(i).MaxX - 1
-                        For y As Integer = 0 To saveMap(i).MaxY - 1
+                    For x As Integer = 0 To saveMap(i).MaxX
+                        For y As Integer = 0 To saveMap(i).MaxY
                             sTileData = New TileData
                             sTileData.Tileset = data.ReadInt32
                             sTileData.X = data.ReadInt32

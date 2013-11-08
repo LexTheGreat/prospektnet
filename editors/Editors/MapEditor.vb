@@ -1,5 +1,6 @@
 ﻿Imports System.ComponentModel
 Imports Prospekt.Graphics
+Imports IHProspekt.Core
 
 Class MapClass
     Private index As Integer = -1
@@ -234,8 +235,8 @@ Class MapClass
         If index < 0 Then Exit Sub
         If IsNothing(Map(index)) Or selectSrcRect.Height = 0 Then Exit Sub
         Dim newData(Map(index).MaxX, Map(index).MaxY) As TileData
-        For x As Integer = 0 To Map(index).MaxX - 1
-            For y As Integer = 0 To Map(index).MaxY - 1
+        For x As Integer = 0 To Map(index).MaxX
+            For y As Integer = 0 To Map(index).MaxY
                 newData(x, y) = New TileData
                 newData(x, y).Tileset = curTileSet
                 newData(x, y).X = selectSrcRect.X
@@ -249,8 +250,8 @@ Class MapClass
         If index < 0 Then Exit Sub
         If IsNothing(Map(index)) Or selectSrcRect.Height = 0 Then Exit Sub
         Dim newData(Map(index).MaxX, Map(index).MaxY) As TileData
-        For x As Integer = 0 To Map(index).MaxX - 1
-            For y As Integer = 0 To Map(index).MaxY - 1
+        For x As Integer = 0 To Map(index).MaxX
+            For y As Integer = 0 To Map(index).MaxY
                 newData(x, y) = New TileData
                 Map(index).SetTileData(curLayer, newData)
             Next

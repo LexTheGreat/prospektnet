@@ -1,4 +1,5 @@
-﻿Public Class Accounts
+﻿Imports IHProspekt.Core
+Public Class Accounts
     ' general
     Public Base As AccountBase
     Public Shared Data As New AccountData
