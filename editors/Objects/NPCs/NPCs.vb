@@ -19,8 +19,7 @@ Public Class NPCs
     Sub Load()
         Dim loadNpc As New NPCBase
         loadNpc = DirectCast(Files.ReadXML(pathNPCs & Trim(Me.Base.ID) & ".xml", loadNpc), NPCBase)
-        Me.Base.Name = loadNpc.Name
-        Me.Base.Sprite = loadNpc.Sprite
+        Me.Base = loadNpc
     End Sub
 
     Public Sub SetID(ByVal id As Integer)
@@ -28,31 +27,23 @@ Public Class NPCs
     End Sub
 
     Public Class SpriteConverter
-        Inherits StringConverter
+        Inherits Int32Converter
 
         Public Overloads Overrides Function GetStandardValuesSupported(ByVal context As ITypeDescriptorContext) As Boolean
             Return True
         End Function
 
         Public Overloads Overrides Function GetStandardValues(ByVal context As ITypeDescriptorContext) As StandardValuesCollection
-            Dim spriteString() As String, i As Integer = 0
-            ReDim Preserve spriteString(0 To i)
+            Dim sprites() As Integer, i As Integer = 0
+            ReDim Preserve sprites(0 To i)
             For i = 0 To Graphics.countSprite - 1
-                ReDim Preserve spriteString(0 To i)
-                spriteString(i) = i + 1
+                ReDim Preserve sprites(0 To i)
+                sprites(i) = i + 1
             Next
 
-            Return New StandardValuesCollection(spriteString)
+            Return New StandardValuesCollection(sprites)
         End Function
     End Class
-
-    <CategoryAttribute("General"), _
-       DisplayName("ID")> _
-    ReadOnly Property ID() As String
-        Get
-            Return Me.Base.ID
-        End Get
-    End Property
 
     <CategoryAttribute("General"), _
        DisplayName("Name")> _
@@ -70,13 +61,47 @@ Public Class NPCs
     <TypeConverter(GetType(SpriteConverter)), _
        CategoryAttribute("General"), _
        DisplayName("Sprite")> _
-    Public Property Sprite() As String
+    Public Property Sprite() As Integer
         Get
             Return Me.Base.Sprite
         End Get
-        Set(value As String)
+        Set(value As Integer)
             If Not IsNothing(Me) Then
                 Me.Base.Sprite = value
+            End If
+        End Set
+    End Property
+
+    <CategoryAttribute("General"), _
+       DisplayName("ID")> _
+    ReadOnly Property ID() As Integer
+        Get
+            Return Me.Base.ID
+        End Get
+    End Property
+
+    <CategoryAttribute("Data"), _
+       DisplayName("Level")> _
+    Public Property Level() As Integer
+        Get
+            Return Me.Base.Level
+        End Get
+        Set(value As Integer)
+            If Not IsNothing(Me) Then
+                Me.Base.Level = value
+            End If
+        End Set
+    End Property
+
+    <CategoryAttribute("Data"), _
+       DisplayName("Health")> _
+    Public Property Health() As Integer
+        Get
+            Return Me.Base.Health
+        End Get
+        Set(value As Integer)
+            If Not IsNothing(Me) Then
+                Me.Base.Health = value
             End If
         End Set
     End Property

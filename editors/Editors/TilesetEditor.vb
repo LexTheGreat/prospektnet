@@ -43,9 +43,9 @@ Class TilesetClass
             EditorWindow.scrlTilesetEditorY.Value = 0
         End If
         If IsNothing(Tileset(index)) Then Tileset(index) = New Tilesets
-        Tileset(index).ResizeTileData(New Integer() {gTexture(texTileset(curTileSet)).Width / picX, gTexture(texTileset(curTileSet)).Width / picY})
         Tileset(index).MaxX = gTexture(texTileset(curTileSet)).Width / picX
         Tileset(index).MaxY = gTexture(texTileset(curTileSet)).Height / picY
+        Tileset(index).ResizeTileData(New Integer() {Tileset(index).MaxX, Tileset(index).MaxY})
         EditorWindow.txtTilesetName.Text = Tileset(index).Name
     End Sub
 

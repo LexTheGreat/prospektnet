@@ -57,7 +57,7 @@ Imports IHProspekt.Core
     ' Property Grid
     <CategoryAttribute("Properties"), _
        DisplayName("ID")> _
-    ReadOnly Property ID() As String
+    ReadOnly Property ID() As Integer
         Get
             Return Me.Base.ID
         End Get

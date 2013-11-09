@@ -46,6 +46,9 @@
     Public Sub Verify()
         If NPC(index).Name = vbNullString Then NPC(index).Name = "New Npc"
         If NPC(index).Sprite < 0 Then NPC(index).Sprite = 0
+        If NPC(index).Level < 0 Then NPC(index).Level = 0
+        If NPC(index).Level > NpcMaxLevel Then NPC(index).Level = NpcMaxLevel
+        If NPC(index).Health < 0 Then NPC(index).Health = 0
 
         ' Refresh data
         EditorWindow.proptNpcData.Refresh()

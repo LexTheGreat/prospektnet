@@ -57,4 +57,5 @@
     ' NPCs
     Public NPC() As NPCs
     Public NPCCount As Integer
+    Public Const NpcMaxLevel As Integer = 255
 End Module

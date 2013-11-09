@@ -101,6 +101,25 @@ Public Class Accounts
         End Function
     End Class
 
+    Public Class SpriteConverter
+        Inherits Int32Converter
+
+        Public Overloads Overrides Function GetStandardValuesSupported(ByVal context As ITypeDescriptorContext) As Boolean
+            Return True
+        End Function
+
+        Public Overloads Overrides Function GetStandardValues(ByVal context As ITypeDescriptorContext) As StandardValuesCollection
+            Dim sprites() As Integer, i As Integer = 0
+            ReDim Preserve sprites(0 To i)
+            For i = 0 To Graphics.countSprite - 1
+                ReDim Preserve sprites(0 To i)
+                sprites(i) = i + 1
+            Next
+
+            Return New StandardValuesCollection(sprites)
+        End Function
+    End Class
+
     <CategoryAttribute("Account"), _
        DisplayName("Email")> _
     Public Property Email() As String
@@ -140,7 +159,8 @@ Public Class Accounts
         End Set
     End Property
 
-    <CategoryAttribute("General"), _
+    <TypeConverter(GetType(SpriteConverter)), _
+       CategoryAttribute("General"), _
        DisplayName("Sprite")> _
     Public Property Sprite() As Integer
         Get

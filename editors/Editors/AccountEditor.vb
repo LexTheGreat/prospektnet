@@ -22,7 +22,7 @@
         EditorWindow.lstAccounts.Items.Clear()
         If Not IsNothing(Account) Then
             For Each plyr In Account
-                If Not IsNothing(plyr) Then
+                If Not IsNothing(plyr) And Not IsNothing(plyr.Email) Then
                     EditorWindow.lstAccounts.Items.Add(plyr.Email)
                 End If
             Next

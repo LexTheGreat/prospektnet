@@ -245,6 +245,11 @@ Namespace Network.HandleData
                     SendData.Alert(index, "Account " & Name & " Failed To Load!" & vbNewLine & "[Error: character missing]")
                     Exit Sub
                 End If
+                If Not Accounts.Data.GetAccount(Name).Player.AccessMode >= ACCESS.DEV Then
+                    Console.WriteLine("Account " & Name & " Failed To Access Editor! [Error: invalid account access]")
+                    SendData.Alert(index, "Account " & Name & " Failed To Access Editor!" & vbNewLine & "[Error: invalid account access]")
+                    Exit Sub
+                End If
                 UpdateHighIndex()
                 Player(index).Load(Accounts.Data.GetAccount(Name).Player.Name)
                 Player(index).IsPlaying = False

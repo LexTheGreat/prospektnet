@@ -4,6 +4,8 @@
         Private mName As String
         Private mSprite As Integer
         Private mID As Integer
+        Private mLevel As Integer
+        Private mHealth As Integer
         ' location
         Private mX As Integer
         Private mY As Integer
@@ -11,7 +13,10 @@
 
         Public Sub New()
             Me.mName = vbNullString
+            Me.mID = 0
             Me.mSprite = 1
+            Me.mLevel = 1
+            Me.mHealth = 1
             Me.mY = 15
             Me.mX = 10
             Me.mDir = DirEnum.Down
@@ -46,6 +51,28 @@
             Set(value As Integer)
                 If Not IsNothing(Me) Then
                     Me.mID = value
+                End If
+            End Set
+        End Property
+
+        Public Property Level() As Integer
+            Get
+                Return Me.mLevel
+            End Get
+            Set(value As Integer)
+                If Not IsNothing(Me) Then
+                    Me.mLevel = value
+                End If
+            End Set
+        End Property
+
+        Public Property Health() As Integer
+            Get
+                Return Me.mHealth
+            End Get
+            Set(value As Integer)
+                If Not IsNothing(Me) Then
+                    Me.mHealth = value
                 End If
             End Set
         End Property
