@@ -167,7 +167,10 @@ Class MapClass
         EditorWindow.proptMapEditorData.Refresh()
     End Sub
     Public Sub AddMapNpc()
-        MapNPCEditor.Init()
+        MapNPCEditor.Init(index)
+        Dim ScrlX As Integer = EditorWindow.mapScrlX.Value, ScrlY As Integer = EditorWindow.mapScrlY.Value
+        Dim DrawX As Integer = mapMouseRect.X / picX + ScrlX, DrawY As Integer = mapMouseRect.Y / picY + ScrlY
+        MapNPCEditor.SetPos(DrawX, DrawY)
         MapNPCs.Show()
     End Sub
 
@@ -375,5 +378,42 @@ Class MapClass
 
     Function isDivisible(x As Integer, d As Integer) As Boolean
         Return (x Mod d) = 0
+    End Function
+
+    Public Sub DrawMapNPCs()
+        Dim rec As GeomRec, spritetop As Integer
+        Dim sprite As Integer
+        Dim X As Integer, Y As Integer, dir As Integer
+        If index < 0 Then Exit Sub
+
+        For I As Integer = 0 To Map(index).Base.NPCCount
+            If IsNothing(Map(index).Base.NPC(I)) Then Continue For
+            If Map(index).Base.NPC(I).Num < 0 Then Continue For
+            sprite = NPC(Map(index).Base.NPC(I).Num).Sprite
+            X = Map(index).Base.NPC(I).X
+            Y = Map(index).Base.NPC(I).Y
+            dir = Map(index).Base.NPC(I).Dir
+            Select Case dir
+                Case DirEnum.Up : spritetop = 0
+                Case DirEnum.Down : spritetop = 2
+                Case DirEnum.Left : spritetop = 3
+                Case DirEnum.Right : spritetop = 1
+            End Select
+            rec.Top = spritetop * (gTexture(texSprite(sprite)).Height / 4)
+            rec.Height = gTexture(texSprite(sprite)).Height / 4
+            rec.Left = 0
+            rec.Width = gTexture(texSprite(sprite)).Width / 3
+            Render.RenderTexture(Render.Window, texSprite(sprite), ConvertX(X) * picX, ConvertY(Y) * picY, rec.Left, rec.Top, rec.Width, rec.Height, rec.Width, rec.Height)
+        Next
+    End Sub
+
+    Function ConvertX(ByVal X As Integer) As Integer
+        Dim ScrlX As Integer = EditorWindow.mapScrlX.Value
+        Return X - scrlX
+    End Function
+
+    Function ConvertY(ByVal Y As Integer) As Integer
+        Dim ScrlY As Integer = EditorWindow.mapScrlY.Value
+        Return Y - scrlY
     End Function
 End Class

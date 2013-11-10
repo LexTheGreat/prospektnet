@@ -119,7 +119,7 @@ Namespace Network.HandleData
                 data.ReadAllFields(NPC(i))
             Next i
             NPCCount = num
-            MapNPCEditor.Init()
+            MapNPCEditor.Init(-1)
         End Sub
 
         Public Sub DataSent(ByRef Data As NetIncomingMessage)

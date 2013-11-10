@@ -1,7 +1,12 @@
 ﻿Imports Prospekt.Graphics
+Imports IHProspekt.Core
 Public Class MapNPCClass
     Private curNpc As Integer
-    Public Sub Init()
+    Private curMap As Integer
+    Private curX As Integer
+    Private curY As Integer
+    Public Sub Init(ByVal MapNum As Integer)
+        curMap = MapNum
         If NPCCount > 0 Then
             If Not IsNothing(NPC) Then
                 MapNPCs.lstNPCs.Items.Clear()
@@ -16,6 +21,20 @@ Public Class MapNPCClass
 
     Public Sub SelectNPC(ByVal Index As Integer)
         curNpc = Index
+    End Sub
+
+    Public Sub SetPos(ByVal X As Integer, ByVal Y As Integer)
+        curX = X
+        curY = Y
+    End Sub
+
+    Public Sub AddNPCToMap()
+        Dim tempMapNPC As New MapNPCBase
+        tempMapNPC.Num = curNpc
+        tempMapNPC.X = curX
+        tempMapNPC.Y = curY
+        tempMapNPC.Dir = DirEnum.Down
+        Map(curMap).AddNPC(tempMapNPC)
     End Sub
 
     Public Sub DrawNPC()

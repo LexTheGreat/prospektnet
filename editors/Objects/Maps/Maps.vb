@@ -23,6 +23,12 @@ Imports IHProspekt.Core
         Me.Base.Layer = loadMap.Layer
     End Sub
 
+    Public Sub AddNPC(ByVal NPC As MapNPCBase)
+        Base.NPCCount += 1
+        ReDim Preserve Base.NPC(0 To Base.NPCCount)
+        Base.NPC(Base.NPCCount) = NPC
+    End Sub
+
     Public Sub SetID(ByVal id As Integer)
         Me.Base.ID = id
     End Sub

@@ -6,11 +6,14 @@
         Public Property MaxY As Integer
         Public Property Color As OverLayColor
         Private mLayer(MapLayerEnum.COUNT - 1) As LayerData
+        Public NPC(0) As MapNPCBase
+        Public Property NPCCount As Integer
 
         Sub New()
             Me.Name = "New Map"
             Me.MaxX = 35
             Me.MaxY = 35
+            Me.NPCCount = -1
             Me.Color = New OverLayColor()
             For x As Integer = MapLayerEnum.Ground To MapLayerEnum.COUNT - 1
                 Me.mLayer(x) = New LayerData(Me.MaxX, Me.MaxY)

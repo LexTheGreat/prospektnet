@@ -116,7 +116,7 @@ Partial Class MapNPCs
         Me.ClientSize = New System.Drawing.Size(548, 377)
         Me.Controls.Add(Me.SplitContainer1)
         Me.Name = "MapNPCs"
-        Me.Text = "MapNPCs"
+        Me.Text = "Map NPC Editor"
         Me.SplitContainer1.Panel1.ResumeLayout(False)
         Me.SplitContainer1.Panel2.ResumeLayout(False)
         CType(Me.SplitContainer1, System.ComponentModel.ISupportInitialize).EndInit()

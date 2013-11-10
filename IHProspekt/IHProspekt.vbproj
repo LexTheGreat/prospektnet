@@ -70,6 +70,7 @@
     <Compile Include="AccountCore.vb" />
     <Compile Include="Enumerations.vb" />
     <Compile Include="MapCore.vb" />
+    <Compile Include="MapNPCCore.vb" />
     <Compile Include="NPCCore.vb" />
     <Compile Include="Packets.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />

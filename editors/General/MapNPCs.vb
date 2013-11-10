@@ -5,6 +5,7 @@
     End Sub
 
     Private Sub AddNPCToMapToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles AddNPCToMapToolStripMenuItem.Click
+        MapNPCEditor.AddNPCToMap()
         Me.Dispose()
     End Sub
 End Class

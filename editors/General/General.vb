@@ -17,7 +17,7 @@ Module General
         'Setup Map NPC Editor
         NPCs.Data.LoadNpcs()
         MapNPCEditor = New MapNPCClass
-        MapNPCEditor.Init()
+        MapNPCEditor.Init(-1)
         'Setup Map Editor
         Maps.Data.LoadMaps()
         MapEditor = New MapClass
@@ -59,6 +59,7 @@ Module General
                     MapEditor.DrawTileset()
                     MapEditor.DrawTilesetSelection()
                     MapEditor.DrawMapTiles()
+                    MapEditor.DrawMapNPCs()
                     MapEditor.DrawMapSelection()
                     MapEditor.DraMapOverlay()
                     ' End the rendering
