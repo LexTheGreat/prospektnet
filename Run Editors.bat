@@ -1,2 +1,2 @@
-CD editors\bin
+CD ProspektEditors\bin
 START ProspektEditors.exe

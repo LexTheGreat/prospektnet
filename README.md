@@ -13,7 +13,8 @@ Features
 * Lidgren networking
 * LUA Scripting
 * Editor suite
-* NPC, Mapping and Account/Player data management, rendering and logic
+* Console-based server
+* NPC, Mapping and Account data management, rendering and logic
 
 Credits
 -------

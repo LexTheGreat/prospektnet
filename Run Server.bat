@@ -1,2 +1,2 @@
-CD server\bin
+CD ProspektServer\bin
 START ProspektServer.exe
