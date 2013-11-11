@@ -13,6 +13,8 @@ Public Class Server
         Server.Writeline("Loading players...")
         ReDim Player(ServerConfig.MaxPlayers)
         ReDim ConnectedClients(ServerConfig.MaxPlayers)
+        Server.WriteLine("Loading items...")
+        Items.Data.LoadItems()
         Server.Writeline("Loading npcs...")
         NPCs.Data.LoadNPCs()
         Server.Writeline("Loading maps...")

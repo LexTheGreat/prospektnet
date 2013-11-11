@@ -84,6 +84,7 @@
     </Compile>
     <Compile Include="Network\Packets.vb" />
     <Compile Include="Objects\AccountCore.vb" />
+    <Compile Include="Objects\ItemCore.vb" />
     <Compile Include="Objects\MapCore.vb" />
     <Compile Include="Objects\MapNPCCore.vb" />
     <Compile Include="Objects\NPCCore.vb" />

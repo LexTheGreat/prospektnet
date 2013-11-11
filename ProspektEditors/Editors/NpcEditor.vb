@@ -53,4 +53,10 @@
         ' Refresh data
         EditorWindow.proptNpcData.Refresh()
     End Sub
+
+    Public Sub EditDropTable()
+        If index < 0 Then Exit Sub
+        NpcDropEditor.Init(index)
+        NpcDropTable.Show()
+    End Sub
 End Class

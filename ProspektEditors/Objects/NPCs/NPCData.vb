@@ -39,6 +39,7 @@ Public Class NPCData
     Public Sub NewNpc()
         Dim newNpc As New NPCs, i As Integer = GetNextNpcIndex()
         ReDim Preserve NPC(0 To i)
+        newNpc.SetID(i)
         NPC(i) = newNpc
         SaveNpcs()
     End Sub

@@ -1,14 +1,58 @@
 ﻿Namespace Objects
     <Serializable()> Public Class TilesetBase
-        Public Property ID As Integer
-        Public Property Name As String
-        Public Property MaxX As Integer
-        Public Property MaxY As Integer
+        Private mID As Integer
+        Private mName As String
+        Private mMaxX As Integer
+        Private mMaxY As Integer
         Private mTile(0, 0) As Byte
 
         Sub New()
             Me.Name = "New Tileset"
         End Sub
+
+        Public Property ID() As Integer
+            Get
+                Return Me.mID
+            End Get
+            Set(value As Integer)
+                If Not IsNothing(Me) Then
+                    Me.mID = value
+                End If
+            End Set
+        End Property
+
+        Public Property Name() As String
+            Get
+                Return Me.mName
+            End Get
+            Set(value As String)
+                If Not IsNothing(Me) Then
+                    Me.mName = value
+                End If
+            End Set
+        End Property
+
+        Public Property MaxX() As Integer
+            Get
+                Return Me.mMaxX
+            End Get
+            Set(value As Integer)
+                If Not IsNothing(Me) Then
+                    Me.mMaxX = value
+                End If
+            End Set
+        End Property
+
+        Public Property MaxY() As Integer
+            Get
+                Return Me.mMaxY
+            End Get
+            Set(value As Integer)
+                If Not IsNothing(Me) Then
+                    Me.mMaxY = value
+                End If
+            End Set
+        End Property
 
         Public Overloads Property Tile(ByVal X As Integer, ByVal Y As Integer) As Byte
             Get

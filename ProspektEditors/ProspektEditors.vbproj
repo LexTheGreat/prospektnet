@@ -87,6 +87,8 @@
   <ItemGroup>
     <Compile Include="Database\Configuration.vb" />
     <Compile Include="Editors\AccountEditor.vb" />
+    <Compile Include="Editors\NpcDropEditor.vb" />
+    <Compile Include="Editors\ItemEditor.vb" />
     <Compile Include="Editors\NpcEditor.vb" />
     <Compile Include="Editors\MapEditor.vb" />
     <Compile Include="Editors\MapNPCEditor.vb" />
@@ -109,6 +111,12 @@
       <DependentUpon>MapNPCs.vb</DependentUpon>
     </Compile>
     <Compile Include="General\MapNPCs.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="General\NpcDropTable.Designer.vb">
+      <DependentUpon>NpcDropTable.vb</DependentUpon>
+    </Compile>
+    <Compile Include="General\NpcDropTable.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="General\SyncData.Designer.vb">
@@ -146,6 +154,8 @@
     <Compile Include="Network\SendData.vb" />
     <Compile Include="Objects\Accounts\AccountData.vb" />
     <Compile Include="Objects\Accounts\Accounts.vb" />
+    <Compile Include="Objects\Items\ItemData.vb" />
+    <Compile Include="Objects\Items\Items.vb" />
     <Compile Include="Objects\Maps\MapData.vb" />
     <Compile Include="Objects\Maps\Maps.vb" />
     <Compile Include="Objects\NPCs\NPCData.vb" />
@@ -164,6 +174,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="General\MapNPCs.resx">
       <DependentUpon>MapNPCs.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="General\NpcDropTable.resx">
+      <DependentUpon>NpcDropTable.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="General\SyncData.resx">
       <DependentUpon>SyncData.vb</DependentUpon>

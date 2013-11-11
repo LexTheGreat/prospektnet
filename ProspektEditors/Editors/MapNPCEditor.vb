@@ -39,7 +39,7 @@ Public Class MapNPCClass
     End Sub
 
     Public Sub DrawNPC()
-        If curNpc > 0 And Not IsNothing(NPC(curNpc)) And NPC(curNpc).Sprite > 0 Then
+        If curNpc >= 0 And Not IsNothing(NPC(curNpc)) And NPC(curNpc).Sprite > 0 Then
             Render.RenderTexture(Render.MapNPCWindow, texSprite(NPC(curNpc).Sprite), 0, 0, 0, 0, gTexture(texSprite(NPC(curNpc).Sprite)).Width, gTexture(texSprite(NPC(curNpc).Sprite)).Height, gTexture(texSprite(NPC(curNpc).Sprite)).Width, gTexture(texSprite(NPC(curNpc).Sprite)).Height)
         End If
     End Sub

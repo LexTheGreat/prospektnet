@@ -135,6 +135,16 @@ Class MapClass
         SelectTileset()
     End Sub
 
+    Public Sub ReloadTilesets()
+        If TilesetCount > 0 Then
+            EditorWindow.mapCmbTileSet.Items.Clear()
+            For I As Integer = 1 To TilesetCount
+                EditorWindow.mapCmbTileSet.Items.Add(Tileset(I).Name)
+            Next
+            EditorWindow.mapCmbTileSet.SelectedIndex = 0
+        End If
+    End Sub
+
     Public Sub Undo()
         Maps.Data.LoadMaps()
         EditorWindow.tabMap.Text = "Map"
@@ -166,6 +176,7 @@ Class MapClass
         ' Refresh data
         EditorWindow.proptMapEditorData.Refresh()
     End Sub
+
     Public Sub AddMapNpc()
         MapNPCEditor.Init(index)
         Dim ScrlX As Integer = EditorWindow.mapScrlX.Value, ScrlY As Integer = EditorWindow.mapScrlY.Value
@@ -316,7 +327,7 @@ Class MapClass
                             If Not editorProperty.l4 Then Continue For ' Dont Draw Fringe Mask Layer
                         Case Else
                     End Select
-                    Render.RenderTexture(Render.Window, texTileset(Map(index).GetTileData(lyr, x, y).Tileset), (x - ScrlX) * picX, (y - ScrlY) * picY, Map(index).GetTileData(lyr, x, y).X, Map(index).GetTileData(lyr, x, y).Y, picX, picY, picX, picY)
+                    Render.RenderTexture(Render.Window, texTileset(Map(index).GetTileData(lyr, x, y).Tileset), (x - ScrlX) * picX, (y - ScrlY) * picY, Map(index).GetTileData(lyr, x, y).X, Map(index).GetTileData(lyr, x, y).Y, picX, picY, picX, picY, Map(index).Alpha, Map(index).Red, Map(index).Green, Map(index).Blue)
                 Next
             Next
         Next
@@ -337,9 +348,31 @@ Class MapClass
         End If
     End Sub
 
-    Public Sub DraMapOverlay()
+    Public Sub DrawMapNPCs()
+        Dim rec As GeomRec, spritetop As Integer
+        Dim sprite As Integer
+        Dim X As Integer, Y As Integer, dir As Integer
         If index < 0 Then Exit Sub
-        Render.RenderRectangle(Render.Window, 0, 0, EditorWindow.mapPreview.Width, EditorWindow.mapPreview.Height, 2, Map(index).Alpha, Map(index).Red, Map(index).Green, Map(index).Blue, True)
+
+        For I As Integer = 0 To Map(index).Base.NPCCount
+            If IsNothing(Map(index).Base.NPC(I)) Then Continue For
+            If Map(index).Base.NPC(I).Num < 0 Then Continue For
+            sprite = NPC(Map(index).Base.NPC(I).Num).Sprite
+            X = Map(index).Base.NPC(I).X
+            Y = Map(index).Base.NPC(I).Y
+            dir = Map(index).Base.NPC(I).Dir
+            Select Case dir
+                Case DirEnum.Up : spritetop = 0
+                Case DirEnum.Down : spritetop = 2
+                Case DirEnum.Left : spritetop = 3
+                Case DirEnum.Right : spritetop = 1
+            End Select
+            rec.Top = spritetop * (gTexture(texSprite(sprite)).Height / 4)
+            rec.Height = gTexture(texSprite(sprite)).Height / 4
+            rec.Left = 0
+            rec.Width = gTexture(texSprite(sprite)).Width / 3
+            Render.RenderTexture(Render.Window, texSprite(sprite), ConvertX(X) * picX, ConvertY(Y) * picY, rec.Left, rec.Top, rec.Width, rec.Height, rec.Width, rec.Height)
+        Next
     End Sub
 
     Public Function GetMapVisible() As Integer()
@@ -379,33 +412,6 @@ Class MapClass
     Function isDivisible(x As Integer, d As Integer) As Boolean
         Return (x Mod d) = 0
     End Function
-
-    Public Sub DrawMapNPCs()
-        Dim rec As GeomRec, spritetop As Integer
-        Dim sprite As Integer
-        Dim X As Integer, Y As Integer, dir As Integer
-        If index < 0 Then Exit Sub
-
-        For I As Integer = 0 To Map(index).Base.NPCCount
-            If IsNothing(Map(index).Base.NPC(I)) Then Continue For
-            If Map(index).Base.NPC(I).Num < 0 Then Continue For
-            sprite = NPC(Map(index).Base.NPC(I).Num).Sprite
-            X = Map(index).Base.NPC(I).X
-            Y = Map(index).Base.NPC(I).Y
-            dir = Map(index).Base.NPC(I).Dir
-            Select Case dir
-                Case DirEnum.Up : spritetop = 0
-                Case DirEnum.Down : spritetop = 2
-                Case DirEnum.Left : spritetop = 3
-                Case DirEnum.Right : spritetop = 1
-            End Select
-            rec.Top = spritetop * (gTexture(texSprite(sprite)).Height / 4)
-            rec.Height = gTexture(texSprite(sprite)).Height / 4
-            rec.Left = 0
-            rec.Width = gTexture(texSprite(sprite)).Width / 3
-            Render.RenderTexture(Render.Window, texSprite(sprite), ConvertX(X) * picX, ConvertY(Y) * picY, rec.Left, rec.Top, rec.Width, rec.Height, rec.Width, rec.Height)
-        Next
-    End Sub
 
     Function ConvertX(ByVal X As Integer) As Integer
         Dim ScrlX As Integer = EditorWindow.mapScrlX.Value

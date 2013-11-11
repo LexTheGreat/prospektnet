@@ -5,12 +5,14 @@ Namespace Graphics
         ' Textures
         Public texTileset() As Integer
         Public texSprite() As Integer
+        Public texItem() As Integer
         Public texButton() As Integer
         Public texGui() As Integer
 
         ' Texture counts
         Public countTileset As Integer
         Public countSprite As Integer
+        Public countItem As Integer
         Public countButton As Integer
         Public countGui As Integer
 
@@ -70,6 +72,15 @@ Namespace Graphics
                 countTileset = countTileset + 1
             Loop
             countTileset = countTileset - 1
+
+            ' items
+            countItem = 1
+            Do While Exists(pathItems & countItem & gfxExt)
+                ReDim Preserve texItem(0 To countItem)
+                texItem(countItem) = Render.cacheTexture(pathItems & countItem & gfxExt)
+                countItem = countItem + 1
+            Loop
+            countItem = countItem - 1
         End Sub
     End Module
 End Namespace

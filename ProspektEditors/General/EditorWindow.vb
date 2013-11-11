@@ -236,4 +236,38 @@ Public Class EditorWindow
     Private Sub proptNpcrData_PropertyValueChanged(s As Object, e As PropertyValueChangedEventArgs) Handles proptNpcData.PropertyValueChanged
         If Not IsNothing(lstAccounts.Items) Then NpcEditor.Verify()
     End Sub
+
+    Private Sub btnNpcDropTable_Click(sender As Object, e As EventArgs) Handles btnNpcDropTable.Click
+        If Not IsNothing(lstAccounts.Items) Then NpcEditor.EditDropTable()
+    End Sub
+
+    ' Item Editor
+    Private Sub mnuItemSave_Click(sender As Object, e As EventArgs) Handles mnuItemSave.Click
+        If Not IsNothing(lstitems.Items) Then
+            Items.Data.SaveItems()
+            ' Reload Editor Data
+            Items.Data.LoadItems()
+            ItemEditor.Reload()
+        End If
+    End Sub
+
+    Private Sub mnuItemNew_Click(sender As Object, e As EventArgs) Handles mnuItemNew.Click
+        Items.Data.NewItem()
+        ' Reload Editor Data
+        Items.Data.LoadItems()
+        ItemEditor.ReloadList()
+    End Sub
+
+    Private Sub mnuItemUndo_Click(sender As Object, e As EventArgs) Handles mnuItemUndo.Click
+        If Not IsNothing(lstAccounts.Items) Then ItemEditor.Undo()
+    End Sub
+
+    Private Sub lstitems_SelectedIndexChanged(sender As Object, e As EventArgs) Handles lstitems.SelectedIndexChanged
+        If IsNothing(lstitems.SelectedItem) Then Exit Sub
+        If Not IsNothing(Item(Items.Data.GetItemIndex(lstitems.SelectedItem.ToString))) Then ItemEditor.Load(Items.Data.GetItemIndex(lstitems.SelectedItem.ToString))
+    End Sub
+
+    Private Sub proptItemData_PropertyValueChanged(s As Object, e As PropertyValueChangedEventArgs) Handles proptItemData.PropertyValueChanged
+        If Not IsNothing(lstAccounts.Items) Then ItemEditor.Verify()
+    End Sub
 End Class

@@ -93,7 +93,19 @@ Partial Class EditorWindow
         Me.mnuNpcSave = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuNpcNew = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuNpcUndo = New System.Windows.Forms.ToolStripMenuItem()
+        Me.tabItemEditor = New System.Windows.Forms.TabPage()
+        Me.groupItemData = New System.Windows.Forms.GroupBox()
+        Me.tabItems = New System.Windows.Forms.TabControl()
+        Me.tabItem = New System.Windows.Forms.TabPage()
+        Me.proptItemData = New System.Windows.Forms.PropertyGrid()
+        Me.groupItemList = New System.Windows.Forms.GroupBox()
+        Me.lstitems = New System.Windows.Forms.ListBox()
+        Me.mnuItemList = New System.Windows.Forms.MenuStrip()
+        Me.mnuItemSave = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuItemNew = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuItemUndo = New System.Windows.Forms.ToolStripMenuItem()
         Me.imgSprites = New System.Windows.Forms.ImageList(Me.components)
+        Me.btnNpcDropTable = New System.Windows.Forms.Button()
         Me.mnuMain.SuspendLayout()
         Me.tabEditors.SuspendLayout()
         Me.tabMapEditor.SuspendLayout()
@@ -129,6 +141,12 @@ Partial Class EditorWindow
         Me.tabNpc.SuspendLayout()
         Me.groupNpcList.SuspendLayout()
         Me.mnuNpcList.SuspendLayout()
+        Me.tabItemEditor.SuspendLayout()
+        Me.groupItemData.SuspendLayout()
+        Me.tabItems.SuspendLayout()
+        Me.tabItem.SuspendLayout()
+        Me.groupItemList.SuspendLayout()
+        Me.mnuItemList.SuspendLayout()
         Me.SuspendLayout()
         '
         'mnuMain
@@ -178,6 +196,7 @@ Partial Class EditorWindow
         Me.tabEditors.Controls.Add(Me.tabTilesetEditor)
         Me.tabEditors.Controls.Add(Me.tabAccountEditor)
         Me.tabEditors.Controls.Add(Me.tabNpcEditor)
+        Me.tabEditors.Controls.Add(Me.tabItemEditor)
         Me.tabEditors.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tabEditors.HotTrack = True
         Me.tabEditors.Location = New System.Drawing.Point(0, 24)
@@ -733,6 +752,7 @@ Partial Class EditorWindow
         'tabNpc
         '
         Me.tabNpc.Controls.Add(Me.proptNpcData)
+        Me.tabNpc.Controls.Add(Me.btnNpcDropTable)
         Me.tabNpc.Location = New System.Drawing.Point(4, 22)
         Me.tabNpc.Name = "tabNpc"
         Me.tabNpc.Padding = New System.Windows.Forms.Padding(3)
@@ -744,9 +764,9 @@ Partial Class EditorWindow
         'proptNpcData
         '
         Me.proptNpcData.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.proptNpcData.Location = New System.Drawing.Point(3, 3)
+        Me.proptNpcData.Location = New System.Drawing.Point(3, 26)
         Me.proptNpcData.Name = "proptNpcData"
-        Me.proptNpcData.Size = New System.Drawing.Size(630, 369)
+        Me.proptNpcData.Size = New System.Drawing.Size(630, 346)
         Me.proptNpcData.TabIndex = 1
         '
         'groupNpcList
@@ -796,11 +816,120 @@ Partial Class EditorWindow
         Me.mnuNpcUndo.Size = New System.Drawing.Size(48, 20)
         Me.mnuNpcUndo.Text = "Undo"
         '
+        'tabItemEditor
+        '
+        Me.tabItemEditor.Controls.Add(Me.groupItemData)
+        Me.tabItemEditor.Controls.Add(Me.groupItemList)
+        Me.tabItemEditor.Location = New System.Drawing.Point(4, 22)
+        Me.tabItemEditor.Name = "tabItemEditor"
+        Me.tabItemEditor.Padding = New System.Windows.Forms.Padding(3)
+        Me.tabItemEditor.Size = New System.Drawing.Size(811, 426)
+        Me.tabItemEditor.TabIndex = 6
+        Me.tabItemEditor.Text = "Item Editor"
+        Me.tabItemEditor.UseVisualStyleBackColor = True
+        '
+        'groupItemData
+        '
+        Me.groupItemData.Controls.Add(Me.tabItems)
+        Me.groupItemData.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.groupItemData.Location = New System.Drawing.Point(158, 3)
+        Me.groupItemData.Name = "groupItemData"
+        Me.groupItemData.Size = New System.Drawing.Size(650, 420)
+        Me.groupItemData.TabIndex = 6
+        Me.groupItemData.TabStop = False
+        Me.groupItemData.Text = "Item Data"
+        '
+        'tabItems
+        '
+        Me.tabItems.Controls.Add(Me.tabItem)
+        Me.tabItems.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.tabItems.Location = New System.Drawing.Point(3, 16)
+        Me.tabItems.Name = "tabItems"
+        Me.tabItems.SelectedIndex = 0
+        Me.tabItems.Size = New System.Drawing.Size(644, 401)
+        Me.tabItems.TabIndex = 0
+        '
+        'tabItem
+        '
+        Me.tabItem.Controls.Add(Me.proptItemData)
+        Me.tabItem.Location = New System.Drawing.Point(4, 22)
+        Me.tabItem.Name = "tabItem"
+        Me.tabItem.Padding = New System.Windows.Forms.Padding(3)
+        Me.tabItem.Size = New System.Drawing.Size(636, 375)
+        Me.tabItem.TabIndex = 2
+        Me.tabItem.Text = "Item"
+        Me.tabItem.UseVisualStyleBackColor = True
+        '
+        'proptItemData
+        '
+        Me.proptItemData.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.proptItemData.Location = New System.Drawing.Point(3, 3)
+        Me.proptItemData.Name = "proptItemData"
+        Me.proptItemData.Size = New System.Drawing.Size(630, 369)
+        Me.proptItemData.TabIndex = 1
+        '
+        'groupItemList
+        '
+        Me.groupItemList.Controls.Add(Me.lstitems)
+        Me.groupItemList.Controls.Add(Me.mnuItemList)
+        Me.groupItemList.Dock = System.Windows.Forms.DockStyle.Left
+        Me.groupItemList.Location = New System.Drawing.Point(3, 3)
+        Me.groupItemList.Name = "groupItemList"
+        Me.groupItemList.Size = New System.Drawing.Size(155, 420)
+        Me.groupItemList.TabIndex = 5
+        Me.groupItemList.TabStop = False
+        Me.groupItemList.Text = "Item List"
+        '
+        'lstitems
+        '
+        Me.lstitems.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.lstitems.FormattingEnabled = True
+        Me.lstitems.Location = New System.Drawing.Point(3, 40)
+        Me.lstitems.Name = "lstitems"
+        Me.lstitems.Size = New System.Drawing.Size(149, 377)
+        Me.lstitems.TabIndex = 0
+        '
+        'mnuItemList
+        '
+        Me.mnuItemList.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuItemSave, Me.mnuItemNew, Me.mnuItemUndo})
+        Me.mnuItemList.Location = New System.Drawing.Point(3, 16)
+        Me.mnuItemList.Name = "mnuItemList"
+        Me.mnuItemList.Size = New System.Drawing.Size(149, 24)
+        Me.mnuItemList.TabIndex = 1
+        '
+        'mnuItemSave
+        '
+        Me.mnuItemSave.Name = "mnuItemSave"
+        Me.mnuItemSave.Size = New System.Drawing.Size(43, 20)
+        Me.mnuItemSave.Text = "Save"
+        '
+        'mnuItemNew
+        '
+        Me.mnuItemNew.Name = "mnuItemNew"
+        Me.mnuItemNew.Size = New System.Drawing.Size(43, 20)
+        Me.mnuItemNew.Text = "New"
+        '
+        'mnuItemUndo
+        '
+        Me.mnuItemUndo.Name = "mnuItemUndo"
+        Me.mnuItemUndo.Size = New System.Drawing.Size(48, 20)
+        Me.mnuItemUndo.Text = "Undo"
+        '
         'imgSprites
         '
         Me.imgSprites.ColorDepth = System.Windows.Forms.ColorDepth.Depth8Bit
         Me.imgSprites.ImageSize = New System.Drawing.Size(16, 16)
         Me.imgSprites.TransparentColor = System.Drawing.Color.Transparent
+        '
+        'btnNpcDropTable
+        '
+        Me.btnNpcDropTable.Dock = System.Windows.Forms.DockStyle.Top
+        Me.btnNpcDropTable.Location = New System.Drawing.Point(3, 3)
+        Me.btnNpcDropTable.Name = "btnNpcDropTable"
+        Me.btnNpcDropTable.Size = New System.Drawing.Size(630, 23)
+        Me.btnNpcDropTable.TabIndex = 2
+        Me.btnNpcDropTable.Text = "Edit Drop Table"
+        Me.btnNpcDropTable.UseVisualStyleBackColor = True
         '
         'EditorWindow
         '
@@ -856,6 +985,14 @@ Partial Class EditorWindow
         Me.groupNpcList.PerformLayout()
         Me.mnuNpcList.ResumeLayout(False)
         Me.mnuNpcList.PerformLayout()
+        Me.tabItemEditor.ResumeLayout(False)
+        Me.groupItemData.ResumeLayout(False)
+        Me.tabItems.ResumeLayout(False)
+        Me.tabItem.ResumeLayout(False)
+        Me.groupItemList.ResumeLayout(False)
+        Me.groupItemList.PerformLayout()
+        Me.mnuItemList.ResumeLayout(False)
+        Me.mnuItemList.PerformLayout()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -931,5 +1068,17 @@ Partial Class EditorWindow
     Friend WithEvents mnuNpcUndo As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents mnuMain_View As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents mnuMain_Textures As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents tabItemEditor As System.Windows.Forms.TabPage
+    Friend WithEvents groupItemData As System.Windows.Forms.GroupBox
+    Friend WithEvents tabItems As System.Windows.Forms.TabControl
+    Friend WithEvents tabItem As System.Windows.Forms.TabPage
+    Friend WithEvents proptItemData As System.Windows.Forms.PropertyGrid
+    Friend WithEvents groupItemList As System.Windows.Forms.GroupBox
+    Friend WithEvents lstitems As System.Windows.Forms.ListBox
+    Friend WithEvents mnuItemList As System.Windows.Forms.MenuStrip
+    Friend WithEvents mnuItemSave As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents mnuItemNew As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents mnuItemUndo As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents btnNpcDropTable As System.Windows.Forms.Button
 
 End Class

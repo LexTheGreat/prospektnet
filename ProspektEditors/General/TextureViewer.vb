@@ -4,6 +4,7 @@
     Public Sub init()
         cmbType.Items.Add("Tiles")
         cmbType.Items.Add("Sprites")
+        cmbType.Items.Add("Items")
         cmbType.SelectedIndex = 0
         Me.Show()
     End Sub
@@ -19,6 +20,10 @@
             For I As Integer = 1 To Graphics.countSprite
                 lstTextures.Items.Add(I)
             Next
+        ElseIf index = 3 Then ' Items
+            For I As Integer = 1 To Graphics.countItem
+                lstTextures.Items.Add(I)
+            Next
         End If
         lstTextures.SelectedIndex = 0
     End Sub
@@ -28,6 +33,8 @@
             Me.picTexture.Image = Bitmap.FromFile(Graphics.gTexture(Graphics.texTileset(lstTextures.SelectedIndex + 1)).FilePath)
         ElseIf Me.Type = 2 Then ' Sprites
             Me.picTexture.Image = Bitmap.FromFile(Graphics.gTexture(Graphics.texSprite(lstTextures.SelectedIndex + 1)).FilePath)
+        ElseIf Me.Type = 3 Then ' Items
+            Me.picTexture.Image = Bitmap.FromFile(Graphics.gTexture(Graphics.texItem(lstTextures.SelectedIndex + 1)).FilePath)
         End If
     End Sub
 

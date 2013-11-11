@@ -27,9 +27,13 @@ Module General
         AccountEditor = New AccountClass
         AccountEditor.Init()
         ' Setup Npc Editor
-        NPCs.Data.LoadNpcs()
         NpcEditor = New NpcClass
+        NpcDropEditor = New NpcDropClass
         NpcEditor.Init()
+        ' Setup Item Editor
+        Items.Data.LoadItems()
+        ItemEditor = New ItemClass
+        ItemEditor.Init()
         EditorWindow.Visible = True
         inEditor = True
         EditorLoop()
@@ -61,7 +65,6 @@ Module General
                     MapEditor.DrawMapTiles()
                     MapEditor.DrawMapNPCs()
                     MapEditor.DrawMapSelection()
-                    MapEditor.DraMapOverlay()
                     ' End the rendering
                     Render.TileWindow.Display()
                 Case 1 ' Tile Editor

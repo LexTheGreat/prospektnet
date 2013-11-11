@@ -114,6 +114,8 @@
     <Compile Include="Network\SendData.vb" />
     <Compile Include="Objects\Accounts\AccountData.vb" />
     <Compile Include="Objects\Accounts\Accounts.vb" />
+    <Compile Include="Objects\Items\ItemData.vb" />
+    <Compile Include="Objects\Items\Items.vb" />
     <Compile Include="Objects\Maps\MapData.vb" />
     <Compile Include="Objects\Maps\Maps.vb" />
     <Compile Include="Objects\NPCs\NPCData.vb" />

@@ -52,7 +52,7 @@ Namespace Objects
         Public Property Blue As Byte
 
         Sub New()
-            Me.Alpha = 0
+            Me.Alpha = 255
             Me.Red = 255
             Me.Green = 255
             Me.Blue = 255

@@ -15,6 +15,7 @@
     Public Const pathAccounts As String = pathContent & "accounts/"
     Public Const pathNPCs As String = pathContent & "npcs/"
     Public Const pathMaps As String = pathContent & "maps/"
+    Public Const pathItems As String = pathContent & "items/"
     Public Const pathTilesets As String = pathContent & "tilesets/"
 
     ' Players
@@ -34,6 +35,10 @@
     ' NPCs
     Public NPC() As NPCs
     Public NPCCount As Integer = 0
+
+    ' Items
+    Public Item() As Items
+    Public ItemCount As Integer
 
     ' Configuration holder
     Public ServerConfig As Configuration

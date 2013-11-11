@@ -81,6 +81,7 @@ Class TilesetClass
                 Tileset(index).Save()
             End If
         End If
+        MapEditor.ReloadTilesets()
     End Sub
 
     Public Sub ClearTileset()

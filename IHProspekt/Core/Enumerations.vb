@@ -44,11 +44,21 @@
             COUNT
         End Enum
 
-        ' Tile type
+        ' Tiles
         Public Enum TileType As Byte
             Walkable = 0
             Blocked
             NPCAvoid
+            ' Make sure COUNT is below everything else
+            COUNT
+        End Enum
+
+        ' Items
+        Public Enum ItemType As Byte
+            Currency = 0
+            Armor
+            Weapon
+            Potion
             ' Make sure COUNT is below everything else
             COUNT
         End Enum

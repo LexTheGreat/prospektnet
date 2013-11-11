@@ -112,7 +112,7 @@ Imports IHProspekt.Database
         End Set
     End Property
 
-    <CategoryAttribute("Overlay"), _
+    <CategoryAttribute("Tile Overlay"), _
        DisplayName("Alpha")> _
     Public Property Alpha() As Byte
         Get
@@ -125,7 +125,7 @@ Imports IHProspekt.Database
         End Set
     End Property
 
-    <CategoryAttribute("Overlay"), _
+    <CategoryAttribute("Tile Overlay"), _
        DisplayName("Red")> _
     Public Property Red() As Byte
         Get
@@ -138,7 +138,7 @@ Imports IHProspekt.Database
         End Set
     End Property
 
-    <CategoryAttribute("Overlay"), _
+    <CategoryAttribute("Tile Overlay"), _
        DisplayName("Green")> _
     Public Property Green() As Byte
         Get
@@ -151,7 +151,7 @@ Imports IHProspekt.Database
         End Set
     End Property
 
-    <CategoryAttribute("Overlay"), _
+    <CategoryAttribute("Tile Overlay"), _
        DisplayName("Blue")> _
     Public Property Blue() As Byte
         Get
