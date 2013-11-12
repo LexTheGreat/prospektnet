@@ -3,10 +3,15 @@ Imports System.Security.Cryptography
 Imports System.Text
 Imports Prospekt.Graphics
 Imports Prospekt.Network
+Imports IHProspekt.Core
 Module General
     Public Sub Main()
+        ' Initialize main timer
+        MainTimer = New GameTimer
+        ' Load configuration
         EditorConfig = New Configuration
         EditorConfig.Load()
+        ' Initialize network
         InitializeNetwork()
         Render.Initialize()
         Verdana = New TextWriter("content/fonts/Verdana.ttf")
@@ -47,7 +52,7 @@ Module General
         Dim FPS As Integer
 
         Do While inEditor = True
-            Tick = System.Environment.TickCount() ' Set the inital tick
+            Tick = MainTimer.GetTotalTimeElapsed() ' Set the inital tick
             ElapsedTime = Tick - FrameTime ' Set the time difference for time-based movement
             FrameTime = Tick
             Networking.HandleMessage()

@@ -46,7 +46,7 @@ Namespace Scripting
         End Sub
 
         Public Sub ExecuteFile(ByVal File As String)
-            If Exists(pathScripts & File) Then : Try : LuaObject.DoFile(pathScripts & File) : Catch ex As LuaInterface.LuaException : Server.Writeline(ex, ConsoleColor.Red) : End Try : Else : Server.Writeline(File & " Not found") : End If
+            If System.IO.File.Exists(pathScripts & File) Then : Try : LuaObject.DoFile(pathScripts & File) : Catch ex As LuaInterface.LuaException : Server.Writeline(ex, ConsoleColor.Red) : End Try : Else : Server.Writeline(File & " Not found") : End If
         End Sub
 
         Public Sub Dispose() Implements IDisposable.Dispose

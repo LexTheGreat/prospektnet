@@ -111,13 +111,25 @@ Namespace Network.HandleData
         End Sub
 
         Public Sub EditorNPCData(ByRef data As NetIncomingMessage)
-            Dim num As Integer
+            Dim num As Integer, invsize As Integer
 
             num = data.ReadInt32
             ReDim NPC(0 To num)
             For i As Integer = 1 To num
                 NPC(i) = New NPCs
-                data.ReadAllFields(NPC(i))
+                NPC(i).Base.Name = data.ReadString
+                NPC(i).Base.Sprite = data.ReadInt32
+                NPC(i).Base.ID = data.ReadInt32
+                NPC(i).Base.Level = data.ReadInt32
+                NPC(i).Base.Health = data.ReadInt32
+                NPC(i).Base.X = data.ReadInt32
+                NPC(i).Base.Y = data.ReadInt32
+                NPC(i).Base.Dir = data.ReadInt32
+                invsize = data.ReadInt32
+                ReDim NPC(i).Base.Inventory(0 To invsize)
+                For l As Integer = 0 To invsize
+                    NPC(i).Base.Inventory(l) = data.ReadInt32
+                Next
             Next i
             NPCCount = num
             MapNPCEditor.Init(-1)

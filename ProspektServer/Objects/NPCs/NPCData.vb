@@ -12,7 +12,9 @@ Public Class NPCData
                 Dim fileEntries As String() = Directory.GetFiles(pathNPCs)
                 Dim fileName As String, i As Integer, loadNPC As New NPCBase
                 For Each fileName In fileEntries
-                    loadNPC = DirectCast(ReadXML(fileName, loadNPC), NPCBase)
+                    Using File As New Files(fileName, loadNPC)
+                        loadNPC = DirectCast(File.ReadXML, NPCBase)
+                    End Using
                     NPCCount = i + 1
                     ReDim Preserve NPC(0 To NPCCount)
                     NPC(NPCCount) = New NPCs
@@ -28,11 +30,13 @@ Public Class NPCData
 
     Public Sub SaveNPC(ByVal snpc As NPCBase)
         Try
-            WriteXML(pathNPCs & snpc.Name & ".xml", snpc)
+            Using File As New Files(pathNPCs & snpc.Name & ".xml", snpc)
+                File.WriteXML()
+            End Using
             NPC(GetNPCIndex(snpc.Name)).Base = snpc
             Exit Sub
         Catch ex As Exception
-            Server.Writeline("Error: " & ex.ToString & " (In: NPCs.Data.SaveNPC)")
+            Server.WriteLine("Error: " & ex.ToString & " (In: NPCs.Data.SaveNPC)")
             Exit Sub
         End Try
     End Sub

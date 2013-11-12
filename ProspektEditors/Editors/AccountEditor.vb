@@ -20,13 +20,11 @@
 
     Public Sub ReloadList()
         EditorWindow.lstAccounts.Items.Clear()
-        If Not IsNothing(Account) Then
-            For Each plyr In Account
-                If Not IsNothing(plyr) And Not IsNothing(plyr.Email) Then
-                    EditorWindow.lstAccounts.Items.Add(plyr.Email)
-                End If
-            Next
-        End If
+        For I As Integer = 1 To AccountCount
+            If Not IsNothing(Account(I)) Then
+                EditorWindow.lstAccounts.Items.Add(Account(I).Email)
+            End If
+        Next
         EditorWindow.tabAccount.Text = "Account"
         EditorWindow.proptAccountData.SelectedObject = vbNull
         Load(index)

@@ -15,7 +15,9 @@ Public Class Tilesets
 
     Public Sub Load()
         Dim loadTileset As New TilesetBase
-        loadTileset = DirectCast(ReadBinary(pathTilesets & Trim(Me.Base.ID) & ".bin"), TilesetBase)
+        Using File As New Files(pathTilesets & Trim(Me.Base.ID) & ".bin")
+            loadTileset = DirectCast(File.ReadBinary, TilesetBase)
+        End Using
         Me.Base.ID = loadTileset.ID
         Me.Base.Name = loadTileset.Name
         Me.Base.MaxX = loadTileset.MaxX

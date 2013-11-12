@@ -1,4 +1,5 @@
-﻿Module Globals
+﻿Imports IHProspekt.Core
+Module Globals
     ' Graphics extension
     Public Const gfxExt As String = ".png"
 
@@ -22,6 +23,7 @@
     Public ElapsedTime As Integer
     Public EditorFPS As Integer
     Public inEditor As Boolean
+    Public MainTimer As GameTimer
 
     ' Graphics & sound paths
     Public Const pathContent As String = "content/"

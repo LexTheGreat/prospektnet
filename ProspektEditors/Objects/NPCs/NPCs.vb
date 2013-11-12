@@ -3,6 +3,7 @@ Imports Prospekt.Network
 Imports IHProspekt.Objects
 Imports IHProspekt.Database
 Imports IHProspekt.Core
+Imports IHProspekt.Utilities
 Public Class NPCs
     ' general
     Public Base As NPCBase
@@ -20,7 +21,9 @@ Public Class NPCs
 
     Sub Load()
         Dim loadNpc As New NPCBase
-        loadNpc = DirectCast(ReadXML(pathNPCs & Trim(Me.Base.ID) & ".xml", loadNpc), NPCBase)
+        Using File As New Files(pathNPCs & Trim(Me.Base.ID) & ".xml", loadNpc)
+            loadNpc = DirectCast(File.ReadXML, NPCBase)
+        End Using
         Me.Base = loadNpc
     End Sub
 

@@ -1,6 +1,8 @@
-﻿Imports System.IO
+﻿Imports System
+Imports System.IO
 Namespace Core
     Public Class ErrorHandler
+        Implements IDisposable
         Private mPath As String
         Private mSupressionLevel As ErrorLevels
         Private mCrashType As CrashType
@@ -20,23 +22,23 @@ Namespace Core
             Console
             REM Signifies an error that will (most likely) jeopardize system stability.
         End Enum
-        Public WriteOnly Property SetDestroyTarget() As Object
+        Public WriteOnly Property DestroyTarget() As Object
             Set(value As Object)
                 Me.mDestroy = value
             End Set
         End Property
-        Public WriteOnly Property SetLogPath() As String
+        Public WriteOnly Property LogPath() As String
             Set(value As String)
                 Me.mPath = value
             End Set
         End Property
 
-        Public WriteOnly Property SetSuppresionLevel() As ErrorLevels
+        Public WriteOnly Property SuppresionLevel() As ErrorLevels
             Set(value As ErrorLevels)
                 Me.mSupressionLevel = value
             End Set
         End Property
-        Public WriteOnly Property SetCrashType() As CrashType
+        Public WriteOnly Property ErrCrashType() As CrashType
             Set(value As CrashType)
                 Me.mCrashType = value
             End Set
@@ -61,6 +63,12 @@ Namespace Core
             Using streamWriter As StreamWriter = File.AppendText(mPath & "Errors.log")
                 streamWriter.WriteLine("[{0}] - Error Level: {1}, Error Message: {2} at {3}", DateTime.Now.ToString("M/d/yyyy"), errorLevel.ToString(), ex.Message, ex.StackTrace)
             End Using
+        End Sub
+        Public Sub Dispose() Implements IDisposable.Dispose
+            Me.mPath = vbNullString
+            Me.mSupressionLevel = vbNull
+            Me.mCrashType = vbNull
+            Me.mDestroy = Nothing
         End Sub
     End Class
 End Namespace

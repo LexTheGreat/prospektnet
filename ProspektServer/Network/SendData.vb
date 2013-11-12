@@ -109,7 +109,18 @@ Namespace Network.SendData
             Buffer.Write(ServerPackets.NPC)
             Buffer.Write(Index)
             Buffer.Write(NPCCount)
-            Buffer.WriteAllFields(NPC(Index).Base)
+            Buffer.Write(NPC(Index).Base.Name)
+            Buffer.Write(NPC(Index).Base.Sprite)
+            Buffer.Write(NPC(Index).Base.ID)
+            Buffer.Write(NPC(Index).Base.Level)
+            Buffer.Write(NPC(Index).Base.Health)
+            Buffer.Write(NPC(Index).Base.X)
+            Buffer.Write(NPC(Index).Base.Y)
+            Buffer.Write(NPC(Index).Base.Dir)
+            Buffer.Write(NPC(Index).Base.Inventory.Length)
+            For l As Integer = 0 To NPC(Index).Base.Inventory.Length
+                Buffer.Write(NPC(Index).Base.Inventory(Index))
+            Next
             SendDataToAll(Buffer)
         End Sub
 
@@ -249,7 +260,18 @@ Namespace Network.SendData
             Buffer.Write(SEditorPackets.NPCData)
             Buffer.Write(NPCCount)
             For I As Integer = 1 To NPCCount
-                Buffer.WriteAllFields(NPC(I).Base)
+                Buffer.Write(NPC(I).Base.Name)
+                Buffer.Write(NPC(I).Base.Sprite)
+                Buffer.Write(NPC(I).Base.ID)
+                Buffer.Write(NPC(I).Base.Level)
+                Buffer.Write(NPC(I).Base.Health)
+                Buffer.Write(NPC(I).Base.X)
+                Buffer.Write(NPC(I).Base.Y)
+                Buffer.Write(NPC(I).Base.Dir)
+                Buffer.Write(NPC(I).Base.Inventory.Length)
+                For l As Integer = 0 To NPC(I).Base.Inventory.Length
+                    Buffer.Write(NPC(I).Base.Inventory(l))
+                Next
             Next
             SendDataTo(Index, Buffer)
         End Sub

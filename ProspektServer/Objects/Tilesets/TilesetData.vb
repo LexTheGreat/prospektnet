@@ -5,7 +5,9 @@ Imports IHProspekt.Core
 Imports IHProspekt.Database
 Public Class TilesetData
     Public Sub Save(ByVal SaveTileset As TilesetBase)
-        WriteBinary(pathTilesets & Trim(SaveTileset.ID) & ".bin", SaveTileset)
+        Using File As New Files(pathTilesets & Trim(SaveTileset.ID) & ".bin", SaveTileset)
+            File.WriteBinary()
+        End Using
     End Sub
 
     Public Sub LoadAll()

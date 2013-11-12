@@ -66,6 +66,7 @@
   <ItemGroup>
     <Compile Include="Core\Enumerations.vb" />
     <Compile Include="Core\ErrorHandler.vb" />
+    <Compile Include="Core\GameTimer.vb" />
     <Compile Include="Database\Files.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
@@ -90,6 +91,7 @@
     <Compile Include="Objects\NPCCore.vb" />
     <Compile Include="Objects\PlayerCore.vb" />
     <Compile Include="Objects\TilesetCore.vb" />
+    <Compile Include="Utillities\Tools.vb" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="My Project\Resources.resx">

@@ -10,12 +10,16 @@ Public Class Configuration
 
     Public Sub Load()
         Dim newConfig As New Configuration
-        newConfig = DirectCast(ReadXML(pathContent & "config.xml", Me), Configuration)
+        Using File As New Files(pathContent & "config.xml", Me)
+            newConfig = DirectCast(File.ReadXML, Configuration)
+        End Using
         Me.IP = newConfig.IP
         Me.Port = newConfig.Port
     End Sub
 
     Public Sub Save()
-        WriteXML(pathContent & "config.xml", Me)
+        Using File As New Files(pathContent & "config.xml", Me)
+            File.WriteXML()
+        End Using
     End Sub
 End Class

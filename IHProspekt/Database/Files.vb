@@ -1,86 +1,116 @@
-﻿Imports System.IO
+﻿Imports System
+Imports System.IO
 Imports System.Xml.Serialization
 Imports System.Runtime.Serialization.Formatters.Binary
 Namespace Database
-    Public Module Files
-        Public Function Exists(ByVal filepath As String) As Boolean
-            Return File.Exists(filepath)
-        End Function
+    Public Class Files
+        Implements IDisposable
+        Private mPath As String
+        Private mObject As Object
 
-        Public Function WriteXML(ByVal Path As String, ByVal obj As Object) As Boolean
+        Public Sub New(path As String)
+            Me.mPath = path
+            Me.mObject = Nothing
+        End Sub
+
+        Public Sub New(path As String, obj As Object)
+            Me.mPath = path
+            Me.mObject = obj
+        End Sub
+
+        Public Function WriteXML() As Boolean
             Try
                 'Serialize object to a file.
-                Dim Writer As New StreamWriter(Path)
+                Dim Writer As New StreamWriter(Me.mPath)
+                Dim ser As New XmlSerializer(Me.mObject.GetType)
+                ser.Serialize(Writer, Me.mObject)
+                Writer.Close()
+                Return True
+            Catch ex As Exception
+                Return False
+            End Try
+        End Function
+
+        Public Function WriteXML(obj As Object) As Boolean
+            Try
+                'Serialize object to a file.
+                Dim Writer As New StreamWriter(Me.mPath)
                 Dim ser As New XmlSerializer(obj.GetType)
                 ser.Serialize(Writer, obj)
                 Writer.Close()
                 Return True
             Catch ex As Exception
-                Console.WriteLine("Error: " & ex.ToString & " (In: WriteXML")
                 Return False
             End Try
         End Function
 
-        Public Function ReadXML(ByVal Path As String, ByVal obj As Object) As Object
+        Public Function ReadXML() As Object
             Try
                 'Deserialize file to object.
-                Dim Reader As New StreamReader(Path)
+                Dim Reader As New StreamReader(Me.mPath)
+                Dim ser As New XmlSerializer(Me.mObject.GetType)
+                Me.mObject = ser.Deserialize(Reader)
+                Reader.Close()
+                Return Me.mObject
+            Catch ex As Exception
+                Return Nothing
+            End Try
+        End Function
+
+        Public Function ReadXML(obj As Object) As Object
+            Try
+                'Deserialize file to object.
+                Dim Reader As New StreamReader(Me.mPath)
                 Dim ser As New XmlSerializer(obj.GetType)
                 obj = ser.Deserialize(Reader)
                 Reader.Close()
                 Return obj
             Catch ex As Exception
-                Console.WriteLine("Error: " & ex.ToString & " (In: ReadXML")
                 Return Nothing
             End Try
         End Function
 
-        Public Function WriteBinary(ByVal Path As String, ByVal obj As Object) As Boolean
+        Public Function WriteBinary() As Boolean
             Try
-                Dim fs As New FileStream(Path, FileMode.Create)
+                Dim fs As New FileStream(Me.mPath, FileMode.Create)
+                Dim formatter As New BinaryFormatter
+
+                formatter.Serialize(fs, Me.mObject)
+                fs.Close()
+                Return True
+            Catch ex As Exception
+                Return False
+            End Try
+        End Function
+
+        Public Function WriteBinary(obj As Object) As Boolean
+            Try
+                Dim fs As New FileStream(Me.mPath, FileMode.Create)
                 Dim formatter As New BinaryFormatter
 
                 formatter.Serialize(fs, obj)
                 fs.Close()
                 Return True
             Catch ex As Exception
-                Console.WriteLine("Error: " & ex.ToString & " (In: WriteBinary")
                 Return False
             End Try
         End Function
 
-        Public Function ReadBinary(ByVal Path As String) As Object
+        Public Function ReadBinary() As Object
             Try
-                Dim fs As New FileStream(Path, FileMode.Open)
-                Dim formatter As New BinaryFormatter, obj As Object
-                obj = formatter.Deserialize(fs)
+                Dim fs As New FileStream(Me.mPath, FileMode.Open)
+                Dim formatter As New BinaryFormatter
+                Me.mObject = formatter.Deserialize(fs)
                 fs.Close()
-                Return obj
+                Return Me.mObject
             Catch ex As Exception
-                Console.WriteLine("Error: " & ex.ToString & " (In: ReadBinary")
                 Return Nothing
             End Try
         End Function
 
-        <System.Runtime.CompilerServices.Extension()> _
-        Public Sub RemoveAt(Of T)(ByRef arr As T(), ByVal index As Integer)
-            Dim uBound = arr.GetUpperBound(0)
-            Dim lBound = arr.GetLowerBound(0)
-            Dim arrLen = uBound - lBound
-
-            If index < lBound OrElse index > uBound Then
-                Throw New ArgumentOutOfRangeException( _
-                String.Format("Index must be from {0} to {1}.", lBound, uBound))
-            Else
-                'create an array 1 element less than the input array
-                Dim outArr(arrLen - 1) As T
-                'copy the first part of the input array
-                Array.Copy(arr, 0, outArr, 0, index)
-                'then copy the second part of the input array
-                Array.Copy(arr, index + 1, outArr, index, uBound - index)
-
-                arr = outArr
-            End If
+        Public Sub Dispose() Implements IDisposable.Dispose
+            Me.mPath = vbNullString
+            Me.mObject = Nothing
         End Sub
-    End Module
+    End Class
 End Namespace

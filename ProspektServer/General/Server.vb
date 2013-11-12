@@ -1,9 +1,11 @@
 ﻿Imports Lidgren.Network
 Imports Prospekt.Network
+Imports IHProspekt.Core
 Public Class Server
     Public Shared Sub Main()
         Dim time1 As Integer, time2 As Integer
-        time1 = System.Environment.TickCount
+        MainTimer = New GameTimer
+        time1 = MainTimer.GetTotalTimeElapsed
         Console.Title = "Loading..."
         Server.Writeline("Loading configuration...")
         ServerConfig = New Configuration
@@ -27,7 +29,7 @@ Public Class Server
         LuaScript = New Scripting.LuaHandler
         LuaScript.ExecuteFile("server.lua")
         Console.Title = "Prospekt Server <IP " & GetPublicIP() & " Port " & ServerConfig.Port & ">"
-        time2 = System.Environment.TickCount
+        time2 = MainTimer.GetTotalTimeElapsed
         Server.Writeline("Initialization complete. Server loaded in " & time2 - time1 & "ms.", ConsoleColor.Green)
         inServer = True
         ServerLoop()
@@ -53,17 +55,17 @@ Public Class Server
 
     Public Shared Sub ServerLoop()
         Dim Tick As Integer
-        Dim tmrPlayerSave As Integer = System.Environment.TickCount + 300000
+        Dim tmrPlayerSave As Integer = MainTimer.GetTotalTimeElapsed + 300000
         Dim tmr1000 As Integer
         Dim i As Integer
         Do While inServer
-            Tick = System.Environment.TickCount()
+            Tick = MainTimer.GetTotalTimeElapsed()
             HandleMessage()
             'Saves players every 5 minutes
             If tmrPlayerSave < Tick Then
                 Server.Writeline("Saving Players...", ConsoleColor.Green)
                 Players.Data.SaveOnlinePlayers()
-                tmrPlayerSave = System.Environment.TickCount + 300000
+                tmrPlayerSave = MainTimer.GetTotalTimeElapsed + 300000
             End If
             If tmr1000 < Tick Then
                 'Generate Npc movement every second
@@ -74,7 +76,7 @@ Public Class Server
                 Next i
                 'Execute lua script every second
                 LuaScript.executeFunction("onTick")
-                tmr1000 = System.Environment.TickCount + 1000
+                tmr1000 = MainTimer.GetTotalTimeElapsed + 1000
             End If
         Loop
     End Sub

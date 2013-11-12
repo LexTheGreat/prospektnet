@@ -33,7 +33,9 @@ Public Class ItemData
     End Sub
 
     Public Sub Save(ByVal SaveItem As ItemBase)
-        WriteXML(pathItems & Trim(SaveItem.ID) & ".xml", SaveItem)
+        Using File As New Files(pathItems & Trim(SaveItem.ID) & ".xml", SaveItem)
+            File.WriteXML()
+        End Using
     End Sub
 
     Public Function GetItemIndex(ByVal ID As Integer) As Integer
@@ -54,7 +56,7 @@ Public Class ItemData
         Dim Filename As String
         Filename = pathItems & Trim(ID) & ".xml"
 
-        If Exists(Filename) Then
+        If System.IO.File.Exists(Filename) Then
             Return True
         Else
             Return False

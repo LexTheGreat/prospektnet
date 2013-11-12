@@ -1,6 +1,8 @@
-﻿Module Globals
+﻿Imports IHProspekt.Core
+Module Globals
     ' Loop control
     Public inServer As Boolean
+    Public MainTimer As GameTimer
 
     ' Scripting holder
     Public LuaScript As Scripting.LuaHandler

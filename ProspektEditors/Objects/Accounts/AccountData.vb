@@ -3,7 +3,9 @@ Imports IHProspekt.Objects
 Imports IHProspekt.Database
 Public Class AccountData
     Public Sub Save(ByVal SaveAccount As AccountBase)
-        WriteXML(pathAccounts & SaveAccount.Email & ".xml", SaveAccount)
+        Using File As New Files(pathAccounts & SaveAccount.Email & ".xml", SaveAccount)
+            File.WriteXML()
+        End Using
     End Sub
 
     Public Sub LoadAccounts()
@@ -16,7 +18,9 @@ Public Class AccountData
             If Directory.Exists(pathAccounts) Then
                 fileEntries = Directory.GetFiles(pathAccounts)
                 For Each fileName In fileEntries
-                    loadAcc = DirectCast(ReadXML(fileName, loadAcc), AccountBase)
+                    Using File As New Files(fileName, loadAcc)
+                        loadAcc = DirectCast(File.ReadXML, AccountBase)
+                    End Using
                     AccountCount = i + 1
                     ReDim Preserve Account(0 To AccountCount)
                     Account(AccountCount) = New Accounts
@@ -68,7 +72,7 @@ Public Class AccountData
         Dim Filename As String
         Filename = pathAccounts & Trim(LoginEmail) & ".xml"
 
-        If Exists(Filename) Then
+        If System.IO.File.Exists(Filename) Then
             Return True
         Else
             Return False

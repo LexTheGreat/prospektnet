@@ -10,7 +10,7 @@ Namespace Audio
         Public Sub playMusic(ByVal filename As String)
             If ClientConfig.Music = False Then Exit Sub
 
-            If Not Exists(pathMusic & filename) Then Exit Sub
+            If Not System.IO.File.Exists(pathMusic & filename) Then Exit Sub
 
             If musicPlayer Is Nothing Then
                 musicPlayer = New Music(pathMusic & filename)
@@ -32,7 +32,7 @@ Namespace Audio
         End Sub
         Public Sub playSound(ByVal filename As String)
             If ClientConfig.Sound = False Then Exit Sub
-            If Not Exists(pathSound & filename) Then Exit Sub
+            If Not System.IO.File.Exists(pathSound & filename) Then Exit Sub
 
             If soundPlayer Is Nothing Then
                 soundPlayerBuffer = New SoundBuffer(pathSound & filename)

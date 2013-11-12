@@ -9,7 +9,9 @@ Public Class AccountData
             Account(AccountCount) = New Accounts
             Account(AccountCount).Base = newAccount
             'Serialize object to a file.
-            WriteXML(pathAccounts & newAccount.Email & ".xml", newAccount)
+            Using File As New Files(pathAccounts & newAccount.Email & ".xml", newAccount)
+                File.WriteXML()
+            End Using
             AccountCount = AccountCount + 1
             Return True
         Catch ex As Exception
@@ -21,7 +23,9 @@ Public Class AccountData
     Public Sub CreateCharacter(ByVal curAccount As AccountBase)
         Try
             'Serialize object to a file.
-            WriteXML(pathAccounts & curAccount.Email & ".xml", curAccount)
+            Using File As New Files(pathAccounts & curAccount.Email & ".xml", curAccount)
+                File.WriteXML()
+            End Using
             Account(GetAccountIndex(curAccount.Email)).Base = curAccount
             Exit Sub
         Catch ex As Exception
@@ -40,7 +44,9 @@ Public Class AccountData
             If Directory.Exists(pathAccounts) Then
                 fileEntries = Directory.GetFiles(pathAccounts)
                 For Each fileName In fileEntries
-                    loadAcc = DirectCast(ReadXML(fileName, loadAcc), AccountBase)
+                    Using File As New Files(fileName, loadAcc)
+                        loadAcc = DirectCast(File.ReadXML, AccountBase)
+                    End Using
                     AccountCount = i + 1
                     ReDim Preserve Account(0 To AccountCount)
                     Account(AccountCount) = New Accounts
@@ -67,11 +73,13 @@ Public Class AccountData
 
     Public Sub SaveAccount(ByRef saccount As AccountBase)
         Try
-            WriteXML(pathAccounts & saccount.Email & ".xml", saccount)
+            Using File As New Files(pathAccounts & saccount.Email & ".xml", saccount)
+                File.WriteXML()
+            End Using
             Account(GetAccountIndex(saccount.Email)).Base = saccount
             Exit Sub
         Catch ex As Exception
-            Server.Writeline("Error: " & ex.ToString & " (In: Accounts.Data.SaveAccount)")
+            Server.WriteLine("Error: " & ex.ToString & " (In: Accounts.Data.SaveAccount)")
             Exit Sub
         End Try
     End Sub

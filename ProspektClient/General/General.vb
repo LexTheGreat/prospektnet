@@ -1,7 +1,11 @@
 ﻿Imports Prospekt.Graphics
 Imports Prospekt.Network
+Imports IHProspekt.Core
 Module General
     Public Sub Main()
+        ' Initialize main timer
+        MainTimer = New GameTimer
+        ' Load configuration
         ClientConfig = New Configuration
         ClientConfig.Load()
         maxX = (ClientConfig.ScreenWidth / picX) - 1
@@ -26,7 +30,7 @@ Module General
         Dim tmr500 As Integer, faderTimer As Integer, tmr15 As Integer
         MenuMain = New MenuScene
         Do While inMenu = True
-            Tick = System.Environment.TickCount() ' Set the inital tick
+            Tick = MainTimer.GetTotalTimeElapsed() ' Set the inital tick
             elapsedTime = Tick - FrameTime ' Set the time difference for time-based movement
             FrameTime = Tick
             Networking.HandleMessage()
@@ -37,7 +41,7 @@ Module General
                 Else
                     chatShowLine = "|"
                 End If
-                tmr500 = System.Environment.TickCount() + 500
+                tmr500 = MainTimer.GetTotalTimeElapsed() + 500
             End If
 
             If tmr15 < Tick Then
@@ -92,7 +96,7 @@ Module General
                         End If
                     End If
                 End If
-                tmr15 = System.Environment.TickCount() + 15
+                tmr15 = MainTimer.GetTotalTimeElapsed() + 15
             End If
 
 
@@ -120,7 +124,7 @@ Module General
         Dim I As Integer
         GameMain = New GameScene
         Do While inGame = True
-            Tick = System.Environment.TickCount() ' Set the inital tick
+            Tick = MainTimer.GetTotalTimeElapsed() ' Set the inital tick
             elapsedTime = Tick - FrameTime ' Set the time difference for time-based movement
             FrameTime = Tick
             Networking.HandleMessage()
@@ -149,7 +153,7 @@ Module General
                 Else
                     chatShowLine = "|"
                 End If
-                tmr500 = System.Environment.TickCount() + 500
+                tmr500 = MainTimer.GetTotalTimeElapsed() + 500
             End If
 
             GameMain.Draw()

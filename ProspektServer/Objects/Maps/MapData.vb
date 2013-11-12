@@ -24,7 +24,9 @@ Public Class MapData
     End Sub
 
     Public Sub Save(ByVal SaveMap As MapBase)
-        WriteBinary(pathMaps & Trim(SaveMap.ID) & ".bin", SaveMap)
+        Using File As New Files(pathMaps & Trim(SaveMap.ID) & ".bin", SaveMap)
+            File.WriteBinary()
+        End Using
     End Sub
 
     Public Sub SaveAll()
@@ -70,7 +72,7 @@ Public Class MapData
         Dim Filename As String
         Filename = pathMaps & Trim(ID) & ".bin"
 
-        If Exists(Filename) Then
+        If System.IO.File.Exists(Filename) Then
             Return True
         Else
             Return False

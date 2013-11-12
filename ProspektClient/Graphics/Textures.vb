@@ -37,7 +37,7 @@ Namespace Graphics
         Public Sub InitTextures()
             ' Buttons
             countButton = 1
-            Do While Exists(pathButtons & countButton & gfxExt)
+            Do While System.IO.File.Exists(pathButtons & countButton & gfxExt)
                 ReDim Preserve texButton(0 To countButton)
                 texButton(countButton) = Render.cacheTexture(pathButtons & countButton & gfxExt)
                 countButton = countButton + 1
@@ -46,7 +46,7 @@ Namespace Graphics
 
             ' guis
             countGui = 1
-            Do While Exists(pathGui & countGui & gfxExt)
+            Do While System.IO.File.Exists(pathGui & countGui & gfxExt)
                 ReDim Preserve texGui(0 To countGui)
                 texGui(countGui) = Render.cacheTexture(pathGui & countGui & gfxExt)
                 countGui = countGui + 1
@@ -55,7 +55,7 @@ Namespace Graphics
 
             ' sprites
             countSprite = 1
-            Do While Exists(pathSprites & countSprite & gfxExt)
+            Do While System.IO.File.Exists(pathSprites & countSprite & gfxExt)
                 ReDim Preserve texSprite(0 To countSprite)
                 texSprite(countSprite) = Render.cacheTexture(pathSprites & countSprite & gfxExt)
                 countSprite = countSprite + 1
@@ -64,7 +64,7 @@ Namespace Graphics
 
             ' tilesets
             countTileset = 1
-            Do While Exists(pathTilesets & countTileset & gfxExt)
+            Do While System.IO.File.Exists(pathTilesets & countTileset & gfxExt)
                 ReDim Preserve texTileset(0 To countTileset)
                 texTileset(countTileset) = Render.cacheTexture(pathTilesets & countTileset & gfxExt)
                 countTileset = countTileset + 1

@@ -26,7 +26,9 @@ Public Class Configuration
         Dim newConfig As New Configuration
 
         ' Get object from file
-        newConfig = DirectCast(ReadXML(pathContent & "config.xml", Me), Configuration)
+        Using File As New Files(pathContent & "config.xml", Me)
+            newConfig = DirectCast(File.ReadXML, Configuration)
+        End Using
         Me.ScreenWidth = newConfig.ScreenWidth
         Me.ScreenHeight = newConfig.ScreenHeight
         Me.MenuMusic = newConfig.MenuMusic
@@ -38,6 +40,8 @@ Public Class Configuration
     End Sub
 
     Public Sub Save()
-        WriteXML(pathContent & "config.xml", Me)
+        Using File As New Files(pathContent & "config.xml", Me)
+            File.WriteXML()
+        End Using
     End Sub
 End Class

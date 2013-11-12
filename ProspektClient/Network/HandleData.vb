@@ -132,12 +132,25 @@ Namespace Network.HandleData
         End Sub
 
         Public Sub NPCData(ByRef Data As NetIncomingMessage)
-            Dim tempIndex As Integer
+            Dim tempIndex As Integer, invsize As Integer, num As Integer
             tempIndex = Data.ReadInt32
-            NPCCount = Data.ReadInt32
-            ReDim Preserve NPC(0 To NPCCount)
+            num = Data.ReadInt32
+            ReDim Preserve NPC(0 To num)
             If IsNothing(NPC(tempIndex)) Then NPC(tempIndex) = New NPCs
-            Data.ReadAllFields(NPC(tempIndex).Base)
+            NPC(tempIndex).Base.Name = Data.ReadString
+            NPC(tempIndex).Base.Sprite = Data.ReadInt32
+            NPC(tempIndex).Base.ID = Data.ReadInt32
+            NPC(tempIndex).Base.Level = Data.ReadInt32
+            NPC(tempIndex).Base.Health = Data.ReadInt32
+            NPC(tempIndex).Base.X = Data.ReadInt32
+            NPC(tempIndex).Base.Y = Data.ReadInt32
+            NPC(tempIndex).Base.Dir = Data.ReadInt32
+            invsize = Data.ReadInt32
+            ReDim NPC(tempIndex).Base.Inventory(0 To invsize)
+            For l As Integer = 0 To invsize
+                NPC(tempIndex).Base.Inventory(l) = Data.ReadInt32
+            Next
+            NPCCount = num
         End Sub
 
         Public Sub NPCPosition(ByRef Data As NetIncomingMessage)

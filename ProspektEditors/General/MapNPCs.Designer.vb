@@ -115,6 +115,7 @@ Partial Class MapNPCs
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(548, 377)
         Me.Controls.Add(Me.SplitContainer1)
+        Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow
         Me.Name = "MapNPCs"
         Me.Text = "Map NPC Editor"
         Me.SplitContainer1.Panel1.ResumeLayout(False)

@@ -10,5 +10,7 @@
   <Dir>1</Dir>
   <Inventory>
     <int>0</int>
+    <int>1</int>
+    <int>3</int>
   </Inventory>
 </NPCBase>

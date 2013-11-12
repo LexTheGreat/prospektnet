@@ -18,7 +18,9 @@ Public Class Accounts
         Dim newAccount As New AccountBase
 
         ' Get object from file
-        newAccount = DirectCast(ReadXML(pathAccounts & Me.Base.Email & ".xml", Me.Base), AccountBase)
+        Using File As New Files(pathAccounts & Me.Base.Email & ".xml", Me.Base)
+            newAccount = DirectCast(File.ReadXML, AccountBase)
+        End Using
         Me.Base.Email = newAccount.Email
         Me.Base.Password = newAccount.Password
         Me.Base.Player.Name = newAccount.Player.Name

@@ -33,7 +33,9 @@ Public Class NPCData
     End Sub
 
     Public Sub Save(ByVal SaveNpc As NPCBase)
-        WriteXML(pathNPCs & Trim(SaveNpc.ID) & ".xml", SaveNpc)
+        Using File As New Files(pathNPCs & Trim(SaveNpc.ID) & ".xml", SaveNpc)
+            File.WriteXML()
+        End Using
     End Sub
 
     Public Sub NewNpc()
@@ -67,7 +69,7 @@ Public Class NPCData
         Dim Filename As String
         Filename = pathNPCs & Trim(ID) & ".xml"
 
-        If Exists(Filename) Then
+        If System.IO.File.Exists(Filename) Then
             Return True
         Else
             Return False

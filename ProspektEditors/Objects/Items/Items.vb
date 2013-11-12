@@ -18,7 +18,9 @@ Public Class Items
 
     Sub Load()
         Dim loadItem As New ItemBase
-        loadItem = DirectCast(ReadXML(pathItemData & Trim(Me.Base.ID) & ".xml", loadItem), ItemBase)
+        Using File As New Files(pathItemData & Trim(Me.Base.ID) & ".xml", loadItem)
+            loadItem = DirectCast(File.ReadXML, ItemBase)
+        End Using
         Me.Base = loadItem
     End Sub
 

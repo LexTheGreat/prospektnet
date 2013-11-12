@@ -2,7 +2,11 @@
 <NPCBase xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <Name>NPC #8</Name>
   <Sprite>2</Sprite>
-  <X>16</X>
-  <Y>11</Y>
+  <ID>8</ID>
+  <Level>1</Level>
+  <Health>1</Health>
+  <X>10</X>
+  <Y>15</Y>
   <Dir>1</Dir>
+  <Inventory />
 </NPCBase>

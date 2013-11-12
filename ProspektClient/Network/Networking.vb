@@ -39,10 +39,10 @@ Namespace Network
             End If
             pClient.Connect(ClientConfig.IP, ClientConfig.Port)
             ' Try connect with the server
-            Wait = System.Environment.TickCount
+            Wait = MainTimer.GetTotalTimeElapsed
 
             ' Wait until connected or 3 seconds have passed and report the server being down
-            Do While (Not IsConnected()) And (System.Environment.TickCount <= Wait + 1000)
+            Do While (Not IsConnected()) And (MainTimer.GetTotalTimeElapsed <= Wait + 1000)
                 Application.DoEvents()
             Loop
 

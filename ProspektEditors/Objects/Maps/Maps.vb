@@ -16,7 +16,9 @@ Imports IHProspekt.Database
 
     Sub Load()
         Dim loadMap As New MapBase
-        loadMap = DirectCast(ReadBinary(pathMaps & Trim(Me.Base.ID) & ".bin"), MapBase)
+        Using File As New Files(pathMaps & Trim(Me.Base.ID) & ".bin")
+            loadMap = DirectCast(File.ReadBinary, MapBase)
+        End Using
         Me.Base.ID = loadMap.ID
         Me.Base.Name = loadMap.Name
         Me.Base.MaxX = loadMap.MaxX

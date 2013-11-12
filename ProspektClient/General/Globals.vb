@@ -53,6 +53,7 @@ Public Module Globals
     Public loginSent As Boolean
     Public elapsedTime As Integer
     Public gameFPS As Integer
+    Public MainTimer As GameTimer
 
     ' Main menu
     Public curMenu As Byte
