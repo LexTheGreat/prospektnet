@@ -91,6 +91,14 @@ Public Class NPCs
         End Set
     End Property
 
+    Public Function GetInventoryItem(ByVal slot As Integer) As Items
+        If Me.Base.Inventory.Length <= slot Then Return Nothing
+        If Not IsNothing(Me.Base.Inventory(slot)) And Not (Me.Base.Inventory(slot) < 0) Then
+            If Not IsNothing(Item(Me.Base.Inventory(slot))) Then Return Item(Me.Base.Inventory(slot))
+        End If
+        Return Nothing
+    End Function
+
     Public Sub GenerateMovement()
         Dim i As Integer
         i = Int(Rnd() * 2)

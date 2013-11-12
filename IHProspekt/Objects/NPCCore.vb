@@ -11,6 +11,8 @@ Namespace Objects
         Private mX As Integer
         Private mY As Integer
         Private mDir As Byte
+        ' Drop Table
+        Private mInventory() As Integer
 
         Public Sub New()
             Me.mName = "New NPC"
@@ -21,6 +23,8 @@ Namespace Objects
             Me.mY = 15
             Me.mX = 10
             Me.mDir = DirEnum.Down
+            ReDim mInventory(0 To 0)
+            Me.mInventory(0) = -1
         End Sub
 
         Public Property Name() As String
@@ -107,6 +111,17 @@ Namespace Objects
             Set(value As Byte)
                 If Not IsNothing(Me) Then
                     Me.mDir = value
+                End If
+            End Set
+        End Property
+
+        Public Property Inventory As Integer()
+            Get
+                Return Me.mInventory
+            End Get
+            Set(value As Integer())
+                If Not IsNothing(Me) Then
+                    Me.mInventory = value
                 End If
             End Set
         End Property

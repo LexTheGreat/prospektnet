@@ -87,6 +87,7 @@ Partial Class EditorWindow
         Me.tabNpcs = New System.Windows.Forms.TabControl()
         Me.tabNpc = New System.Windows.Forms.TabPage()
         Me.proptNpcData = New System.Windows.Forms.PropertyGrid()
+        Me.btnNpcDropTable = New System.Windows.Forms.Button()
         Me.groupNpcList = New System.Windows.Forms.GroupBox()
         Me.lstNpcs = New System.Windows.Forms.ListBox()
         Me.mnuNpcList = New System.Windows.Forms.MenuStrip()
@@ -105,7 +106,6 @@ Partial Class EditorWindow
         Me.mnuItemNew = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuItemUndo = New System.Windows.Forms.ToolStripMenuItem()
         Me.imgSprites = New System.Windows.Forms.ImageList(Me.components)
-        Me.btnNpcDropTable = New System.Windows.Forms.Button()
         Me.mnuMain.SuspendLayout()
         Me.tabEditors.SuspendLayout()
         Me.tabMapEditor.SuspendLayout()
@@ -187,7 +187,7 @@ Partial Class EditorWindow
         'mnuMain_Textures
         '
         Me.mnuMain_Textures.Name = "mnuMain_Textures"
-        Me.mnuMain_Textures.Size = New System.Drawing.Size(152, 22)
+        Me.mnuMain_Textures.Size = New System.Drawing.Size(118, 22)
         Me.mnuMain_Textures.Text = "Textures"
         '
         'tabEditors
@@ -769,6 +769,16 @@ Partial Class EditorWindow
         Me.proptNpcData.Size = New System.Drawing.Size(630, 346)
         Me.proptNpcData.TabIndex = 1
         '
+        'btnNpcDropTable
+        '
+        Me.btnNpcDropTable.Dock = System.Windows.Forms.DockStyle.Top
+        Me.btnNpcDropTable.Location = New System.Drawing.Point(3, 3)
+        Me.btnNpcDropTable.Name = "btnNpcDropTable"
+        Me.btnNpcDropTable.Size = New System.Drawing.Size(630, 23)
+        Me.btnNpcDropTable.TabIndex = 2
+        Me.btnNpcDropTable.Text = "Edit Drop Table"
+        Me.btnNpcDropTable.UseVisualStyleBackColor = True
+        '
         'groupNpcList
         '
         Me.groupNpcList.Controls.Add(Me.lstNpcs)
@@ -788,6 +798,7 @@ Partial Class EditorWindow
         Me.lstNpcs.Location = New System.Drawing.Point(3, 40)
         Me.lstNpcs.Name = "lstNpcs"
         Me.lstNpcs.Size = New System.Drawing.Size(149, 377)
+        Me.lstNpcs.Sorted = True
         Me.lstNpcs.TabIndex = 0
         '
         'mnuNpcList
@@ -920,16 +931,6 @@ Partial Class EditorWindow
         Me.imgSprites.ColorDepth = System.Windows.Forms.ColorDepth.Depth8Bit
         Me.imgSprites.ImageSize = New System.Drawing.Size(16, 16)
         Me.imgSprites.TransparentColor = System.Drawing.Color.Transparent
-        '
-        'btnNpcDropTable
-        '
-        Me.btnNpcDropTable.Dock = System.Windows.Forms.DockStyle.Top
-        Me.btnNpcDropTable.Location = New System.Drawing.Point(3, 3)
-        Me.btnNpcDropTable.Name = "btnNpcDropTable"
-        Me.btnNpcDropTable.Size = New System.Drawing.Size(630, 23)
-        Me.btnNpcDropTable.TabIndex = 2
-        Me.btnNpcDropTable.Text = "Edit Drop Table"
-        Me.btnNpcDropTable.UseVisualStyleBackColor = True
         '
         'EditorWindow
         '

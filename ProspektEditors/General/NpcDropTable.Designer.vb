@@ -24,10 +24,11 @@ Partial Class NpcDropTable
     Private Sub InitializeComponent()
         Me.groupGameItems = New System.Windows.Forms.GroupBox()
         Me.lstGameItems = New System.Windows.Forms.ListBox()
+        Me.btnAdd = New System.Windows.Forms.Button()
+        Me.btnRemove = New System.Windows.Forms.Button()
         Me.lstNpcItems = New System.Windows.Forms.ListBox()
         Me.groupNpcItems = New System.Windows.Forms.GroupBox()
-        Me.btnRemove = New System.Windows.Forms.Button()
-        Me.btnAdd = New System.Windows.Forms.Button()
+        Me.btnSaveNpcDrops = New System.Windows.Forms.Button()
         Me.groupGameItems.SuspendLayout()
         Me.groupNpcItems.SuspendLayout()
         Me.SuspendLayout()
@@ -54,25 +55,15 @@ Partial Class NpcDropTable
         Me.lstGameItems.Size = New System.Drawing.Size(209, 435)
         Me.lstGameItems.TabIndex = 41
         '
-        'lstNpcItems
+        'btnAdd
         '
-        Me.lstNpcItems.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.lstNpcItems.FormattingEnabled = True
-        Me.lstNpcItems.Location = New System.Drawing.Point(3, 16)
-        Me.lstNpcItems.Name = "lstNpcItems"
-        Me.lstNpcItems.Size = New System.Drawing.Size(185, 481)
-        Me.lstNpcItems.TabIndex = 41
-        '
-        'groupNpcItems
-        '
-        Me.groupNpcItems.Controls.Add(Me.lstNpcItems)
-        Me.groupNpcItems.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.groupNpcItems.Location = New System.Drawing.Point(215, 0)
-        Me.groupNpcItems.Name = "groupNpcItems"
-        Me.groupNpcItems.Size = New System.Drawing.Size(191, 500)
-        Me.groupNpcItems.TabIndex = 53
-        Me.groupNpcItems.TabStop = False
-        Me.groupNpcItems.Text = "Npc Items"
+        Me.btnAdd.Dock = System.Windows.Forms.DockStyle.Bottom
+        Me.btnAdd.Location = New System.Drawing.Point(3, 451)
+        Me.btnAdd.Name = "btnAdd"
+        Me.btnAdd.Size = New System.Drawing.Size(209, 23)
+        Me.btnAdd.TabIndex = 43
+        Me.btnAdd.Text = "Add Item"
+        Me.btnAdd.UseVisualStyleBackColor = True
         '
         'btnRemove
         '
@@ -84,15 +75,36 @@ Partial Class NpcDropTable
         Me.btnRemove.Text = "Remove Item"
         Me.btnRemove.UseVisualStyleBackColor = True
         '
-        'btnAdd
+        'lstNpcItems
         '
-        Me.btnAdd.Dock = System.Windows.Forms.DockStyle.Bottom
-        Me.btnAdd.Location = New System.Drawing.Point(3, 451)
-        Me.btnAdd.Name = "btnAdd"
-        Me.btnAdd.Size = New System.Drawing.Size(209, 23)
-        Me.btnAdd.TabIndex = 43
-        Me.btnAdd.Text = "Add Item"
-        Me.btnAdd.UseVisualStyleBackColor = True
+        Me.lstNpcItems.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.lstNpcItems.FormattingEnabled = True
+        Me.lstNpcItems.Location = New System.Drawing.Point(3, 16)
+        Me.lstNpcItems.Name = "lstNpcItems"
+        Me.lstNpcItems.Size = New System.Drawing.Size(185, 458)
+        Me.lstNpcItems.TabIndex = 41
+        '
+        'groupNpcItems
+        '
+        Me.groupNpcItems.Controls.Add(Me.lstNpcItems)
+        Me.groupNpcItems.Controls.Add(Me.btnSaveNpcDrops)
+        Me.groupNpcItems.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.groupNpcItems.Location = New System.Drawing.Point(215, 0)
+        Me.groupNpcItems.Name = "groupNpcItems"
+        Me.groupNpcItems.Size = New System.Drawing.Size(191, 500)
+        Me.groupNpcItems.TabIndex = 53
+        Me.groupNpcItems.TabStop = False
+        Me.groupNpcItems.Text = "Npc Items"
+        '
+        'btnSaveNpcDrops
+        '
+        Me.btnSaveNpcDrops.Dock = System.Windows.Forms.DockStyle.Bottom
+        Me.btnSaveNpcDrops.Location = New System.Drawing.Point(3, 474)
+        Me.btnSaveNpcDrops.Name = "btnSaveNpcDrops"
+        Me.btnSaveNpcDrops.Size = New System.Drawing.Size(185, 23)
+        Me.btnSaveNpcDrops.TabIndex = 42
+        Me.btnSaveNpcDrops.Text = "Save"
+        Me.btnSaveNpcDrops.UseVisualStyleBackColor = True
         '
         'NpcDropTable
         '
@@ -112,7 +124,8 @@ Partial Class NpcDropTable
     Private WithEvents groupGameItems As System.Windows.Forms.GroupBox
     Public WithEvents lstGameItems As System.Windows.Forms.ListBox
     Public WithEvents lstNpcItems As System.Windows.Forms.ListBox
-    Private WithEvents groupNpcItems As System.Windows.Forms.GroupBox
     Friend WithEvents btnAdd As System.Windows.Forms.Button
     Friend WithEvents btnRemove As System.Windows.Forms.Button
+    Friend WithEvents btnSaveNpcDrops As System.Windows.Forms.Button
+    Friend WithEvents groupNpcItems As System.Windows.Forms.GroupBox
 End Class

@@ -15,4 +15,12 @@
     Private Sub btnRemove_Click(sender As Object, e As EventArgs) Handles btnRemove.Click
         If Not IsNothing(lstNpcItems.SelectedItem) Then NpcDropEditor.RemoveItem()
     End Sub
+
+    Private Sub btnSaveNpcDrops_Click(sender As Object, e As EventArgs) Handles btnSaveNpcDrops.Click
+        NPCs.Data.SaveNpcs()
+        ' Reload Editor Data
+        NPCs.Data.LoadNpcs()
+        NpcEditor.Reload()
+        NpcDropEditor.Reload()
+    End Sub
 End Class

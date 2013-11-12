@@ -7,6 +7,7 @@
                 EditorWindow.lstNpcs.Items.Add(NPC(I).Name)
             End If
         Next
+
         EditorWindow.tabNpc.Text = "Npc"
         EditorWindow.proptNpcData.SelectedObject = vbNull
     End Sub

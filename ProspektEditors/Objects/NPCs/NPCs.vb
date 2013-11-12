@@ -2,6 +2,7 @@
 Imports Prospekt.Network
 Imports IHProspekt.Objects
 Imports IHProspekt.Database
+Imports IHProspekt.Core
 Public Class NPCs
     ' general
     Public Base As NPCBase
@@ -112,4 +113,24 @@ Public Class NPCs
             Me.mIndex = value
         End Set
     End Property
+
+    Public Function GetOpenInventory() As Integer
+        Dim count As Integer = 0
+        For Each inv In Me.Base.Inventory
+            If inv < 0 Then Return count Else count = count + 1
+        Next
+        Return Me.Base.Inventory.Length
+    End Function
+
+    Public Function GetInventoryItem(ByVal slot As Integer) As Items
+        If Me.Base.Inventory.Length <= slot Then Return Nothing
+        If Not IsNothing(Me.Base.Inventory(slot)) And Not (Me.Base.Inventory(slot) < 0) Then
+            If Not IsNothing(Item(Me.Base.Inventory(slot))) Then Return Item(Me.Base.Inventory(slot))
+        End If
+        Return Nothing
+    End Function
+
+    Public Sub RemoveInventoryItem(ByVal slot As Integer)
+        RemoveAt(Me.Base.Inventory, slot)
+    End Sub
 End Class

@@ -1,5 +1,6 @@
 ﻿Imports Prospekt.Network
 Public Class EditorWindow
+
     Private Sub EditorWindow_Disposed(sender As Object, e As EventArgs) Handles Me.Disposed
         inEditor = False
         Verdana.Dispose()
