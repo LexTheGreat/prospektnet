@@ -73,10 +73,6 @@ Public Class EditorWindow
         If Not IsNothing(lstMaps.Items) Then MapEditor.VerifyEditor()
     End Sub
 
-    Private Sub mapPreview_DoubleClick(sender As Object, e As EventArgs) Handles mapPreview.DoubleClick
-        If Not IsNothing(lstMaps.Items) Then MapEditor.AddMapNpc()
-    End Sub
-
     Private Sub mapPreview_MouseEnter(sender As Object, e As EventArgs) Handles mapPreview.MouseEnter
         Cursor.Hide()
         mapScrlY.Focus()
@@ -208,6 +204,10 @@ Public Class EditorWindow
         If Not IsNothing(lstAccounts.Items) Then AccountEditor.Verify()
     End Sub
 
+    Private Sub btnEditPlayerInventory_Click(sender As Object, e As EventArgs) Handles btnEditPlayerInventory.Click
+        If Not IsNothing(lstAccounts.Items) Then AccountEditor.EditInventory()
+    End Sub
+
     ' Npc Editor
     Private Sub mnuNpcSave_Click(sender As Object, e As EventArgs) Handles mnuNpcSave.Click
         If Not IsNothing(lstNpcs.Items) Then
@@ -226,7 +226,7 @@ Public Class EditorWindow
     End Sub
 
     Private Sub mnuNpctUndo_Click(sender As Object, e As EventArgs) Handles mnuNpcUndo.Click
-        If Not IsNothing(lstAccounts.Items) Then NpcEditor.Undo()
+        If Not IsNothing(lstNpcs.Items) Then NpcEditor.Undo()
     End Sub
 
     Private Sub lstNpcs_SelectedIndexChanged(sender As Object, e As EventArgs) Handles lstNpcs.SelectedIndexChanged
@@ -235,11 +235,11 @@ Public Class EditorWindow
     End Sub
 
     Private Sub proptNpcrData_PropertyValueChanged(s As Object, e As PropertyValueChangedEventArgs) Handles proptNpcData.PropertyValueChanged
-        If Not IsNothing(lstAccounts.Items) Then NpcEditor.Verify()
+        If Not IsNothing(lstNpcs.Items) Then NpcEditor.Verify()
     End Sub
 
     Private Sub btnNpcDropTable_Click(sender As Object, e As EventArgs) Handles btnNpcDropTable.Click
-        If Not IsNothing(lstAccounts.Items) Then NpcEditor.EditDropTable()
+        If Not IsNothing(lstNpcs.Items) Then NpcEditor.EditDropTable()
     End Sub
 
     ' Item Editor
@@ -260,7 +260,7 @@ Public Class EditorWindow
     End Sub
 
     Private Sub mnuItemUndo_Click(sender As Object, e As EventArgs) Handles mnuItemUndo.Click
-        If Not IsNothing(lstAccounts.Items) Then ItemEditor.Undo()
+        If Not IsNothing(lstitems.Items) Then ItemEditor.Undo()
     End Sub
 
     Private Sub lstitems_SelectedIndexChanged(sender As Object, e As EventArgs) Handles lstitems.SelectedIndexChanged
@@ -269,6 +269,6 @@ Public Class EditorWindow
     End Sub
 
     Private Sub proptItemData_PropertyValueChanged(s As Object, e As PropertyValueChangedEventArgs) Handles proptItemData.PropertyValueChanged
-        If Not IsNothing(lstAccounts.Items) Then ItemEditor.Verify()
+        If Not IsNothing(lstitems.Items) Then ItemEditor.Verify()
     End Sub
 End Class

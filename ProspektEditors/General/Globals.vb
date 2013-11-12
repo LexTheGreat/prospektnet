@@ -6,6 +6,9 @@ Module Globals
     ' Configuration
     Public EditorConfig As Configuration
 
+    ' Error Handleing
+    Public ErrHandler As ErrorHandler
+
     ' Networking
     Public pClient As Lidgren.Network.NetClient
 
@@ -14,6 +17,7 @@ Module Globals
     Public MapNPCEditor As MapNPCClass
     Public TilesetEditor As TilesetClass
     Public AccountEditor As AccountClass
+    Public InventoryEditor As PlayerInventoryClass
     Public NpcEditor As NpcClass
     Public NpcDropEditor As NpcDropClass
     Public ItemEditor As ItemClass

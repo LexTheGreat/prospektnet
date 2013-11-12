@@ -20,7 +20,14 @@ Class MapClass
             End Function
 
             Public Overloads Overrides Function GetStandardValues(ByVal context As ITypeDescriptorContext) As StandardValuesCollection
-                Return New StandardValuesCollection(New String() {"Ground", "Ground Mask", "Fringe", "Fringe Mask"})
+                Dim stringLayers() As String, i As Integer = 0
+                ReDim stringLayers(0 To MapLayerEnum.COUNT)
+                For i = 0 To MapLayerEnum.COUNT - 1
+                    stringLayers(i) = [Enum].GetName(GetType(DirEnum), i)
+                Next
+                stringLayers(i) = "Npc"
+
+                Return New StandardValuesCollection(stringLayers)
             End Function
         End Class
 
@@ -36,6 +43,9 @@ Class MapClass
         <CategoryAttribute("Visible Layers"), _
            DisplayName("Fringe Mask")> _
         Public Property l4 As Boolean
+        <CategoryAttribute("Visible Layers"), _
+           DisplayName("Npc's")> _
+        Public Property lNpc As Boolean
 
         <TypeConverter(GetType(TypeConverter)), _
            CategoryAttribute("Selected Layer"), _
@@ -51,6 +61,7 @@ Class MapClass
             Me.l2 = True
             Me.l3 = True
             Me.l4 = True
+            Me.lNpc = True
             Me.lyr = "Ground"
             Me.curPos = True
         End Sub
@@ -65,6 +76,8 @@ Class MapClass
                     Return 2
                 Case "Fringe Mask"
                     Return 3
+                Case "Npc"
+                    Return 4
                 Case Else
                     Return 0
             End Select
@@ -177,14 +190,6 @@ Class MapClass
         EditorWindow.proptMapEditorData.Refresh()
     End Sub
 
-    Public Sub AddMapNpc()
-        MapNPCEditor.Init(index)
-        Dim ScrlX As Integer = EditorWindow.mapScrlX.Value, ScrlY As Integer = EditorWindow.mapScrlY.Value
-        Dim DrawX As Integer = mapMouseRect.X / picX + ScrlX, DrawY As Integer = mapMouseRect.Y / picY + ScrlY
-        MapNPCEditor.SetPos(DrawX, DrawY)
-        MapNPCs.Show()
-    End Sub
-
     Public Sub SelectTileset()
         selectSrcRect = New Rectangle(0, 0, 0, 0)
         curTileSet = Tilesets.Data.GetTilesetID(EditorWindow.mapCmbTileSet.SelectedItem.ToString)
@@ -217,10 +222,10 @@ Class MapClass
     Public Sub mapPreview_MouseDown(e As MouseEventArgs)
         If e.Button = MouseButtons.Left Then
             mapSrcRect = mapMouseRect
-            PlaceTile()
+            Place()
         ElseIf e.Button = MouseButtons.Right Then
             mapSrcRect = New Rectangle(0, 0, 0, 0)
-            RemoveTile()
+            Remove()
         End If
     End Sub
 
@@ -263,6 +268,11 @@ Class MapClass
     Public Sub ClearLayer()
         If index < 0 Then Exit Sub
         If IsNothing(Map(index)) Or selectSrcRect.Height = 0 Then Exit Sub
+        If curLayer = MapLayerEnum.COUNT Then
+            ReDim Map(index).Base.NPC(0)
+            Map(index).Base.NPC = Nothing
+            Exit Sub
+        End If
         Dim newData(Map(index).MaxX, Map(index).MaxY) As TileData
         For x As Integer = 0 To Map(index).MaxX
             For y As Integer = 0 To Map(index).MaxY
@@ -272,10 +282,16 @@ Class MapClass
         Next
     End Sub
 
-    Public Sub PlaceTile()
+    Public Sub Place()
         If index < 0 Then Exit Sub
         If IsNothing(Map(index)) Or selectSrcRect.Height = 0 Then Exit Sub
         Dim X As Integer = (mapMouseRect.X + (EditorWindow.mapScrlX.Value * picX)) / picX, Y As Integer = (mapMouseRect.Y + (EditorWindow.mapScrlY.Value * picY)) / picY
+        If curLayer = MapLayerEnum.COUNT Then
+            MapNPCEditor.Init(index)
+            MapNPCEditor.SetPos(X, Y)
+            MapNPCs.Show()
+            Exit Sub
+        End If
         Dim newData As New TileData
         newData.Tileset = curTileSet
         newData.X = selectSrcRect.X
@@ -284,10 +300,14 @@ Class MapClass
         Map(index).SetTileData(curLayer, X, Y, newData)
     End Sub
 
-    Public Sub RemoveTile()
+    Public Sub Remove()
         If index < 0 Then Exit Sub
         If IsNothing(Map(index)) Then Exit Sub
         Dim X As Integer = (mapMouseRect.X + (EditorWindow.mapScrlX.Value * picX)) / picX, Y As Integer = (mapMouseRect.Y + (EditorWindow.mapScrlY.Value * picY)) / picY
+        If curLayer = MapLayerEnum.COUNT Then
+            Map(index).RemoveNpc(X, Y)
+            Exit Sub
+        End If
         Dim newData As New TileData
         Map(index).SetTileData(curLayer, X, Y, newData)
     End Sub
@@ -327,14 +347,14 @@ Class MapClass
                             If Not editorProperty.l4 Then Continue For ' Dont Draw Fringe Mask Layer
                         Case Else
                     End Select
-                    Render.RenderTexture(Render.Window, texTileset(Map(index).GetTileData(lyr, x, y).Tileset), (x - ScrlX) * picX, (y - ScrlY) * picY, Map(index).GetTileData(lyr, x, y).X, Map(index).GetTileData(lyr, x, y).Y, picX, picY, picX, picY, Map(index).Alpha, Map(index).Red, Map(index).Green, Map(index).Blue)
+                    Render.RenderTexture(Render.Window, texTileset(Map(index).GetTileData(lyr, x, y).Tileset), ConvertX(x) * picX, ConvertY(y) * picY, Map(index).GetTileData(lyr, x, y).X, Map(index).GetTileData(lyr, x, y).Y, picX, picY, picX, picY, Map(index).Alpha, Map(index).Red, Map(index).Green, Map(index).Blue)
                 Next
             Next
         Next
     End Sub
 
     Public Sub DrawMapSelection()
-        If selectSrcRect.Width > 0 And mapMouseRect.Width > 0 Then
+        If selectSrcRect.Width > 0 And mapMouseRect.Width > 0 And curLayer < MapLayerEnum.COUNT Then
             Render.RenderTexture(Render.Window, texTileset(curTileSet), mapMouseRect.X, mapMouseRect.Y, selectSrcRect.X, selectSrcRect.Y, picX, picY, picX, picY)
         End If
         If mapMouseRect.Width > 0 Then Render.RenderRectangle(Render.Window, mapMouseRect.X, mapMouseRect.Y, picX, picY, 2, 255, 255, 215, 0)
@@ -353,13 +373,14 @@ Class MapClass
         Dim sprite As Integer
         Dim X As Integer, Y As Integer, dir As Integer
         If index < 0 Then Exit Sub
+        If Not editorProperty.lNpc Then Exit Sub ' Dont Draw Npc's
 
         For I As Integer = 0 To Map(index).Base.NPCCount
             If IsNothing(Map(index).Base.NPC(I)) Then Continue For
             If Map(index).Base.NPC(I).Num < 0 Then Continue For
             sprite = NPC(Map(index).Base.NPC(I).Num).Sprite
             X = Map(index).Base.NPC(I).X
-            Y = Map(index).Base.NPC(I).Y
+            Y = Map(index).Base.NPC(I).Y - 1
             dir = Map(index).Base.NPC(I).Dir
             Select Case dir
                 Case DirEnum.Up : spritetop = 0

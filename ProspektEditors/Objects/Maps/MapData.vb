@@ -1,6 +1,7 @@
 ﻿Imports System.IO
 Imports IHProspekt.Objects
 Imports IHProspekt.Database
+Imports IHProspekt.Core
 Public Class MapData
     Public Sub LoadMaps()
         Try
@@ -19,7 +20,7 @@ Public Class MapData
                 MapCount = MapCount - 1
             End If
         Catch ex As Exception
-            Console.WriteLine("Error: " & ex.ToString & " (In: Data.LoadMaps")
+            ErrHandler.HandleException(ex, ErrorHandler.ErrorLevels.High)
         End Try
     End Sub
 

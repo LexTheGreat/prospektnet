@@ -1,6 +1,7 @@
 ﻿Imports System.IO
 Imports IHProspekt.Objects
 Imports IHProspekt.Database
+Imports IHProspekt.Core
 Public Class TilesetData
     Public Sub Save(ByVal SaveTileset As TilesetBase)
         Using File As New Files(pathTilesetData & Trim(SaveTileset.ID) & ".bin", SaveTileset)
@@ -26,7 +27,7 @@ Public Class TilesetData
                 Next fileName
             End If
         Catch ex As Exception
-            Console.WriteLine("Error: " & ex.ToString & " (In: Data.LoadTilesets")
+            ErrHandler.HandleException(ex, ErrorHandler.ErrorLevels.High)
         End Try
     End Sub
 

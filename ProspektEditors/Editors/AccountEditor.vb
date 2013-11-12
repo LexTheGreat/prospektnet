@@ -52,4 +52,10 @@
         ' Refresh data
         EditorWindow.proptAccountData.Refresh()
     End Sub
+
+    Public Sub EditInventory()
+        If index <= 0 Then Exit Sub
+        InventoryEditor.Init(index)
+        PlayerInventory.Show()
+    End Sub
 End Class

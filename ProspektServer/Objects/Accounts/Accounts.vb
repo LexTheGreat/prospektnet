@@ -1,4 +1,5 @@
 ﻿Imports IHProspekt.Objects
+Imports IHProspekt.Utilities
 Public Class Accounts
     ' general
     Public Base As AccountBase
@@ -59,4 +60,24 @@ Public Class Accounts
             End If
         End Set
     End Property
+
+    Public Function GetOpenInventory() As Integer
+        Dim count As Integer = 0
+        For Each inv In Me.Base.Player.Inventory
+            If inv < 0 Then Return count Else count = count + 1
+        Next
+        Return Me.Base.Player.Inventory.Length
+    End Function
+
+    Public Function GetInventoryItem(ByVal slot As Integer) As Items
+        If Me.Base.Player.Inventory.Length <= slot Then Return Nothing
+        If Not IsNothing(Me.Base.Player.Inventory(slot)) And Not (Me.Base.Player.Inventory(slot) < 0) Then
+            If Not IsNothing(Item(Me.Base.Player.Inventory(slot))) Then Return Item(Me.Base.Player.Inventory(slot))
+        End If
+        Return Nothing
+    End Function
+
+    Public Sub RemoveInventoryItem(ByVal slot As Integer)
+        RemoveAt(Me.Base.Player.Inventory, slot)
+    End Sub
 End Class

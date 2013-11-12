@@ -11,6 +11,12 @@ Module General
         ' Load configuration
         EditorConfig = New Configuration
         EditorConfig.Load()
+
+        ErrHandler = New ErrorHandler
+        ErrHandler.LogPath = "content/errors/"
+        ErrHandler.SuppresionLevel = ErrorHandler.ErrorLevels.High
+        ErrHandler.ErrCrashType = ErrorHandler.CrashType.MsgBox
+
         ' Initialize network
         InitializeNetwork()
         Render.Initialize()
@@ -19,8 +25,16 @@ Module General
         Tilesets.Data.LoadTilesets()
         TilesetEditor = New TilesetClass
         TilesetEditor.Init()
-        'Setup Map NPC Editor
+        ' Setup Item Editor
+        Items.Data.LoadItems()
+        ItemEditor = New ItemClass
+        ItemEditor.Init()
+        ' Setup Npc Editor
         NPCs.Data.LoadNpcs()
+        NpcEditor = New NpcClass
+        NpcDropEditor = New NpcDropClass
+        NpcEditor.Init()
+        'Setup Map NPC Editor
         MapNPCEditor = New MapNPCClass
         MapNPCEditor.Init(-1)
         'Setup Map Editor
@@ -31,14 +45,7 @@ Module General
         Accounts.Data.LoadAccounts()
         AccountEditor = New AccountClass
         AccountEditor.Init()
-        ' Setup Npc Editor
-        NpcEditor = New NpcClass
-        NpcDropEditor = New NpcDropClass
-        NpcEditor.Init()
-        ' Setup Item Editor
-        Items.Data.LoadItems()
-        ItemEditor = New ItemClass
-        ItemEditor.Init()
+        InventoryEditor = New PlayerInventoryClass
         EditorWindow.Visible = True
         inEditor = True
         EditorLoop()

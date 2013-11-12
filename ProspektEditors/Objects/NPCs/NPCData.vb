@@ -2,6 +2,7 @@
 Imports Prospekt.Network
 Imports IHProspekt.Objects
 Imports IHProspekt.Database
+Imports IHProspekt.Core
 Public Class NPCData
     Public Sub LoadNpcs()
         Try
@@ -20,7 +21,7 @@ Public Class NPCData
                 NPCCount = NPCCount - 1
             End If
         Catch ex As Exception
-            Console.WriteLine("Error: " & ex.ToString & " (In: Data.LoadNPCs")
+            ErrHandler.HandleException(ex, ErrorHandler.ErrorLevels.High)
         End Try
     End Sub
 

@@ -11,5 +11,8 @@
     <Map>0</Map>
     <AccessMode>0</AccessMode>
     <Visible>false</Visible>
+    <Inventory>
+      <int>0</int>
+    </Inventory>
   </Player>
 </AccountBase>

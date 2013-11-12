@@ -32,7 +32,6 @@ Namespace Core
                 Me.mPath = value
             End Set
         End Property
-
         Public WriteOnly Property SuppresionLevel() As ErrorLevels
             Set(value As ErrorLevels)
                 Me.mSupressionLevel = value

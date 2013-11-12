@@ -106,6 +106,7 @@ Partial Class EditorWindow
         Me.mnuItemNew = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuItemUndo = New System.Windows.Forms.ToolStripMenuItem()
         Me.imgSprites = New System.Windows.Forms.ImageList(Me.components)
+        Me.btnEditPlayerInventory = New System.Windows.Forms.Button()
         Me.mnuMain.SuspendLayout()
         Me.tabEditors.SuspendLayout()
         Me.tabMapEditor.SuspendLayout()
@@ -653,6 +654,7 @@ Partial Class EditorWindow
         'tabAccount
         '
         Me.tabAccount.Controls.Add(Me.proptAccountData)
+        Me.tabAccount.Controls.Add(Me.btnEditPlayerInventory)
         Me.tabAccount.Location = New System.Drawing.Point(4, 22)
         Me.tabAccount.Name = "tabAccount"
         Me.tabAccount.Padding = New System.Windows.Forms.Padding(3)
@@ -664,9 +666,9 @@ Partial Class EditorWindow
         'proptAccountData
         '
         Me.proptAccountData.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.proptAccountData.Location = New System.Drawing.Point(3, 3)
+        Me.proptAccountData.Location = New System.Drawing.Point(3, 26)
         Me.proptAccountData.Name = "proptAccountData"
-        Me.proptAccountData.Size = New System.Drawing.Size(630, 369)
+        Me.proptAccountData.Size = New System.Drawing.Size(630, 346)
         Me.proptAccountData.TabIndex = 1
         '
         'groupAccountList
@@ -932,6 +934,16 @@ Partial Class EditorWindow
         Me.imgSprites.ImageSize = New System.Drawing.Size(16, 16)
         Me.imgSprites.TransparentColor = System.Drawing.Color.Transparent
         '
+        'btnEditPlayerInventory
+        '
+        Me.btnEditPlayerInventory.Dock = System.Windows.Forms.DockStyle.Top
+        Me.btnEditPlayerInventory.Location = New System.Drawing.Point(3, 3)
+        Me.btnEditPlayerInventory.Name = "btnEditPlayerInventory"
+        Me.btnEditPlayerInventory.Size = New System.Drawing.Size(630, 23)
+        Me.btnEditPlayerInventory.TabIndex = 3
+        Me.btnEditPlayerInventory.Text = "Edit Inventory"
+        Me.btnEditPlayerInventory.UseVisualStyleBackColor = True
+        '
         'EditorWindow
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -1081,5 +1093,6 @@ Partial Class EditorWindow
     Friend WithEvents mnuItemNew As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents mnuItemUndo As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents btnNpcDropTable As System.Windows.Forms.Button
+    Friend WithEvents btnEditPlayerInventory As System.Windows.Forms.Button
 
 End Class

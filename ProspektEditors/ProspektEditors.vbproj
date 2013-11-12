@@ -87,12 +87,19 @@
   <ItemGroup>
     <Compile Include="Database\Configuration.vb" />
     <Compile Include="Editors\AccountEditor.vb" />
+    <Compile Include="Editors\PlayerInventoryEditor.vb" />
     <Compile Include="Editors\NpcDropEditor.vb" />
     <Compile Include="Editors\ItemEditor.vb" />
     <Compile Include="Editors\NpcEditor.vb" />
     <Compile Include="Editors\MapEditor.vb" />
     <Compile Include="Editors\MapNPCEditor.vb" />
     <Compile Include="Editors\TilesetEditor.vb" />
+    <Compile Include="General\PlayerInventory.Designer.vb">
+      <DependentUpon>PlayerInventory.vb</DependentUpon>
+    </Compile>
+    <Compile Include="General\PlayerInventory.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="General\EditorWindow.Designer.vb">
       <DependentUpon>EditorWindow.vb</DependentUpon>
     </Compile>
@@ -164,6 +171,9 @@
     <Compile Include="Objects\Tilesets\Tilesets.vb" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="General\PlayerInventory.resx">
+      <DependentUpon>PlayerInventory.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="General\EditorWindow.resx">
       <DependentUpon>EditorWindow.vb</DependentUpon>
       <SubType>Designer</SubType>

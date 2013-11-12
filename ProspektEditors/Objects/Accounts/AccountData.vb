@@ -1,6 +1,7 @@
 ﻿Imports System.IO
 Imports IHProspekt.Objects
 Imports IHProspekt.Database
+Imports IHProspekt.Core
 Public Class AccountData
     Public Sub Save(ByVal SaveAccount As AccountBase)
         Using File As New Files(pathAccounts & SaveAccount.Email & ".xml", SaveAccount)
@@ -29,7 +30,7 @@ Public Class AccountData
                 Next fileName
             End If
         Catch ex As Exception
-            Console.WriteLine("Error: " & ex.ToString & " (In: Accounts.Data.LoadAccounts")
+            ErrHandler.HandleException(ex, ErrorHandler.ErrorLevels.High)
         End Try
     End Sub
 

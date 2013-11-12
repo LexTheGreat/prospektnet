@@ -2,6 +2,7 @@
 Imports IHProspekt.Objects
 Imports IHProspekt.Core
 Imports IHProspekt.Database
+Imports IHProspekt.Utilities
 <Serializable()> Public Class Maps
     Public Base As MapBase
     Public Shared Data As New MapData
@@ -33,6 +34,16 @@ Imports IHProspekt.Database
         Base.NPCCount += 1
         ReDim Preserve Base.NPC(0 To Base.NPCCount)
         Base.NPC(Base.NPCCount) = NPC
+    End Sub
+
+    Public Sub RemoveNpc(ByVal X As Integer, ByVal Y As Integer)
+        Dim slot As Integer = 0
+        For slot = 0 To Base.NPC.Length - 1
+            If Base.NPC(slot).X = X And Base.NPC(slot).Y = Y Then Exit For
+        Next
+        If slot >= Base.NPC.Length Then Exit Sub
+        Base.NPCCount = Base.NPCCount - 1
+        RemoveAt(Base.NPC, slot)
     End Sub
 
     Public Sub SetID(ByVal id As Integer)
