@@ -6,13 +6,15 @@ Class MapClass
     Private index As Integer = -1
     Private curTileSet As Integer = 1
     Private curLayer As Byte
+    Private curNpc As Integer = -1
     Private editorProperty As New EditorProperties()
     Private mapMouseRect As Rectangle, mapSrcRect As Rectangle
     Private selectMouseRect As Rectangle, selectSrcRect As Rectangle
+    Private npcImgs As ImageList
 
     Class EditorProperties
         ' ProptyGrid Functions
-        Public Class TypeConverter
+        Public Class LayerConverter
             Inherits StringConverter
 
             Public Overloads Overrides Function GetStandardValuesSupported(ByVal context As ITypeDescriptorContext) As Boolean
@@ -21,15 +23,39 @@ Class MapClass
 
             Public Overloads Overrides Function GetStandardValues(ByVal context As ITypeDescriptorContext) As StandardValuesCollection
                 Dim stringLayers() As String, i As Integer = 0
-                ReDim stringLayers(0 To MapLayerEnum.COUNT)
+                ReDim stringLayers(0)
                 For i = 0 To MapLayerEnum.COUNT - 1
-                    stringLayers(i) = [Enum].GetName(GetType(DirEnum), i)
+                    ReDim Preserve stringLayers(0 To i)
+                    stringLayers(i) = [Enum].GetName(GetType(MapLayerEnum), i)
                 Next
-                stringLayers(i) = "Npc"
 
                 Return New StandardValuesCollection(stringLayers)
             End Function
         End Class
+
+        Public Class ModeConverter
+            Inherits StringConverter
+
+            Public Overloads Overrides Function GetStandardValuesSupported(ByVal context As ITypeDescriptorContext) As Boolean
+                Return True
+            End Function
+
+            Public Overloads Overrides Function GetStandardValues(ByVal context As ITypeDescriptorContext) As StandardValuesCollection
+                Dim stringModes() As String, i As Integer = 0
+                ReDim stringModes(0)
+                For i = 0 To MapModeEnum.COUNT - 1
+                    ReDim Preserve stringModes(0 To i)
+                    stringModes(i) = [Enum].GetName(GetType(MapModeEnum), i)
+                Next
+
+                Return New StandardValuesCollection(stringModes)
+            End Function
+        End Class
+
+        <TypeConverter(GetType(ModeConverter)), _
+           CategoryAttribute("Editor Mode"), _
+           DisplayName("Object Type")> _
+        Public Property oMode As String
 
         <CategoryAttribute("Visible Layers"), _
            DisplayName("Ground")> _
@@ -47,7 +73,7 @@ Class MapClass
            DisplayName("Npc's")> _
         Public Property lNpc As Boolean
 
-        <TypeConverter(GetType(TypeConverter)), _
+        <TypeConverter(GetType(LayerConverter)), _
            CategoryAttribute("Selected Layer"), _
            DisplayName("Layer")> _
         Public Property lyr As String
@@ -62,8 +88,9 @@ Class MapClass
             Me.l3 = True
             Me.l4 = True
             Me.lNpc = True
-            Me.lyr = "Ground"
+            Me.lyr = [Enum].GetName(GetType(MapLayerEnum), 0)
             Me.curPos = True
+            Me.oMode = [Enum].GetName(GetType(MapModeEnum), 0)
         End Sub
 
         Public Function GetLayer() As Byte
@@ -103,6 +130,22 @@ Class MapClass
             Next
             EditorWindow.mapCmbTileSet.SelectedIndex = 0
         End If
+
+        If NPCCount > 0 Then
+            If Not IsNothing(NPC) Then
+                EditorWindow.lstMapNpcs.Items.Clear()
+                npcImgs = New ImageList
+                npcImgs.ImageSize = New Size(picX, picY)
+                For I As Integer = 0 To NPCCount
+                    If Not IsNothing(NPC(I)) Then
+                        npcImgs.Images.Add(GetNpcImage(I))
+                        EditorWindow.lstMapNpcs.Items.Add(NPC(I).Name, I)
+                    End If
+                Next
+            End If
+        End If
+        EditorWindow.lstMapNpcs.LargeImageList = npcImgs
+        EditorWindow.lstMapNpcs.View = View.LargeIcon
     End Sub
 
     Public Sub Load(ByVal i As Integer)
@@ -209,6 +252,11 @@ Class MapClass
         End If
     End Sub
 
+    Public Sub SelectNpc(ByVal index As Integer)
+        If IsNothing(NPC(index)) Then Exit Sub
+        curNpc = index
+    End Sub
+
     Public Sub mapPreview_MouseMove(e As MouseEventArgs)
         If index < 0 Then Exit Sub
         If e.X >= Map(index).MaxX * picX Or e.Y >= Map(index).MaxY * picY Then Exit Sub
@@ -250,66 +298,105 @@ Class MapClass
         End If
     End Sub
 
+    Public Sub ModeChange(ByVal mode As Integer)
+        If mode >= MapModeEnum.COUNT Then Exit Sub
+        curNpc = -1
+        selectSrcRect = New Rectangle(0, 0, 0, 0)
+        editorProperty.oMode = [Enum].GetName(GetType(MapModeEnum), mode)
+        EditorWindow.proptMapEditorData.Refresh()
+    End Sub
+
     Public Sub FillLayer()
         If index < 0 Then Exit Sub
-        If IsNothing(Map(index)) Or selectSrcRect.Height = 0 Then Exit Sub
-        Dim newData(Map(index).MaxX, Map(index).MaxY) As TileData
-        For x As Integer = 0 To Map(index).MaxX
-            For y As Integer = 0 To Map(index).MaxY
-                newData(x, y) = New TileData
-                newData(x, y).Tileset = curTileSet
-                newData(x, y).X = selectSrcRect.X
-                newData(x, y).Y = selectSrcRect.Y
-                Map(index).SetTileData(curLayer, newData)
-            Next
-        Next
+        If IsNothing(Map(index)) Then Exit Sub
+        Select Case (editorProperty.oMode)
+            Case [Enum].GetName(GetType(MapModeEnum), MapModeEnum.Tile)
+                If selectSrcRect.Height = 0 Then Exit Sub
+                Dim newData(Map(index).MaxX, Map(index).MaxY) As TileData
+                For x As Integer = 0 To Map(index).MaxX
+                    For y As Integer = 0 To Map(index).MaxY
+                        newData(x, y) = New TileData
+                        newData(x, y).Tileset = curTileSet
+                        newData(x, y).X = selectSrcRect.X
+                        newData(x, y).Y = selectSrcRect.Y
+                        Map(index).SetTileData(curLayer, newData)
+                    Next
+                Next
+            Case [Enum].GetName(GetType(MapModeEnum), MapModeEnum.Npc)
+                If curNpc < 0 Or curNpc > NPCCount Then Exit Select
+                Dim tempMapNPC As New MapNPCBase
+                For x As Integer = 0 To Map(index).MaxX
+                    For y As Integer = 0 To Map(index).MaxY
+                        tempMapNPC.Num = curNpc
+                        tempMapNPC.X = x
+                        tempMapNPC.Y = x
+                        tempMapNPC.Dir = DirEnum.Down
+                        Map(index).AddNPC(tempMapNPC)
+                    Next
+                Next
+            Case [Enum].GetName(GetType(MapModeEnum), MapModeEnum.Attribute)
+            Case Else
+        End Select
     End Sub
 
     Public Sub ClearLayer()
         If index < 0 Then Exit Sub
-        If IsNothing(Map(index)) Or selectSrcRect.Height = 0 Then Exit Sub
-        If curLayer = MapLayerEnum.COUNT Then
-            ReDim Map(index).Base.NPC(0)
-            Map(index).Base.NPC = Nothing
-            Exit Sub
-        End If
-        Dim newData(Map(index).MaxX, Map(index).MaxY) As TileData
-        For x As Integer = 0 To Map(index).MaxX
-            For y As Integer = 0 To Map(index).MaxY
-                newData(x, y) = New TileData
-                Map(index).SetTileData(curLayer, newData)
-            Next
-        Next
+        If IsNothing(Map(index)) Then Exit Sub
+        Select Case (editorProperty.oMode)
+            Case [Enum].GetName(GetType(MapModeEnum), MapModeEnum.Tile)
+                Dim newData(Map(index).MaxX, Map(index).MaxY) As TileData
+                For x As Integer = 0 To Map(index).MaxX
+                    For y As Integer = 0 To Map(index).MaxY
+                        newData(x, y) = New TileData
+                        Map(index).SetTileData(curLayer, newData)
+                    Next
+                Next
+            Case [Enum].GetName(GetType(MapModeEnum), MapModeEnum.Npc)
+                ReDim Map(index).Base.NPC(0)
+                Map(index).Base.NPCCount = 0
+            Case [Enum].GetName(GetType(MapModeEnum), MapModeEnum.Attribute)
+            Case Else
+        End Select
     End Sub
 
     Public Sub Place()
         If index < 0 Then Exit Sub
-        If IsNothing(Map(index)) Or selectSrcRect.Height = 0 Then Exit Sub
+        If IsNothing(Map(index)) Then Exit Sub
         Dim X As Integer = (mapMouseRect.X + (EditorWindow.mapScrlX.Value * picX)) / picX, Y As Integer = (mapMouseRect.Y + (EditorWindow.mapScrlY.Value * picY)) / picY
-        If curLayer = MapLayerEnum.COUNT Then
-            MapNPCEditor.Init(index)
-            MapNPCEditor.SetPos(X, Y)
-            MapNPCs.Show()
-            Exit Sub
-        End If
-        Dim newData As New TileData
-        newData.Tileset = curTileSet
-        newData.X = selectSrcRect.X
-        newData.Y = selectSrcRect.Y
-
-        Map(index).SetTileData(curLayer, X, Y, newData)
+        Select Case (editorProperty.oMode)
+            Case [Enum].GetName(GetType(MapModeEnum), MapModeEnum.Tile)
+                If selectSrcRect.Height = 0 Then Exit Sub
+                Dim newData As New TileData
+                newData.Tileset = curTileSet
+                newData.X = selectSrcRect.X
+                newData.Y = selectSrcRect.Y
+                Map(index).SetTileData(curLayer, X, Y, newData)
+            Case [Enum].GetName(GetType(MapModeEnum), MapModeEnum.Npc)
+                If curNpc < 0 Or curNpc > NPCCount Then Exit Select
+                Dim tempMapNPC As New MapNPCBase
+                tempMapNPC.Num = curNpc
+                tempMapNPC.X = X
+                tempMapNPC.Y = Y
+                tempMapNPC.Dir = DirEnum.Down
+                Map(index).AddNPC(tempMapNPC)
+            Case [Enum].GetName(GetType(MapModeEnum), MapModeEnum.Attribute)
+            Case Else
+        End Select
     End Sub
 
     Public Sub Remove()
         If index < 0 Then Exit Sub
         If IsNothing(Map(index)) Then Exit Sub
         Dim X As Integer = (mapMouseRect.X + (EditorWindow.mapScrlX.Value * picX)) / picX, Y As Integer = (mapMouseRect.Y + (EditorWindow.mapScrlY.Value * picY)) / picY
-        If curLayer = MapLayerEnum.COUNT Then
-            Map(index).RemoveNpc(X, Y)
-            Exit Sub
-        End If
-        Dim newData As New TileData
-        Map(index).SetTileData(curLayer, X, Y, newData)
+        Select Case (editorProperty.oMode)
+            Case [Enum].GetName(GetType(MapModeEnum), MapModeEnum.Tile)
+                Dim newData As New TileData
+                Map(index).SetTileData(curLayer, X, Y, newData)
+            Case [Enum].GetName(GetType(MapModeEnum), MapModeEnum.Npc)
+                Map(index).RemoveNpc(X, Y)
+            Case [Enum].GetName(GetType(MapModeEnum), MapModeEnum.Attribute)
+            Case Else
+        End Select
     End Sub
 
     Public Sub DrawTileset()
@@ -353,21 +440,6 @@ Class MapClass
         Next
     End Sub
 
-    Public Sub DrawMapSelection()
-        If selectSrcRect.Width > 0 And mapMouseRect.Width > 0 And curLayer < MapLayerEnum.COUNT Then
-            Render.RenderTexture(Render.Window, texTileset(curTileSet), mapMouseRect.X, mapMouseRect.Y, selectSrcRect.X, selectSrcRect.Y, picX, picY, picX, picY)
-        End If
-        If mapMouseRect.Width > 0 Then Render.RenderRectangle(Render.Window, mapMouseRect.X, mapMouseRect.Y, picX, picY, 2, 255, 255, 215, 0)
-
-        ' Needed to fix some weird bug that only draws the second text
-        Verdana.Draw(Render.Window, "Blank", 0, 0, SFML.Graphics.Color.Transparent)
-        If editorProperty.curPos And mapMouseRect.Width > 0 Then
-            Dim ScrlX As Integer = EditorWindow.mapScrlX.Value, ScrlY As Integer = EditorWindow.mapScrlY.Value
-            Dim DrawX As Integer = mapMouseRect.X / picX + ScrlX, DrawY As Integer = mapMouseRect.Y / picY + ScrlY
-            Verdana.Draw(Render.Window, "X: " & DrawX & " - Y: " & DrawY, mapMouseRect.X, mapMouseRect.Y, SFML.Graphics.Color.White, 9)
-        End If
-    End Sub
-
     Public Sub DrawMapNPCs()
         Dim rec As GeomRec, spritetop As Integer
         Dim sprite As Integer
@@ -377,7 +449,7 @@ Class MapClass
 
         For I As Integer = 0 To Map(index).Base.NPCCount
             If IsNothing(Map(index).Base.NPC(I)) Then Continue For
-            If Map(index).Base.NPC(I).Num < 0 Then Continue For
+            If Map(index).Base.NPC(I).Num < 0 Or Map(index).Base.NPC(I).Num > NPCCount Then Continue For
             sprite = NPC(Map(index).Base.NPC(I).Num).Sprite
             X = Map(index).Base.NPC(I).X
             Y = Map(index).Base.NPC(I).Y - 1
@@ -392,8 +464,39 @@ Class MapClass
             rec.Height = gTexture(texSprite(sprite)).Height / 4
             rec.Left = 0
             rec.Width = gTexture(texSprite(sprite)).Width / 3
-            Render.RenderTexture(Render.Window, texSprite(sprite), ConvertX(X) * picX, ConvertY(Y) * picY, rec.Left, rec.Top, rec.Width, rec.Height, rec.Width, rec.Height)
+            Render.RenderTexture(Render.Window, texSprite(sprite), ConvertX(X) * picX - (rec.Width / 6), ConvertY(Y) * picY, rec.Left, rec.Top, rec.Width, rec.Height, rec.Width, rec.Height)
         Next
+    End Sub
+
+    Public Sub DrawMapSelection()
+        If mapMouseRect.Width > 0 Then
+            Select Case (editorProperty.oMode)
+                Case [Enum].GetName(GetType(MapModeEnum), MapModeEnum.Tile)
+                    If selectSrcRect.Width <= 0 Then Exit Select
+                    Render.RenderTexture(Render.Window, texTileset(curTileSet), mapMouseRect.X, mapMouseRect.Y, selectSrcRect.X, selectSrcRect.Y, picX, picY, picX, picY)
+                Case [Enum].GetName(GetType(MapModeEnum), MapModeEnum.Npc)
+                    If curNpc < 0 Or curNpc > NPCCount Then Exit Select
+                    Dim rec As GeomRec
+                    Dim sprite As Integer = NPC(curNpc).Sprite
+                    rec.Top = 2 * (gTexture(texSprite(sprite)).Height / 4)
+                    rec.Height = gTexture(texSprite(sprite)).Height / 4
+                    rec.Left = 0
+                    rec.Width = gTexture(texSprite(sprite)).Width / 3
+                    Render.RenderTexture(Render.Window, texSprite(sprite), mapMouseRect.X - (rec.Width / 6), mapMouseRect.Y - (rec.Height / 2), rec.Left, rec.Top, rec.Width, rec.Height, rec.Width, rec.Height)
+                Case [Enum].GetName(GetType(MapModeEnum), MapModeEnum.Attribute)
+                Case Else
+            End Select
+        End If
+        If mapMouseRect.Width > 0 Then Render.RenderRectangle(Render.Window, mapMouseRect.X, mapMouseRect.Y, picX, picY, 2, 255, 255, 215, 0)
+
+        ' Needed to fix some weird bug that only draws the second text
+        Verdana.Draw(Render.Window, "Blank", 0, 0, SFML.Graphics.Color.Transparent)
+        If editorProperty.curPos And mapMouseRect.Width > 0 Then
+            Dim DrawX As Integer = mapMouseRect.X / picX + EditorWindow.mapScrlX.Value, DrawY As Integer = mapMouseRect.Y / picY + EditorWindow.mapScrlY.Value
+            Dim mapX As Integer = mapMouseRect.X, mapY As Integer = mapMouseRect.Y
+            If mapY / picY >= (EditorWindow.mapPreview.Height / 2) / picY Then mapY = mapY - (picY / 2) Else mapY = mapY + picY
+            Verdana.Draw(Render.Window, "X: " & DrawX & " - Y: " & DrawY, mapX - (picX / 2.5), mapY, SFML.Graphics.Color.White, 9)
+        End If
     End Sub
 
     Public Function GetMapVisible() As Integer()
@@ -413,6 +516,23 @@ Class MapClass
         End If
 
         Return New Integer() {maxX, maxY}
+    End Function
+
+    Public Function GetNpcImage(ByVal NpcNumber As Integer) As Bitmap
+        Dim rec As GeomRec
+        Dim sprite As Integer = NPC(NpcNumber).Sprite
+        rec.Top = 2 * (gTexture(texSprite(sprite)).Height / 4)
+        rec.Height = gTexture(texSprite(sprite)).Height / 4
+        rec.Left = 0
+        rec.Width = gTexture(texSprite(sprite)).Width / 3
+
+        Dim ImagePart As Bitmap = New Bitmap(rec.Width, rec.Height)
+        Using G As System.Drawing.Graphics = System.Drawing.Graphics.FromImage(ImagePart)
+            Dim TargetRect As Rectangle = New Rectangle(0, 0, rec.Width, rec.Height)
+            Dim SourceRect As Rectangle = New Rectangle(rec.Left, rec.Top, rec.Width, rec.Height)
+            G.DrawImage(Bitmap.FromFile(gTexture(texSprite(sprite)).FilePath), TargetRect, SourceRect, GraphicsUnit.Pixel)
+        End Using
+        Return ImagePart
     End Function
 
     Public Function SnapTo(ByVal loc As Integer, ByVal size As Integer, ByVal max As Integer) As Integer
@@ -436,11 +556,11 @@ Class MapClass
 
     Function ConvertX(ByVal X As Integer) As Integer
         Dim ScrlX As Integer = EditorWindow.mapScrlX.Value
-        Return X - scrlX
+        Return X - ScrlX
     End Function
 
     Function ConvertY(ByVal Y As Integer) As Integer
         Dim ScrlY As Integer = EditorWindow.mapScrlY.Value
-        Return Y - scrlY
+        Return Y - ScrlY
     End Function
 End Class

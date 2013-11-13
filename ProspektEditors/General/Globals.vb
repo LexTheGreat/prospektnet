@@ -14,7 +14,6 @@ Module Globals
 
     ' Editors
     Public MapEditor As MapClass
-    Public MapNPCEditor As MapNPCClass
     Public TilesetEditor As TilesetClass
     Public AccountEditor As AccountClass
     Public InventoryEditor As PlayerInventoryClass

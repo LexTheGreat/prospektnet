@@ -34,9 +34,6 @@ Module General
         NpcEditor = New NpcClass
         NpcDropEditor = New NpcDropClass
         NpcEditor.Init()
-        'Setup Map NPC Editor
-        MapNPCEditor = New MapNPCClass
-        MapNPCEditor.Init(-1)
         'Setup Map Editor
         Maps.Data.LoadMaps()
         MapEditor = New MapClass
@@ -63,15 +60,12 @@ Module General
             ElapsedTime = Tick - FrameTime ' Set the time difference for time-based movement
             FrameTime = Tick
             Networking.HandleMessage()
-            If MapNPCs.Visible Then
-                Render.MapNPCWindow.Clear(New Color(255, 255, 255))
-                MapNPCEditor.DrawNPC()
-                Render.MapNPCWindow.Display()
-            End If
+            ' Clear Rendering
+            Render.Window.Clear(New Color(Color.Magenta))
             Select Case SelectedEditor
                 Case 0 ' Map Editor
                     ' Start rendering
-                    Render.TileWindow.Clear(New Color(255, 255, 255))
+                    Render.TileWindow.Clear(New Color(Color.Magenta))
                     MapEditor.DrawTileset()
                     MapEditor.DrawTilesetSelection()
                     MapEditor.DrawMapTiles()
@@ -81,7 +75,7 @@ Module General
                     Render.TileWindow.Display()
                 Case 1 ' Tile Editor
                     ' Start rendering
-                    Render.TileEditWindow.Clear(New Color(255, 255, 255))
+                    Render.TileEditWindow.Clear(New Color(Color.Magenta))
                     TilesetEditor.DrawTileset()
                     TilesetEditor.DrawTileTypes()
                     TilesetEditor.DrawTilesetSelection()

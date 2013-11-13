@@ -6,7 +6,6 @@ Namespace Graphics
         Public Shared Window As RenderWindow
         Public Shared TileWindow As RenderWindow
         Public Shared TileEditWindow As RenderWindow
-        Public Shared MapNPCWindow As RenderWindow
         Delegate Function Pressed(ByVal index As Integer) As Boolean
 
         Public Shared Sub Initialize()
@@ -17,8 +16,6 @@ Namespace Graphics
             TileWindow.SetFramerateLimit(64)
             TileEditWindow = New RenderWindow(EditorWindow.picTilesetEditor.Handle)
             TileEditWindow.SetFramerateLimit(64)
-            MapNPCWindow = New RenderWindow(MapNPCs.picNPCs.Handle)
-            MapNPCWindow.SetFramerateLimit(64)
             'Cache and load textures
             InitTextures()
         End Sub
@@ -34,9 +31,6 @@ Namespace Graphics
             TileEditWindow.Dispose()
             TileEditWindow = New RenderWindow(EditorWindow.picTilesetEditor.Handle)
             TileEditWindow.SetFramerateLimit(64)
-            MapNPCWindow.Dispose()
-            MapNPCWindow = New RenderWindow(MapNPCs.picNPCs.Handle)
-            MapNPCWindow.SetFramerateLimit(64)
         End Sub
 
         Public Shared Sub Dispose()

@@ -113,6 +113,14 @@ Public Class EditorWindow
         If Not IsNothing(mapCmbTileSet.Items) Then MapEditor.SelectTileset()
     End Sub
 
+    Private Sub lstMapNpcs_MouseEnter(sender As Object, e As EventArgs) Handles lstMapNpcs.MouseEnter
+        lstMapNpcs.Focus()
+    End Sub
+
+    Private Sub lstMapNpcs_SelectedIndexChanged(sender As Object, e As EventArgs) Handles lstMapNpcs.SelectedIndexChanged
+        If Not IsNothing(lstMapNpcs.FocusedItem) Then MapEditor.SelectNpc(lstMapNpcs.FocusedItem.Index)
+    End Sub
+
     Private Sub mapBtnFillLayer_Click(sender As Object, e As EventArgs) Handles mapBtnFillLayer.Click
         If Not IsNothing(mapCmbTileSet.Items) Then
             Dim reply As DialogResult = MessageBox.Show("Are you sure you wish to full this layer?", "Wait!", _
@@ -131,6 +139,10 @@ Public Class EditorWindow
                 MapEditor.ClearLayer()
             End If
         End If
+    End Sub
+
+    Private Sub tabMapObjects_SelectedIndexChanged(sender As Object, e As EventArgs) Handles tabMapObjects.SelectedIndexChanged
+        If Not IsNothing(lstMaps.Items) Then MapEditor.ModeChange(tabMapObjects.SelectedIndex)
     End Sub
 
     ' Tileset Editor
