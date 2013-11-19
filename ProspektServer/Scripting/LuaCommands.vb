@@ -23,5 +23,14 @@ Namespace Scripting
         Public Sub cPrint(ByVal Message As Object, Optional ByVal color As Object = ConsoleColor.Gray)
             Server.Writeline(Message, color)
         End Sub
+        Public Sub onLogin(ByVal index As Integer)
+            ' Template for later..
+        End Function
+        Public Sub onLogout(ByVal index As Integer)
+            ' Template for later..
+        End Function
+        Public Sub onTick(ByVal index As Integer)
+            ' Template for later..
+        End Function
     End Class
 End Namespace
