@@ -1,4 +1,5 @@
-﻿Imports System.ComponentModel
+﻿Imports System.IO
+Imports System.ComponentModel
 Imports Prospekt.Graphics
 Imports IHProspekt.Core
 
@@ -11,9 +12,11 @@ Class TilesetClass
     Public Sub Init()
         If countTileset > 0 Then
             EditorWindow.cmbTilesetEditor.Items.Clear()
+
+            Dim fileEntries As String() = Directory.GetFiles(pathTilesets, "*.png")
             ReDim Preserve Tileset(0 To countTileset)
-            For I As Integer = 1 To countTileset
-                EditorWindow.cmbTilesetEditor.Items.Add(pathTilesets & I & ".png")
+            For Each fileName In fileEntries
+                EditorWindow.cmbTilesetEditor.Items.Add(fileName)
             Next
         End If
         EditorWindow.cmbTilesetEditor.SelectedIndex = 0
@@ -25,8 +28,13 @@ Class TilesetClass
 
     Public Sub SelectTileset()
         selectSrcRect = New Rectangle(0, 0, 0, 0)
-        curTileSet = CInt(EditorWindow.cmbTilesetEditor.SelectedItem.ToString.Replace(pathTilesets, vbNullString).Replace(".png", vbNullString))
-        index = curTileSet
+        For i As Integer = 0 To texTileset.Length - 1
+            If gTexture(texTileset(i)).FilePath = EditorWindow.cmbTilesetEditor.SelectedItem.ToString Then
+                curTileSet = i
+                Exit For
+            End If
+        Next
+        index = curTileSet - 1
         If Not curTileSet >= 0 Then Exit Sub
         EditorWindow.scrlTilesetEditorX.Minimum = 0
         EditorWindow.scrlTilesetEditorY.Minimum = 0
@@ -51,7 +59,10 @@ Class TilesetClass
 
     Public Sub picTilesetEditor_MouseMove(e As MouseEventArgs)
         If e.X + (EditorWindow.tileSetScrlX.Value * picX) >= gTexture(texTileset(curTileSet)).Width Or
-            e.Y + (EditorWindow.tileSetScrlY.Value * picY) >= gTexture(texTileset(curTileSet)).Height Then Exit Sub
+            e.Y + (EditorWindow.tileSetScrlY.Value * picY) >= gTexture(texTileset(curTileSet)).Height Then
+            selectMouseRect = New Rectangle(0, 0, 0, 0)
+            Exit Sub
+        End If
         selectMouseRect = New Rectangle(SnapTo(e.X, picX, EditorWindow.picTilesetEditor.Width), SnapTo(e.Y, picY, EditorWindow.picTilesetEditor.Height), picX, picY)
     End Sub
 
@@ -77,7 +88,7 @@ Class TilesetClass
     Public Sub btnSaveTileset_Click(e As EventArgs)
         If curTileSet >= 0 Then
             If Not IsNothing(Tileset(index)) Then
-                Tileset(index).ID = curTileSet
+                Tileset(index).ID = index
                 Tileset(index).Save()
             End If
         End If

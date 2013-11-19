@@ -12,7 +12,7 @@ Namespace Objects
         Public Property AccessMode As Byte
         Public Property Visible As Boolean
         ' Inventories
-        Private mInventory() As Integer
+        Public Property Inventory As Integer()
 
         Public Sub New()
             Me.Name = "New Player"
@@ -23,19 +23,8 @@ Namespace Objects
             Me.AccessMode = ACCESS.NONE
             Me.Visible = True
             Me.Map = 0
-            ReDim mInventory(0 To 0)
-            Me.mInventory(0) = -1
+            ReDim Inventory(0 To 0)
+            Me.Inventory(0) = -1
         End Sub
-
-        Public Property Inventory As Integer()
-            Get
-                Return Me.mInventory
-            End Get
-            Set(value As Integer())
-                If Not IsNothing(Me) Then
-                    Me.mInventory = value
-                End If
-            End Set
-        End Property
     End Class
 End Namespace

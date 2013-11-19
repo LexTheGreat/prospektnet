@@ -3,7 +3,7 @@ Imports IHProspekt.Objects
 Imports IHProspekt.Database
 Imports IHProspekt.Core
 Public Class MapData
-    Public Sub LoadMaps()
+    Public Sub LoadAll()
         Try
             If Directory.Exists(pathMaps) Then
                 Dim fileEntries As String() = Directory.GetFiles(pathMaps, "*.bin")
@@ -13,7 +13,7 @@ Public Class MapData
                 For Each fileName In fileEntries
                     ReDim Preserve Map(0 To MapCount)
                     Map(MapCount) = New Maps
-                    Map(MapCount).SetID(fileName.Replace(pathMaps, vbNullString).Replace(".bin", vbNullString))
+                    Map(MapCount).SetID(MapCount)
                     Map(MapCount).Load()
                     MapCount = MapCount + 1
                 Next fileName
@@ -24,7 +24,7 @@ Public Class MapData
         End Try
     End Sub
 
-    Public Sub SaveMaps()
+    Public Sub SaveAll()
         If Directory.Exists(pathMaps) Then
             For Each mp In Map
                 If Not IsNothing(mp) Then mp.Save()
@@ -43,7 +43,7 @@ Public Class MapData
         newMap.SetID(i)
         ReDim Preserve Map(0 To i)
         Map(i) = newMap
-        SaveMaps()
+        SaveAll()
     End Sub
 
     Public Function GetMapIndex(ByVal ID As Integer) As Integer

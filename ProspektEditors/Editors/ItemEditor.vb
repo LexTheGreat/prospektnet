@@ -38,7 +38,7 @@
     End Sub
 
     Public Sub Undo()
-        Items.Data.LoadItems()
+        Items.Data.LoadAll()
         EditorWindow.tabItem.Text = "Item"
         EditorWindow.proptItemData.SelectedObject = vbNull
     End Sub

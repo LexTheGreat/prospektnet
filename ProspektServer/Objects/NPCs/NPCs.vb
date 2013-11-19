@@ -20,7 +20,7 @@ Public Class NPCs
     ' sub routines and functions
     Public Function Save() As Boolean
         If Me.Name = vbNullString Then Return False
-        NPCs.Data.SaveNPC(Me.Base)
+        NPCs.Data.Save(Me.Base)
         Return True
     End Function
 

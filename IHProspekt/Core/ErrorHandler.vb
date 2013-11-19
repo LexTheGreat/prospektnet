@@ -54,14 +54,13 @@ Namespace Core
                     Case CrashType.MsgBox
                         MsgBox("An unrecoverable error has occured; please check the error log files for additional details.")
                 End Select
-                mDestroy().Dispose()
+                'mDestroy().Dispose()
             End If
         End Sub
         Private Sub LogError(ex As Exception, errorLevel As ErrorLevels)
             REM Append to the error-log file using StreamWriter.
-            Using streamWriter As StreamWriter = File.AppendText(mPath & "Errors.log")
-                streamWriter.WriteLine("[{0}] - Error Level: {1}, Error Message: {2} at {3}", DateTime.Now.ToString("M/d/yyyy"), errorLevel.ToString(), ex.Message, ex.StackTrace)
-            End Using
+            If Not Directory.Exists(mPath) Then Directory.CreateDirectory(mPath)
+            File.AppendAllText(mPath & "Errors.log", "[" & DateTime.Now.ToString("M/d/yyyy") & "] - Error Level: " & errorLevel.ToString() & ", Error Message: " & ex.Message & ex.StackTrace & vbNewLine)
         End Sub
         Public Sub Dispose() Implements IDisposable.Dispose
             Me.mPath = vbNullString

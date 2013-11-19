@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <NPCBase xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <Name>NPC #4</Name>
+  <Name>NPC #6</Name>
   <Sprite>2</Sprite>
-  <ID>4</ID>
+  <ID>6</ID>
   <Level>1</Level>
   <Health>1</Health>
   <X>10</X>
   <Y>15</Y>
   <Dir>1</Dir>
-  <Inventory />
+  <Inventory>
+    <int>-1</int>
+  </Inventory>
 </NPCBase>

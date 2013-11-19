@@ -17,9 +17,9 @@
     End Sub
 
     Private Sub btnSave_Click(sender As Object, e As EventArgs) Handles btnSave.Click
-        Accounts.Data.SaveAccounts()
+        Accounts.Data.SaveAll()
         ' Reload Editor Data
-        Accounts.Data.LoadAccounts()
+        Accounts.Data.LoadAll()
         AccountEditor.Reload()
         InventoryEditor.Reload()
     End Sub

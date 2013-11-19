@@ -18,19 +18,12 @@ Public Class PlayerData
         Next index
     End Sub
 
-    Public Sub SavePlayer(ByVal player As PlayerBase)
-        Dim acc As New Accounts
+    Public Sub Save(ByVal player As PlayerBase)
         Try
-            acc = Account(Players.Data.GetPlayerIndex(player.Name))
-            acc.Player = player
-            'Serialize object to a file.
-            Using File As New Files(pathAccounts & acc.Email & ".xml", acc.Base)
-                File.WriteXML()
-            End Using
-            Account(Players.Data.GetPlayerIndex(player.Name)) = acc
-            Exit Sub
+            Account(Players.Data.GetPlayerIndex(player.Name)).Player = player
+            Account(Players.Data.GetPlayerIndex(player.Name)).Save()
         Catch ex As Exception
-            Server.Writeline("Error: " & ex.ToString & " (In: Accounts.Data.SavePlayer)")
+            Server.WriteLine("Error: " & ex.ToString & " (In: Accounts.Data.SavePlayer)")
             Exit Sub
         End Try
     End Sub

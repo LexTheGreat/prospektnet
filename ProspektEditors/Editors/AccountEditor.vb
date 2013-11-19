@@ -36,7 +36,7 @@
     End Sub
 
     Public Sub Undo()
-        Accounts.Data.LoadAccounts()
+        Accounts.Data.LoadAll()
         EditorWindow.tabAccount.Text = "Account"
         EditorWindow.proptAccountData.SelectedObject = vbNull
     End Sub

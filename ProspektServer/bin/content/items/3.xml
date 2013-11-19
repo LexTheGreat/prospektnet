@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ItemBase xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <ID>3</ID>
+  <Name>Potion Of Minor Stamina</Name>
+  <Sprite>1</Sprite>
+  <Health>1</Health>
+  <Type>3</Type>
+  <Stats>
+    <Str>0</Str>
+    <Dex>0</Dex>
+    <Int>0</Int>
+  </Stats>
+  <Reqs>
+    <Lvl>0</Lvl>
+    <Str>0</Str>
+    <Dex>0</Dex>
+    <Int>0</Int>
+  </Reqs>
+</ItemBase>

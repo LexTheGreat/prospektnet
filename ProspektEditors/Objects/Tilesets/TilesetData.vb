@@ -3,32 +3,39 @@ Imports IHProspekt.Objects
 Imports IHProspekt.Database
 Imports IHProspekt.Core
 Public Class TilesetData
-    Public Sub Save(ByVal SaveTileset As TilesetBase)
-        Using File As New Files(pathTilesetData & Trim(SaveTileset.ID) & ".bin", SaveTileset)
-            File.WriteBinary()
-        End Using
-    End Sub
-
-    Public Sub LoadTilesets()
-        Dim I As Integer
-        Dim fileEntries As String()
+    Public Sub LoadAll()
         Try
-            ReDim Preserve Tileset(0 To 1)
-            Tileset(0) = New Tilesets
-            If Directory.Exists(pathTilesetData) Then
-                fileEntries = Directory.GetFiles(pathTilesetData, "*.bin")
+            If Directory.Exists(pathNPCs) Then
+                Dim fileEntries As String() = Directory.GetFiles(pathTilesetData, "*.bin")
+                ReDim Preserve Tileset(0 To 1)
+                Tileset(0) = New Tilesets
+                TilesetCount = 0
                 For Each fileName In fileEntries
-                    TilesetCount = I + 1
                     ReDim Preserve Tileset(0 To TilesetCount)
                     Tileset(TilesetCount) = New Tilesets
-                    Tileset(TilesetCount).ID = fileName.Replace(pathTilesetData, vbNullString).Replace(".bin", vbNullString)
+                    Tileset(TilesetCount).ID = TilesetCount
                     Tileset(TilesetCount).Load()
-                    I = TilesetCount
+                    TilesetCount = TilesetCount + 1
                 Next fileName
+                TilesetCount = TilesetCount - 1
             End If
         Catch ex As Exception
             ErrHandler.HandleException(ex, ErrorHandler.ErrorLevels.High)
         End Try
+    End Sub
+
+    Public Sub SaveAll()
+        If Directory.Exists(pathTilesetData) Then
+            For Each tile In Tileset
+                tile.Save()
+            Next
+        End If
+    End Sub
+
+    Public Sub Save(ByVal SaveTileset As TilesetBase)
+        Using File As New Files(pathTilesetData & Trim(SaveTileset.ID) & ".bin", SaveTileset)
+            File.WriteBinary()
+        End Using
     End Sub
 
     Public Function GetTilesetID(ByVal name As String)

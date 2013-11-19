@@ -303,7 +303,7 @@ errorhandler:
         For X As Integer = TileView.Left To TileView.Right
             For Y As Integer = TileView.Top To TileView.Bottom
                 If Maps.Logic.IsValidPoint(X, Y) Then
-                    data = Map.Layer(i).GetTileData(X, Y)
+                    data = Map.Layer(i).Tiles(X, Y)
                     If data.Tileset < 0 Then Continue For
                     Call Render.RenderTexture(texTileset(data.Tileset), Maps.Logic.ConvertX(X * picX), Maps.Logic.ConvertY(Y * picY), data.X, data.Y, picX, picY, picX, picY)
                 End If

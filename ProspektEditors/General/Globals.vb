@@ -12,6 +12,10 @@ Module Globals
     ' Networking
     Public pClient As Lidgren.Network.NetClient
 
+    ' Data Updating
+    Public CommitBox As CommitData
+    Public SyncBox As SyncData
+
     ' Editors
     Public MapEditor As MapClass
     Public TilesetEditor As TilesetClass

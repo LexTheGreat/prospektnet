@@ -1,5 +1,7 @@
-﻿Imports IHProspekt.Objects
+﻿Imports System.ComponentModel
+Imports IHProspekt.Objects
 Imports IHProspekt.Database
+Imports IHProspekt.Utilities
 <Serializable()> Public Class Tilesets
     Public Base As TilesetBase
     Public Shared Data As New TilesetData
@@ -14,15 +16,10 @@ Imports IHProspekt.Database
 
     Public Sub Load()
         Dim loadTileset As New TilesetBase
-        Using File As New Files(pathTilesetData & Trim(Me.Base.ID) & ".bin")
+        Using File As New Files(pathTilesetData & Trim(Me.Base.ID) & ".bin", loadTileset)
             loadTileset = DirectCast(File.ReadBinary, TilesetBase)
         End Using
-        Me.Base.ID = loadTileset.ID
-        Me.Base.Name = loadTileset.Name
-        Me.Base.MaxX = loadTileset.MaxX
-        Me.Base.MaxY = loadTileset.MaxY
-        Me.Base.ResizeTileData(New Integer() {loadTileset.MaxX, loadTileset.MaxY})
-        Me.Base.Tile = loadTileset.Tile
+        Me.Base = loadTileset
     End Sub
 
     Public Sub ResizeTileData(ByVal newSize As Integer())

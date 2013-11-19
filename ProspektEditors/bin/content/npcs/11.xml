@@ -5,8 +5,10 @@
   <ID>11</ID>
   <Level>1</Level>
   <Health>1</Health>
-  <X>10</X>
+  <X>9</X>
   <Y>15</Y>
-  <Dir>1</Dir>
-  <Inventory />
+  <Dir>2</Dir>
+  <Inventory>
+    <int>-1</int>
+  </Inventory>
 </NPCBase>

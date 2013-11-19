@@ -17,17 +17,10 @@ Imports IHProspekt.Utilities
 
     Sub Load()
         Dim loadMap As New MapBase
-        Using File As New Files(pathMaps & Trim(Me.Base.ID) & ".bin")
+        Using File As New Files(pathMaps & Trim(Me.Base.ID) & ".bin", loadMap)
             loadMap = DirectCast(File.ReadBinary, MapBase)
         End Using
-        Me.Base.ID = loadMap.ID
-        Me.Base.Name = loadMap.Name
-        Me.Base.MaxX = loadMap.MaxX
-        Me.Base.MaxY = loadMap.MaxY
-        Me.Base.Color = loadMap.Color
-        Me.Base.Layer = loadMap.Layer
-        Me.Base.NPC = loadMap.NPC
-        Me.Base.NPCCount = loadMap.NPCCount
+        Me.Base = loadMap
     End Sub
 
     Public Sub AddNPC(ByVal NPC As MapNPCBase)
@@ -52,19 +45,19 @@ Imports IHProspekt.Utilities
 
     Public Sub SetTileData(ByVal Layer As Byte, ByVal data(,) As TileData)
         Me.Base.Layer(Layer).ReSizeTileData(New Integer() {Me.Base.MaxX, Me.Base.MaxY})
-        Me.Base.Layer(Layer).SetTileData(data)
+        Me.Base.Layer(Layer).Tiles = data
     End Sub
 
     Public Sub SetTileData(ByVal Layer As Byte, ByVal X As Integer, ByVal Y As Integer, ByVal data As TileData)
-        Me.Base.Layer(Layer).SetTileData(X, Y, data)
+        Me.Base.Layer(Layer).Tiles(X, Y) = data
     End Sub
 
     Public Function GetTileData(ByVal Layer As Byte) As TileData(,)
-        Return Me.Base.Layer(Layer).GetTileData
+        Return Me.Base.Layer(Layer).Tiles
     End Function
 
     Public Function GetTileData(ByVal Layer As Byte, ByVal X As Integer, ByVal Y As Integer) As TileData
-        Return Me.Base.Layer(Layer).GetTileData(X, Y)
+        Return Me.Base.Layer(Layer).Tiles(X, Y)
     End Function
 
     Public Sub ReSizeTileData(ByVal newSize As Integer())

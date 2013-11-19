@@ -28,7 +28,19 @@ Public Class TilesetData
                 Next fileName
             End If
         Catch ex As Exception
-            Server.Writeline("Error: " & ex.ToString & " (In: Data.LoadTilesets")
+            Server.WriteLine("Error: " & ex.ToString & " (In: Tilesets.Data.LoadTilesets")
+        End Try
+    End Sub
+
+    Public Sub SaveAll()
+        Try
+            If Directory.Exists(pathTilesets) Then
+                For Each tile In Tileset
+                    tile.Save()
+                Next
+            End If
+        Catch ex As Exception
+            Server.WriteLine("Error: " & ex.ToString & " (In: Tilesets.Data.SaveMaps")
         End Try
     End Sub
 
@@ -42,7 +54,7 @@ Public Class TilesetData
     Public Function isTileBlocked(ByVal MapNum As Integer, ByVal X As Integer, ByVal Y As Integer) As Boolean
         Dim tempTile As New TileData
         For I As Integer = 0 To MapLayerEnum.COUNT - 1
-            tempTile = Map(MapNum).Layer(I).GetTileData(X, Y)
+            tempTile = Map(MapNum).Layer(I).Tiles(X, Y)
             If tempTile.Tileset < 0 Then Return False
             If tempTile.Tileset > TilesetCount Then Return False
             If Tileset(tempTile.Tileset).Tile(tempTile.X / 32, tempTile.Y / 32) = TileType.Blocked Then Return True
@@ -53,7 +65,7 @@ Public Class TilesetData
     Public Function isTileNPCBlocked(ByVal MapNum As Integer, ByVal X As Integer, ByVal Y As Integer) As Boolean
         Dim tempTile As New TileData
         For I As Integer = 0 To MapLayerEnum.COUNT - 1
-            tempTile = Map(MapNum).Layer(I).GetTileData(X, Y)
+            tempTile = Map(MapNum).Layer(I).Tiles(X, Y)
             If tempTile.Tileset < 0 Then Return False
             If tempTile.Tileset > TilesetCount Then Return False
             If Tileset(tempTile.Tileset).Tile(tempTile.X / 32, tempTile.Y / 32) > TileType.Walkable Then Return True

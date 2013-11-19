@@ -52,6 +52,7 @@ Namespace Network
         End Function
 
         Public Function IsConnected() As Boolean
+            If IsNothing(pClient.ServerConnection) Then Return False
             If pClient.ServerConnection.Status = NetConnectionStatus.Connected Then Return True
             Return False
         End Function

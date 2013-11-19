@@ -104,20 +104,20 @@ Public Class Maps
     End Sub
 
     Public Sub SetTileData(ByVal Layer As Byte, ByVal data(,) As TileData)
-        Me.Base.Layer(Layer).ReSizeTileData(New Integer() {data.GetUpperBound(0), data.GetUpperBound(1)})
-        Me.Base.Layer(Layer).SetTileData(data)
+        Me.Base.Layer(Layer).ResizeTileData(New Integer() {data.GetUpperBound(0), data.GetUpperBound(1)})
+        Me.Base.Layer(Layer).Tiles = data
     End Sub
 
     Public Sub SetTileData(ByVal Layer As Byte, ByVal X As Integer, ByVal Y As Integer, ByVal data As TileData)
-        Me.Base.Layer(Layer).SetTileData(X, Y, data)
+        Me.Base.Layer(Layer).Tiles(X, Y) = data
     End Sub
 
     Public Function GetTileData(ByVal Layer As Byte) As TileData(,)
-        Return Me.Base.Layer(Layer).GetTileData
+        Return Me.Base.Layer(Layer).Tiles
     End Function
 
     Public Function GetTileData(ByVal Layer As Byte, ByVal X As Integer, ByVal Y As Integer) As TileData
-        Return Me.Base.Layer(Layer).GetTileData(X, Y)
+        Return Me.Base.Layer(Layer).Tiles(X, Y)
     End Function
 
     Public Sub ReSizeTileData(ByVal Layer As Byte, ByVal newSize As Integer())

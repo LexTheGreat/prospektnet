@@ -39,7 +39,7 @@
     End Sub
 
     Public Sub Undo()
-        NPCs.Data.LoadNpcs()
+        NPCs.Data.LoadAll()
         EditorWindow.tabNpc.Text = "Npc"
         EditorWindow.proptNpcData.SelectedObject = vbNull
     End Sub

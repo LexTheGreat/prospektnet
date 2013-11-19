@@ -3,7 +3,7 @@ Imports Prospekt.Network
 Imports IHProspekt.Objects
 Imports IHProspekt.Database
 Public Class ItemData
-    Public Sub LoadItems()
+    Public Sub LoadAll()
         Try
             If Directory.Exists(pathItems) Then
                 Dim fileEntries As String() = Directory.GetFiles(pathItems, "*.xml")
@@ -20,16 +20,20 @@ Public Class ItemData
                 ItemCount = ItemCount - 1
             End If
         Catch ex As Exception
-            Console.WriteLine("Error: " & ex.ToString & " (In: Data.LoadItems")
+            Console.WriteLine("Error: " & ex.ToString & " (In: Items.Data.LoadItems")
         End Try
     End Sub
 
-    Public Sub SaveItems()
-        If Directory.Exists(pathItems) Then
-            For Each itm In Item
-                itm.Save()
-            Next
-        End If
+    Public Sub SaveAll()
+        Try
+            If Directory.Exists(pathItems) Then
+                For Each itm In Item
+                    itm.Save()
+                Next
+            End If
+        Catch ex As Exception
+            Server.WriteLine("Error: " & ex.ToString & " (In: Items.Data.SaveMaps")
+        End Try
     End Sub
 
     Public Sub Save(ByVal SaveItem As ItemBase)

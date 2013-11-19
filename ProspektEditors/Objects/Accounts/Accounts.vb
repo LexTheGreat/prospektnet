@@ -17,19 +17,10 @@ Public Class Accounts
 
     Public Sub Load()
         Dim newAccount As New AccountBase
-
-        ' Get object from file
-        Using File As New Files(pathAccounts & Me.Base.Email & ".xml", Me.Base)
+        Using File As New Files(pathAccounts & Me.Base.Email & ".xml", newAccount)
             newAccount = DirectCast(File.ReadXML, AccountBase)
         End Using
-        Me.Base.Email = newAccount.Email
-        Me.Base.Password = newAccount.Password
-        Me.Base.Player.Name = newAccount.Player.Name
-        Me.Base.Player.Sprite = newAccount.Player.Sprite
-        Me.Base.Player.Map = newAccount.Player.Map
-        Me.Base.Player.X = newAccount.Player.X
-        Me.Base.Player.Y = newAccount.Player.Y
-        Me.Base.Player.Dir = newAccount.Player.Dir
+        Me.Base = newAccount
     End Sub
 
     Public Sub SetPlayerDir(ByVal value As Byte)
