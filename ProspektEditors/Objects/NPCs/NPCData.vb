@@ -1,10 +1,9 @@
 ﻿Imports System.IO
-Imports Prospekt.Network
 Imports IHProspekt.Objects
 Imports IHProspekt.Database
 Imports IHProspekt.Core
 Public Class NPCData
-    Public Sub LoadNpcs()
+    Public Sub LoadAll()
         Try
             If Directory.Exists(pathNPCs) Then
                 Dim fileEntries As String() = Directory.GetFiles(pathNPCs, "*.xml")
@@ -14,7 +13,7 @@ Public Class NPCData
                 For Each fileName In fileEntries
                     ReDim Preserve NPC(0 To NPCCount)
                     NPC(NPCCount) = New NPCs
-                    NPC(NPCCount).SetID(fileName.Replace(pathNPCs, vbNullString).Replace(".xml", vbNullString))
+                    NPC(NPCCount).SetID(NPCCount)
                     NPC(NPCCount).Load()
                     NPCCount = NPCCount + 1
                 Next fileName
@@ -25,7 +24,7 @@ Public Class NPCData
         End Try
     End Sub
 
-    Public Sub SaveNpcs()
+    Public Sub SaveAll()
         If Directory.Exists(pathNPCs) Then
             For Each nc In NPC
                 nc.Save()
@@ -44,7 +43,7 @@ Public Class NPCData
         ReDim Preserve NPC(0 To i)
         newNpc.SetID(i)
         NPC(i) = newNpc
-        SaveNpcs()
+        SaveAll()
     End Sub
 
     Public Function GetNpcIndex(ByVal ID As Integer) As Integer
@@ -54,7 +53,14 @@ Public Class NPCData
         Return 0
     End Function
 
-    Public Function GetNpc(ByVal ID As String) As NPCs
+    Public Function GetNpcIndexByName(ByVal Name As String) As Integer
+        For index As Integer = 0 To NPCCount
+            If NPC(index).Name = Name Then Return index
+        Next
+        Return 0
+    End Function
+
+    Public Function GetNpc(ByVal ID As Integer) As NPCs
         For Each nc In NPC
             If nc.ID = ID Then Return nc
         Next

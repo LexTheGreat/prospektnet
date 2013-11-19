@@ -1,6 +1,5 @@
 ﻿Imports Prospekt.Network
 Public Class EditorWindow
-
     Private Sub EditorWindow_Disposed(sender As Object, e As EventArgs) Handles Me.Disposed
         inEditor = False
         Verdana.Dispose()
@@ -10,11 +9,13 @@ Public Class EditorWindow
     End Sub
 
     Private Sub mnuMain_Publish_Click(sender As Object, e As EventArgs) Handles mnuMain_Publish.Click
-        CommitData.Show()
+        CommitBox = New CommitData
+        CommitBox.Show()
     End Sub
 
     Private Sub mnuMain_Sync_Click(sender As Object, e As EventArgs) Handles mnuMain_Sync.Click
-        SyncData.Show()
+        SyncBox = New SyncData
+        SyncBox.Show()
     End Sub
 
     Private Sub EditorWindow_Load(sender As Object, e As EventArgs) Handles Me.Load
@@ -35,16 +36,15 @@ Public Class EditorWindow
     End Sub
 
     Private Sub mnuMain_Textures_Click(sender As Object, e As EventArgs) Handles mnuMain_Textures.Click
-        Dim TV As TextureViewer = New TextureViewer
-        TV.init()
+        TextureViewer.init()
     End Sub
 
     ' Map Editor
     Private Sub mnuMapSave_Click(sender As Object, e As EventArgs) Handles mnuMapSave.Click
         If Not IsNothing(lstMaps.Items) Then
-            Maps.Data.SaveMaps()
+            Maps.Data.SaveAll()
             ' Reload Editor Data
-            Maps.Data.LoadMaps()
+            Maps.Data.LoadAll()
             MapEditor.ReloadList()
         End If
     End Sub
@@ -52,7 +52,7 @@ Public Class EditorWindow
     Private Sub mnuMapNew_Click(sender As Object, e As EventArgs) Handles mnuMapNew.Click
         Maps.Data.NewMap()
         ' Reload Editor Data
-        Maps.Data.LoadMaps()
+        Maps.Data.LoadAll()
         MapEditor.ReloadList()
     End Sub
 
@@ -118,7 +118,7 @@ Public Class EditorWindow
     End Sub
 
     Private Sub lstMapNpcs_SelectedIndexChanged(sender As Object, e As EventArgs) Handles lstMapNpcs.SelectedIndexChanged
-        If Not IsNothing(lstMapNpcs.FocusedItem) Then MapEditor.SelectNpc(lstMapNpcs.FocusedItem.Index)
+        If Not IsNothing(lstMapNpcs.FocusedItem) Then MapEditor.SelectNpc(lstMapNpcs.FocusedItem.Text)
     End Sub
 
     Private Sub mapBtnFillLayer_Click(sender As Object, e As EventArgs) Handles mapBtnFillLayer.Click
@@ -189,9 +189,9 @@ Public Class EditorWindow
     ' Account Editor
     Private Sub mnuAccountSave_Click(sender As Object, e As EventArgs) Handles mnuAccountSave.Click
         If Not IsNothing(lstAccounts.Items) Then
-            Accounts.Data.SaveAccounts()
+            Accounts.Data.SaveAll()
             ' Reload Editor Data
-            Accounts.Data.LoadAccounts()
+            Accounts.Data.LoadAll()
             AccountEditor.Reload()
         End If
     End Sub
@@ -199,7 +199,7 @@ Public Class EditorWindow
     Private Sub mnuAccountNew_Click(sender As Object, e As EventArgs) Handles mnuAccountNew.Click
         Accounts.Data.NewAccount()
         ' Reload Editor Data
-        Accounts.Data.LoadAccounts()
+        Accounts.Data.LoadAll()
         AccountEditor.ReloadList()
     End Sub
 
@@ -223,9 +223,9 @@ Public Class EditorWindow
     ' Npc Editor
     Private Sub mnuNpcSave_Click(sender As Object, e As EventArgs) Handles mnuNpcSave.Click
         If Not IsNothing(lstNpcs.Items) Then
-            NPCs.Data.SaveNpcs()
+            NPCs.Data.SaveAll()
             ' Reload Editor Data
-            NPCs.Data.LoadNpcs()
+            NPCs.Data.LoadAll()
             NpcEditor.Reload()
         End If
     End Sub
@@ -233,7 +233,7 @@ Public Class EditorWindow
     Private Sub mnuNpcNew_Click(sender As Object, e As EventArgs) Handles mnuNpcNew.Click
         NPCs.Data.NewNpc()
         ' Reload Editor Data
-        NPCs.Data.LoadNpcs()
+        NPCs.Data.LoadAll()
         NpcEditor.ReloadList()
     End Sub
 
@@ -257,9 +257,9 @@ Public Class EditorWindow
     ' Item Editor
     Private Sub mnuItemSave_Click(sender As Object, e As EventArgs) Handles mnuItemSave.Click
         If Not IsNothing(lstitems.Items) Then
-            Items.Data.SaveItems()
+            Items.Data.SaveAll()
             ' Reload Editor Data
-            Items.Data.LoadItems()
+            Items.Data.LoadAll()
             ItemEditor.Reload()
         End If
     End Sub
@@ -267,7 +267,7 @@ Public Class EditorWindow
     Private Sub mnuItemNew_Click(sender As Object, e As EventArgs) Handles mnuItemNew.Click
         Items.Data.NewItem()
         ' Reload Editor Data
-        Items.Data.LoadItems()
+        Items.Data.LoadAll()
         ItemEditor.ReloadList()
     End Sub
 

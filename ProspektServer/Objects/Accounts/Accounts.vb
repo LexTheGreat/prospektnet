@@ -17,7 +17,7 @@ Public Class Accounts
 
     Public Function Save() As Boolean
         If Me.Email = vbNullString Then Return False
-        Data.SaveAccount(Me.Base)
+        Data.Save(Me.Base)
         Return True
     End Function
 

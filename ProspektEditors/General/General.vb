@@ -22,24 +22,24 @@ Module General
         Render.Initialize()
         Verdana = New TextWriter("content/fonts/Verdana.ttf")
         ' Setup Tileset Editor
-        Tilesets.Data.LoadTilesets()
+        Tilesets.Data.LoadAll()
         TilesetEditor = New TilesetClass
         TilesetEditor.Init()
         ' Setup Item Editor
-        Items.Data.LoadItems()
+        Items.Data.LoadAll()
         ItemEditor = New ItemClass
         ItemEditor.Init()
         ' Setup Npc Editor
-        NPCs.Data.LoadNpcs()
+        NPCs.Data.LoadAll()
         NpcEditor = New NpcClass
         NpcDropEditor = New NpcDropClass
         NpcEditor.Init()
         'Setup Map Editor
-        Maps.Data.LoadMaps()
+        Maps.Data.LoadAll()
         MapEditor = New MapClass
         MapEditor.Init()
         ' Setup Account Editor
-        Accounts.Data.LoadAccounts()
+        Accounts.Data.LoadAll()
         AccountEditor = New AccountClass
         AccountEditor.Init()
         InventoryEditor = New PlayerInventoryClass
@@ -61,11 +61,11 @@ Module General
             FrameTime = Tick
             Networking.HandleMessage()
             ' Clear Rendering
-            Render.Window.Clear(New Color(Color.Magenta))
+            Render.Window.Clear(New Color(Color.Black))
             Select Case SelectedEditor
                 Case 0 ' Map Editor
                     ' Start rendering
-                    Render.TileWindow.Clear(New Color(Color.Magenta))
+                    Render.TileWindow.Clear(New Color(Color.Black))
                     MapEditor.DrawTileset()
                     MapEditor.DrawTilesetSelection()
                     MapEditor.DrawMapTiles()
@@ -75,7 +75,7 @@ Module General
                     Render.TileWindow.Display()
                 Case 1 ' Tile Editor
                     ' Start rendering
-                    Render.TileEditWindow.Clear(New Color(Color.Magenta))
+                    Render.TileEditWindow.Clear(New Color(Color.Black))
                     TilesetEditor.DrawTileset()
                     TilesetEditor.DrawTileTypes()
                     TilesetEditor.DrawTilesetSelection()

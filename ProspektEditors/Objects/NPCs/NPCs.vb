@@ -1,15 +1,11 @@
 ﻿Imports System.ComponentModel
-Imports Prospekt.Network
 Imports IHProspekt.Objects
 Imports IHProspekt.Database
-Imports IHProspekt.Core
 Imports IHProspekt.Utilities
 Public Class NPCs
     ' general
     Public Base As NPCBase
     Public Shared Data As New NPCData
-    ' non-saved values
-    Private mIndex As Integer
 
     Public Sub New()
         Me.Base = New NPCBase
@@ -108,12 +104,6 @@ Public Class NPCs
             If Not IsNothing(Me) Then
                 Me.Base.Health = value
             End If
-        End Set
-    End Property
-
-    Public WriteOnly Property Index As Integer
-        Set(value As Integer)
-            Me.mIndex = value
         End Set
     End Property
 

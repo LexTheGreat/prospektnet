@@ -17,9 +17,9 @@
     End Sub
 
     Private Sub btnSave_Click(sender As Object, e As EventArgs) Handles btnSave.Click
-        NPCs.Data.SaveNpcs()
+        NPCs.Data.SaveAll()
         ' Reload Editor Data
-        NPCs.Data.LoadNpcs()
+        NPCs.Data.LoadAll()
         NpcEditor.Reload()
         NpcDropEditor.Reload()
     End Sub

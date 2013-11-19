@@ -3,8 +3,7 @@ Imports Prospekt.Network
 Imports IHProspekt.Objects
 Imports IHProspekt.Database
 Public Class NPCData
-
-    Public Sub LoadNPCs()
+    Public Sub LoadAll()
         Try
             ReDim Preserve NPC(0 To 1)
             NPC(0) = New NPCs
@@ -24,11 +23,11 @@ Public Class NPCData
                 Next fileName
             End If
         Catch ex As Exception
-            Server.Writeline("Error: " & ex.ToString & " (In: NPCs.Data.LoadNPCs")
+            Server.WriteLine("Error: " & ex.ToString & " (In: NPCs.Data.LoadNPCs")
         End Try
     End Sub
 
-    Public Sub SaveNPC(ByVal snpc As NPCBase)
+    Public Sub Save(ByVal snpc As NPCBase)
         Try
             Using File As New Files(pathNPCs & snpc.Name & ".xml", snpc)
                 File.WriteXML()
@@ -38,6 +37,18 @@ Public Class NPCData
         Catch ex As Exception
             Server.WriteLine("Error: " & ex.ToString & " (In: NPCs.Data.SaveNPC)")
             Exit Sub
+        End Try
+    End Sub
+
+    Public Sub SaveAll()
+        Try
+            If Directory.Exists(pathNPCs) Then
+                For Each nc In NPC
+                    nc.Save()
+                Next
+            End If
+        Catch ex As Exception
+            Server.WriteLine("Error: " & ex.ToString & " (In: NPCs.Data.SaveAll")
         End Try
     End Sub
 

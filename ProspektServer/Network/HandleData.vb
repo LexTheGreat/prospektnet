@@ -20,8 +20,10 @@ Namespace Network.HandleData
             If PacketNum = CEditorPackets.Login Then HandleData.EditorLogin(index, Data)
             If PacketNum = CEditorPackets.DataRequest Then HandleData.EditorDataRequest(index, Data)
             If PacketNum = CEditorPackets.MapData Then HandleData.EditorMapData(index, Data)
-            If PacketNum = CEditorPackets.PlayerData Then HandleData.EditorPlayerData(index, Data)
+            If PacketNum = CEditorPackets.AccountData Then HandleData.EditorPlayerData(index, Data)
             If PacketNum = CEditorPackets.TilesetData Then HandleData.EditorTilesetData(index, Data)
+            If PacketNum = CEditorPackets.NPCData Then HandleData.EditorNpcData(index, Data)
+            If PacketNum = CEditorPackets.ItemData Then HandleData.EditorItemData(index, Data)
         End Sub
 
         Public Sub Register(ByVal index As Integer, ByRef data As NetIncomingMessage)
@@ -230,7 +232,6 @@ Namespace Network.HandleData
             Password = data.ReadString
             Mode = data.ReadInt32
 
-            Player(index) = New Players()
             If Not Accounts.Data.AccountExists(Name) Then
                 Server.Writeline("Account " & Name & " Failed To Load! [Error: account does not exist]")
                 SendData.Alert(index, "Account " & Name & " Failed To Load!" & vbNewLine & "[Error: account does not exist]")
@@ -246,114 +247,78 @@ Namespace Network.HandleData
                     SendData.Alert(index, "Account " & Name & " Failed To Load!" & vbNewLine & "[Error: character missing]")
                     Exit Sub
                 End If
-                If Not Accounts.Data.GetAccount(Name).Player.AccessMode >= ACCESS.DEV Then
-                    Server.Writeline("Account " & Name & " Failed To Access Editor! [Error: invalid account access]")
-                    SendData.Alert(index, "Account " & Name & " Failed To Access Editor!" & vbNewLine & "[Error: invalid account access]")
-                    Exit Sub
-                End If
-                UpdateHighIndex()
-                Player(index).Load(Accounts.Data.GetAccount(Name).Player.Name)
-                Player(index).IsPlaying = False
+                'If Not Accounts.Data.GetAccount(Name).Player.AccessMode >= ACCESS.DEV Then
+                '    Server.Writeline("Account " & Name & " Failed To Access Editor! [Error: invalid account access]")
+                '    SendData.Alert(index, "Account " & Name & " Failed To Access Editor!" & vbNewLine & "[Error: invalid account access]")
+                '    Exit Sub
+                'End If
                 SendData.EditorLoginOk(index, Mode)
                 Server.Writeline("Account: " & Name & " has logged into the editor!")
             End If
         End Sub
 
         Public Sub EditorDataRequest(ByVal index As Integer, ByRef data As NetIncomingMessage)
-            SendData.EditorMapData(index)
-            SendData.EditorTilesetData(index)
-            SendData.EditorPlayerData(index)
-            SendData.EditorNPCData(index)
-            SendData.EditorDataSent(index, 1)
+            If data.ReadBoolean = True Then SendData.EditorMapData(index)
+            If data.ReadBoolean = True Then SendData.EditorTilesetData(index)
+            If data.ReadBoolean = True Then SendData.EditorPlayerData(index)
+            If data.ReadBoolean = True Then SendData.EditorNPCData(index)
+            If data.ReadBoolean = True Then SendData.EditorItemData(index)
         End Sub
 
         Public Sub EditorMapData(ByVal Index As Integer, ByRef data As NetIncomingMessage)
-            Dim num As Integer = 0
-            Dim saveMap() As Maps
-            Dim sTileData As TileData
-
-            num = data.ReadInt32
-            ReDim saveMap(0 To num)
-            For i As Integer = 0 To num
-                saveMap(i) = New Maps
-                saveMap(i).Name = data.ReadString
-                saveMap(i).MaxX = data.ReadInt32
-                saveMap(i).MaxY = data.ReadInt32
-                saveMap(i).Alpha = data.ReadByte
-                saveMap(i).Red = data.ReadByte
-                saveMap(i).Green = data.ReadByte
-                saveMap(i).Blue = data.ReadByte
-                For l As Integer = MapLayerEnum.Ground To MapLayerEnum.COUNT - 1
-                    saveMap(i).Layer(l) = New LayerData(saveMap(i).MaxX, saveMap(i).MaxY)
-                    For x As Integer = 0 To saveMap(i).MaxX
-                        For y As Integer = 0 To saveMap(i).MaxY
-                            sTileData = New TileData
-                            sTileData.Tileset = data.ReadInt32
-                            sTileData.X = data.ReadInt32
-                            sTileData.Y = data.ReadInt32
-                            saveMap(i).Layer(l).SetTileData(x, y, sTileData)
-                        Next y
-                    Next x
-                Next l
-                saveMap(i).Save()
+            MapCount = data.ReadInt32
+            ReDim Map(0 To MapCount)
+            For i As Integer = 0 To MapCount - 1
+                Map(i) = New Maps
+                data.ReadAllProperties(Map(i).Base)
             Next i
-            Maps.Data.LoadAll()
-            ' Send new maps to online players
-            For i As Integer = 1 To PlayerCount
-                SendData.MapData(i)
-            Next
-            SendData.EditorMapData(Index)
-            SendData.EditorDataSent(Index, 0)
+            Maps.Data.SaveAll()
+            SendData.EditorDataSent(Index, 0, "Map Data Commit Sucesfull!")
         End Sub
 
         Public Sub EditorPlayerData(ByVal Index As Integer, ByRef data As NetIncomingMessage)
-            Dim num As Integer = 0
-            Dim savePlayer() As Accounts
-
-            num = data.ReadInt32
-            ReDim savePlayer(0 To num)
-            For i As Integer = 1 To num
-                savePlayer(i) = New Accounts
-                savePlayer(i).Email = data.ReadString
-                savePlayer(i).Password = data.ReadString
-                savePlayer(i).Player = New PlayerBase
-                savePlayer(i).Player.Name = data.ReadString
-                savePlayer(i).Player.Sprite = data.ReadInt32
-                savePlayer(i).Player.Map = data.ReadInt32
-                savePlayer(i).Player.X = data.ReadInt32
-                savePlayer(i).Player.Y = data.ReadInt32
-                savePlayer(i).Player.Dir = data.ReadByte
-                savePlayer(i).Player.AccessMode = data.ReadByte
-                savePlayer(i).Player.Visible = data.ReadBoolean
-                savePlayer(i).Save()
+            AccountCount = data.ReadInt32
+            ReDim Account(0 To AccountCount)
+            For i As Integer = 0 To AccountCount - 1
+                Account(i) = New Accounts
+                data.ReadAllProperties(Account(i).Base)
             Next i
-            Accounts.Data.LoadAccounts()
-            SendData.EditorPlayerData(Index)
-            SendData.EditorDataSent(Index, 0)
+            Accounts.Data.SaveAll()
+            SendData.EditorDataSent(Index, 0, "Player Data Commit Sucesfull!")
         End Sub
 
         Public Sub EditorTilesetData(ByVal Index As Integer, ByRef data As NetIncomingMessage)
-            Dim saveTileset() As Tilesets, num As Integer
-
-            num = data.ReadInt32
-            ReDim saveTileset(0 To num)
-            For i As Integer = 1 To num
-                saveTileset(i) = New Tilesets
-                saveTileset(i).ID = data.ReadInt32
-                saveTileset(i).Name = data.ReadString
-                saveTileset(i).MaxX = data.ReadInt32
-                saveTileset(i).MaxY = data.ReadInt32
-                saveTileset(i).ResizeTileData(New Integer() {saveTileset(i).MaxX, saveTileset(i).MaxY})
-                For x As Integer = 0 To saveTileset(i).MaxX
-                    For y As Integer = 0 To saveTileset(i).MaxY
-                        saveTileset(i).Tile(x, y) = data.ReadByte
-                    Next y
-                Next x
-                saveTileset(i).Save()
+            TilesetCount = data.ReadInt32
+            ReDim Tileset(0 To TilesetCount)
+            For i As Integer = 0 To TilesetCount - 1
+                Tileset(i) = New Tilesets
+                data.ReadAllProperties(Tileset(i).Base)
+                Tileset(i).Save()
             Next i
-            Tilesets.Data.LoadAll()
-            SendData.EditorTilesetData(Index)
-            SendData.EditorDataSent(Index, 0)
+            Tilesets.Data.SaveAll()
+            SendData.EditorDataSent(Index, 0, "Tileset Data Commit Sucesfull!")
+        End Sub
+
+        Public Sub EditorNpcData(ByVal Index As Integer, ByRef data As NetIncomingMessage)
+            NPCCount = data.ReadInt32
+            ReDim NPC(0 To NPCCount)
+            For i As Integer = 0 To NPCCount - 1
+                NPC(i) = New NPCs
+                data.ReadAllProperties(NPC(i).Base)
+            Next i
+            NPCs.Data.SaveAll()
+            SendData.EditorDataSent(Index, 0, "Npc Data Commit Sucesfull!")
+        End Sub
+
+        Public Sub EditorItemData(ByVal Index As Integer, ByRef data As NetIncomingMessage)
+            ItemCount = data.ReadInt32
+            ReDim Item(0 To ItemCount)
+            For i As Integer = 0 To ItemCount - 1
+                Item(i) = New Items
+                data.ReadAllProperties(Item(i).Base)
+            Next i
+            Items.Data.SaveAll()
+            SendData.EditorDataSent(Index, 0, "Item Data Commit Sucesfull!")
         End Sub
     End Module
 End Namespace

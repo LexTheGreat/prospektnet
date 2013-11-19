@@ -6,8 +6,8 @@ Namespace Objects
         Public Property MaxX As Integer
         Public Property MaxY As Integer
         Public Property Color As OverLayColor
-        Private mLayer(MapLayerEnum.COUNT - 1) As LayerData
-        Public NPC(0) As MapNPCBase
+        Public Property Layer As LayerData()
+        Public Property NPC As MapNPCBase()
         Public Property NPCCount As Integer
 
         Sub New()
@@ -16,33 +16,12 @@ Namespace Objects
             Me.MaxY = 35
             Me.NPCCount = -1
             Me.Color = New OverLayColor()
+            ReDim Me.Layer(0 To MapLayerEnum.COUNT - 1)
             For x As Integer = MapLayerEnum.Ground To MapLayerEnum.COUNT - 1
-                Me.mLayer(x) = New LayerData(Me.MaxX, Me.MaxY)
-                Me.mLayer(x).ResizeTileData(New Integer() {Me.MaxX, Me.MaxY})
+                Me.Layer(x) = New LayerData(Me.MaxX, Me.MaxY)
             Next
+            ReDim Me.NPC(0)
         End Sub
-
-        Public Overloads Property Layer(ByVal Index As Byte) As LayerData
-            Get
-                Return Me.mLayer(Index)
-            End Get
-            Set(value As LayerData)
-                If Not IsNothing(Me) Then
-                    Me.mLayer(Index) = value
-                End If
-            End Set
-        End Property
-
-        Public Overloads Property Layer As LayerData()
-            Get
-                Return Me.mLayer
-            End Get
-            Set(value As LayerData())
-                If Not IsNothing(Me) Then
-                    Me.mLayer = value
-                End If
-            End Set
-        End Property
     End Class
 
     <Serializable()> Public Class OverLayColor
@@ -60,45 +39,29 @@ Namespace Objects
     End Class
 
     <Serializable()> Public Class LayerData
-        Private mTiles(,) As TileData
+        Public Property Tiles As TileData(,)
 
         Sub New(ByVal maxX As Integer, ByVal maxY As Integer)
-            ReDim Me.mTiles(maxX, maxY)
-            For X As Integer = 0 To Me.mTiles.GetUpperBound(0)
-                For Y As Integer = 0 To Me.mTiles.GetUpperBound(1)
-                    Me.mTiles(X, Y) = New TileData
+            ReDim Me.Tiles(maxX, maxY)
+            For X As Integer = 0 To Me.Tiles.GetUpperBound(0)
+                For Y As Integer = 0 To Me.Tiles.GetUpperBound(1)
+                    Me.Tiles(X, Y) = New TileData
                 Next
             Next
         End Sub
-
-        Public Sub SetTileData(ByVal Data As TileData(,))
-            Me.mTiles = Data
-        End Sub
-
-        Public Sub SetTileData(ByVal X As Integer, ByVal Y As Integer, ByVal data As TileData)
-            Me.mTiles(X, Y) = data
-        End Sub
-
-        Public Function GetTileData() As TileData(,)
-            Return Me.mTiles
-        End Function
-
-        Public Function GetTileData(ByVal X As Integer, ByVal Y As Integer) As TileData
-            Return Me.mTiles(X, Y)
-        End Function
 
         Public Sub ResizeTileData(ByVal newSize As Integer())
             Dim newTiles(newSize(0), newSize(1)) As TileData
             For x As Integer = 0 To newSize(0)
                 For y As Integer = 0 To newSize(1)
-                    If Me.mTiles.GetUpperBound(0) <= x Or Me.mTiles.GetUpperBound(1) <= y Then
+                    If Me.Tiles.GetUpperBound(0) <= x Or Me.Tiles.GetUpperBound(1) <= y Then
                         newTiles(x, y) = New TileData
                     Else
-                        newTiles(x, y) = Me.mTiles(x, y)
+                        newTiles(x, y) = Me.Tiles(x, y)
                     End If
                 Next
             Next
-            Me.mTiles = newTiles
+            Me.Tiles = newTiles
         End Sub
     End Class
 

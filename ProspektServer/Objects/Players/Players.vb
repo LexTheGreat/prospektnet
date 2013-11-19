@@ -45,7 +45,7 @@ Public Class Players
 
     Public Function Save() As Boolean
         If Me.Name = vbNullString Then Return False
-        Players.Data.SavePlayer(Me.Base)
+        Players.Data.Save(Me.Base)
         Return True
     End Function
 

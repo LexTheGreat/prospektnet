@@ -151,7 +151,7 @@ Namespace Network.SendData
             For I As Integer = MapLayerEnum.Ground To MapLayerEnum.COUNT - 1
                 For x As Integer = 0 To sMap.MaxX
                     For y As Integer = 0 To sMap.MaxY
-                        sTileData = sMap.Layer(I).GetTileData(x, y)
+                        sTileData = sMap.Layer(I).Tiles(x, y)
                         Buffer.Write(sTileData.Tileset)
                         Buffer.Write(sTileData.X)
                         Buffer.Write(sTileData.Y)
@@ -187,99 +187,75 @@ Namespace Network.SendData
             SendDataTo(index, Buffer)
         End Sub
 
-        Public Sub EditorPlayerData(ByVal Index As Integer)
-            Dim Buffer As NetOutgoingMessage = pServer.CreateMessage
-            Dim sTileData As New TileData
-
-            Buffer.Write(SEditorPackets.PlayerData)
-            Buffer.Write(AccountCount)
-            For I As Integer = 1 To AccountCount
-                Buffer.Write(Account(I).Email)
-                Buffer.Write(Account(I).Password)
-                Buffer.Write(Account(I).Player.Name)
-                Buffer.Write(Account(I).Player.Sprite)
-                Buffer.Write(Account(I).Player.Map)
-                Buffer.Write(Account(I).Player.X)
-                Buffer.Write(Account(I).Player.Y)
-                Buffer.Write(Account(I).Player.Dir)
-                Buffer.Write(Account(I).Player.AccessMode)
-                Buffer.Write(Account(I).Player.Visible)
-            Next
-            SendDataTo(Index, Buffer)
-        End Sub
-
         Public Sub EditorMapData(ByVal Index As Integer)
             Dim Buffer As NetOutgoingMessage = pServer.CreateMessage
-            Dim sTileData As New TileData
-
             Buffer.Write(SEditorPackets.MapData)
+
+            'Maps data
             Buffer.Write(MapCount)
-            For i As Integer = 0 To MapCount
-                Buffer.Write(Map(i).Name)
-                Buffer.Write(Map(i).MaxX)
-                Buffer.Write(Map(i).MaxY)
-                Buffer.Write(Map(i).Alpha)
-                Buffer.Write(Map(i).Red)
-                Buffer.Write(Map(i).Green)
-                Buffer.Write(Map(i).Blue)
-                For j As Integer = MapLayerEnum.Ground To MapLayerEnum.COUNT - 1
-                    For x As Integer = 0 To Map(i).MaxX
-                        For y As Integer = 0 To Map(i).MaxY
-                            sTileData = Map(i).Layer(j).GetTileData(x, y)
-                            Buffer.Write(sTileData.Tileset)
-                            Buffer.Write(sTileData.X)
-                            Buffer.Write(sTileData.Y)
-                        Next
-                    Next
-                Next
+            For Each mp In Map
+                Buffer.WriteAllProperties(mp.Base)
             Next
             SendDataTo(Index, Buffer)
+            EditorDataSent(Index, 1, "Map Data Synchronized!")
+        End Sub
+
+        Public Sub EditorPlayerData(ByVal Index As Integer)
+            Dim Buffer As NetOutgoingMessage = pServer.CreateMessage
+            Buffer.Write(SEditorPackets.AccountData)
+
+            'Accounts data
+            Buffer.Write(AccountCount)
+            For Each acc In Account
+                Buffer.WriteAllProperties(acc.Base)
+            Next
+            SendDataTo(Index, Buffer)
+            EditorDataSent(Index, 1, "Player Data Synchronized!")
         End Sub
 
         Public Sub EditorTilesetData(ByVal Index As Integer)
             Dim Buffer As NetOutgoingMessage = pServer.CreateMessage
-
             Buffer.Write(SEditorPackets.TilesetData)
+
+            'Tileset data
             Buffer.Write(TilesetCount)
-            For i As Integer = 1 To TilesetCount
-                Buffer.Write(Tileset(i).ID)
-                Buffer.Write(Tileset(i).Name)
-                Buffer.Write(Tileset(i).MaxX)
-                Buffer.Write(Tileset(i).MaxY)
-                For x As Integer = 0 To Tileset(i).MaxX
-                    For y As Integer = 0 To Tileset(i).MaxY
-                        Buffer.Write(Tileset(i).Tile(x, y))
-                    Next
-                Next
-            Next i
+            For Each tile In Tileset
+                Buffer.WriteAllProperties(tile.Base)
+            Next
             SendDataTo(Index, Buffer)
+            EditorDataSent(Index, 1, "Tileset Data Synchronized!")
         End Sub
 
         Public Sub EditorNPCData(ByVal Index As Integer)
             Dim Buffer As NetOutgoingMessage = pServer.CreateMessage
             Buffer.Write(SEditorPackets.NPCData)
+
+            'Npc data
             Buffer.Write(NPCCount)
-            For I As Integer = 1 To NPCCount
-                Buffer.Write(NPC(I).Base.Name)
-                Buffer.Write(NPC(I).Base.Sprite)
-                Buffer.Write(NPC(I).Base.ID)
-                Buffer.Write(NPC(I).Base.Level)
-                Buffer.Write(NPC(I).Base.Health)
-                Buffer.Write(NPC(I).Base.X)
-                Buffer.Write(NPC(I).Base.Y)
-                Buffer.Write(NPC(I).Base.Dir)
-                Buffer.Write(NPC(I).Base.Inventory.Length)
-                For l As Integer = 0 To NPC(I).Base.Inventory.Length
-                    Buffer.Write(NPC(I).Base.Inventory(l))
-                Next
+            For Each nc In NPC
+                Buffer.WriteAllProperties(nc.Base)
+            Next
+            SendDataTo(Index, Buffer)
+            EditorDataSent(Index, 1, "Npc Data Synchronized!")
+        End Sub
+
+        Public Sub EditorItemData(ByVal Index As Integer)
+            Dim Buffer As NetOutgoingMessage = pServer.CreateMessage
+            Buffer.Write(CEditorPackets.NPCData)
+
+            'Item data
+            Buffer.Write(ItemCount)
+            For Each itm In Item
+                Buffer.WriteAllProperties(itm.Base)
             Next
             SendDataTo(Index, Buffer)
         End Sub
 
-        Public Sub EditorDataSent(ByVal index As Integer, ByVal Mode As Byte)
+        Public Sub EditorDataSent(ByVal index As Integer, ByVal Mode As Byte, ByVal Text As String)
             Dim Buffer As NetOutgoingMessage = pServer.CreateMessage
             Buffer.Write(SEditorPackets.DataSent)
             Buffer.Write(Mode)
+            Buffer.Write(Text)
             SendDataTo(index, Buffer)
         End Sub
     End Module

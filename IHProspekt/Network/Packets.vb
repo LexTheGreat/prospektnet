@@ -23,9 +23,10 @@
         Public Enum SEditorPackets As Integer
             LoginOk = ServerPackets.COUNT + 1
             MapData
-            PlayerData
+            AccountData
             TilesetData
             NPCData
+            ItemData
             DataSent
             ' Make sure COUNT is below everything else
             COUNT
@@ -51,8 +52,10 @@
             Login = ClientPackets.COUNT + 1
             DataRequest
             MapData
-            PlayerData
+            AccountData
             TilesetData
+            NPCData
+            ItemData
             ' Make sure COUNT is below everything else
             COUNT
         End Enum

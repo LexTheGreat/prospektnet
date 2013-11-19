@@ -5,7 +5,7 @@ Public Class TilesetLogic
     Public Function isTileBlocked(ByVal X As Integer, ByVal Y As Integer) As Boolean
         Dim tempTile As New TileData
         For I As Integer = 0 To MapLayerEnum.COUNT - 1
-            tempTile = Map.Layer(I).GetTileData(X, Y)
+            tempTile = Map.Layer(I).Tiles(X, Y)
             If tempTile.Tileset < 0 Then Return False
             If tempTile.Tileset > TilesetCount Then Return False
             If IsNothing(Tileset(tempTile.Tileset)) Then Return False

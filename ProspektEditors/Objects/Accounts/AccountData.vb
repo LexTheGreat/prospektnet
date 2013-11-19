@@ -9,7 +9,7 @@ Public Class AccountData
         End Using
     End Sub
 
-    Public Sub LoadAccounts()
+    Public Sub LoadAll()
         Dim loadAcc As New AccountBase
         Dim fileEntries As String()
         Dim fileName As String, i As Integer = 0
@@ -34,10 +34,10 @@ Public Class AccountData
         End Try
     End Sub
 
-    Public Sub SaveAccounts()
+    Public Sub SaveAll()
         If Directory.Exists(pathAccounts) Then
-            For I As Integer = 1 To AccountCount
-                Account(I).Save()
+            For Each acc In Account
+                acc.Save()
             Next
         End If
     End Sub
@@ -47,12 +47,14 @@ Public Class AccountData
         newAccount.Email = i & "@email.com"
         ReDim Preserve Account(0 To i)
         Account(i) = newAccount
-        SaveAccounts()
+        SaveAll()
     End Sub
 
     Public Function GetAccountIndex(ByVal Email As String) As Integer
-        For index As Integer = 1 To AccountCount
-            If Account(index).Email = Email Then Return index
+        Dim i As Integer = 0
+        For Each acc In Account
+            If acc.Email = Email Then Return i
+            i = i + 1
         Next
         Return 0
     End Function

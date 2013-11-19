@@ -5,7 +5,7 @@
         Public Property Player As PlayerBase
 
         Public Sub New()
-            Me.Email = "account@indiearmory.com"
+            Me.Email = "account@email.com"
             Me.Password = "Password"
             Me.Player = New PlayerBase
         End Sub

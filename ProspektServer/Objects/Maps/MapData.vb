@@ -19,7 +19,7 @@ Public Class MapData
                 MapCount = MapCount - 1
             End If
         Catch ex As Exception
-            Server.Writeline("Error: " & ex.ToString & " (In: Data.LoadMaps")
+            Server.WriteLine("Error: " & ex.ToString & " (In: Maps.Data.LoadMaps")
         End Try
     End Sub
 
@@ -37,7 +37,7 @@ Public Class MapData
                 Next
             End If
         Catch ex As Exception
-            Server.Writeline("Error: " & ex.ToString & " (In: Data.SaveMaps")
+            Server.WriteLine("Error: " & ex.ToString & " (In: Maps.Data.SaveMaps")
         End Try
     End Sub
 

@@ -34,7 +34,7 @@ Public Class AccountData
         End Try
     End Sub
 
-    Public Sub LoadAccounts()
+    Public Sub LoadAll()
         Dim loadAcc As New AccountBase
         Dim fileEntries As String()
         Dim fileName As String, i As Integer = 0
@@ -59,7 +59,7 @@ Public Class AccountData
         End Try
     End Sub
 
-    Public Sub SaveAccounts()
+    Public Sub SaveAll()
         Try
             If Directory.Exists(pathAccounts) Then
                 For Each acc In Account
@@ -71,7 +71,7 @@ Public Class AccountData
         End Try
     End Sub
 
-    Public Sub SaveAccount(ByRef saccount As AccountBase)
+    Public Sub Save(ByRef saccount As AccountBase)
         Try
             Using File As New Files(pathAccounts & saccount.Email & ".xml", saccount)
                 File.WriteXML()

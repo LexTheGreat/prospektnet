@@ -192,7 +192,7 @@ Namespace Network.HandleData
                         sTileData.Tileset = Data.ReadInt32
                         sTileData.X = Data.ReadInt32
                         sTileData.Y = Data.ReadInt32
-                        Map.Layer(i).SetTileData(x, y, sTileData)
+                        Map.Layer(i).Tiles(x, y) = sTileData
                     Next y
                 Next x
             Next i

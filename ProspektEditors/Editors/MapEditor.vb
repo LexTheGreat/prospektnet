@@ -123,10 +123,12 @@ Class MapClass
         EditorWindow.proptMapData.SelectedObject = vbNull
         EditorWindow.proptMapEditorData.SelectedObject = editorProperty
         curLayer = editorProperty.GetLayer
-        If TilesetCount > 0 Then
+        If Not IsNothing(Tileset) Then
             EditorWindow.mapCmbTileSet.Items.Clear()
-            For I As Integer = 1 To TilesetCount
-                EditorWindow.mapCmbTileSet.Items.Add(Tileset(I).Name)
+            For Each tile In Tileset
+                If Not IsNothing(tile) Then
+                    EditorWindow.mapCmbTileSet.Items.Add(tile.Name)
+                End If
             Next
             EditorWindow.mapCmbTileSet.SelectedIndex = 0
         End If
@@ -192,17 +194,19 @@ Class MapClass
     End Sub
 
     Public Sub ReloadTilesets()
-        If TilesetCount > 0 Then
+        If Not IsNothing(Tileset) Then
             EditorWindow.mapCmbTileSet.Items.Clear()
-            For I As Integer = 1 To TilesetCount
-                EditorWindow.mapCmbTileSet.Items.Add(Tileset(I).Name)
+            For Each tile In Tileset
+                If Not IsNothing(tile) Then
+                    EditorWindow.mapCmbTileSet.Items.Add(tile.Name)
+                End If
             Next
             EditorWindow.mapCmbTileSet.SelectedIndex = 0
         End If
     End Sub
 
     Public Sub Undo()
-        Maps.Data.LoadMaps()
+        Maps.Data.LoadAll()
         EditorWindow.tabMap.Text = "Map"
         EditorWindow.proptMapData.SelectedObject = vbNull
         index = -1
@@ -235,7 +239,12 @@ Class MapClass
 
     Public Sub SelectTileset()
         selectSrcRect = New Rectangle(0, 0, 0, 0)
-        curTileSet = Tilesets.Data.GetTilesetID(EditorWindow.mapCmbTileSet.SelectedItem.ToString)
+        For i As Integer = 0 To TilesetCount
+            If Tileset(i).Name = EditorWindow.mapCmbTileSet.SelectedItem.ToString Then
+                curTileSet = i + 1
+                Exit For
+            End If
+        Next
         EditorWindow.tileSetScrlX.Minimum = 0
         EditorWindow.tileSetScrlY.Minimum = 0
         If gTexture(texTileset(curTileSet)).Width < EditorWindow.mapPicTileset.Width Then
@@ -252,14 +261,17 @@ Class MapClass
         End If
     End Sub
 
-    Public Sub SelectNpc(ByVal index As Integer)
-        If IsNothing(NPC(index)) Then Exit Sub
-        curNpc = index
+    Public Sub SelectNpc(ByVal Name As String)
+        If IsNothing(NPC(NPCs.Data.GetNpcIndexByName(Name))) Then Exit Sub
+        curNpc = NPCs.Data.GetNpcIndexByName(Name)
     End Sub
 
     Public Sub mapPreview_MouseMove(e As MouseEventArgs)
         If index < 0 Then Exit Sub
-        If e.X >= Map(index).MaxX * picX Or e.Y >= Map(index).MaxY * picY Then Exit Sub
+        If e.X >= Map(index).MaxX * picX Or e.Y >= Map(index).MaxY * picY Then
+            mapMouseRect = New Rectangle(0, 0, 0, 0)
+            Exit Sub
+        End If
         mapMouseRect = New Rectangle(SnapTo(e.X, picX, EditorWindow.mapPreview.Width), SnapTo(e.Y, picY, EditorWindow.mapPreview.Height), picX, picY)
     End Sub
 
@@ -279,7 +291,10 @@ Class MapClass
 
     Public Sub mapPicTileSet_MouseMove(e As MouseEventArgs)
         If e.X + (EditorWindow.tileSetScrlX.Value * picX) >= gTexture(texTileset(curTileSet)).Width Or
-            e.Y + (EditorWindow.tileSetScrlY.Value * picY) >= gTexture(texTileset(curTileSet)).Height Then Exit Sub
+            e.Y + (EditorWindow.tileSetScrlY.Value * picY) >= gTexture(texTileset(curTileSet)).Height Then
+            selectMouseRect = New Rectangle(0, 0, 0, 0)
+            Exit Sub
+        End If
         selectMouseRect = New Rectangle(SnapTo(e.X, picX, EditorWindow.mapPicTileset.Width), SnapTo(e.Y, picY, EditorWindow.mapPicTileset.Height), picX, picY)
     End Sub
 

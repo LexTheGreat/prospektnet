@@ -4,7 +4,7 @@ Imports IHProspekt.Objects
 Imports IHProspekt.Database
 Imports IHProspekt.Core
 Public Class ItemData
-    Public Sub LoadItems()
+    Public Sub LoadAll()
         Try
             If Directory.Exists(pathItemData) Then
                 Dim fileEntries As String() = Directory.GetFiles(pathItemData, "*.xml")
@@ -14,7 +14,7 @@ Public Class ItemData
                 For Each fileName In fileEntries
                     ReDim Preserve Item(0 To ItemCount)
                     Item(ItemCount) = New Items
-                    Item(ItemCount).SetID(fileName.Replace(pathItemData, vbNullString).Replace(".xml", vbNullString))
+                    Item(ItemCount).SetID(ItemCount)
                     Item(ItemCount).Load()
                     ItemCount = ItemCount + 1
                 Next fileName
@@ -25,7 +25,7 @@ Public Class ItemData
         End Try
     End Sub
 
-    Public Sub SaveItems()
+    Public Sub SaveAll()
         If Directory.Exists(pathItemData) Then
             For Each itm In Item
                 itm.Save()
@@ -44,7 +44,7 @@ Public Class ItemData
         ReDim Preserve Item(0 To i)
         newItem.SetID(i)
         Item(i) = newItem
-        SaveItems()
+        SaveAll()
     End Sub
 
     Public Function GetItemIndex(ByVal ID As Integer) As Integer

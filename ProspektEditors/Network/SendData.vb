@@ -16,6 +16,11 @@ Namespace Network.SendData
         Public Sub DataRequest()
             Dim Buffer As NetOutgoingMessage = pClient.CreateMessage
             Buffer.Write(CEditorPackets.DataRequest)
+            Buffer.Write(SyncBox.chkMaps.Checked)
+            Buffer.Write(SyncBox.chkAccounts.Checked)
+            Buffer.Write(SyncBox.chkTilesets.Checked)
+            Buffer.Write(SyncBox.chkNpcs.Checked)
+            Buffer.Write(SyncBox.chkItems.Checked)
             Networking.SendData(Buffer)
         End Sub
 
@@ -23,47 +28,24 @@ Namespace Network.SendData
             Dim sTileData As New TileData
             Dim Buffer As NetOutgoingMessage = pClient.CreateMessage
             Buffer.Write(CEditorPackets.MapData)
+
             'Maps data
             Buffer.Write(MapCount)
-            For I As Integer = 0 To MapCount
-                Buffer.Write(Map(I).Name)
-                Buffer.Write(Map(I).MaxX)
-                Buffer.Write(Map(I).MaxY)
-                Buffer.Write(Map(I).Alpha)
-                Buffer.Write(Map(I).Red)
-                Buffer.Write(Map(I).Green)
-                Buffer.Write(Map(I).Blue)
-                For j As Integer = MapLayerEnum.Ground To MapLayerEnum.COUNT - 1
-                    For x As Integer = 0 To Map(I).MaxX
-                        For y As Integer = 0 To Map(I).MaxY
-                            sTileData = Map(I).Layer(j).GetTileData(x, y)
-                            Buffer.Write(sTileData.Tileset)
-                            Buffer.Write(sTileData.X)
-                            Buffer.Write(sTileData.Y)
-                        Next
-                    Next
-                Next
+            For Each mp In Map
+                Buffer.WriteAllProperties(mp.Base)
             Next
             Networking.SendData(Buffer)
         End Sub
+
         Public Sub PlayerData()
             Dim sTileData As New TileData
             Dim Buffer As NetOutgoingMessage = pClient.CreateMessage
-            Buffer.Write(CEditorPackets.PlayerData)
+            Buffer.Write(CEditorPackets.AccountData)
 
             'Accounts data
             Buffer.Write(AccountCount)
-            For I As Integer = 1 To AccountCount
-                Buffer.Write(Account(I).Email)
-                Buffer.Write(Account(I).Password)
-                Buffer.Write(Account(I).Name)
-                Buffer.Write(Account(I).Sprite)
-                Buffer.Write(Account(I).PlayerMap)
-                Buffer.Write(Account(I).X)
-                Buffer.Write(Account(I).Y)
-                Buffer.Write(Account(I).GetPlayerDir)
-                Buffer.Write(Account(I).GetPlayerAccess)
-                Buffer.Write(Account(I).Visible)
+            For Each acc In Account
+                Buffer.WriteAllProperties(acc.Base)
             Next
             Networking.SendData(Buffer)
         End Sub
@@ -74,16 +56,32 @@ Namespace Network.SendData
 
             'Tileset data
             Buffer.Write(TilesetCount)
-            For I As Integer = 1 To TilesetCount
-                Buffer.Write(Tileset(I).ID)
-                Buffer.Write(Tileset(I).Name)
-                Buffer.Write(Tileset(I).MaxX)
-                Buffer.Write(Tileset(I).MaxY)
-                For x As Integer = 0 To Tileset(I).MaxX
-                    For y As Integer = 0 To Tileset(I).MaxY
-                        Buffer.Write(Tileset(I).Tile(x, y))
-                    Next
-                Next
+            For Each tile In Tileset
+                Buffer.WriteAllProperties(tile.Base)
+            Next
+            Networking.SendData(Buffer)
+        End Sub
+
+        Public Sub NpcData()
+            Dim Buffer As NetOutgoingMessage = pClient.CreateMessage
+            Buffer.Write(CEditorPackets.NPCData)
+
+            'Npc data
+            Buffer.Write(NPCCount)
+            For Each nc In NPC
+                Buffer.WriteAllProperties(nc.Base)
+            Next
+            Networking.SendData(Buffer)
+        End Sub
+
+        Public Sub ItemData()
+            Dim Buffer As NetOutgoingMessage = pClient.CreateMessage
+            Buffer.Write(CEditorPackets.ItemData)
+
+            'Item data
+            Buffer.Write(ItemCount)
+            For Each itm In Item
+                Buffer.WriteAllProperties(itm.Base)
             Next
             Networking.SendData(Buffer)
         End Sub

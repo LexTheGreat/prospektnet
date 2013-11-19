@@ -6,7 +6,9 @@
   <Level>1</Level>
   <Health>1</Health>
   <X>10</X>
-  <Y>15</Y>
+  <Y>16</Y>
   <Dir>1</Dir>
-  <Inventory />
+  <Inventory>
+    <int>-1</int>
+  </Inventory>
 </NPCBase>
